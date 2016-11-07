@@ -10,7 +10,8 @@ import java.util.Set;
     private Long id;
     @NotNull @Size(min = 5, max = 100) @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Size(min = 6, max = 100) @Column(name = "password", nullable = false) private String password;
+    @NotNull @Size(min = 6, max = 100) @Column(name = "password", nullable = false) private String
+        password;
 
     @ManyToMany @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "user_id")}, inverseJoinColumns = @JoinColumn(name = "role_id"))

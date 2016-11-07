@@ -18,7 +18,7 @@ import java.security.Principal;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView getLoginForm(){
+    public ModelAndView getLoginForm(User user){
         return new ModelAndView("login");
     }
 

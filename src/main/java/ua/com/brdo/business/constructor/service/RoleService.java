@@ -1,20 +1,29 @@
 package ua.com.brdo.business.constructor.service;
 
-import ua.com.brdo.business.constructor.exception.ServiceException;
-import ua.com.brdo.business.constructor.model.entity.Role;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import ua.com.brdo.business.constructor.model.entity.Role;
+import ua.com.brdo.business.constructor.model.entity.User;
+
 public interface RoleService {
-    void create(Role role) throws ServiceException;
+    @Transactional
+    Role create(Role role);
 
-    void update(Role role) throws ServiceException;
+    @Transactional
+    Role update(Role role);
 
-    void delete(Integer id) throws ServiceException;
+    @Transactional
+    void delete(Long id);
 
-    Role findById(Integer id) throws ServiceException;
+    boolean addUser(User user, Role role);
 
-    Role findByTitle(String title) throws ServiceException;
+    boolean removeUser(User user, Role role);
 
-    List<Role> findAll() throws ServiceException;
+    Role findById(Long id);
+
+    Role findByTitle(String title);
+
+    List<Role> findAll();
 }

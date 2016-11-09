@@ -1,129 +1,77 @@
 package ua.com.brdo.business.constructor.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
+@Table(name = "user")
+@NoArgsConstructor
+@Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
     private String firstName;
     private String middleName;
     private String lastName;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @JsonIgnore
+    @Column(nullable = false) //change to nullable = true for Facebook/Google Auth support
     private String passwordHash;
-    private LocalDateTime creationTimestamp;
-    private boolean isNotificationEnabled;
+
+    @Column(nullable = false)
+    private LocalDate creationDate = LocalDate.now();
+
+    @Column(nullable = false)
+    private boolean isNotificationEnabled = true;
 
     @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
-
-    public User() {
-        creationTimestamp = LocalDateTime.now();
-        isNotificationEnabled = true;
-    }
+    private List<Role> roles;
 
     public User(UserDto userDto) {
-        username = userDto.getUsername();
+        email = userDto.getEmail();
+        if (userDto.getUsername() != null) {
+            username = userDto.getUsername();
+        } else {
+            username = email;
+        }
         firstName = userDto.getFirstName();
         middleName = userDto.getMiddleName();
         lastName = userDto.getLastName();
-        email = userDto.getEmail();
-        creationTimestamp = LocalDateTime.now();
-        isNotificationEnabled = userDto.isNotificationEnabled();
+        roles = new ArrayList<>();
+        // passwordHash = passwordEncoder.encode(userDto.getPassword());
     }
 
-    public Long getId() {
-        return id;
+    public List<Role> getRoles() {
+        return new ArrayList<>(roles);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public LocalDateTime getCreationTimestamp() {
-        return LocalDateTime.of(creationTimestamp.getYear(),creationTimestamp.getMonth(),creationTimestamp.getDayOfMonth(),
-                                creationTimestamp.getHour(),creationTimestamp.getMinute(),creationTimestamp.getSecond());
-    }
-
-    public void setCreationTimestamp(LocalDateTime creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
-    }
-
-    public boolean isNotificationEnabled() {
-        return isNotificationEnabled;
-    }
-
-    public void setNotificationEnabled(boolean notificationEnabled) {
-        isNotificationEnabled = notificationEnabled;
-    }
-
-    public Set<Role> getRoles() {
-        return new HashSet<>(roles);
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 
 }

@@ -1,6 +1,6 @@
 package ua.com.brdo.business.constructor.exception;
 
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
 
     public ServiceException() {
         super();
@@ -11,6 +11,6 @@ public class ServiceException extends Exception {
     }
 
     public ServiceException(String s, Exception e) {
-        super(s,e);
+        super(s, e);
     }
 }

@@ -1,55 +1,38 @@
 package ua.com.brdo.business.constructor.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ua.com.brdo.business.constructor.model.dto.RoleDto;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "role")
+@NoArgsConstructor
+@Data
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @Column(unique = true, nullable = false)
     private String title;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    Set<User> users;
+    List<User> users;
 
-    public Role() {
+    public List<User> getUsers() {
+        return new ArrayList<>(users);
     }
 
-    public Role(RoleDto roleDto) {
-        title = roleDto.getTitle();
-    }
-
-    public Role(String title) {
-        this.title = title;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Set<User> getUsers() {
-        return new HashSet<>(users);
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 }

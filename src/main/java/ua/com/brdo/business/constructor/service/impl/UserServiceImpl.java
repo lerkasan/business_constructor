@@ -1,241 +1,142 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.annotation.Unique;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.exception.ServiceException;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
+import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static ua.com.brdo.business.constructor.exception.ExceptionMessages.*;
-
-public final class UserServiceImpl implements UserService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+@Service("UserService")
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepo;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MessageSource messageSource;
+
+    private Locale locale = LocaleContextHolder.getLocale();
 
     @Transactional
     @Override
-    public void create(User user) throws ServiceException {
-        if (user != null) {
-            try {
-                userRepo.saveAndFlush(user);
-            } catch (DataAccessException e) {
-                logger.error(USER_CREATION_FAILURE, e);
-                throw new ServiceException(USER_CREATION_FAILURE, e);
-            }
-        } else {
-            logger.error(USER_NULL);
-            throw new ServiceException(USER_NULL);
+    public User create(User user) {
+        if (user == null) {
+            throw new ServiceException(messageSource.getMessage("user.validation.null", null, locale));
         }
-    }
-
-    @Transactional
-    @Override
-    public void update(User user) throws ServiceException {
-        if (user != null) {
-            try {
-                userRepo.saveAndFlush(user);
-            } catch (DataAccessException e) {
-                logger.error(USER_UPDATE_FAILURE, e);
-                throw new ServiceException(USER_UPDATE_FAILURE, e);
-            }
-        } else {
-            logger.error(USER_UPDATE_FAILURE);
-            throw new ServiceException(USER_NULL);
-        }
+        return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
-    public void delete(Long id) throws ServiceException {
-        try {
-            userRepo.delete(id);
-        } catch (DataAccessException e) {
-            logger.error(USER_DELETE_FAILURE, e);
-            throw new ServiceException(USER_DELETE_FAILURE, e);
-    }
-    }
-
-    @Override
-    public User findById(Long id) throws ServiceException {
-        try {
-            return userRepo.findOne(id);
-        } catch (DataAccessException e) {
-            logger.error(USER_FIND_FAILURE, e);
-            throw new ServiceException(USER_FIND_FAILURE, e);
+    public User update(User user) {
+        if (user == null) {
+            throw new ServiceException(messageSource.getMessage("user.validation.null", null, locale));
         }
-    }
-
-    @Override
-    public User findByUsername(String username) throws ServiceException {
-        if ( (username == null) || ("".equals(username)) ) {
-            logger.error(USER_NULL_USERNAME);
-            throw new ServiceException(USER_NULL_USERNAME);
-        }
-        try {
-            return userRepo.findByUsername(username);
-        } catch (DataAccessException e) {
-            logger.error(USER_FIND_FAILURE, e);
-            throw new ServiceException(USER_FIND_FAILURE, e);
-        }
-    }
-
-    @Override
-    public User findByEmail(String email) throws ServiceException {
-        if ( (email == null) || ("".equals(email)) ) {
-            logger.error(USER_NULL_EMAIL);
-            throw new ServiceException(USER_NULL_EMAIL);
-        }
-        try {
-            return userRepo.findByEmail(email);
-        } catch (DataAccessException e) {
-            logger.error(USER_FIND_FAILURE, e);
-            throw new ServiceException(USER_FIND_FAILURE, e);
-        }
-    }
-
-    @Override
-    public List<User> findAll() throws ServiceException {
-        try {
-            return userRepo.findAll();
-        } catch (DataAccessException e) {
-            logger.error(USER_FIND_FAILURE, e);
-            throw new ServiceException(USER_FIND_FAILURE, e);
-        }
-    }
-
-    @Override
-    public boolean validate(UserDto userDto) throws ServiceException {
-        if ( (userDto != null) && (userDto.checkPasswordsMatch()) && ("".equals(checkUniqueFields(userDto))) ) {
-            return true;
-        }
-        return false;
+        return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
-    public User register(UserDto userDto) throws ServiceException {
-        User newUser = null;
-        if (validate(userDto)) {
-            newUser = new User(userDto);
-            newUser.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
-            create(newUser);
-        }
-        return newUser;
+    public void delete(Long id) {
+        userRepo.delete(id);
     }
 
-    public boolean addRole(User user, Role role) throws ServiceException {
-        boolean isSuccess = true;
-        Set<Role> roles = user.getRoles();
+    @Override
+    public User findById(Long id) {
+        return userRepo.findOne(id);
+    }
 
+    @Override
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepo.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    @Transactional
+    @Override
+    public User register(UserDto userDto, Role role) {
+        User newUser = new User(userDto);
+        setEncodedPassword(newUser, userDto.getPassword());
+        addRole(newUser, role);
+        return create(newUser);
+    }
+
+    @Transactional
+    @Override
+    public User registerUser(UserDto userDto) {
+        User newUser = new User(userDto);
+        setEncodedPassword(newUser, userDto.getPassword());
+        Role role = roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException(messageSource.getMessage("role.not.found", null, locale)));
+        addRole(newUser, role);
+        return create(newUser);
+    }
+
+    @Override
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    @Override
+    public String setEncodedPassword(User user, String password) {
+        String passwordHash = encodePassword(password);
+        user.setPasswordHash(passwordHash);
+        return passwordHash;
+    }
+
+    public boolean addRole(User user, Role role) {
+        List<Role> roles = user.getRoles();
+        List<User> users = role.getUsers();
         if (roles == null) {
-            roles = new HashSet<>();
-            isSuccess &= roles.add(role);
-        } else {
-            if (!roles.contains(role)) {
-                isSuccess &= roles.add(role);
-            } else {
-                logger.error(USER_ALREADY_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_ALREADY_GRANTED_THIS_ROLE);
-            }
+            roles = new ArrayList<>();
         }
-        user.setRoles(roles);
-
-        Set<User> users = role.getUsers();
         if (users == null) {
-            users = new HashSet<>();
-            isSuccess &= users.add(user);
-        } else {
-            if (!users.contains(user)) {
-                isSuccess &= users.add(user);
-            } else {
-                logger.error(USER_ALREADY_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_ALREADY_GRANTED_THIS_ROLE);
-            }
+            users = new ArrayList<>();
         }
+        boolean isSuccess = roles.add(role) & users.add(user);
+        user.setRoles(roles);
         role.setUsers(users);
         return isSuccess;
     }
 
-    public boolean removeRole(User user, Role role) throws ServiceException {
-        boolean isSuccess = true;
-        Set<Role> roles = user.getRoles();
-
-        if (roles == null) {
-            logger.error(USER_NOT_GRANTED_THIS_ROLE);
-            throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-        } else {
-            if (!roles.contains(role)) {
-                logger.error(USER_NOT_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-            } else {
-                isSuccess &= roles.remove(role);
-            }
+    public boolean removeRole(User user, Role role) {
+        boolean isSuccess = false;
+        List<Role> roles = user.getRoles();
+        List<User> users = role.getUsers();
+        if ((roles != null) && (users != null)) {
+            isSuccess = roles.remove(role) & users.remove(user);
+            user.setRoles(roles);
+            role.setUsers(users);
         }
-        user.setRoles(roles);
-
-        Set<User> users = role.getUsers();
-        if (users == null) {
-            logger.error(USER_NOT_GRANTED_THIS_ROLE);
-            throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-        } else {
-            if (!users.contains(user)) {
-                logger.error(USER_NOT_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-            } else {
-                isSuccess &= users.remove(user);
-            }
-        }
-        role.setUsers(users);
         return isSuccess;
-    }
-
-    @Override
-    public String checkUniqueFields(UserDto userDto) throws ServiceException {
-        Class<?> cls = userDto.getClass();
-        Class<?> serviceCls = this.getClass();
-        Field[] fields = cls.getDeclaredFields();
-        String errorStr = "";
-
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(Unique.class)) {
-                try {
-                    String fieldNameLowcase = field.getName();
-                    String fieldName = fieldNameLowcase.substring(0, 1).toUpperCase() + fieldNameLowcase.substring(1);
-                    Method findByMethod = serviceCls.getMethod("findBy" + fieldName, String.class);
-                    Method getter = cls.getMethod("get" + fieldName);
-                    Object fieldValue = getter.invoke(this);
-                    User foundUser = (User) findByMethod.invoke(this, fieldValue);
-                    if (foundUser != null) {
-                        errorStr += " " + field.getName() + FIELD_NOT_UNIQUE + field.getName() + ". ";
-                    }
-                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                    logger.error("Reflection Exception: ", e);
-                    throw new ServiceException("Reflection Exception", e);
-                }
-            }
-        }
-        return errorStr;
     }
 
 }

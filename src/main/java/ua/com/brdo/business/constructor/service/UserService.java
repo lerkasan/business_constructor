@@ -1,31 +1,44 @@
 package ua.com.brdo.business.constructor.service;
 
-import ua.com.brdo.business.constructor.exception.ServiceException;
-import ua.com.brdo.business.constructor.model.dto.UserDto;
-import ua.com.brdo.business.constructor.model.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import ua.com.brdo.business.constructor.model.dto.UserDto;
+import ua.com.brdo.business.constructor.model.entity.Role;
+import ua.com.brdo.business.constructor.model.entity.User;
+
 public interface UserService {
 
-    void create(User user) throws ServiceException;
+    @Transactional
+    User create(User user);
 
-    void update(User user) throws ServiceException;
+    @Transactional
+    User update(User user);
 
-    void delete(Long id) throws ServiceException;
+    @Transactional
+    void delete(Long id);
 
-    User findById(Long id) throws ServiceException;
+    boolean addRole(User user, Role role);
 
-    User findByUsername(String username) throws ServiceException;
+    boolean removeRole(User user, Role role);
 
-    User findByEmail(String email) throws ServiceException;
+    User findById(Long id);
 
-    List<User> findAll() throws ServiceException;
+    User findByUsername(String username);
 
-    User register(UserDto userDto) throws ServiceException;
+    User findByEmail(String email);
 
-    boolean validate(UserDto userDto) throws ServiceException;
+    List<User> findAll();
 
-    String checkUniqueFields(UserDto userDto) throws ServiceException;
+    @Transactional
+    User register(UserDto userDto, Role role);
+
+    @Transactional
+    User registerUser(UserDto userDto);
+
+    String encodePassword(String password);
+
+    public String setEncodedPassword(User user, String password);
 
 }

@@ -1,169 +1,95 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import ua.com.brdo.business.constructor.exception.ServiceException;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.service.RoleService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static ua.com.brdo.business.constructor.exception.ExceptionMessages.*;
-
-public final class RoleServiceImpl implements RoleService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+@Service("RoleService")
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepo;
 
-    @Transactional
-    @Override
-    public void create(final Role role) throws ServiceException {
-        if (role != null) {
-            try {
-                roleRepo.saveAndFlush(role);
-            } catch (DataAccessException e) {
-                logger.error(ROLE_CREATION_FAILURE, e);
-                throw new ServiceException(ROLE_CREATION_FAILURE, e);
-            }
-        } else {
-            logger.error(ROLE_NULL);
-            throw new ServiceException(ROLE_NULL);
-        }
-    }
+    @Autowired
+    private MessageSource messageSource;
+
+    private Locale locale = LocaleContextHolder.getLocale();
 
     @Transactional
     @Override
-    public void update(final Role role) throws ServiceException {
-        if (role != null) {
-            try {
-                roleRepo.saveAndFlush(role);
-            } catch (DataAccessException e) {
-                logger.error(ROLE_UPDATE_FAILURE, e);
-                throw new ServiceException(ROLE_UPDATE_FAILURE, e);
-            }
-        } else {
-            logger.error(ROLE_NULL);
-            throw new ServiceException(ROLE_NULL);
+    public Role create(final Role role) {
+        if (role == null) {
+            throw new ServiceException(messageSource.getMessage("role.not.found", null, locale));
         }
+        return roleRepo.saveAndFlush(role);
     }
 
     @Transactional
     @Override
-    public void delete(final Integer id) throws ServiceException {
-        try {
-            roleRepo.delete(id);
-        } catch (DataAccessException e) {
-            logger.error(ROLE_DELETE_FAILURE, e);
-            throw new ServiceException(ROLE_DELETE_FAILURE, e);
+    public Role update(final Role role) {
+        if (role == null) {
+            throw new ServiceException(messageSource.getMessage("role.validation.null", null, locale));
         }
+        return roleRepo.saveAndFlush(role);
+    }
+
+    @Transactional
+    @Override
+    public void delete(final Long id) {
+        roleRepo.delete(id);
     }
 
     @Override
-    public Role findById(final Integer id) throws ServiceException {
-        try {
-            return roleRepo.findOne(id);
-        } catch (DataAccessException e) {
-            logger.error(ROLE_FIND_FAILURE, e);
-            throw new ServiceException(ROLE_FIND_FAILURE, e);
-        }
+    public Role findById(final Long id) {
+        return roleRepo.findOne(id);
     }
 
     @Override
-    public Role findByTitle(final String title) throws ServiceException {
-        if ((title == null) || ("".equals(title))) {
-            logger.error(ROLE_NULL_TITLE);
-            throw new ServiceException(ROLE_NULL_TITLE);
-        }
-        try {
-            return roleRepo.findByTitle(title);
-        } catch (DataAccessException e) {
-            logger.error(ROLE_FIND_FAILURE, e);
-            throw new ServiceException(ROLE_FIND_FAILURE, e);
-        }
+    public Role findByTitle(final String title) {
+        return roleRepo.findByTitle(title).orElse(null);
     }
 
     @Override
-    public List<Role> findAll() throws ServiceException {
-        try {
-            return roleRepo.findAll();
-        } catch (DataAccessException e) {
-            logger.error(ROLE_FIND_FAILURE, e);
-            throw new ServiceException(ROLE_FIND_FAILURE, e);
-        }
+    public List<Role> findAll() {
+        return roleRepo.findAll();
     }
 
-    public boolean addUser(final User user, final Role role) throws ServiceException {
-        boolean isSuccess = true;
-        Set<User> users = role.getUsers();
-
+    public boolean addUser(User user, Role role) {
+        List<User> users = role.getUsers();
+        List<Role> roles = user.getRoles();
         if (users == null) {
-            users = new HashSet<>();
-            isSuccess &= users.add(user);
-        } else {
-            if (!users.contains(user)) {
-                isSuccess &= users.add(user);
-            } else {
-                logger.error(USER_ALREADY_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_ALREADY_GRANTED_THIS_ROLE);
-            }
+            users = new ArrayList<>();
         }
-        role.setUsers(users);
-
-        Set<Role> roles = user.getRoles();
         if (roles == null) {
-            roles = new HashSet<>();
-            isSuccess &= roles.add(role);
-        } else {
-            if (!roles.contains(role)) {
-                isSuccess &= roles.add(role);
-            } else {
-                logger.error(USER_ALREADY_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_ALREADY_GRANTED_THIS_ROLE);
-            }
+            roles = new ArrayList<>();
         }
+        boolean isSuccess = users.add(user) & roles.add(role);
+        role.setUsers(users);
         user.setRoles(roles);
         return isSuccess;
     }
 
-    public boolean removeRole(final User user, final Role role) throws ServiceException {
-        boolean isSuccess = true;
-        Set<User> users = role.getUsers();
-
-        if (users == null) {
-            logger.error(USER_NOT_GRANTED_THIS_ROLE);
-            throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-        } else {
-            if (!users.contains(user)) {
-                logger.error(USER_NOT_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-            } else {
-                isSuccess &= users.remove(user);
-            }
+    public boolean removeUser(User user, Role role) {
+        boolean isSuccess = false;
+        List<User> users = role.getUsers();
+        List<Role> roles = user.getRoles();
+        if ((roles != null) && (users != null)) {
+            isSuccess = roles.remove(role) & users.remove(user);
+            user.setRoles(roles);
+            role.setUsers(users);
         }
-        role.setUsers(users);
-
-        Set<Role> roles = user.getRoles();
-        if (roles == null) {
-            logger.error(USER_NOT_GRANTED_THIS_ROLE);
-            throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-        } else {
-            if (!roles.contains(role)) {
-                logger.error(USER_NOT_GRANTED_THIS_ROLE);
-                throw new ServiceException(USER_NOT_GRANTED_THIS_ROLE);
-            } else {
-                isSuccess &= roles.remove(role);
-            }
-        }
-        user.setRoles(roles);
         return isSuccess;
     }
 }

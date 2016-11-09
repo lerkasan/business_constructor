@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"ua.com.brdo.business.constructor.repositories"})
-@EntityScan("ua.com.brdo.business.constructor.entity") public class Application {
+public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 

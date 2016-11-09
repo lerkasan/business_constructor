@@ -14,25 +14,24 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import ua.com.brdo.business.constructor.utils.H2UserDetailsService;
 
-@Configuration @EnableWebSecurity @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER) public class WebSecurityConfig
-    extends WebSecurityConfigurerAdapter {
-    @Override protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/home").permitAll().anyRequest().authenticated()
-            .and().formLogin().loginPage("/login").permitAll().and().logout().permitAll().and()
-            .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class).csrf()
-            .csrfTokenRepository(csrfTokenRepository());
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+public class WebSecurityConfig
+        extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/index").permitAll().anyRequest().authenticated()
+                .and().formLogin().permitAll()
+                .and().logout().permitAll();
     }
 
-    @Autowired private H2UserDetailsService h2UserDetailsService;
+    @Autowired
+    private H2UserDetailsService h2UserDetailsService;
 
-    @Autowired public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(h2UserDetailsService);
-    }
-
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
     }
 }

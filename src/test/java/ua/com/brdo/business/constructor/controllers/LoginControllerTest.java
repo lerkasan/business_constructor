@@ -35,7 +35,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
     }
 
     @Test public void getSecurePageWithNonExistUser() throws Exception {
-        mvc.perform(get("/secret").with(user("user").password("pass").roles("USER", "ADMIN")))
+        mvc.perform(get("/panel").with(user("user").password("pass").roles("USER", "ADMIN")))
             .andExpect(authenticated());
     }
 
@@ -44,11 +44,11 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
         UserDetails userDetails =
             new org.springframework.security.core.userdetails.User(client.getUsername(),
                 client.getPassword(), client.getRoles());
-        mvc.perform(get("/secret").with(user(userDetails))).andExpect(authenticated());
+        mvc.perform(get("/panel").with(user(userDetails))).andExpect(authenticated());
     }
 
     @Test public void getSecurePageNonLogin() throws Exception {
-        mvc.perform(get("/secret").with(anonymous())).andExpect(unauthenticated());
+        mvc.perform(get("/panel").with(anonymous())).andExpect(unauthenticated());
     }
 
     @Test public void testingFormBasedAuthentication() throws Exception {
@@ -67,5 +67,13 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
     @Test public void authenticationFailed() throws Exception {
         mvc.perform(formLogin("/login").user("user", "notfound").password("pass", "invalid"))
             .andExpect(redirectedUrl("/login?error")).andExpect(unauthenticated());
+    }
+
+    @Test public void ifCsrfExistInFormLogin() throws Exception{
+        mvc.perform(post("/login").with(csrf()));
+    }
+
+    @Test public void providingInvalid() throws Exception{
+        mvc.perform(post("/login").with(csrf().useInvalidToken()));
     }
 }

@@ -8,9 +8,9 @@ import java.util.Set;
 @Entity @Table(name = "user") public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", nullable = false)
     private Long id;
-    @NotNull @Size(min = 5, max = 100) @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @NotNull @Size(min = 6, max = 100) @Column(name = "password", nullable = false) private String
+    @Column(name = "password", nullable = false) private String
         password;
 
     @ManyToMany @JoinTable(name = "user_roles", joinColumns = {

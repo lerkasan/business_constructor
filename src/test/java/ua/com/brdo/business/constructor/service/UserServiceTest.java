@@ -47,14 +47,13 @@ public class UserServiceTest {
     @Before
     public void init() {
         //given
-        Role role = roleService.findById(1L);
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
+//        List<Role> roles = new ArrayList<>();
+        // roles.add(role);
         expectedUser = new User();
         expectedUser.setUsername("user@mail.com");
         expectedUser.setEmail("user@mail.com");
         expectedUser.setPasswordHash("12345678");
-        expectedUser.setRoles(roles);
+        // expectedUser.setRoles(roles);
     }
 
     @SneakyThrows
@@ -139,9 +138,17 @@ public class UserServiceTest {
 
     @SneakyThrows
     @Test
+    @Rollback
     public void addRoleTest() {
         //given
         Role role = roleService.findById(2L);
+        expectedUser = userService.findById(1L);
+        if (expectedUser.getRoles() != null) {
+            assertFalse(expectedUser.getRoles().contains(role));
+        }
+        if (role.getUsers() != null) {
+            assertFalse(role.getUsers().contains(expectedUser));
+        }
         //when
         userService.addRole(expectedUser, role);
         //then
@@ -149,17 +156,25 @@ public class UserServiceTest {
         assertTrue(role.getUsers().contains(expectedUser));
     }
 
-    @SneakyThrows
+   /* @SneakyThrows
     @Test
+    @Rollback
     public void removeRoleTest() {
         //given
-        Role role = roleService.findById(2L);
+        Role role = roleService.findById(1L);
+        expectedUser = userService.findById(2L);
+        assertTrue(expectedUser.getRoles().contains(role));
+        assertTrue(role.getUsers().contains(expectedUser));
         //when
         userService.removeRole(expectedUser, role);
         //then
-        assertFalse(expectedUser.getRoles().contains(role));
-        assertFalse(role.getUsers().contains(expectedUser));
-    }
+        if (expectedUser.getRoles() != null) {
+            assertFalse(expectedUser.getRoles().contains(role));
+        }
+        if (role.getUsers() != null) {
+            assertFalse(role.getUsers().contains(expectedUser));
+        }
+    } */
 
     @SneakyThrows
     @Test

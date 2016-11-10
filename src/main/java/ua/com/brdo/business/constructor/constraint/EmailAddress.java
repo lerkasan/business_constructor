@@ -1,5 +1,7 @@
 package ua.com.brdo.business.constructor.constraint;
 
+import org.hibernate.validator.constraints.Email;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,14 +9,15 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.Pattern;
 
-import ua.com.brdo.business.constructor.validator.EmailAddressValidator;
-
+@Email(message = "Please provide a valid e-mail address.")
+@Pattern(regexp = ".+@.+\\..+", message = "Incorrect format of e-mail.")
 @Target(value = ElementType.FIELD)
 @Retention(value = RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EmailAddressValidator.class)
+@Constraint(validatedBy = {})
 public @interface EmailAddress {
-    String message() default "{ua.com.brdo.business.constructor.constraint}";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

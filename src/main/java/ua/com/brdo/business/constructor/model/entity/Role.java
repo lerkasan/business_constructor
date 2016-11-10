@@ -32,6 +32,9 @@ public class Role {
     List<User> users;
 
     public List<User> getUsers() {
+        if (users == null) {
+            return null;
+        }
         return new ArrayList<>(users);
     }
 

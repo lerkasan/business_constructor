@@ -14,7 +14,7 @@ import ua.com.brdo.business.constructor.validator.UniqueValidator;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
-    String message() default "{ua.com.brdo.business.constructor.constraint}";
+    String message() default "User with this e-mail is already registered.";
 
     Class<?>[] groups() default {};
 

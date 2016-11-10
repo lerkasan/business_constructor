@@ -13,12 +13,12 @@
 </head>
 <body onload="process()">
 <h1> Registration Page </h1>
+<div id="container"></div>
 <label>E-mail*:</label><input type="text" id="email"/><br>
 <label>Password*:</label><input type="password" id="password"/><br>
 <label>Verify password*:</label> <input type="password" id="passwordConfirm"/><br>
 <input type="submit" id="post" value="Register">
 <input type="submit" id="cancel" value="Cancel">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<div id="container"></div>
 </body>
 </html>

@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean addRole(User user, Role role) {
+        boolean isSuccess = false;
         List<Role> roles = user.getRoles();
         List<User> users = role.getUsers();
         if (roles == null) {
@@ -121,9 +122,11 @@ public class UserServiceImpl implements UserService {
         if (users == null) {
             users = new ArrayList<>();
         }
-        boolean isSuccess = roles.add(role) & users.add(user);
-        user.setRoles(roles);
-        role.setUsers(users);
+        if ((!roles.contains(role)) && (!users.contains(user))) {
+            isSuccess = roles.add(role) & users.add(user);
+            user.setRoles(roles);
+            role.setUsers(users);
+        }
         return isSuccess;
     }
 
@@ -131,7 +134,7 @@ public class UserServiceImpl implements UserService {
         boolean isSuccess = false;
         List<Role> roles = user.getRoles();
         List<User> users = role.getUsers();
-        if ((roles != null) && (users != null)) {
+        if ((roles != null) && (users != null) && (roles.contains(role)) && (users.contains(user))) {
             isSuccess = roles.remove(role) & users.remove(user);
             user.setRoles(roles);
             role.setUsers(users);

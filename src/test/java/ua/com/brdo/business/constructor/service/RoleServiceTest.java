@@ -9,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
@@ -19,7 +16,6 @@ import ua.com.brdo.business.constructor.model.entity.User;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,12 +35,12 @@ public class RoleServiceTest {
     @Before
     public void init() {
         //given
-        User user = userService.findById(1L);
-        List<User> users = new ArrayList<>();
-        users.add(user);
         expectedRole = new Role();
         expectedRole.setTitle("ROLE_TEST");
-        expectedRole.setUsers(users);
+        User addedUser = new User();
+        addedUser.setUsername("user@mail.com");
+        addedUser.setEmail("user@mail.com");
+        addedUser.setPasswordHash("12345678");
     }
 
     @SneakyThrows
@@ -85,7 +81,13 @@ public class RoleServiceTest {
     @Test
     public void addUserTest() {
         //given
-        User expectedUser = userService.findById(1L);
+        User expectedUser = userService.findById(3L);
+        if (expectedUser.getRoles() != null) {
+            assertFalse(expectedUser.getRoles().contains(expectedRole));
+        }
+        if (expectedRole.getUsers() != null) {
+            assertFalse(expectedRole.getUsers().contains(expectedUser));
+        }
         //when
         roleService.addUser(expectedUser, expectedRole);
         //then
@@ -95,15 +97,22 @@ public class RoleServiceTest {
 
    /* @SneakyThrows
     @Test
+    @Rollback
     public void removeUserTest() {
         //given
-        User expectedUser = userService.findById(1L);
-        expectedRole = roleService.findByTitle("ROLE_USER");
+        User expectedUser = userService.findById(4L);
+        expectedRole = roleService.findByTitle("ROLE_ADMIN");
+        assertTrue(expectedUser.getRoles().contains(expectedRole));
+        assertTrue(expectedRole.getUsers().contains(expectedUser));
         //when
         roleService.removeUser(expectedUser, expectedRole);
         //then
-        assertNull(expectedUser.getRoles());
-        assertNull(expectedRole.getUsers());
+        if (expectedUser.getRoles() != null) {
+            assertFalse(expectedUser.getRoles().contains(expectedRole));
+        }
+        if (expectedRole.getUsers() != null) {
+            assertFalse(expectedRole.getUsers().contains(expectedUser));
+        }
     } */
 
     @SneakyThrows

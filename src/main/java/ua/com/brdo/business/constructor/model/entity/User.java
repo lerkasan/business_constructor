@@ -70,6 +70,9 @@ public class User {
     }
 
     public List<Role> getRoles() {
+        if (roles == null) {
+            return null;
+        }
         return new ArrayList<>(roles);
     }
 

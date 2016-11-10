@@ -46,10 +46,12 @@ function process() {
                        },
                        success: function (response) {
                            if (response.status == 201) {
-                               alert("You’re successfully registered");
+                               $("#container").html("You’re successfully registered");
+                               // alert("You’re successfully registered");
                            }
                            if (response.status == 400) {
-                               alert(response.data.errors.defaultmessage);
+                               $("#container").html(response.data.message);
+                               // alert(response.data.message);
                            }
                        }
                    });

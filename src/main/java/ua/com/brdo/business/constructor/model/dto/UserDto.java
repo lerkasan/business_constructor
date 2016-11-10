@@ -1,6 +1,5 @@
 package ua.com.brdo.business.constructor.model.dto;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.ScriptAssert;
 
@@ -11,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.com.brdo.business.constructor.constraint.EmailAddress;
 import ua.com.brdo.business.constructor.constraint.Unique;
 
 @NoArgsConstructor
@@ -25,8 +25,8 @@ public final class UserDto {
     private String lastName;
 
     @NotEmpty(message = "Email field is required.")
-    @Email(message = "Incorrect format of e-mail.")
-    //@EmailAddress(message = "E-mail format is incorrect.")
+    // @Email(message = "Incorrect format of e-mail.")
+    @EmailAddress(message = "Incorrect format of e-mail.")
     @Unique(message = "User with this e-mail is already registered.")
     private String email;
 

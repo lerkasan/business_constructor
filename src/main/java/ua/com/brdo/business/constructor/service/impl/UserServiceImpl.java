@@ -1,18 +1,18 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
-import ua.com.brdo.business.constructor.exception.ServiceException;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
@@ -23,35 +23,27 @@ import ua.com.brdo.business.constructor.service.UserService;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     private UserRepository userRepo;
-
-    @Autowired
     private RoleRepository roleRepo;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepo, RoleRepository roleRepo) {
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+    }
 
-    @Autowired
-    private MessageSource messageSource;
-
-    private Locale locale = LocaleContextHolder.getLocale();
 
     @Transactional
     @Override
     public User create(User user) {
-        if (user == null) {
-            throw new ServiceException(messageSource.getMessage("user.validation.null", null, locale));
-        }
+        Objects.requireNonNull(user);
         return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
     public User update(User user) {
-        if (user == null) {
-            throw new ServiceException(messageSource.getMessage("user.validation.null", null, locale));
-        }
+        Objects.requireNonNull(user);
         return userRepo.saveAndFlush(user);
     }
 
@@ -67,13 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepo.findByUsername(username).orElse(null);
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepo.findByEmail(email).orElse(null);
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 
     @Override
@@ -84,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User register(UserDto userDto, Role role) {
-        User newUser = new User(userDto);
+        User newUser = User.of(userDto);
         setEncodedPassword(newUser, userDto.getPassword());
         addRole(newUser, role);
         return create(newUser);
@@ -93,16 +85,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User registerUser(UserDto userDto) {
-        User newUser = new User(userDto);
+        User newUser = User.of(userDto);
         setEncodedPassword(newUser, userDto.getPassword());
-        Role role = roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException(messageSource.getMessage("role.not.found", null, locale)));
-        addRole(newUser, role);
+        Role role = roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found"));
+        newUser.setRoles(Collections.singleton(role));
         return create(newUser);
     }
 
     @Override
     public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
+        return new BCryptPasswordEncoder().encode(password);
     }
 
     @Override
@@ -113,31 +105,21 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean addRole(User user, Role role) {
-        boolean isSuccess = false;
-        List<Role> roles = user.getRoles();
-        List<User> users = role.getUsers();
+        Set<Role> roles = new HashSet<>(user.getRoles());
         if (roles == null) {
-            roles = new ArrayList<>();
+            roles = new HashSet<>();
         }
-        if (users == null) {
-            users = new ArrayList<>();
-        }
-        if ((!roles.contains(role)) && (!users.contains(user))) {
-            isSuccess = roles.add(role) & users.add(user);
-            user.setRoles(roles);
-            role.setUsers(users);
-        }
+        boolean isSuccess = roles.add(role);
+        user.setRoles(roles);
         return isSuccess;
     }
 
     public boolean removeRole(User user, Role role) {
         boolean isSuccess = false;
-        List<Role> roles = user.getRoles();
-        List<User> users = role.getUsers();
-        if ((roles != null) && (users != null) && (roles.contains(role)) && (users.contains(user))) {
-            isSuccess = roles.remove(role) & users.remove(user);
+        Set<Role> roles = new HashSet<>(user.getRoles());
+        if (roles != null) {
+            isSuccess = roles.remove(role);
             user.setRoles(roles);
-            role.setUsers(users);
         }
         return isSuccess;
     }

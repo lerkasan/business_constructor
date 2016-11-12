@@ -3,8 +3,9 @@ package ua.com.brdo.business.constructor.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,13 +18,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 
 @Entity
 @Table(name = "user")
-@NoArgsConstructor
 @Data
+@EqualsAndHashCode(of = {"username", "email", "creationDate"})
 public class User {
 
     @Id
@@ -40,20 +41,36 @@ public class User {
     private String email;
 
     @JsonIgnore
-    @Column(nullable = false) //change to nullable = true for Facebook/Google Auth support
+    @Column(nullable = false)
     private String passwordHash;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate creationDate = LocalDate.now();
-
-    @Column(nullable = false)
-    private boolean isNotificationEnabled = true;
 
     @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
+
+    public User() {
+        roles = new HashSet<>();
+    }
+
+    public static User of(UserDto userDto) {
+        User newUser = new User();
+        newUser.setEmail(userDto.getEmail());
+        if (userDto.getUsername() != null) {
+            newUser.setUsername(userDto.getUsername());
+        } else {
+            newUser.setUsername(userDto.getEmail());
+        }
+        newUser.setFirstName(userDto.getFirstName());
+        newUser.setMiddleName(userDto.getMiddleName());
+        newUser.setLastName(userDto.getLastName());
+        newUser.setRoles(new HashSet<>());
+        return newUser;
+    }
 
     public User(UserDto userDto) {
         email = userDto.getEmail();
@@ -65,15 +82,11 @@ public class User {
         firstName = userDto.getFirstName();
         middleName = userDto.getMiddleName();
         lastName = userDto.getLastName();
-        roles = new ArrayList<>();
-        // passwordHash = passwordEncoder.encode(userDto.getPassword());
+        roles = new HashSet<>();
     }
 
-    public List<Role> getRoles() {
-        if (roles == null) {
-            return null;
-        }
-        return new ArrayList<>(roles);
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 
 

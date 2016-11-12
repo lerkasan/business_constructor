@@ -6,8 +6,7 @@ CREATE TABLE role (
 
 
 CREATE UNIQUE INDEX user_role_title_idx
-ON role
-(title);
+ON role (title);
 
 CREATE TABLE user (
   id                      IDENTITY             NOT NULL,
@@ -23,12 +22,10 @@ CREATE TABLE user (
 );
 
 CREATE UNIQUE INDEX user_username_idx
-ON user
-(username);
+ON user (username);
 
 CREATE UNIQUE INDEX user_email_idx
-ON user
-(email);
+ON user (email);
 
 CREATE TABLE user_role (
   id      IDENTITY NOT NULL,
@@ -36,3 +33,21 @@ CREATE TABLE user_role (
   role_id BIGINT   NOT NULL,
   CONSTRAINT user_role_id PRIMARY KEY (id)
 );
+
+CREATE TABLE UserConnection (
+  userId         VARCHAR(255) NOT NULL,
+  providerId     VARCHAR(255) NOT NULL,
+  providerUserId VARCHAR(255),
+  rank           INT          NOT NULL,
+  displayName    VARCHAR(255),
+  profileUrl     VARCHAR(512),
+  imageUrl       VARCHAR(512),
+  accessToken    VARCHAR(512) NOT NULL,
+  secret         VARCHAR(512),
+  refreshToken   VARCHAR(512),
+  expireTime     BIGINT,
+  CONSTRAINT user_connection_id PRIMARY KEY (userId, providerId, providerUserId)
+);
+
+CREATE UNIQUE INDEX UserConnectionRank
+ON UserConnection (userId, providerId, rank);

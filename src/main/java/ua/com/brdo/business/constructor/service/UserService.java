@@ -3,6 +3,7 @@ package ua.com.brdo.business.constructor.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 import ua.com.brdo.business.constructor.model.entity.Role;
@@ -25,9 +26,9 @@ public interface UserService {
 
     User findById(Long id);
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     List<User> findAll();
 

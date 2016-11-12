@@ -3,7 +3,6 @@ package ua.com.brdo.business.constructor.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import ua.com.brdo.business.constructor.model.entity.Role;
 
@@ -20,7 +19,7 @@ public interface RoleService {
 
     Role findById(Long id);
 
-    Optional<Role> findByTitle(String title);
+    Role findByTitle(String title);
 
     List<Role> findAll();
 }

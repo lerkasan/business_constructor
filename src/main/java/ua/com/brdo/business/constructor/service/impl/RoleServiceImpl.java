@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.service.RoleService;
@@ -48,8 +48,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Optional<Role> findByTitle(final String title) {
-        return roleRepo.findByTitle(title);
+    public Role findByTitle(final String title) {
+        return roleRepo.findByTitle(title).orElseThrow(() -> new NotFoundException("Role with given title was not found."));
     }
 
     @Override

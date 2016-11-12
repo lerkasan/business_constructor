@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(of = {"username", "email", "creationDate"})
 public final class UserDto {
-
     private Long id;
     private String username;
     private String firstName;
@@ -20,5 +19,4 @@ public final class UserDto {
     private String password;
     private String passwordConfirm;
     private LocalDate creationDate;
-
 }

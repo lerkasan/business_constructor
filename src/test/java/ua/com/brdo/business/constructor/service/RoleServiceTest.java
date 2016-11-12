@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.SneakyThrows;
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +55,7 @@ public class RoleServiceTest {
     @Test
     @Rollback
     public void updateRoleTest() {
-        Role actualRole = roleService.findByTitle("ROLE_ADMIN").get();
+        Role actualRole = roleService.findByTitle("ROLE_ADMIN");
         actualRole.setTitle("ROLE_ADMINISTRATOR");
         actualRole = roleService.update(actualRole);
 
@@ -63,13 +63,12 @@ public class RoleServiceTest {
     }
 
     @SneakyThrows
-    @Test
+    @Test(expected = NotFoundException.class)
     @Rollback
     public void deleteRoleTest() {
-        Role actualRole = roleService.findByTitle("ROLE_ADMIN").get();
+        Role actualRole = roleService.findByTitle("ROLE_ADMIN");
         roleService.delete(actualRole.getId());
-
-        assertFalse(roleService.findByTitle("ROLE_ADMIN").isPresent());
+        roleService.findByTitle("ROLE_ADMIN");
     }
 
 }

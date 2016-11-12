@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.SneakyThrows;
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 import ua.com.brdo.business.constructor.model.entity.Role;
 import ua.com.brdo.business.constructor.model.entity.User;
@@ -20,6 +21,7 @@ import ua.com.brdo.business.constructor.model.entity.User;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,7 +41,6 @@ public class UserServiceTest {
     @SneakyThrows
     @Before
     public void init() {
-
         Role role = roleService.findById(1L);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -53,7 +54,6 @@ public class UserServiceTest {
     @Test
     @Rollback
     public void createUserTest() {
-
         User actualUser = userService.create(expectedUser);
 
         assertEquals(expectedUser, actualUser);
@@ -63,8 +63,7 @@ public class UserServiceTest {
     @Test
     @Rollback
     public void updateUserTest() {
-
-        User actualUser = userService.findByEmail("user1@mail.com").get();
+        User actualUser = userService.findByEmail("user1@mail.com");
         actualUser.setFirstName("First");
         actualUser = userService.update(actualUser);
 
@@ -72,24 +71,19 @@ public class UserServiceTest {
     }
 
     @SneakyThrows
-    @Test
+    @Test(expected = NotFoundException.class)
     @Rollback
     public void deleteUserTest() {
-
-        User actualUser = userService.findByEmail("user1@mail.com").get();
+        User actualUser = userService.findByEmail("user1@mail.com");
         userService.delete(actualUser.getId());
-
-        assertFalse(userService.findByEmail(expectedUser.getEmail()).isPresent());
+        userService.findByEmail(expectedUser.getEmail());
     }
 
     @SneakyThrows
     @Test
     @Rollback
     public void registerUserTest() {
-
         Role role = roleService.findById(1L);
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
         UserDto userDto = new UserDto();
         userDto.setUsername("test_user@mail.com");
         userDto.setEmail("test_user@mail.com");
@@ -97,14 +91,14 @@ public class UserServiceTest {
 
         userService.registerUser(userDto);
 
-        assertTrue(userService.findByEmail(userDto.getEmail()).isPresent());
+        assertNotNull(userService.findByEmail(userDto.getEmail()));
+        assertTrue(userService.findByEmail(userDto.getEmail()).getRoles().contains(role));
     }
 
     @SneakyThrows
     @Test
     @Rollback
     public void registerTest() {
-
         Role role = roleService.findById(2L);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
@@ -115,37 +109,34 @@ public class UserServiceTest {
 
         userService.register(userDto, role);
 
-        assertTrue(userService.findByEmail(userDto.getEmail()).isPresent());
-        assertTrue(userService.findByEmail(userDto.getEmail()).get().getRoles().contains(role));
+        assertNotNull(userService.findByEmail(userDto.getEmail()));
+        assertTrue(userService.findByEmail(userDto.getEmail()).getRoles().contains(role));
     }
 
     @SneakyThrows
     @Test
-    public void setEncodedPasswordTest() {
-
-        userService.setEncodedPassword(expectedUser, "1234567890");
+    public void encodePasswordTest() {
+        userService.encodePassword(expectedUser, "1234567890");
 
         assertNotEquals("1234567890", expectedUser.getPasswordHash());
     }
 
     @SneakyThrows
     @Test
-    public void addRoleTest() {
-
+    public void grantRoleTest() {
         Role role = roleService.findById(2L);
 
-        userService.addRole(expectedUser, role);
+        userService.grantRole(expectedUser, role);
 
         assertTrue(expectedUser.getRoles().contains(role));
     }
 
     @SneakyThrows
     @Test
-    public void removeRoleTest() {
-
+    public void revokeRoleTest() {
         Role role = roleService.findById(2L);
 
-        userService.removeRole(expectedUser, role);
+        userService.revokeRole(expectedUser, role);
 
         assertFalse(expectedUser.getRoles().contains(role));
     }

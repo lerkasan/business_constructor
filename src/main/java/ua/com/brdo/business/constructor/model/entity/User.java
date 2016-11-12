@@ -2,6 +2,8 @@ package ua.com.brdo.business.constructor.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
@@ -57,7 +59,7 @@ public class User {
         roles = new HashSet<>();
     }
 
-    public static User of(UserDto userDto) {
+    public static User of(UserDto userDto, Role role) {
         User newUser = new User();
         newUser.setEmail(userDto.getEmail());
         if (userDto.getUsername() != null) {
@@ -68,26 +70,25 @@ public class User {
         newUser.setFirstName(userDto.getFirstName());
         newUser.setMiddleName(userDto.getMiddleName());
         newUser.setLastName(userDto.getLastName());
-        newUser.setRoles(new HashSet<>());
+        newUser.setPasswordHash(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+        newUser.grantRole(role);
         return newUser;
-    }
-
-    public User(UserDto userDto) {
-        email = userDto.getEmail();
-        if (userDto.getUsername() != null) {
-            username = userDto.getUsername();
-        } else {
-            username = email;
-        }
-        firstName = userDto.getFirstName();
-        middleName = userDto.getMiddleName();
-        lastName = userDto.getLastName();
-        roles = new HashSet<>();
     }
 
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
     }
 
+    public boolean grantRole(Role role) {
+        return roles.add(role);
+    }
 
+    public boolean revokeRole(Role role) {
+        return roles.remove(role);
+    }
+
+    public String encodePassword(String password) {
+        passwordHash = new BCryptPasswordEncoder().encode(password);
+        return passwordHash;
+    }
 }

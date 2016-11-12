@@ -1,16 +1,11 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
@@ -59,13 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return userRepo.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepo.findByEmail(email);
+    public User findByEmail(String email) {
+        return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
 
     @Override
@@ -76,52 +71,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User register(UserDto userDto, Role role) {
-        User newUser = User.of(userDto);
-        setEncodedPassword(newUser, userDto.getPassword());
-        addRole(newUser, role);
+        User newUser = User.of(userDto, role);
         return create(newUser);
     }
 
     @Transactional
     @Override
     public User registerUser(UserDto userDto) {
-        User newUser = User.of(userDto);
-        setEncodedPassword(newUser, userDto.getPassword());
-        Role role = roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found"));
-        newUser.setRoles(Collections.singleton(role));
-        return create(newUser);
+        return register(userDto, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
     }
 
     @Override
-    public String encodePassword(String password) {
-        return new BCryptPasswordEncoder().encode(password);
+    public String encodePassword(User user, String password) {
+        Objects.requireNonNull(user);
+        return user.encodePassword(password);
     }
 
     @Override
-    public String setEncodedPassword(User user, String password) {
-        String passwordHash = encodePassword(password);
-        user.setPasswordHash(passwordHash);
-        return passwordHash;
+    public boolean grantRole(User user, Role role) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(role);
+        return user.grantRole(role);
     }
 
-    public boolean addRole(User user, Role role) {
-        Set<Role> roles = new HashSet<>(user.getRoles());
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
-        boolean isSuccess = roles.add(role);
-        user.setRoles(roles);
-        return isSuccess;
+    @Override
+    public boolean revokeRole(User user, Role role) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(role);
+        return user.revokeRole(role);
     }
-
-    public boolean removeRole(User user, Role role) {
-        boolean isSuccess = false;
-        Set<Role> roles = new HashSet<>(user.getRoles());
-        if (roles != null) {
-            isSuccess = roles.remove(role);
-            user.setRoles(roles);
-        }
-        return isSuccess;
-    }
-
 }

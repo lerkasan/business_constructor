@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import ua.com.brdo.business.constructor.entity.User;
-import ua.com.brdo.business.constructor.repositories.JpaRepository;
+import ua.com.brdo.business.constructor.repositories.UsersRepository;
 
 
 @Service
 public class H2UserDetailsService implements UserDetailsService {
     @Autowired
-    JpaRepository users;
+    UsersRepository users;
 
     @Override
     public UserDetails loadUserByUsername(String username)

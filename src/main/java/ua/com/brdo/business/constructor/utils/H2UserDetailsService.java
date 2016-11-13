@@ -1,35 +1,34 @@
 package ua.com.brdo.business.constructor.utils;
 
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.com.brdo.business.constructor.entity.Role;
-import ua.com.brdo.business.constructor.entity.User;
-import ua.com.brdo.business.constructor.repositories.UsersRepository;
 
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import ua.com.brdo.business.constructor.entity.User;
+import ua.com.brdo.business.constructor.repositories.JpaRepository;
+
 
 @Service
 public class H2UserDetailsService implements UserDetailsService {
     @Autowired
-    UsersRepository users;
+    JpaRepository users;
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
         UserDetails loadedUser;
 
         try {
             User client = users.findByUsername(username);
-            loadedUser = new org.springframework.security.core.userdetails.User(
-                    client.getUsername(), client.getPassword(),
-                    client.getRoles());
+            loadedUser =
+                    new org.springframework.security.core.userdetails.User(client.getUsername(),
+                            client.getPassword(), client.getRoles());
         } catch (Exception repositoryProblem) {
-            throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
+            throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(),
+                    repositoryProblem);
         }
         return loadedUser;
     }

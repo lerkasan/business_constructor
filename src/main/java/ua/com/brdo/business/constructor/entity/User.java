@@ -3,18 +3,25 @@ package ua.com.brdo.business.constructor.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import java.util.Set;
 
-@Entity @Table(name = "user") public class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", nullable = false)
+@Entity
+@Table(name = "user")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", length = 100, nullable = false, unique = true)
     private String username;
-    @Column(name = "password", nullable = false) private String
-        password;
+    @Column(name = "password", length = 100, nullable = false)
+    private String
+            password;
 
-    @ManyToMany @JoinTable(name = "user_roles", joinColumns = {
-        @JoinColumn(name = "user_id")}, inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "user_id")}, inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public Set<Role> getRoles() {
@@ -57,7 +64,8 @@ import java.util.Set;
         password = pass;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         String strRoles = "Roles: ";
         for (Role role : roles) {
             strRoles += role.getRole() + " ";

@@ -1,18 +1,18 @@
 package ua.com.brdo.business.constructor.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,14 +23,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ua.com.brdo.business.constructor.model.dto.UserDto;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "user")
 @Data
 @EqualsAndHashCode(of = {"username", "email", "creationDate"})
+@JsonInclude(NON_NULL)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -46,6 +50,7 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false, updatable = false)
     private LocalDate creationDate = LocalDate.now();
 
@@ -59,7 +64,8 @@ public class User {
         roles = new HashSet<>();
     }
 
-    public static User of(UserDto userDto, Role role) {
+    public static User of(UserDto userDto) {
+        Objects.requireNonNull(userDto);
         User newUser = new User();
         newUser.setEmail(userDto.getEmail());
         if (userDto.getUsername() != null) {
@@ -70,7 +76,13 @@ public class User {
         newUser.setFirstName(userDto.getFirstName());
         newUser.setMiddleName(userDto.getMiddleName());
         newUser.setLastName(userDto.getLastName());
-        newUser.setPasswordHash(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+        return newUser;
+    }
+
+    public static User of(UserDto userDto, Role role) {
+        Objects.requireNonNull(userDto);
+        Objects.requireNonNull(role);
+        User newUser = User.of(userDto);
         newUser.grantRole(role);
         return newUser;
     }
@@ -85,10 +97,5 @@ public class User {
 
     public boolean revokeRole(Role role) {
         return roles.remove(role);
-    }
-
-    public String encodePassword(String password) {
-        passwordHash = new BCryptPasswordEncoder().encode(password);
-        return passwordHash;
     }
 }

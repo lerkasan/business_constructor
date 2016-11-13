@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,13 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepo;
     private RoleRepository roleRepo;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepo, RoleRepository roleRepo) {
+    public UserServiceImpl(UserRepository userRepo, RoleRepository roleRepo, BCryptPasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -72,7 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(UserDto userDto, Role role) {
         User newUser = User.of(userDto, role);
-        return create(newUser);
+        encodePassword(newUser,userDto.getPassword());
+        User createdUser = create(newUser);
+        return createdUser;
     }
 
     @Transactional
@@ -82,9 +87,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String encodePassword(User user, String password) {
+    public void encodePassword(User user, String password) {
         Objects.requireNonNull(user);
-        return user.encodePassword(password);
+        user.setPasswordHash(passwordEncoder.encode(password));
     }
 
     @Override

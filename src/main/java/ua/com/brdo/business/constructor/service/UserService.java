@@ -1,7 +1,5 @@
 package ua.com.brdo.business.constructor.service;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 import ua.com.brdo.business.constructor.model.dto.UserDto;
@@ -10,13 +8,10 @@ import ua.com.brdo.business.constructor.model.entity.User;
 
 public interface UserService {
 
-    @Transactional
     User create(User user);
 
-    @Transactional
     User update(User user);
 
-    @Transactional
     void delete(Long id);
 
     boolean grantRole(User user, Role role);
@@ -31,12 +26,9 @@ public interface UserService {
 
     List<User> findAll();
 
-    @Transactional
     User register(UserDto userDto, Role role);
 
-    @Transactional
     User registerUser(UserDto userDto);
 
-    public String encodePassword(User user, String password);
-
+    public void encodePassword(User user, String password);
 }

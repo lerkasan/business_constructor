@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import ua.com.brdo.business.constructor.model.entity.Role;
+import ua.com.brdo.business.constructor.entity.Role;
 
 @Repository("RoleRepository")
 public interface RoleRepository extends JpaRepository<Role, Long> {

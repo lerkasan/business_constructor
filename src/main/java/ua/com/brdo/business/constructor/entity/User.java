@@ -1,13 +1,12 @@
-package ua.com.brdo.business.constructor.model.entity;
+package ua.com.brdo.business.constructor.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -21,9 +20,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ua.com.brdo.business.constructor.model.dto.UserDto;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -46,12 +45,12 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @JsonIgnore
-    @Column(nullable = false)
-    private String passwordHash;
+    @JsonProperty(access = WRITE_ONLY)
+    @Column(nullable = false, length = 100)
+    private String password;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false, updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate = LocalDate.now();
 
     @ManyToMany
@@ -62,29 +61,6 @@ public class User {
 
     public User() {
         roles = new HashSet<>();
-    }
-
-    public static User of(UserDto userDto) {
-        Objects.requireNonNull(userDto);
-        User newUser = new User();
-        newUser.setEmail(userDto.getEmail());
-        if (userDto.getUsername() != null) {
-            newUser.setUsername(userDto.getUsername());
-        } else {
-            newUser.setUsername(userDto.getEmail());
-        }
-        newUser.setFirstName(userDto.getFirstName());
-        newUser.setMiddleName(userDto.getMiddleName());
-        newUser.setLastName(userDto.getLastName());
-        return newUser;
-    }
-
-    public static User of(UserDto userDto, Role role) {
-        Objects.requireNonNull(userDto);
-        Objects.requireNonNull(role);
-        User newUser = User.of(userDto);
-        newUser.grantRole(role);
-        return newUser;
     }
 
     public Set<Role> getRoles() {

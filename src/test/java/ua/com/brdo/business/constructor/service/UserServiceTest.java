@@ -12,9 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Optional;
 
 import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.model.dto.UserDto;
-import ua.com.brdo.business.constructor.model.entity.Role;
-import ua.com.brdo.business.constructor.model.entity.User;
+import ua.com.brdo.business.constructor.entity.Role;
+import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
@@ -41,19 +40,16 @@ public class UserServiceTest {
     private UserService userService = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
 
     private User mockUser;
-    private UserDto userDto;
     private Role role;
 
     @SneakyThrows
     @Before
     public void init() {
-        userDto = new UserDto();
-        userDto.setUsername("test_user@mail.com");
-        userDto.setEmail("test_user@mail.com");
-        userDto.setPassword("12345678");
-
-        mockUser = User.of(userDto);
+        mockUser = new User();
         mockUser.setId(1L);
+        mockUser.setUsername("test_user@mail.com");
+        mockUser.setEmail("test_user@mail.com");
+        mockUser.setPassword("12345678");
 
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
@@ -64,22 +60,22 @@ public class UserServiceTest {
     @SneakyThrows
     @Test
     public void registerUserTest() {
-        userService.registerUser(userDto);
-        verify(userRepo, times(1)).saveAndFlush(User.of(userDto, role));
+        User user = userService.registerUser(mockUser);
+        verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @SneakyThrows
     @Test
     public void registerTest() {
-        userService.register(userDto, role);
-        verify(userRepo, times(1)).saveAndFlush(User.of(userDto, role));
+        User user = userService.register(mockUser, role);
+        verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @SneakyThrows
     @Test
     public void encodePasswordTest() {
-        userService.encodePassword(mockUser, "1234567890");
-        assertNotEquals("1234567890", mockUser.getPasswordHash());
+        userService.encodePassword(mockUser);
+        assertNotEquals("12345678", mockUser.getPassword());
     }
 
     @SneakyThrows

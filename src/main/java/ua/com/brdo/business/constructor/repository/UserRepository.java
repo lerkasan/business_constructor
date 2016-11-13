@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import ua.com.brdo.business.constructor.model.entity.User;
+import ua.com.brdo.business.constructor.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

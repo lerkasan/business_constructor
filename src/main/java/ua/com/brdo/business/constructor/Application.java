@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories("ua.com.brdo.business.constructor.repository")
-@EntityScan("ua.com.brdo.business.constructor.model.entity")
+@EntityScan("ua.com.brdo.business.constructor.entity")
 @ComponentScan("ua.com.brdo.business.constructor")
 public class Application extends SpringBootServletInitializer {
 

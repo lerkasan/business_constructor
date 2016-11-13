@@ -2,9 +2,8 @@ package ua.com.brdo.business.constructor.service;
 
 import java.util.List;
 
-import ua.com.brdo.business.constructor.model.dto.UserDto;
-import ua.com.brdo.business.constructor.model.entity.Role;
-import ua.com.brdo.business.constructor.model.entity.User;
+import ua.com.brdo.business.constructor.entity.Role;
+import ua.com.brdo.business.constructor.entity.User;
 
 public interface UserService {
 
@@ -14,10 +13,6 @@ public interface UserService {
 
     void delete(Long id);
 
-    boolean grantRole(User user, Role role);
-
-    boolean revokeRole(User user, Role role);
-
     User findById(Long id);
 
     User findByUsername(String username);
@@ -26,9 +21,13 @@ public interface UserService {
 
     List<User> findAll();
 
-    User register(UserDto userDto, Role role);
+    boolean grantRole(User user, Role role);
 
-    User registerUser(UserDto userDto);
+    boolean revokeRole(User user, Role role);
 
-    public void encodePassword(User user, String password);
+    User register(User user, Role role);
+
+    User registerUser(User user);
+
+    public void encodePassword(User user);
 }

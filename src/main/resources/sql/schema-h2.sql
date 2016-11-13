@@ -15,7 +15,7 @@ CREATE TABLE user (
   middle_name             VARCHAR(255),
   last_name               VARCHAR(255),
   email                   VARCHAR(255)         NOT NULL,
-  password_hash           VARCHAR(100)         NOT NULL,
+  password                VARCHAR(100)         NOT NULL,
   creation_date           DATE                 NOT NULL,
   CONSTRAINT user_id PRIMARY KEY (id)
 );

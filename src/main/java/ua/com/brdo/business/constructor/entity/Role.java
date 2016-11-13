@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.model.entity;
+package ua.com.brdo.business.constructor.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

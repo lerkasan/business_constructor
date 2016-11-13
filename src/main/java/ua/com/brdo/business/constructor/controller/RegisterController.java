@@ -10,8 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-import ua.com.brdo.business.constructor.model.dto.UserDto;
-import ua.com.brdo.business.constructor.model.entity.User;
+import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -29,11 +28,10 @@ public class RegisterController {
     }
 
     @RequestMapping(method = {POST})
-    public ResponseEntity createUser(@RequestBody UserDto userDto) {
-        User user = userService.registerUser(userDto);
-
+    public ResponseEntity createUser(@RequestBody User user) {
+        User registeredUser = userService.registerUser(user);
         URI location = ServletUriComponentsBuilder.fromUriString("users").path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(location).body(user);
+        return ResponseEntity.created(location).body(registeredUser);
     }
 }

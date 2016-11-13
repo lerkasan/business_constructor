@@ -8,10 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
+import ua.com.brdo.business.constructor.entity.Role;
+import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
-import ua.com.brdo.business.constructor.model.dto.UserDto;
-import ua.com.brdo.business.constructor.model.entity.Role;
-import ua.com.brdo.business.constructor.model.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
@@ -29,7 +28,6 @@ public class UserServiceImpl implements UserService {
         this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Transactional
     @Override
@@ -73,23 +71,25 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User register(UserDto userDto, Role role) {
-        User newUser = User.of(userDto, role);
-        encodePassword(newUser,userDto.getPassword());
-        User createdUser = create(newUser);
-        return createdUser;
+    public User register(User user, Role role) {
+        if (user.getUsername() == null) {
+            user.setUsername(user.getEmail());
+        }
+        encodePassword(user);
+        grantRole(user, role);
+        return create(user);
     }
 
     @Transactional
     @Override
-    public User registerUser(UserDto userDto) {
-        return register(userDto, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
+    public User registerUser(User user) {
+        return register(user, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
     }
 
     @Override
-    public void encodePassword(User user, String password) {
+    public void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPasswordHash(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override

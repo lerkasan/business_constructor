@@ -105,4 +105,9 @@ public class UserServiceImpl implements UserService {
         Objects.requireNonNull(role);
         return user.revokeRole(role);
     }
+
+    @Override
+    public boolean isEmailAvailable(String email) {
+        return !userRepo.findByEmail(email).isPresent();
+    }
 }

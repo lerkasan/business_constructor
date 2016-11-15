@@ -29,5 +29,7 @@ public interface UserService {
 
     User registerUser(User user);
 
-    public void encodePassword(User user);
+    void encodePassword(User user);
+
+    boolean isEmailAvailable(String email);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
@@ -28,7 +30,7 @@ public class RegisterController {
     }
 
     @RequestMapping(method = {POST})
-    public ResponseEntity createUser(@RequestBody User user) {
+    public ResponseEntity createUser(@Valid @RequestBody User user) {
         User registeredUser = userService.registerUser(user);
         URI location = ServletUriComponentsBuilder.fromUriString("users").path("/{id}")
                 .buildAndExpand(user.getId()).toUri();

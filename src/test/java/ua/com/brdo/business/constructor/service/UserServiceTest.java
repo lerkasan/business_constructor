@@ -8,22 +8,17 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Optional;
-
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest

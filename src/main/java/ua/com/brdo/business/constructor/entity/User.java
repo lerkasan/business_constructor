@@ -3,29 +3,20 @@ package ua.com.brdo.business.constructor.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+import ua.com.brdo.business.constructor.constraint.EmailAddress;
+import ua.com.brdo.business.constructor.constraint.Unique;
 
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import ua.com.brdo.business.constructor.constraint.EmailAddress;
-import ua.com.brdo.business.constructor.constraint.Unique;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -35,6 +26,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "user")
 @Data
 @EqualsAndHashCode(of = {"username", "email", "creationDate"})
+@Validated
 @JsonInclude(NON_NULL)
 public class User {
 

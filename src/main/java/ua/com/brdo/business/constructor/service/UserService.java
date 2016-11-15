@@ -1,9 +1,9 @@
 package ua.com.brdo.business.constructor.service;
 
-import java.util.List;
-
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
+
+import java.util.List;
 
 public interface UserService {
 

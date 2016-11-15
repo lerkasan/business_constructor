@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
@@ -15,7 +11,11 @@ import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service("UserService")
+//@Validated
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepo;
@@ -31,14 +31,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User create(User user) {
+    public User create(User user) { //@Valid
         Objects.requireNonNull(user);
         return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
-    public User update(User user) {
+    public User update(User user) { //@Valid
         Objects.requireNonNull(user);
         return userRepo.saveAndFlush(user);
     }

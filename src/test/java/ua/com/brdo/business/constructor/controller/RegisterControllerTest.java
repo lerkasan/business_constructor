@@ -1,7 +1,7 @@
 package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +18,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import lombok.SneakyThrows;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

@@ -9,6 +9,8 @@ public interface UserService {
 
     User create(User user);
 
+    User create(User user, Role role);
+
     User update(User user);
 
     void delete(Long id);
@@ -25,11 +27,9 @@ public interface UserService {
 
     boolean revokeRole(User user, Role role);
 
-    User register(User user, Role role);
-
-    User registerUser(User user);
-
     void encodePassword(User user);
 
     boolean isEmailAvailable(String email);
+
+    boolean isUsernameAvailable(String username);
 }

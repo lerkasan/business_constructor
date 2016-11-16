@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Service("UserService")
-//@Validated
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepo;
@@ -31,14 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User create(User user) { //@Valid
-        Objects.requireNonNull(user);
-        return userRepo.saveAndFlush(user);
-    }
-
-    @Transactional
-    @Override
-    public User update(User user) { //@Valid
+    public User update(User user) {
         Objects.requireNonNull(user);
         return userRepo.saveAndFlush(user);
     }
@@ -71,25 +63,30 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User register(User user, Role role) {
+    public User create(User user, Role role) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(role);
         if (user.getUsername() == null) {
             user.setUsername(user.getEmail());
         }
         encodePassword(user);
         grantRole(user, role);
-        return create(user);
+        return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
-    public User registerUser(User user) {
-        return register(user, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
+    public User create(User user) {
+        if (user.getRoles().isEmpty()) {
+            return create(user, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
+        }
+        return userRepo.saveAndFlush(user);
     }
 
     @Override
     public void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override
@@ -108,6 +105,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailAvailable(String email) {
-        return !userRepo.findByEmail(email).isPresent();
+        Objects.requireNonNull(email);
+        return !userRepo.findByEmail(email.toLowerCase()).isPresent();
+    }
+
+    @Override
+    public boolean isUsernameAvailable(String username) {
+        Objects.requireNonNull(username);
+        return !userRepo.findByUsername(username.toLowerCase()).isPresent();
     }
 }

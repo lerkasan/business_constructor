@@ -41,13 +41,13 @@ public class RegisterControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
         userData.put("username", "test@mail.com");
-        userData.put("password", "12345678");
-        userData.put("email", "test@mail.com");
     }
 
     @SneakyThrows
     @Test
     public void successfulRegisterTest() {
+        userData.put("email", "test@mail.com");
+        userData.put("password", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -59,6 +59,20 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterWrongEmailTest() {
         userData.put("email", "testmail");
+        userData.put("password", "123456789");
+        String userDataJson = jsonMapper.writeValueAsString(userData);
+        this.mockMvc.perform(
+                post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string((Matchers.containsString("Incorrect format of e-mail."))));
+    }
+
+    @SneakyThrows
+    @Test
+    public void unsuccessfulRegisterLocalEmailTest() {
+        userData.put("email", "user@localhost");
+        userData.put("password", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -77,7 +91,7 @@ public class RegisterControllerTest {
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("Password length must be between 8 and 100 characters."))));
+                .andExpect(content().string((Matchers.containsString("Password length must be between 8 and 32 characters."))));
     }
 
     @SneakyThrows
@@ -97,12 +111,13 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterEmailNotUniqueTest() {
         userData.put("email", "some_user1@mail.com");
+        userData.put("password", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User with this e-mail is already registered."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User with this e-mail is already registered. Try another e-mail."));
     }
 
     @SneakyThrows

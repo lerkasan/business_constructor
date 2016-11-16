@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @Unique(type = "username", message = "User with this username is already registered. Try another username.")
     private String username;
     private String firstName;
     private String middleName;
@@ -42,17 +44,21 @@ public class User {
 
     @NotEmpty(message = "E-mail field is required.")
     @EmailAddress(message = "Incorrect format of e-mail.")
-    @Unique(message = "User with this e-mail is already registered.")
+    @Unique(type = "email", message = "User with this e-mail is already registered. Try another e-mail.")
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Transient
     @JsonProperty(access = WRITE_ONLY)
     @NotEmpty(message = "Password field is required.")
-    @Size(min = 8, max = 32, message = "Password length must be between 8 and 100 characters.")
+    @Size(min = 8, max = 32, message = "Password length must be between 8 and 32 characters.")
     @Pattern(regexp = "^[!-~]{8,32}$", message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
-    @Column(nullable = false, length = 100)
     private String password;
 
+    @JsonIgnore
+    @Column(nullable = false, length = 60)
+    private String passwordHash;
+    
     @Column(nullable = false, updatable = false)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate = LocalDate.now();

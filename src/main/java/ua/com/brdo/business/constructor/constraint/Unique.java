@@ -13,6 +13,9 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
+
+    String type() default "email";
+
     String message() default "";
 
     Class<?>[] groups() default {};

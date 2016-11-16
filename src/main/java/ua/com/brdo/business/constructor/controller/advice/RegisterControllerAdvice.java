@@ -46,6 +46,13 @@ public class RegisterControllerAdvice {
         return Collections.singletonMap("message", "Received malformed JSON.");
     }
 
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public Map<String, String> handleIllegalArgumentException(Exception e) {
+        return Collections.singletonMap("message", e.getMessage());
+    }
+
     @ExceptionHandler(value = NestedRuntimeException.class)
     @ResponseStatus(value = INTERNAL_SERVER_ERROR)
     @ResponseBody

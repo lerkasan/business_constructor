@@ -47,25 +47,27 @@ public class UserServiceTest {
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
         when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
+        when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
         role = roleRepo.findByTitle("ROLE_USER").get();
     }
 
     @Test
-    public void registerUserTest() {
-        User user = userService.registerUser(mockUser);
+    public void createUserTest() {
+        User user = userService.create(mockUser);
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
-    public void registerTest() {
-        User user = userService.register(mockUser, role);
+    public void createTest() {
+        User user = userService.create(mockUser, role);
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
     public void encodePasswordTest() {
         userService.encodePassword(mockUser);
-        assertNotEquals("12345678", mockUser.getPassword());
+        assertNotEquals("12345678", mockUser.getPasswordHash());
+        assertNotNull(mockUser.getPasswordHash());
     }
 
     @Test

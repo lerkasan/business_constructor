@@ -29,7 +29,7 @@ public class RegisterController {
 
     @RequestMapping(method = {POST})
     public ResponseEntity createUser(@Valid @RequestBody User user) {
-        User registeredUser = userService.registerUser(user);
+        User registeredUser = userService.create(user);
         URI location = ServletUriComponentsBuilder.fromUriString("users").path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(registeredUser);

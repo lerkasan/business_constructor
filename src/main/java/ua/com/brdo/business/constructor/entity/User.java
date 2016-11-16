@@ -1,12 +1,25 @@
 package ua.com.brdo.business.constructor.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 
+import java.util.Collection;
 import java.util.Set;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user")
-public class User {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@EqualsAndHashCode(of = {"username", "password"})
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -14,61 +27,35 @@ public class User {
     @Column(name = "username", length = 100, nullable = false, unique = true)
     private String username;
     @Column(name = "password", length = 100, nullable = false)
-    private String
-            password;
+    private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user_id")}, inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    protected User() {
-    }
-
-    public User(String name, String pass) {
-        username = name;
-        password = pass;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
     }
 
     @Override
-    public String toString() {
-        String strRoles = "Roles: ";
-        for (Role role : roles) {
-            strRoles += role.getRole() + " ";
-        }
-        return String.format("User[username='%s']", username) + strRoles;
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

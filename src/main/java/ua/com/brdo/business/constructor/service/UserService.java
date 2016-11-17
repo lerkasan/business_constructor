@@ -27,8 +27,6 @@ public interface UserService {
 
     boolean revokeRole(User user, Role role);
 
-    void encodePassword(User user);
-
     boolean isEmailAvailable(String email);
 
     boolean isUsernameAvailable(String username);

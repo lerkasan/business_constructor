@@ -16,7 +16,8 @@ import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -61,13 +62,6 @@ public class UserServiceTest {
     public void createTest() {
         User user = userService.create(mockUser, role);
         verify(userRepo, times(1)).saveAndFlush(user);
-    }
-
-    @Test
-    public void encodePasswordTest() {
-        userService.encodePassword(mockUser);
-        assertNotEquals("12345678", mockUser.getPasswordHash());
-        assertNotNull(mockUser.getPasswordHash());
     }
 
     @Test

@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ControllerAdvice
-public class RegisterControllerAdvice {
+public class ControllerAdviceHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = UNPROCESSABLE_ENTITY)

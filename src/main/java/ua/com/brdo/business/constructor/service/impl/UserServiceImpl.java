@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import java.util.Objects;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
+
+    private final String ROLE_USER = "ROLE_USER";
 
     private UserRepository userRepo;
     private RoleRepository roleRepo;
@@ -78,13 +81,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (user.getRoles().isEmpty()) {
-            return create(user, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
+            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {} ));
         }
         return userRepo.saveAndFlush(user);
     }
 
-    @Override
-    public void encodePassword(User user) {
+    private void encodePassword(User user) {
         Objects.requireNonNull(user);
         user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
     }
@@ -105,13 +107,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailAvailable(String email) {
-        Objects.requireNonNull(email);
+        if (email == null) {
+            return false;
+        }
         return !userRepo.findByEmail(email.toLowerCase()).isPresent();
     }
 
     @Override
     public boolean isUsernameAvailable(String username) {
-        Objects.requireNonNull(username);
+        if (username == null) {
+            return false;
+        }
         return !userRepo.findByUsername(username.toLowerCase()).isPresent();
     }
 }

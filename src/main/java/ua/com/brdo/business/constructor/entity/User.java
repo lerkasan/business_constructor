@@ -58,7 +58,7 @@ public class User {
     @JsonIgnore
     @Column(nullable = false, length = 60)
     private String passwordHash;
-    
+
     @Column(nullable = false, updatable = false)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate = LocalDate.now();

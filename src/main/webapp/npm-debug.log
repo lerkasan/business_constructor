@@ -9,8 +9,8 @@
 6 silly lifecycle app@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle app@0.0.0~start: app@0.0.0
 8 verbose lifecycle app@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle app@0.0.0~start: PATH: C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\MishaBondarenko\Desktop\misha\Новая папка\webapp\node_modules\.bin;C:\Users\MishaBondarenko\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\MishaBondarenko\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Users\MishaBondarenko\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
-10 verbose lifecycle app@0.0.0~start: CWD: C:\Users\MishaBondarenko\Desktop\misha\Новая папка\webapp
+9 verbose lifecycle app@0.0.0~start: PATH: C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\MishaBondarenko\Desktop\misha2\brdo\src\main\webapp\node_modules\.bin;C:\Users\MishaBondarenko\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\MishaBondarenko\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Users\MishaBondarenko\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+10 verbose lifecycle app@0.0.0~start: CWD: C:\Users\MishaBondarenko\Desktop\misha2\brdo\src\main\webapp
 11 silly lifecycle app@0.0.0~start: Args: [ '/d /s /c', 'npm run server' ]
 12 silly lifecycle app@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle app@0.0.0~start: Failed to exec start script
@@ -25,7 +25,7 @@
 14 verbose stack     at maybeClose (internal/child_process.js:877:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid app@0.0.0
-16 verbose cwd C:\Users\MishaBondarenko\Desktop\misha\Новая папка\webapp
+16 verbose cwd C:\Users\MishaBondarenko\Desktop\misha2\brdo\src\main\webapp
 17 error Windows_NT 6.2.9200
 18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"
 19 error node v6.9.1

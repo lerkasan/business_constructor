@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
 @Service
@@ -20,14 +19,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userService = userService;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserDetails loadedUser;
 
-        User existUser = userService.findByUsername(username);
 
-        return existUser;
+        UserDetails loadedUser = userService.findByUsername(username);
+
+
+        return loadedUser;
     }
 }

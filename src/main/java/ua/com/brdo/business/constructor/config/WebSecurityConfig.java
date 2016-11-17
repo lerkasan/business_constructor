@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,8 +18,12 @@ import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationEnt
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationFailureHandler;
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationSuccessHandler;
 
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@Configuration
+//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private RESTAuthenticationEntryPoint authenticationEntryPoint;
@@ -25,11 +31,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RESTAuthenticationFailureHandler authenticationFailureHandler;
     @Autowired
     private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/index/*", "/register/*").permitAll()
                 .antMatchers("/adminpanel**").hasRole("ADMIN")
                 .antMatchers("/expertpanel**").hasRole("EXPERT")
                 .antMatchers("/app/**").authenticated();
@@ -40,12 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
-
-    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl)
-                .passwordEncoder(bCryptPasswordEncoder());
+            .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Bean

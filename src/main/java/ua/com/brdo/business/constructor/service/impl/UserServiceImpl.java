@@ -1,13 +1,10 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
@@ -15,8 +12,13 @@ import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service("UserService")
 public class UserServiceImpl implements UserService {
+
+    private final String ROLE_USER = "ROLE_USER";
 
     private UserRepository userRepo;
     private RoleRepository roleRepo;
@@ -27,13 +29,6 @@ public class UserServiceImpl implements UserService {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Transactional
-    @Override
-    public User create(User user) {
-        Objects.requireNonNull(user);
-        return userRepo.saveAndFlush(user);
     }
 
     @Transactional
@@ -71,25 +66,29 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User register(User user, Role role) {
+    public User create(User user, Role role) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(role);
         if (user.getUsername() == null) {
             user.setUsername(user.getEmail());
         }
         encodePassword(user);
         grantRole(user, role);
-        return create(user);
+        return userRepo.saveAndFlush(user);
     }
 
     @Transactional
     @Override
-    public User registerUser(User user) {
-        return register(user, roleRepo.findByTitle("ROLE_USER").orElseThrow(() -> new NotFoundException("Role not found.")));
+    public User create(User user) {
+        if (user.getRoles().isEmpty()) {
+            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {} ));
+        }
+        return userRepo.saveAndFlush(user);
     }
 
-    @Override
-    public void encodePassword(User user) {
+    private void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override
@@ -104,5 +103,21 @@ public class UserServiceImpl implements UserService {
         Objects.requireNonNull(user);
         Objects.requireNonNull(role);
         return user.revokeRole(role);
+    }
+
+    @Override
+    public boolean isEmailAvailable(String email) {
+        if (email == null) {
+            return false;
+        }
+        return !userRepo.findByEmail(email.toLowerCase()).isPresent();
+    }
+
+    @Override
+    public boolean isUsernameAvailable(String username) {
+        if (username == null) {
+            return false;
+        }
+        return !userRepo.findByUsername(username.toLowerCase()).isPresent();
     }
 }

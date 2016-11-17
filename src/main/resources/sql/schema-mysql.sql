@@ -16,7 +16,7 @@ CREATE TABLE user (
                 middle_name VARCHAR(255),
                 last_name VARCHAR(255),
                 email VARCHAR(255) NOT NULL,
-                password VARCHAR(255) NOT NULL,
+                password_hash VARCHAR(60) NOT NULL,
                 creation_date DATE NOT NULL,
                 PRIMARY KEY (id)
 );

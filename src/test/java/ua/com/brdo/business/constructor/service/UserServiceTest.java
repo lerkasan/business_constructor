@@ -8,23 +8,18 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Optional;
-
-import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -42,7 +37,6 @@ public class UserServiceTest {
     private User mockUser;
     private Role role;
 
-    @SneakyThrows
     @Before
     public void init() {
         mockUser = new User();
@@ -53,42 +47,37 @@ public class UserServiceTest {
 
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
-
+        when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
+        when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
         role = roleRepo.findByTitle("ROLE_USER").get();
     }
 
-    @SneakyThrows
     @Test
-    public void registerUserTest() {
-        User user = userService.registerUser(mockUser);
+    public void createUserTest() {
+        User user = userService.create(mockUser);
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
-    @SneakyThrows
     @Test
-    public void registerTest() {
-        User user = userService.register(mockUser, role);
+    public void createTest() {
+        User user = userService.create(mockUser, role);
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
-    @SneakyThrows
-    @Test
-    public void encodePasswordTest() {
-        userService.encodePassword(mockUser);
-        assertNotEquals("12345678", mockUser.getPassword());
-    }
-
-    @SneakyThrows
     @Test
     public void grantRoleTest() {
         userService.grantRole(mockUser, role);
         assertTrue(mockUser.getRoles().contains(role));
     }
 
-    @SneakyThrows
     @Test
     public void revokeRoleTest() {
         userService.revokeRole(mockUser, role);
         assertFalse(mockUser.getRoles().contains(role));
+    }
+
+    @Test
+    public void isEmailAvailableTest() {
+        assertFalse(userService.isEmailAvailable("some_user1@mail.com"));
     }
 }

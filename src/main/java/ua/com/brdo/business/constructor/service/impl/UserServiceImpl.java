@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
@@ -63,6 +62,9 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
+
+    @Override
+    public boolean availableEmail(String email){ return userRepo.availableEmail(email);}
 
     @Override
     public List<User> findAll() {

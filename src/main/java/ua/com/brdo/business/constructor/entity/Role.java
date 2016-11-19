@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = {"title"})
-public class Role implements GrantedAuthority {
+public class Role implements GrantedAuthority { //SimpleGruntedAuthority
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", length = 100, unique = true, nullable = false)

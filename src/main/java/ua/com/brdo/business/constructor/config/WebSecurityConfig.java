@@ -9,10 +9,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import ua.com.brdo.business.constructor.utils.UserDetailsServiceImpl;
+import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationEntryPoint;
-import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationFailureHandler;
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationSuccessHandler;
 
 @Configuration
@@ -20,33 +20,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     private RESTAuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
-    private RESTAuthenticationFailureHandler authenticationFailureHandler;
-    @Autowired
     private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserServiceImpl userServiceImpl;
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/index/*", "/register/*").permitAll()
-                .antMatchers("/adminpanel**").hasRole("ADMIN")
-                .antMatchers("/expertpanel**").hasRole("EXPERT")
-                .antMatchers("/app/**").authenticated();
+                .antMatchers("/api**").hasAnyRole("ADMIN", "USER", "EXPERT")
+                .antMatchers("/api/**").authenticated();
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.formLogin().successHandler(authenticationSuccessHandler);
-        http.formLogin().failureHandler(authenticationFailureHandler);
+        http.formLogin().failureHandler(new SimpleUrlAuthenticationFailureHandler());
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceImpl)
+        auth.userDetailsService(userServiceImpl)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
 

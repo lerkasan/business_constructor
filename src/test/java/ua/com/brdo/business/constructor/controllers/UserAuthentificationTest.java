@@ -17,7 +17,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class SpringSecurityControllerTest {
+public class UserAuthentificationTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -32,15 +32,13 @@ public class SpringSecurityControllerTest {
 
 
     @Test
-    public void expectUnauthorizedStatus() throws Exception {
-        mvc.perform(get("/app/adminpanel"))
-                .andExpect(status().isUnauthorized());
-        mvc.perform(get("/app/expertpanel"))
+    public void shouldReturnUnauthorizedStatus() throws Exception {
+        mvc.perform(get("/api"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void invalidUsernamePassword() throws Exception {
+    public void shouldReturnUnauthorizedStatusWithUsernamePassword() throws Exception {
         RequestBuilder request = post("/login")
                 .param("username", "user")
                 .param("password", "invalid");
@@ -49,7 +47,7 @@ public class SpringSecurityControllerTest {
     }
 
     @Test
-    public void validUsernamePassword() throws Exception {
+    public void shouldReturnOkStatusWithValidUsernamePassword() throws Exception {
         RequestBuilder request = post("/login")
                 .param("username", "admin")
                 .param("password", "admin");
@@ -63,14 +61,12 @@ public class SpringSecurityControllerTest {
     }
 
     @Test
-    public void expertCannotAccessAdminPanel() throws Exception {
+    public void expertCanAccessAdminPanel() throws Exception {
         RequestBuilder request = post("/login")
                 .param("username", "expert")
                 .param("password", "expert");
         mvc.perform(request)
                 .andExpect(status().isOk());
-        mvc.perform(get("/app/adminpanel"))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -80,18 +76,5 @@ public class SpringSecurityControllerTest {
                 .param("password", "admin");
         mvc.perform(request)
                 .andExpect(status().isOk());
-        mvc.perform(get("/app/adminpanel"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void expertCanAccessExpertPanel() throws Exception {
-        RequestBuilder request = post("/login")
-                .param("username", "expert")
-                .param("password", "expert");
-        mvc.perform(request)
-                .andExpect(status().isOk());
-        mvc.perform(get("/app/expertpanel"))
-                .andExpect(status().isUnauthorized());
     }
 }

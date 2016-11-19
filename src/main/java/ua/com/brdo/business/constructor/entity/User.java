@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,31 +66,27 @@ public class User implements UserDetails {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate = LocalDate.now();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> authorities;
 
     public User() {
-        roles = new HashSet<>();
+        authorities = new HashSet<>();
     }
 
-    public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
+    public boolean grantAuthorities(Role role) {
+        return authorities.add(role);
     }
 
-    public boolean grantRole(Role role) {
-        return roles.add(role);
-    }
-
-    public boolean revokeRole(Role role) {
-        return roles.remove(role);
+    public boolean revokeAuthorities(Role role) {
+        return authorities.remove(role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return this.authorities;
     }
 
     @Override

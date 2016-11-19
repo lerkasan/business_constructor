@@ -27,7 +27,7 @@ public class ControllerAdviceHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public  Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         List<ObjectError> objectErrors = e.getBindingResult().getGlobalErrors();
         final String fieldErrorsString = fieldErrors.stream()

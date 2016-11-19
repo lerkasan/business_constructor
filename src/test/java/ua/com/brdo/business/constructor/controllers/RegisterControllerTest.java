@@ -41,7 +41,7 @@ public class RegisterControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         userData.put("username", "test@mail.com");
     }
 
@@ -51,7 +51,6 @@ public class RegisterControllerTest {
         userData.put("email", "test@mail.com");
         userData.put("rawPassword", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
-        System.out.println(userDataJson);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
                 .andExpect(status().isCreated())

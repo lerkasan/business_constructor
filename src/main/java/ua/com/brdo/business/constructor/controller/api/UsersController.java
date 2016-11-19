@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.com.brdo.business.constructor.service.UserService;
 
 @RestController
-@RequestMapping(path = "api/users")
+@RequestMapping(path = "/api/users")
 public class UsersController {
     private final UserService userService;
 

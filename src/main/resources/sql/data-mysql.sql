@@ -8,3 +8,7 @@ INSERT INTO user (username, email, password_hash, creation_date) VALUES
    now());
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
+
+INSERT INTO input_type (title) VALUES ("checkbox");
+INSERT INTO input_type (title) VALUES ("droplist");
+INSERT INTO input_type (title) VALUES ("text");

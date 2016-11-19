@@ -22,3 +22,7 @@ INSERT INTO user_role (user_id, role_id) VALUES (2, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (4, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (5, 1);
+
+INSERT INTO input_type (title) VALUES ("checkbox");
+INSERT INTO input_type (title) VALUES ("droplist");
+INSERT INTO input_type (title) VALUES ("text");

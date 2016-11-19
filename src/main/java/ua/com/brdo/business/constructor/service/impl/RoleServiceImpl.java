@@ -24,14 +24,14 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public Role create(final Role role) {
-        Objects.requireNonNull(role);
+        Objects.requireNonNull(role, "Role is required.");
         return roleRepo.saveAndFlush(role);
     }
 
     @Transactional
     @Override
     public Role update(final Role role) {
-        Objects.requireNonNull(role);
+        Objects.requireNonNull(role, "Role is required.");
         return roleRepo.saveAndFlush(role);
     }
 

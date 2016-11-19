@@ -48,6 +48,7 @@ public class UserServiceTest {
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
         when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
+        when(userRepo.countByEmail("some_user1@mail.com")).thenReturn(1);
         when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
         role = roleRepo.findByTitle("ROLE_USER").get();
     }

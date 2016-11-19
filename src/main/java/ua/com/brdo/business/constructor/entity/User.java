@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -71,6 +72,11 @@ public class User {
 
     public User() {
         roles = new HashSet<>();
+    }
+
+    public void setEmail(String email) {
+        Objects.requireNonNull(email, "E-mail field is required.");
+        this.email = email.toLowerCase();
     }
 
     public Set<Role> getRoles() {

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User update(User user) {
-        Objects.requireNonNull(user);
+        Objects.requireNonNull(user, "User is required.");
         return userRepo.saveAndFlush(user);
     }
 
@@ -51,11 +51,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
+        if ((username == null) || ("".equals(username))) {
+            throw new IllegalArgumentException("Username is required.");
+        }
+        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given username was not found."));
     }
 
     @Override
     public User findByEmail(String email) {
+        if ((email == null) || ("".equals(email))) {
+            throw new IllegalArgumentException("E-mail is required.");
+        }
         return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
 
@@ -67,8 +73,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user, Role role) {
-        Objects.requireNonNull(user);
-        Objects.requireNonNull(role);
+        Objects.requireNonNull(user, "User is required.");
+        Objects.requireNonNull(role, "Role is required.");
         if (user.getUsername() == null) {
             user.setUsername(user.getEmail());
         }
@@ -87,21 +93,21 @@ public class UserServiceImpl implements UserService {
     }
 
     private void encodePassword(User user) {
-        Objects.requireNonNull(user);
+        Objects.requireNonNull(user, "User is required.");
         user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
     }
 
     @Override
     public boolean grantRole(User user, Role role) {
-        Objects.requireNonNull(user);
-        Objects.requireNonNull(role);
+        Objects.requireNonNull(user, "User is required.");
+        Objects.requireNonNull(role, "Role is required.");
         return user.grantRole(role);
     }
 
     @Override
     public boolean revokeRole(User user, Role role) {
-        Objects.requireNonNull(user);
-        Objects.requireNonNull(role);
+        Objects.requireNonNull(user, "User is required.");
+        Objects.requireNonNull(role, "Role is required.");
         return user.revokeRole(role);
     }
 
@@ -110,7 +116,7 @@ public class UserServiceImpl implements UserService {
         if (email == null) {
             return false;
         }
-        return !userRepo.findByEmail(email.toLowerCase()).isPresent();
+        return userRepo.countByEmail(email.toLowerCase()) == 0 ? true : false;
     }
 
     @Override
@@ -118,6 +124,6 @@ public class UserServiceImpl implements UserService {
         if (username == null) {
             return false;
         }
-        return !userRepo.findByUsername(username.toLowerCase()).isPresent();
+        return userRepo.countByUsername(username.toLowerCase()) == 0 ? true : false;
     }
 }

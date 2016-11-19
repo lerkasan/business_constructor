@@ -31,7 +31,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "user")
 @Data
-@EqualsAndHashCode(of = {"username", "password"})
+@EqualsAndHashCode(of = {"username", "email", "creationDate"})
 @JsonInclude(NON_NULL)
 public class User implements UserDetails {
     @Id
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", length = 100, nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     @Unique(type = "username", message = "User with this username is already registered. Try another username.")
     private String username;
     private String firstName;
@@ -67,7 +67,7 @@ public class User implements UserDetails {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate creationDate = LocalDate.now();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))

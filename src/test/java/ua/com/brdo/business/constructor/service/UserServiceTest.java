@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
@@ -33,13 +34,13 @@ public class UserServiceTest {
     UserDetailsServiceImpl userDetailsService;
 
     @Test
-    public void getUserAdminTest(){
+    public void getUserAdminTest() {
         UserDetails user = userDetailsService.loadUserByUsername("expert");
         assertTrue(user != null);
     }
 
     @Test
-    public void getUserExpertTest(){
+    public void getUserExpertTest() {
         UserDetails user = userDetailsService.loadUserByUsername("admin");
         assertTrue(user != null);
     }

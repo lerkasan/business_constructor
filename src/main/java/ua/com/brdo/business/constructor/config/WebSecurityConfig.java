@@ -2,12 +2,9 @@ package ua.com.brdo.business.constructor.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,7 +16,6 @@ import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationFai
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationSuccessHandler;
 
 @Configuration
-//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,7 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
-
 
 
     @Override
@@ -52,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl)
-            .passwordEncoder(bCryptPasswordEncoder);
+                .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Bean

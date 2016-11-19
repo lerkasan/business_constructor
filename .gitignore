@@ -1,9 +1,11 @@
-/target/
+.idea
+out
+target
+logs
+*.iml
+.settings
+.git
 .classpath
 .project
-.settings
 .springBeans
-.idea
-target/
-.springBeans
-brdo.iml
+*jquery*.js

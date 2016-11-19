@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
@@ -51,11 +52,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
+        if ((username == null) || ("".equals(username))) {
+            throw new NotFoundException("Expected username is't empty");
+        }
+        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given user was not found."));
     }
 
     @Override
     public User findByEmail(String email) {
+        if ((email == null) || ("".equals(email))) {
+            throw new NotFoundException("Expected email is't empty");
+        }
         return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
 
@@ -81,7 +88,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (user.getRoles().isEmpty()) {
-            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {} ));
+            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {
+            }));
         }
         return userRepo.saveAndFlush(user);
     }

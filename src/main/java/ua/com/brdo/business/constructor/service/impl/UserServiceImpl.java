@@ -9,15 +9,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -55,16 +55,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findByUsername(String username) {
-        if ((username == null) || ("".equals(username))) {
-            throw new NotFoundException("Expected username is't empty");
+        if ("".equals(username)) {
+            throw new IllegalArgumentException("Expected username is empty");
         }
-        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given user was not found."));
+        return userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User with given username was not found."));
     }
 
     @Override
     public User findByEmail(String email) {
-        if ((email == null) || ("".equals(email))) {
-            throw new NotFoundException("Expected email is't empty");
+        if ("".equals(email)) {
+            throw new IllegalArgumentException("Expected email is empty");
         }
         return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (email == null) {
             return false;
         }
-        return !userRepo.findByEmail(email.toLowerCase()).isPresent();
+        return userRepo.countByEmailIgnoreCase(email) == 0 ? true : false;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (username == null) {
             return false;
         }
-        return !userRepo.findByUsername(username.toLowerCase()).isPresent();
+        return userRepo.countByUsernameIgnoreCase(username) == 0 ? true : false;
     }
 
     @Override

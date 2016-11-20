@@ -1,7 +1,8 @@
-package ua.com.brdo.business.constructor.controller.advice;
+package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -26,7 +27,7 @@ public class ControllerAdviceHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public  Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         List<ObjectError> objectErrors = e.getBindingResult().getGlobalErrors();
         final String fieldErrorsString = fieldErrors.stream()

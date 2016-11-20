@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.entity.InputType;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.repository.InputTypeRepository;
 import ua.com.brdo.business.constructor.service.InputTypeService;
 

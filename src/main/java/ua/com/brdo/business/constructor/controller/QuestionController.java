@@ -1,9 +1,12 @@
 package ua.com.brdo.business.constructor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,15 +17,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import ua.com.brdo.business.constructor.entity.Question;
+import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
-//@PreAuthorize("hasRole('ROLE_EXPERT')")
-@RequestMapping(path = "/questions")
+@RequestMapping(path = "/api/questions", produces = APPLICATION_JSON_VALUE)
 public class QuestionController {
 
     private QuestionService questionService;
@@ -32,26 +33,38 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    @RequestMapping(method = {POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.create(question);
-        URI location = ServletUriComponentsBuilder.fromUriString("questions").path("/{id}")
-                .buildAndExpand(question.getId()).toUri();
+        URI location = ServletUriComponentsBuilder
+                .fromUriString("questions").path("/{id}")
+                .buildAndExpand(question.getId())
+                .toUri();
         return ResponseEntity.created(location).body(createdQuestion);
     }
 
-    @RequestMapping(method = {GET}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public List<Question> listQuestions() {
         return questionService.findAll();
     }
 
-    @RequestMapping(path = "/{id}", method = {GET}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}")
     public Question getQuestion(@PathVariable String id) {
-        return questionService.findById(Integer.valueOf(id).longValue());
+        Long longId = Integer.valueOf(id).longValue();
+        return questionService.findById(longId);
     }
 
-    @RequestMapping(path = "/{id}", method = {POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
     public Question updateQuestion(@PathVariable String id, @Valid Question question) {
         return questionService.update(question);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteQuestion(@PathVariable String id) {
+        Long longId = Integer.valueOf(id).longValue();
+        questionService.delete(longId);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

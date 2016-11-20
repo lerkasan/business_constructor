@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import ua.com.brdo.business.constructor.entity.Question;
+import ua.com.brdo.business.constructor.model.Question;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {

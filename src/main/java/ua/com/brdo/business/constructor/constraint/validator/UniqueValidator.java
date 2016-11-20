@@ -1,13 +1,14 @@
 package ua.com.brdo.business.constructor.constraint.validator;
 
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.com.brdo.business.constructor.constraint.Unique;
-import ua.com.brdo.business.constructor.service.UserService;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import lombok.SneakyThrows;
+import ua.com.brdo.business.constructor.constraint.Unique;
+import ua.com.brdo.business.constructor.service.UserService;
 
 @Component
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
@@ -19,29 +20,31 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     public void initialize(Unique annotation) {
         switch (annotation.type()) {
-            case "email": {
+            case "email":
                 type = "email";
                 break;
-            }
-            case "username": {
+            case "username":
                 type = "username";
                 break;
-            }
+            default:
+                throw new IllegalArgumentException("Unexpected type passed to Unique annotation.");
         }
+    }
+
+    private boolean validateParam(String param) {
+        boolean valid = false;
+
+        if ("email".equals(type)) {
+            valid = userService.isEmailAvailable(param);
+        } else if ("username".equals(type)) {
+            valid =  userService.isUsernameAvailable(param);
+        }
+        return valid;
     }
 
     @SneakyThrows
     @Override
     public boolean isValid(String param, ConstraintValidatorContext context) {
-        if ((userService == null) || (param == null) ) {
-            return true;
-        }
-        if ("email".equals(type)) {
-            return userService.isEmailAvailable(param);
-        }
-        if ("username".equals(type)) {
-            return userService.isUsernameAvailable(param);
-        }
-        return false;
+        return (userService == null) || (param == null) || validateParam(param);
     }
 }

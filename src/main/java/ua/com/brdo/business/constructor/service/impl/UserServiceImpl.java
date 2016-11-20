@@ -9,8 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.com.brdo.business.constructor.entity.Role;
-import ua.com.brdo.business.constructor.entity.User;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;

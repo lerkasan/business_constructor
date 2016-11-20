@@ -12,7 +12,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
-import ua.com.brdo.business.constructor.entity.User;
+import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;

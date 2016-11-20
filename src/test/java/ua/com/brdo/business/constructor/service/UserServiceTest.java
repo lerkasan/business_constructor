@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ua.com.brdo.business.constructor.entity.Role;
-import ua.com.brdo.business.constructor.entity.User;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;

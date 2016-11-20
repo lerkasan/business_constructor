@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.entity;
+package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

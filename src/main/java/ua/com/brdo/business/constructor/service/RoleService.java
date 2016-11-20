@@ -2,7 +2,7 @@ package ua.com.brdo.business.constructor.service;
 
 import java.util.List;
 
-import ua.com.brdo.business.constructor.entity.Role;
+import ua.com.brdo.business.constructor.model.Role;
 
 public interface RoleService {
 

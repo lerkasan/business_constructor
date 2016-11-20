@@ -1,0 +1,105 @@
+// component styles are encapsulated and only applied to their components
+.first_row{
+	border-bottom: 2px solid #2356a5;
+	padding-bottom:  25px;
+}
+.carousel_list{
+	background-color: #f1f1f1;
+	text-align: center;
+	
+	h4{
+		text-align: center;
+		margin: 30px 0;
+		background-color: #2356a5;
+		color:#fff;
+	}
+	p{
+		font-weight: 600;
+		font-size: 18px;
+	}	
+}
+.carousel_list__step{
+		padding: 0;
+		margin-top: 20px;
+	
+	li{
+		list-style-type:none;
+		border:2px solid #2356a5;
+		margin-bottom: 35px; 
+		text-align: center;
+		padding: 5px;
+	
+	}
+	li:after{
+		content: "";
+	    display: block;
+	    width: 15px;
+	    height: 15px;
+	    position: relative;
+	    transform: rotate(45deg);
+	    left: 45%;
+	    top: 24px;
+	    border-right: 3px solid #484848;
+	    border-bottom: 3px solid #484848;
+	}
+	li:last-child:after{
+		content: "";
+		display: none;
+	}
+}
+.questionnaire{
+	padding-left:40px;
+	
+	h3{
+		text-align: center;
+		font-weight: 600;
+		margin: 30px 0;
+	}
+	.title{
+		color:#000;
+		text-align: center;
+		font-weight: 600;
+	}
+	p{
+		color: #2356a5;
+	}
+	.checkbox,.radio{
+		margin-left: 20px;
+	}
+	.main-button{
+		margin-bottom: 25px;
+
+	}
+}
+.second_row{
+	margin-top: 25px;
+	padding-bottom: 30px;
+	.main_steps{
+		background-color: #f1f1f1;
+		padding: 0;
+	.steps{
+			margin-left: 0;
+	    	padding: 0;
+	    	list-style-type: none;
+		li{
+    		counter-increment: step-counter;
+    		
+    		margin-bottom:15px ; 
+    		padding:15px ;
+		}
+		li:hover{
+			background-color: rgb(0,200,200);
+		}
+		li:before {
+		    content: counter(step-counter);
+		    margin-right: 5px;
+		    font-size: 80%;
+		    background-color: #2356a5;
+		    color: white;
+		    font-weight: bold;
+		    padding: 3px 8px;
+		    border-radius: 3px;
+		    clear: both;
+		}}
+	}
+}

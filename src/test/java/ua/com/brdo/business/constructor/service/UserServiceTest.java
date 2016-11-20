@@ -5,9 +5,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
@@ -25,11 +29,27 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class UserServiceTest {
 
+
     @Mock
     private UserRepository userRepo;
 
     @Mock
     private RoleRepository roleRepo;
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    @Test
+    public void getUserAdminTest() throws UsernameNotFoundException {
+        UserDetails user = userServiceImpl.findByUsername("admin");
+        assertTrue(user != null);
+    }
+
+    @Test
+    public void getUserExpertTest() {
+        UserDetails user = userServiceImpl.findByUsername("expert");
+        assertTrue(user != null);
+    }
 
     @InjectMocks
     private UserService userService = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
@@ -43,7 +63,7 @@ public class UserServiceTest {
         mockUser.setId(1L);
         mockUser.setUsername("test_user@mail.com");
         mockUser.setEmail("test_user@mail.com");
-        mockUser.setPassword("12345678");
+        mockUser.setRawPassword("12345678");
 
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
@@ -67,13 +87,13 @@ public class UserServiceTest {
     @Test
     public void grantRoleTest() {
         userService.grantRole(mockUser, role);
-        assertTrue(mockUser.getRoles().contains(role));
+        assertTrue(mockUser.getAuthorities().contains(role));
     }
 
     @Test
     public void revokeRoleTest() {
         userService.revokeRole(mockUser, role);
-        assertFalse(mockUser.getRoles().contains(role));
+        assertFalse(mockUser.getAuthorities().contains(role));
     }
 
     @Test

@@ -1,8 +1,8 @@
 package ua.com.brdo.business.constructor.service;
 
-import ua.com.brdo.business.constructor.entity.Role;
-
 import java.util.List;
+
+import ua.com.brdo.business.constructor.entity.Role;
 
 public interface RoleService {
 

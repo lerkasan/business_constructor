@@ -1,7 +1,7 @@
 package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import lombok.SneakyThrows;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,7 +41,7 @@ public class RegisterControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).dispatchOptions(true).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         userData.put("username", "test@mail.com");
     }
 
@@ -47,7 +49,7 @@ public class RegisterControllerTest {
     @Test
     public void successfulRegisterTest() {
         userData.put("email", "test@mail.com");
-        userData.put("password", "123456789");
+        userData.put("rawPassword", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -59,7 +61,7 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterWrongEmailTest() {
         userData.put("email", "testmail");
-        userData.put("password", "123456789");
+        userData.put("rawPassword", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -72,7 +74,7 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterLocalEmailTest() {
         userData.put("email", "user@localhost");
-        userData.put("password", "123456789");
+        userData.put("rawPassword", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -85,7 +87,7 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterPasswordShortTest() {
         userData.put("email", "test1@mail.com");
-        userData.put("password", "1234");
+        userData.put("rawPassword", "1234");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -98,7 +100,7 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterPasswordUnallowedCharsTest() {
         userData.put("email", "test1@mail.com");
-        userData.put("password", "абвгдежзийкл");
+        userData.put("rawPassword", "абвгдежзийкл");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))
@@ -111,7 +113,7 @@ public class RegisterControllerTest {
     @Test
     public void unsuccessfulRegisterEmailNotUniqueTest() {
         userData.put("email", "some_user1@mail.com");
-        userData.put("password", "123456789");
+        userData.put("rawPassword", "123456789");
         String userDataJson = jsonMapper.writeValueAsString(userData);
         this.mockMvc.perform(
                 post("/register").contentType(MediaType.APPLICATION_JSON).content(userDataJson))

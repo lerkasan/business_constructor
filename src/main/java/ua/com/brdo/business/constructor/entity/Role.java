@@ -1,13 +1,13 @@
 package ua.com.brdo.business.constructor.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "role")
@@ -15,10 +15,17 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = {"title"})
-public class Role {
+public class Role implements GrantedAuthority { //SimpleGruntedAuthority
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", length = 100, unique = true, nullable = false)
     private Long id;
-    @Column(unique = true, nullable = false)
+    @Column(name = "title", length = 100, unique = true, nullable = false)
     private String title;
+
+    @Override
+    public String getAuthority() {
+        return getTitle();
+    }
+
 }

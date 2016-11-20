@@ -2,9 +2,13 @@ package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.com.brdo.business.constructor.entity.Role;
 import ua.com.brdo.business.constructor.entity.User;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
@@ -15,8 +19,8 @@ import ua.com.brdo.business.constructor.service.UserService;
 import java.util.List;
 import java.util.Objects;
 
-@Service("UserService")
-public class UserServiceImpl implements UserService {
+@Service
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final String ROLE_USER = "ROLE_USER";
 
@@ -51,11 +55,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
+        if ((username == null) || ("".equals(username))) {
+            throw new NotFoundException("Expected username is't empty");
+        }
+        return userRepo.findByUsername(username).orElseThrow(() -> new NotFoundException("User with given user was not found."));
     }
 
     @Override
     public User findByEmail(String email) {
+        if ((email == null) || ("".equals(email))) {
+            throw new NotFoundException("Expected email is't empty");
+        }
         return userRepo.findByEmail(email).orElseThrow(() -> new NotFoundException("User with given e-mail was not found."));
     }
 
@@ -80,29 +90,30 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
-        if (user.getRoles().isEmpty()) {
-            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {} ));
+        if (user.getAuthorities().isEmpty()) {
+            return create(user, roleRepo.findByTitle(ROLE_USER).orElseThrow(() -> new DataAccessException("Role not found.") {
+            }));
         }
         return userRepo.saveAndFlush(user);
     }
 
     private void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getRawPassword()));
     }
 
     @Override
     public boolean grantRole(User user, Role role) {
         Objects.requireNonNull(user);
         Objects.requireNonNull(role);
-        return user.grantRole(role);
+        return user.grantAuthorities(role);
     }
 
     @Override
     public boolean revokeRole(User user, Role role) {
         Objects.requireNonNull(user);
         Objects.requireNonNull(role);
-        return user.revokeRole(role);
+        return user.revokeAuthorities(role);
     }
 
     @Override
@@ -119,5 +130,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return !userRepo.findByUsername(username.toLowerCase()).isPresent();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User with given user was not found."));
     }
 }

@@ -12,23 +12,26 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Optional;
+import java.util.Set;
+
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest {
-
 
     @Mock
     private UserRepository userRepo;
@@ -38,18 +41,6 @@ public class UserServiceTest {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
-
-    @Test
-    public void getUserAdminTest() throws UsernameNotFoundException {
-        UserDetails user = userServiceImpl.findByUsername("admin");
-        assertTrue(user != null);
-    }
-
-    @Test
-    public void getUserExpertTest() {
-        UserDetails user = userServiceImpl.findByUsername("expert");
-        assertTrue(user != null);
-    }
 
     @InjectMocks
     private UserService userService = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
@@ -69,35 +60,56 @@ public class UserServiceTest {
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
         when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
         when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
+        when(userRepo.countByEmailIgnoreCase("some_user1@mail.com")).thenReturn(1);
         role = roleRepo.findByTitle("ROLE_USER").get();
     }
 
     @Test
-    public void createUserTest() {
+    public void shouldCreateUserTest() {
         User user = userService.create(mockUser);
+
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
-    public void createTest() {
+    public void shouldCreateTest() {
         User user = userService.create(mockUser, role);
+
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
-    public void grantRoleTest() {
+    public void shouldGrantRoleTest() {
         userService.grantRole(mockUser, role);
-        assertTrue(mockUser.getAuthorities().contains(role));
+        Set<Role> actualRoles = mockUser.getAuthorities();
+
+        assertTrue(actualRoles.contains(role));
     }
 
     @Test
-    public void revokeRoleTest() {
+    public void shouldRevokeRoleTest() {
         userService.revokeRole(mockUser, role);
-        assertFalse(mockUser.getAuthorities().contains(role));
+        Set<Role> actualRoles = mockUser.getAuthorities();
+
+        assertFalse(actualRoles.contains(role));
     }
 
     @Test
-    public void isEmailAvailableTest() {
+    public void shouldCheckEmailAvailablityTest() {
         assertFalse(userService.isEmailAvailable("some_user1@mail.com"));
+    }
+
+    @Test
+    public void shouldReturnAdminTest() throws UsernameNotFoundException {
+        UserDetails user = userServiceImpl.findByUsername("admin");
+
+        assertNotNull(user);
+    }
+
+    @Test
+    public void shouldReturnExpertTest() {
+        UserDetails user = userServiceImpl.findByUsername("expert");
+
+        assertNotNull(user);
     }
 }

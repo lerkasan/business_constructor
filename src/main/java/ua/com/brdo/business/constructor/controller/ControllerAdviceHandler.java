@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.controller.advice;
+package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;

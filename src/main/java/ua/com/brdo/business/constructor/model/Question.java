@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,6 +28,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -48,16 +51,25 @@ public class Question {
     @Column(unique = true, nullable = false, length = 3000)
     private String text;
 
-    @ManyToOne
+    @ManyToOne//(cascade = ALL)
     @JoinColumn(name="input_type_id", nullable=false)
     private InputType inputType;
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private Set<Option> options;
 
-    public Set<Option> getOptions() {
-        return Collections.unmodifiableSet(options);
-    }
+    /*@ManyToMany
+    @JoinTable(name = "question_question",
+            joinColumns = {@JoinColumn(name = "previous_id")},
+            inverseJoinColumns = @JoinColumn(name = "next_id"))
+    private Set<Question> previousQuestions;
+
+    @ManyToMany(mappedBy = "previousQuestions")
+    private Set<Question> nextQuestions;
+*/
+//    public Set<Option> getOptions() {
+//        return Collections.unmodifiableSet(options);
+//    }
 
     /*
     @ManyToOne

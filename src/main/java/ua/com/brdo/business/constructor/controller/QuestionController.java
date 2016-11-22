@@ -34,7 +34,7 @@ public class QuestionController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity createQuestion(@RequestBody Question question) {
+    public ResponseEntity createQuestion(@Valid @RequestBody Question question) {
         Question createdQuestion = questionService.create(question);
         URI location = ServletUriComponentsBuilder
                 .fromUriString("questions").path("/{id}")
@@ -55,7 +55,8 @@ public class QuestionController {
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
-    public Question updateQuestion(@PathVariable String id, @Valid Question question) {
+    public Question updateQuestion(@PathVariable String id, @Valid @RequestBody Question question) {
+        question.setId(Long.valueOf(id));
         return questionService.update(question);
     }
 

@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.constraint.validator;
+package ua.com.brdo.business.constructor.constraint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

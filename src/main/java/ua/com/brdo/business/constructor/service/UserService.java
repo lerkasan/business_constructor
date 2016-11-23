@@ -19,7 +19,7 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    boolean availableEmail(String email);
+    boolean isEmail(String email);
 
     List<User> findAll();
 
@@ -31,5 +31,5 @@ public interface UserService {
 
     User registerUser(User user);
 
-    public void encodePassword(User user);
+    void encodePassword(User user);
 }

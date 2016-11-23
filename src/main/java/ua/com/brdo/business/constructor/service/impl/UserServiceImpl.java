@@ -64,7 +64,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean availableEmail(String email){return (userRepo.countByEmailAllIgnoreCase(email) > 0 ) ? false : true;}
+    public boolean isEmail(String email) {
+        if ((email == null)||(email.equals("")))
+            return false;
+        else return (userRepo.countByEmailIgnoreCase(email) > 0);
+    }
 
     @Override
     public List<User> findAll() {

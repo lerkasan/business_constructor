@@ -51,12 +51,14 @@ public class Question {
     @Column(unique = true, nullable = false, length = 3000)
     private String text;
 
-    @ManyToOne//(cascade = ALL)
+    @ManyToOne
     @JoinColumn(name="input_type_id", nullable=false)
     private InputType inputType;
 
     @OneToMany(mappedBy = "question")
     private Set<Option> options;
+
+
 
     /*@ManyToMany
     @JoinTable(name = "question_question",

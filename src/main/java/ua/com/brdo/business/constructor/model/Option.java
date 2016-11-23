@@ -1,5 +1,8 @@
 package ua.com.brdo.business.constructor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -16,6 +19,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -24,6 +28,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = {"title"})
+@JsonIgnoreProperties(value = {"question"})
 public class Option {
 
     @Id
@@ -33,7 +38,7 @@ public class Option {
     @Column(unique = true, nullable = false)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(cascade = ALL)
     @JoinColumn(name="question_id")
     private Question question;
 }

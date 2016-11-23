@@ -61,3 +61,162 @@ INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 3);
+
+
+ALTER TABLE question DROP FOREIGN KEY input_type_question_fk;
+
+ALTER TABLE question_questionnaire DROP FOREIGN KEY question_question_questionnaire_fk;
+
+ALTER TABLE question_option DROP FOREIGN KEY question_question_option_fk;
+
+ALTER TABLE option_ DROP FOREIGN KEY question_option_fk;
+
+ALTER TABLE question_question DROP FOREIGN KEY question_question_question_fk;
+
+ALTER TABLE questionnaire DROP FOREIGN KEY business_type_questionnaire_fk;
+
+ALTER TABLE question_questionnaire DROP FOREIGN KEY questionnaire_question_questionnaire_fk;
+
+ALTER TABLE user_answer DROP FOREIGN KEY question_option_user_answer_fk;
+
+ALTER TABLE question_option DROP FOREIGN KEY question_option_fk;
+
+DROP TABLE IF EXISTS input_type;
+
+DROP TABLE IF EXISTS business_type;
+
+CREATE TABLE business_type (
+                id INT AUTO_INCREMENT NOT NULL,
+                title VARCHAR(500) NOT NULL,
+                kved VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+);
+
+CREATE TABLE input_type (
+                id BIGINT AUTO_INCREMENT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS question;
+
+CREATE TABLE question (
+                id BIGINT AUTO_INCREMENT NOT NULL,
+                text VARCHAR(3000) NOT NULL,
+                input_type_id BIGINT NOT NULL,
+                PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS question_question;
+
+CREATE TABLE question_question (
+                previous_id BIGINT NOT NULL,
+                next_id BIGINT NOT NULL,
+                PRIMARY KEY (previous_id, next_id)
+);
+
+DROP TABLE IF EXISTS option_;
+
+CREATE TABLE option_ (
+                id BIGINT AUTO_INCREMENT NOT NULL,
+                question_id BIGINT NOT NULL,
+                title VARCHAR(1000) NOT NULL,
+                PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS questionnaire;
+
+CREATE TABLE questionnaire (
+                id INT AUTO_INCREMENT NOT NULL,
+                business_type_id INT NOT NULL,
+                title VARCHAR(1000) NOT NULL,
+                PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS question_questionnaire;
+
+CREATE TABLE question_questionnaire (
+                question_id BIGINT NOT NULL,
+                questionnaire_id INT NOT NULL,
+                PRIMARY KEY (question_id, questionnaire_id)
+);
+
+DROP TABLE IF EXISTS question_option;
+
+CREATE TABLE question_option (
+                id BIGINT AUTO_INCREMENT NOT NULL,
+                question_id BIGINT NOT NULL,
+                option_id BIGINT NOT NULL,
+                procedure_id INT NOT NULL,
+                next_question_id BIGINT NOT NULL,
+                PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS user_answer;
+
+CREATE TABLE user_answer (
+                id BIGINT AUTO_INCREMENT NOT NULL,
+                user_id BIGINT NOT NULL,
+                question_option_id BIGINT NOT NULL,
+                PRIMARY KEY (id)
+);
+
+ALTER TABLE question ADD CONSTRAINT input_type_question_fk
+FOREIGN KEY (input_type_id)
+REFERENCES input_type (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_questionnaire ADD CONSTRAINT question_question_questionnaire_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE option_ ADD CONSTRAINT question_option_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_question ADD CONSTRAINT question_question_question_fk
+FOREIGN KEY (previous_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_question ADD CONSTRAINT question_question_question_fk1
+FOREIGN KEY (next_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE questionnaire ADD CONSTRAINT business_type_questionnaire_fk
+FOREIGN KEY (business_type_id)
+REFERENCES business_type (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_questionnaire ADD CONSTRAINT questionnaire_question_questionnaire_fk
+FOREIGN KEY (questionnaire_id)
+REFERENCES questionnaire (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE user_answer ADD CONSTRAINT question_option_user_answer_fk
+FOREIGN KEY (question_option_id)
+REFERENCES question_option (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_option ADD CONSTRAINT question_option_question_option_fk
+FOREIGN KEY (next_question_id)
+REFERENCES question_option (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;

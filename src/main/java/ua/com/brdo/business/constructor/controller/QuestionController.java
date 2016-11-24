@@ -13,11 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
+import ua.com.brdo.business.constructor.model.QuestionOption;
+import ua.com.brdo.business.constructor.service.OptionService;
+import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
@@ -27,10 +32,14 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class QuestionController {
 
     private QuestionService questionService;
+    private OptionService optionService;
+    private QuestionOptionService questionOptionService;
 
     @Autowired
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, OptionService optionService, QuestionOptionService questionOptionService) {
         this.questionService = questionService;
+        this.optionService = optionService;
+        this.questionOptionService = questionOptionService;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
@@ -64,6 +73,45 @@ public class QuestionController {
     public ResponseEntity deleteQuestion(@PathVariable String id) {
         Long longId = Integer.valueOf(id).longValue();
         questionService.delete(longId);
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
+    @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity createOption(@PathVariable String questionId, @Valid @RequestBody Option option) {
+        Option createdOption = optionService.create(option);
+        Question question = questionService.findById(Long.valueOf(questionId));
+        questionService.addOption(question, createdOption);
+        question = questionService.update(question);
+        URI location = ServletUriComponentsBuilder
+                .fromUriString("questions/{questionId}/options").path("/{id}")
+                .buildAndExpand(question.getId(), option.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(createdOption);
+    }
+
+    @GetMapping(path = "/{questionId}/options")
+    public List<Option> listOptions(@PathVariable String questionId) {
+        List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(Long.valueOf(questionId));
+        List<Option> options = new ArrayList<Option>();
+        questionOptions.forEach(questionOption ->
+                options.add(optionService
+                        .findById(questionOption
+                                .getOption().getId())));
+        return options;
+    }
+
+    @DeleteMapping(path = "/{questionId}/options/{optionId}")
+    public ResponseEntity deleteOption(@PathVariable String optionId, @PathVariable String questionId) {
+        long questionIdL = Long.valueOf(questionId);
+        long optionIdL = Long.valueOf(optionId);
+       /* Question question = questionService.findById(questionIdL);
+        Option option = optionService.findById(optionIdL);
+        questionService.deleteOption(question, option);
+        */
+        questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
+       // questionService.update(question);
         return ResponseEntity
                 .noContent()
                 .build();

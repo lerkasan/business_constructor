@@ -107,19 +107,10 @@ CREATE TABLE question (
                 PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS question_question;
-
-CREATE TABLE question_question (
-                previous_id BIGINT NOT NULL,
-                next_id BIGINT NOT NULL,
-                PRIMARY KEY (previous_id, next_id)
-);
-
 DROP TABLE IF EXISTS option_;
 
 CREATE TABLE option_ (
                 id BIGINT AUTO_INCREMENT NOT NULL,
-                question_id BIGINT NOT NULL,
                 title VARCHAR(1000) NOT NULL,
                 PRIMARY KEY (id)
 );
@@ -147,10 +138,11 @@ CREATE TABLE question_option (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 question_id BIGINT NOT NULL,
                 option_id BIGINT NOT NULL,
-                procedure_id INT NOT NULL,
-                next_question_id BIGINT NOT NULL,
+                procedure_id INT,
+                next_question_id BIGINT,
                 PRIMARY KEY (id)
 );
+
 
 DROP TABLE IF EXISTS user_answer;
 
@@ -173,26 +165,20 @@ REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
-FOREIGN KEY (question_id)
-REFERENCES question (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
 ALTER TABLE option_ ADD CONSTRAINT question_option_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_question ADD CONSTRAINT question_question_question_fk
-FOREIGN KEY (previous_id)
+ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
+FOREIGN KEY (question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_question ADD CONSTRAINT question_question_question_fk1
-FOREIGN KEY (next_id)
+ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
+FOREIGN KEY (next_question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
@@ -215,8 +201,7 @@ REFERENCES question_option (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_option_question_option_fk
-FOREIGN KEY (next_question_id)
-REFERENCES question_option (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
+insert into input_type(title) values("checkbox");
+insert into input_type(title) values("droplist");
+insert into input_type(title) values("radiobutton");
+insert into input_type(title) values("text");

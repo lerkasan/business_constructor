@@ -38,12 +38,12 @@ public class InputTypeServiceImpl implements InputTypeService {
 
     @Transactional
     @Override
-    public void delete(final Long id) {
+    public void delete(final long id) {
         inputTypeRepo.delete(id);
     }
 
     @Override
-    public InputType findById(final Long id) {
+    public InputType findById(final long id) {
         return inputTypeRepo.findOne(id);
     }
 

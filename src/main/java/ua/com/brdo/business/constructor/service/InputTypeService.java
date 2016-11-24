@@ -10,9 +10,9 @@ public interface InputTypeService {
 
     InputType update(InputType InputType);
 
-    void delete(Long id);
+    void delete(long id);
 
-    InputType findById(Long id);
+    InputType findById(long id);
 
     InputType findByTitle(String title);
 

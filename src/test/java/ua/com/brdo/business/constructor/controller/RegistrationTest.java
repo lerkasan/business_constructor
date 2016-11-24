@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -44,9 +48,15 @@ public class RegistrationTest {
 
     private ObjectMapper jsonMapper = new ObjectMapper();
 
-    Map<String, String> invalidUserData = new HashMap<>();
+    private Map<String, String> invalidUserData = new HashMap<>();
 
     private TestContextManager testContextManager;
+
+    @ClassRule
+    public static final SpringClassRule SCR = new SpringClassRule();
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
     @Before
     @SneakyThrows

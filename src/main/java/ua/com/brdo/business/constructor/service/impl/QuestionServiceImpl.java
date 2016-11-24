@@ -1,12 +1,12 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.InputType;
@@ -20,17 +20,16 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 @Service("QuestionService")
 public class QuestionServiceImpl implements QuestionService {
 
-    private QuestionRepository questionRepo;
+    private final String ROLE_EXPERT = "ROLE_EXPERT";
 
-    private OptionRepository optionRepo;
+    private QuestionRepository questionRepo;
 
     private InputTypeRepository inputTypeRepo;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepo, InputTypeRepository inputTypeRepo, OptionRepository optionRepo) {
+    public QuestionServiceImpl(QuestionRepository questionRepo, InputTypeRepository inputTypeRepo) {
         this.questionRepo = questionRepo;
         this.inputTypeRepo = inputTypeRepo;
-        this.optionRepo = optionRepo;
     }
 
     private void beforePersist(final Question question) {
@@ -42,44 +41,33 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
-    private void afterPersist(final Question question) {
-        Set<Option> options = question.getOptions();
-        if (options != null) {
-            options.forEach((option) -> {
-                option.setQuestion(question);
-                if (!optionRepo.findByTitle(option.getTitle()).isPresent()) {
-                    optionRepo.saveAndFlush(option);
-                }
-            });
-        }
-    }
-
-    @Transactional
     @Override
+    @Secured(ROLE_EXPERT)
+    @Transactional
     public Question create(final Question question) {
         beforePersist(question);
         Question savedQuestion = questionRepo.saveAndFlush(question);
-        afterPersist(savedQuestion);
         return savedQuestion;
     }
 
-    @Transactional
     @Override
+    @Transactional
+    @Secured(ROLE_EXPERT)
     public Question update(final Question question) {
         beforePersist(question);
         Question savedQuestion = questionRepo.saveAndFlush(question);
-        afterPersist(savedQuestion);
         return savedQuestion;
     }
 
-    @Transactional
     @Override
-    public void delete(final Long id) {
+    @Transactional
+    @Secured(ROLE_EXPERT)
+    public void delete(final long id) {
         questionRepo.delete(id);
     }
 
     @Override
-    public Question findById(final Long id) {
+    public Question findById(final long id) {
         return questionRepo.findOne(id);
     }
 
@@ -91,6 +79,42 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findAll() {
         return questionRepo.findAll();
+    }
+
+    @Override
+    @Secured(ROLE_EXPERT)
+    public Question addOption(Question question, Option option) {
+        Objects.requireNonNull(question);
+        Objects.requireNonNull(option);
+        question.addOption(option);
+        return question;
+    }
+
+    @Override
+    @Secured(ROLE_EXPERT)
+    public Question addOptions(Question question, List<Option> options) {
+        Objects.requireNonNull(question);
+        Objects.requireNonNull(options);
+        options.forEach(option -> addOption(question, option));
+        return question;
+    }
+
+    @Override
+    @Secured(ROLE_EXPERT)
+    public Question deleteOption(Question question, Option option) {
+        Objects.requireNonNull(question);
+        Objects.requireNonNull(option);
+        question.deleteOption(option);
+        return question;
+    }
+
+    @Override
+    @Secured(ROLE_EXPERT)
+    public Question deleteOptions(Question question, List<Option> options) {
+        Objects.requireNonNull(question);
+        Objects.requireNonNull(options);
+        options.forEach(option -> deleteOption(question, option));
+        return question;
     }
 }
 

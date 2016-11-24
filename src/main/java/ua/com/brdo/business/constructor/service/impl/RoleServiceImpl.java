@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.service.RoleService;
 
@@ -38,12 +38,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Transactional
     @Override
-    public void delete(final Long id) {
+    public void delete(final long id) {
         roleRepo.delete(id);
     }
 
     @Override
-    public Role findById(final Long id) {
+    public Role findById(final long id) {
         return roleRepo.findOne(id);
     }
 

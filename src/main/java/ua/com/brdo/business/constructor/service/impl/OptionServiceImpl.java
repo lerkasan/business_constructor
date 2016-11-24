@@ -1,11 +1,13 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
@@ -15,6 +17,8 @@ import ua.com.brdo.business.constructor.service.OptionService;
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
 
+    private final String ROLE_EXPERT = "ROLE_EXPERT";
+
     private OptionRepository optionRepo;
 
     @Autowired
@@ -22,28 +26,35 @@ public class OptionServiceImpl implements OptionService {
         this.optionRepo = optionRepo;
     }
 
-    @Transactional
     @Override
+    @Transactional
+    @Secured(ROLE_EXPERT)
     public Option create(final Option option) {
         Objects.requireNonNull(option);
+        Optional<Option> optionFromDb = optionRepo.findByTitle(option.getTitle());
+        if (optionFromDb.isPresent()) {
+            return optionFromDb.get();
+        }
         return optionRepo.saveAndFlush(option);
     }
 
-    @Transactional
     @Override
+    @Transactional
+    @Secured(ROLE_EXPERT)
     public Option update(final Option option) {
         Objects.requireNonNull(option);
         return optionRepo.saveAndFlush(option);
     }
 
-    @Transactional
     @Override
-    public void delete(final Long id) {
+    @Transactional
+    @Secured(ROLE_EXPERT)
+    public void delete(final long id) {
         optionRepo.delete(id);
     }
 
     @Override
-    public Option findById(final Long id) {
+    public Option findById(final long id) {
         return optionRepo.findOne(id);
     }
 

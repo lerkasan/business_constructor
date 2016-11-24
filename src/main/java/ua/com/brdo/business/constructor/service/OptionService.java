@@ -10,12 +10,13 @@ public interface OptionService {
 
     Option update(Option Option);
 
-    void delete(Long id);
+    void delete(long id);
 
-    Option findById(Long id);
+    Option findById(long id);
 
     Option findByTitle(String title);
 
     List<Option> findAll();
 }
+
 

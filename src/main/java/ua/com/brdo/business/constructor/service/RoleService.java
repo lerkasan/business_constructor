@@ -10,9 +10,9 @@ public interface RoleService {
 
     Role update(Role role);
 
-    void delete(Long id);
+    void delete(long id);
 
-    Role findById(Long id);
+    Role findById(long id);
 
     Role findByTitle(String title);
 

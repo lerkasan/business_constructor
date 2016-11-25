@@ -9,3 +9,5 @@ logs
 .project
 .springBeans
 *jquery*.js
+.vagrant
+*.log

@@ -50,6 +50,9 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     @Secured(ROLE_EXPERT)
     public void delete(final long id) {
+        if (optionRepo.findOne(id) == null) {
+            throw new NotFoundException("Option with id = " + id + " does not exist.");
+        }
         optionRepo.delete(id);
     }
 

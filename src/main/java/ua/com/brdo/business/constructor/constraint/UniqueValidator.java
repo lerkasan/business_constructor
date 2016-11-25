@@ -7,7 +7,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.constraint.Unique;
 import ua.com.brdo.business.constructor.service.UserService;
 
 @Component
@@ -18,6 +17,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     private String type = "";
 
+    @Override
     public void initialize(Unique annotation) {
         switch (annotation.type()) {
             case "email":

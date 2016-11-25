@@ -17,9 +17,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.service.OptionService;
 
+import static java.lang.Long.parseLong;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -50,19 +52,23 @@ public class OptionController {
 
     @GetMapping(path = "/{id}")
     public Option getOption(@PathVariable String id) {
-        Long longId = Integer.valueOf(id).longValue();
+        long longId = parseLong(id);
         return optionService.findById(longId);
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
     public Option updateOption(@PathVariable String id, @Valid @RequestBody Option option) {
+        long longId = parseLong(id);
+        if (optionService.findById(longId) == null) {
+            throw new NotFoundException("Option with id = " + id + " does not exist.");
+        }
         option.setId(Long.valueOf(id));
         return optionService.update(option);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteOption(@PathVariable String id) {
-        Long longId = Integer.valueOf(id).longValue();
+        long longId = parseLong(id);
         optionService.delete(longId);
         return ResponseEntity
                 .noContent()

@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
+
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ControllerAdvice
@@ -51,6 +54,7 @@ public class ControllerAdviceHandler {
     @ResponseStatus(value = UNPROCESSABLE_ENTITY)
     @ResponseBody
     public Map<String, String> handleIllegalArgumentException(Exception e) {
+
         return Collections.singletonMap("message", e.getMessage());
     }
 
@@ -58,6 +62,13 @@ public class ControllerAdviceHandler {
     @ResponseStatus(value = INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Map<String, String> handleRuntimeException(Exception e) {
+        return Collections.singletonMap("message", e.getMessage());
+    }
+
+    @ExceptionHandler(value = NotFoundException.class)
+    @ResponseStatus(value = NOT_FOUND)
+    @ResponseBody
+    public Map<String, String> handleNotFoundException(Exception e) {
         return Collections.singletonMap("message", e.getMessage());
     }
 }

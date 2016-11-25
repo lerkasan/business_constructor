@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.QuestionOption;
@@ -25,6 +26,7 @@ import ua.com.brdo.business.constructor.service.OptionService;
 import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
+import static java.lang.Long.parseLong;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -59,19 +61,23 @@ public class QuestionController {
 
     @GetMapping(path = "/{id}")
     public Question getQuestion(@PathVariable String id) {
-        Long longId = Integer.valueOf(id).longValue();
+        long longId = parseLong(id);
         return questionService.findById(longId);
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
     public Question updateQuestion(@PathVariable String id, @Valid @RequestBody Question question) {
+        long longId = parseLong(id);
+        if (questionService.findById(longId) == null) {
+            throw new NotFoundException("Question with id = " + id + " does not exist.");
+        }
         question.setId(Long.valueOf(id));
         return questionService.update(question);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteQuestion(@PathVariable String id) {
-        Long longId = Integer.valueOf(id).longValue();
+        long longId = parseLong(id);
         questionService.delete(longId);
         return ResponseEntity
                 .noContent()
@@ -81,7 +87,7 @@ public class QuestionController {
     @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createOption(@PathVariable String questionId, @Valid @RequestBody Option option) {
         Option createdOption = optionService.create(option);
-        Question question = questionService.findById(Long.valueOf(questionId));
+        Question question = questionService.findById(parseLong(questionId));
         questionService.addOption(question, createdOption);
         question = questionService.update(question);
         URI location = ServletUriComponentsBuilder
@@ -93,8 +99,8 @@ public class QuestionController {
 
     @GetMapping(path = "/{questionId}/options")
     public List<Option> listOptions(@PathVariable String questionId) {
-        List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(Long.valueOf(questionId));
-        List<Option> options = new ArrayList<Option>();
+        List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(parseLong(questionId));
+        List<Option> options = new ArrayList<>();
         questionOptions.forEach(questionOption ->
                 options.add(optionService
                         .findById(questionOption
@@ -104,14 +110,9 @@ public class QuestionController {
 
     @DeleteMapping(path = "/{questionId}/options/{optionId}")
     public ResponseEntity deleteOption(@PathVariable String optionId, @PathVariable String questionId) {
-        long questionIdL = Long.valueOf(questionId);
-        long optionIdL = Long.valueOf(optionId);
-       /* Question question = questionService.findById(questionIdL);
-        Option option = optionService.findById(optionIdL);
-        questionService.deleteOption(question, option);
-        */
+        long questionIdL = parseLong(questionId);
+        long optionIdL = parseLong(optionId);
         questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
-       // questionService.update(question);
         return ResponseEntity
                 .noContent()
                 .build();

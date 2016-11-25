@@ -4,6 +4,7 @@ package ua.com.brdo.business.constructor.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,13 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/index/*", "/register/*").permitAll();
-                /*.antMatchers("/api**").hasAnyRole("ADMIN", "USER", "EXPERT")
-                .antMatchers("/api/**").authenticated(); */
+                .antMatchers(HttpMethod.GET, "/api/questions/**", "/api/options/**").hasRole("USER")
+                .antMatchers("/api/**", "/api/questions/**", "/api/options/**").hasAnyRole("ADMIN", "EXPERT") //TODO: how to list question for users
+                .antMatchers("/index/*", "/register/*").permitAll()
+                .anyRequest().authenticated();
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.formLogin().successHandler(authenticationSuccessHandler);

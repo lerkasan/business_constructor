@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.InputTypeRepository;
-import ua.com.brdo.business.constructor.repository.OptionRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
@@ -21,6 +21,8 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 public class QuestionServiceImpl implements QuestionService {
 
     private final String ROLE_EXPERT = "ROLE_EXPERT";
+
+    private final String ROLE_USER = "ROLE_USER";
 
     private QuestionRepository questionRepo;
 
@@ -33,10 +35,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private void beforePersist(final Question question) {
+        InputType defaultInputType = new InputType();
         Objects.requireNonNull(question);
         InputType inputType = question.getInputType();
-        Objects.requireNonNull(inputType);
-        if (!inputTypeRepo.findByTitle(inputType.getTitle()).isPresent()) {
+        Optional<InputType> inputTypeOptional = inputTypeRepo.findByTitle("checkbox");
+        if (inputTypeOptional.isPresent()) {
+            defaultInputType = inputTypeOptional.get();
+        }
+        if (inputType == null) {
+            question.setInputType(defaultInputType);
+        } else if (!inputTypeRepo.findByTitle(inputType.getTitle()).isPresent()) {
             inputTypeRepo.saveAndFlush(inputType);
         }
     }
@@ -46,8 +54,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public Question create(final Question question) {
         beforePersist(question);
-        Question savedQuestion = questionRepo.saveAndFlush(question);
-        return savedQuestion;
+        return questionRepo.saveAndFlush(question);
     }
 
     @Override
@@ -55,14 +62,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Secured(ROLE_EXPERT)
     public Question update(final Question question) {
         beforePersist(question);
-        Question savedQuestion = questionRepo.saveAndFlush(question);
-        return savedQuestion;
+        return questionRepo.saveAndFlush(question);
     }
 
     @Override
     @Transactional
     @Secured(ROLE_EXPERT)
     public void delete(final long id) {
+        if (questionRepo.findOne(id) == null) {
+            throw new NotFoundException("Question with id = " + id + " does not exist.");
+        }
         questionRepo.delete(id);
     }
 
@@ -77,6 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Secured({ROLE_EXPERT, ROLE_USER})
     public List<Question> findAll() {
         return questionRepo.findAll();
     }

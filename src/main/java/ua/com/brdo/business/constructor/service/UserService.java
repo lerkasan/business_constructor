@@ -1,13 +1,15 @@
 package ua.com.brdo.business.constructor.service;
 
-import ua.com.brdo.business.constructor.entity.Role;
-import ua.com.brdo.business.constructor.entity.User;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
     User create(User user);
+
+    User create(User user, Role role);
 
     User update(User user);
 
@@ -27,9 +29,7 @@ public interface UserService {
 
     boolean revokeRole(User user, Role role);
 
-    User register(User user, Role role);
+    boolean isEmailAvailable(String email);
 
-    User registerUser(User user);
-
-    void encodePassword(User user);
+    boolean isUsernameAvailable(String username);
 }

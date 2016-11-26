@@ -2,9 +2,10 @@ package ua.com.brdo.business.constructor.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ua.com.brdo.business.constructor.entity.User;
 
 import java.util.Optional;
+
+import ua.com.brdo.business.constructor.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -13,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     int countByEmailIgnoreCase(String email);
+
+    int countByUsernameIgnoreCase(String username);
 }

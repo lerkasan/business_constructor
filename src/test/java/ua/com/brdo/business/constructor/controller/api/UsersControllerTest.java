@@ -44,6 +44,7 @@ public class UsersControllerTest {
     public void createUser() {
         user.setUsername("UserFromUsersController");
         user.setEmail("UserFrom@UsersController.com");
+        user.setPassword("password");
         user.setRawPassword("password");
         userRepo.saveAndFlush(user);
     }

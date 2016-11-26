@@ -46,6 +46,7 @@ public class UserServiceTest {
         User user = new User();
         user.setUsername("UserFromUserService");
         user.setEmail("UserFrom@UserService.com");
+        user.setPassword("password");
         user.setRawPassword("password");
         userRepository.saveAndFlush(user);
         return user;

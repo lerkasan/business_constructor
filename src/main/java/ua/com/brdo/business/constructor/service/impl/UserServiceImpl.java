@@ -8,16 +8,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -71,9 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean isEmail(String email) {
-        if ((email == null)||(email.equals("")))
-            return false;
-        else return (userRepo.countByEmailIgnoreCase(email) > 0);
+        return (userRepo.countByEmailIgnoreCase(email) > 0);
     }
 
     @Override

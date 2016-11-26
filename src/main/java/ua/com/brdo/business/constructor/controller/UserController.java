@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-
-import javax.validation.Valid;
-
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.UserService;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 

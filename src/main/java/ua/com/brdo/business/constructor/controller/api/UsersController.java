@@ -19,8 +19,6 @@ public class UsersController {
 
     @GetMapping("/available")
     public boolean isAvailableEmailGet(@RequestParam("email") String email) {
-        if ((email == null)||(email.equals("")))
-            return false;
-        else return !userService.isEmail(email);
+        return !userService.isEmail(email);
     }
 }

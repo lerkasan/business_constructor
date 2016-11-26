@@ -1,38 +1,33 @@
 package ua.com.brdo.business.constructor.service;
 
-import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Optional;
-import java.util.Set;
-
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 public class UserServiceTest {
 
     @Mock
@@ -44,13 +39,31 @@ public class UserServiceTest {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private User createUser() {
+        User user = new User();
+        user.setUsername("UserFromUserService");
+        user.setEmail("UserFrom@UserService.com");
+        user.setRawPassword("password");
+        userRepository.saveAndFlush(user);
+        return user;
+    }
+    private String noSuchEmailCreator() {
+        String noSuchEmail = new String("noSuch@email.com");
+        while (userRepo.countByEmailIgnoreCase(noSuchEmail) > 0) {
+            noSuchEmail += "noSuch";
+        }
+        return noSuchEmail;
+    }
     @InjectMocks
     private UserService userService = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
-
+    @Autowired
+    private UserService userServiceAutowired;
     private User mockUser;
     private Role role;
 
-    private final String email = "test_user@mail.com";
 
     @Before
     public void init() {
@@ -65,15 +78,7 @@ public class UserServiceTest {
         when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
         when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
         when(userRepo.countByEmailIgnoreCase("some_user1@mail.com")).thenReturn(1);
-        when(userRepo.countByEmailIgnoreCase(anyString())).thenAnswer(new Answer<Integer>() {
-            @Override
-            public Integer answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
 
-                if (((String) args[0]).equalsIgnoreCase(email)) return 1;
-                else return 0;
-            }
-        });
         role = roleRepo.findByTitle("ROLE_USER").get();
     }
 
@@ -125,15 +130,14 @@ public class UserServiceTest {
 
         assertNotNull(user);
     }
-
     @Test
-    public void isEmailTestTrue() {
-        assertTrue(userService.isEmail(email.toUpperCase()));
+    public void shouldReturnTrueIsEmailTest() {
+        User user = createUser();
+        assertTrue(userServiceAutowired.isEmail(user.getEmail().toUpperCase()));
 
     }
     @Test
-    public void isEmailTestFalse() {
-        assertFalse(userService.isEmail(email+"Incorrect"));
-        assertFalse(userService.isEmail(null));
+    public void shouldReturnFalseIsEmailTest() {
+        assertFalse(userServiceAutowired.isEmail(noSuchEmailCreator()));
     }
 }

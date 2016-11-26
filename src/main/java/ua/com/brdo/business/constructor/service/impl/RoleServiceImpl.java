@@ -3,14 +3,13 @@ package ua.com.brdo.business.constructor.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.repository.RoleRepository;
+import ua.com.brdo.business.constructor.service.RoleService;
 
 import java.util.List;
 import java.util.Objects;
-
-import ua.com.brdo.business.constructor.model.Role;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
-import ua.com.brdo.business.constructor.repository.RoleRepository;
-import ua.com.brdo.business.constructor.service.RoleService;
 
 @Service("RoleService")
 public class RoleServiceImpl implements RoleService {

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -14,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,9 +53,9 @@ public class UsersControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
     }
-
+    @WithMockUser
     @Test
     public void shouldReturnFalseUniqueEmailTest() throws Exception {
         createUser();
@@ -62,12 +64,18 @@ public class UsersControllerTest {
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().string(Boolean.FALSE.toString()));
     }
-
+    @WithMockUser
     @Test
     public void shouldReturnTrueUniqueEmailTest() throws Exception {
         this.mockMvc.perform(get("/api/users/available").param("email", noSuchEmailCreator()).accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().string(Boolean.TRUE.toString()));
+    }
+
+    @Test
+    public void shouldReturn401UnauthorizedUserEmailTest() throws Exception {
+        this.mockMvc.perform(get("/api/users/available").param("email", user.getEmail()).accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnauthorized());
     }
 }

@@ -1,7 +1,9 @@
 package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -20,14 +22,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import ua.com.brdo.business.constructor.Application;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.Application;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -41,6 +39,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {Application.class})
 public class RegistrationTest {
 
+    @ClassRule
+    public static final SpringClassRule SCR = new SpringClassRule();
+
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
+
     @Autowired
     private WebApplicationContext wac;
 
@@ -51,12 +55,6 @@ public class RegistrationTest {
     private Map<String, String> invalidUserData = new HashMap<>();
 
     private TestContextManager testContextManager;
-
-    @ClassRule
-    public static final SpringClassRule SCR = new SpringClassRule();
-
-    @Rule
-    public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
     @Before
     @SneakyThrows

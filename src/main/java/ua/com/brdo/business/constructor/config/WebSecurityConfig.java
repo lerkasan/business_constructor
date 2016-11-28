@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/users/available**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/questions/**", "/api/options/**").hasRole("USER")
                 .antMatchers("/api/**", "/api/questions/**", "/api/options/**").hasAnyRole("ADMIN", "EXPERT") //TODO: how to list question for users
                 .antMatchers("/index/*", "/register/*").permitAll()

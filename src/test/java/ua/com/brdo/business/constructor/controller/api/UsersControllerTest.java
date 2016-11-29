@@ -74,8 +74,8 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void shouldReturn401UnauthorizedUserEmailTest() throws Exception {
+    public void shouldReturn200AuthorizeUserEmailTest() throws Exception {
         this.mockMvc.perform(get("/api/users/available").param("email", user.getEmail()).accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
     }
 }

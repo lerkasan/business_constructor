@@ -32,3 +32,15 @@ INSERT INTO user_role (user_id, role_id) VALUES (5, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (6, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (6, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (7, 3);
+
+INSERT INTO permitType (id, name) VALUES
+  (1, 'permitType1');
+INSERT INTO permitType (id, name) VALUES
+  (2, 'permitType2');
+
+INSERT INTO permit (id, name, permitTypeId, legaldocumentid, formid, number, fileExample, term, propose, status) VALUES
+  (1, 'permit1', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permitTypeId, legaldocumentid, formid, number, fileExample, term, propose, status) VALUES
+  (2, 'permit2', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permitTypeId, legaldocumentid, formid, number, fileExample, term, propose, status) VALUES
+  (3, 'permit3', 2, 1, 1, ' ', '453d7a34', ' ', ' ', 1);

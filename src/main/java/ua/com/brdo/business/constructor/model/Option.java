@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -42,5 +43,5 @@ public class Option {
     private String title;
 
     @OneToMany(mappedBy = "option")
-    private Set<QuestionOption> questions;
+    private Set<QuestionOption> questions = new HashSet<>();
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.QuestionOption;
 import ua.com.brdo.business.constructor.repository.QuestionOptionRepository;
 import ua.com.brdo.business.constructor.service.QuestionOptionService;
@@ -64,7 +65,7 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
 
     @Override
     public QuestionOption findByQuestionAndOptionId(long questionId, long optionId) {
-        return questionOptionRepo.findByQuestionIdAndOptionId(questionId, optionId).orElseThrow(() -> new RuntimeException("Specified questionId and oprionId weren't found."));
+        return questionOptionRepo.findByQuestionIdAndOptionId(questionId, optionId).orElseThrow(() -> new NotFoundException("Specified question_id and option_id weren't found."));
     }
 
     @Override

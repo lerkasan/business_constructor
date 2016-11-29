@@ -21,8 +21,6 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    boolean isEmail(String email);
-
     List<User> findAll();
 
     boolean grantRole(User user, Role role);

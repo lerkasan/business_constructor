@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -50,7 +51,7 @@ public class Question {
     private InputType inputType;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private Set<QuestionOption> options;
+    private Set<QuestionOption> options = new HashSet<>();
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);

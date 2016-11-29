@@ -1,10 +1,7 @@
 package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import lombok.SneakyThrows;
-import org.hamcrest.Matchers;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -12,25 +9,34 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import ua.com.brdo.business.constructor.Application;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import lombok.SneakyThrows;
+import ua.com.brdo.business.constructor.Application;
+import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.UserRepository;
+
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -46,6 +52,9 @@ public class RegistrationTest {
     public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
     @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
@@ -56,20 +65,30 @@ public class RegistrationTest {
 
     private TestContextManager testContextManager;
 
+    private static User user = new User();
+
+    public void createUser() {
+        user.setUsername("UserFromUsersController");
+        user.setEmail("UserFrom@UsersController.com");
+        user.setPassword("password");
+        user.setRawPassword("password");
+        userRepo.saveAndFlush(user);
+    }
+
     @Before
     @SneakyThrows
     public void setup() {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+
         invalidUserData.put("username", "test1@mail.com");
         invalidUserData.put("email", "test1@mail.com");
         invalidUserData.put("rawPassword", "123456789");
     }
 
-    @SneakyThrows
     @Test
-    @Rollback
+    @SneakyThrows
     public void shouldSuccessfullyRegisterTest() {
         Map<String, String> validUserData = new HashMap<>();
         validUserData.put("username", "test@mail.com");
@@ -80,12 +99,14 @@ public class RegistrationTest {
         this.mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(validUserDataJson))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.rawPassword").doesNotExist());
     }
 
-    @SneakyThrows
     @Test
     @Parameters({"testmail", "user@localhost"})
+    @SneakyThrows
     public void shouldRejectRegisterWrongEmailTest(String invalidEmail) {
         invalidUserData.put("email", invalidEmail);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
@@ -94,12 +115,12 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("Incorrect format of e-mail."))));
+                .andExpect(content().string((containsString("Incorrect format of e-mail."))));
     }
 
-    @SneakyThrows
     @Test
     @Parameters({"", "1", "1234", "1234567", "123456789012345678901234567890123"})
+    @SneakyThrows
     public void shouldRejectRegisterPasswordShortTest(String invalidPassword) {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
@@ -108,12 +129,12 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("Password length must be between 8 and 32 characters."))));
+                .andExpect(content().string((containsString("Password length must be between 8 and 32 characters."))));
     }
 
-    @SneakyThrows
     @Test
     @Parameters({"абвгдежзийкл", "abcdФz923435m"})
+    @SneakyThrows
     public void shouldRejectRegisterPasswordUnallowedCharsTest(String invalidPassword) {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
@@ -122,11 +143,11 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Password could include upper and lower case latin letters, numerals (0-9) and special symbols."));
+                .andExpect(jsonPath("$.message").value("Password could include upper and lower case latin letters, numerals (0-9) and special symbols."));
     }
 
-    @SneakyThrows
     @Test
+    @SneakyThrows
     public void shouldRejectRegisterEmailNotUniqueTest() {
         String nonUniqueEmail = "some_user1@mail.com";
         invalidUserData.put("email", nonUniqueEmail);
@@ -136,11 +157,11 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User with this e-mail is already registered. Try another e-mail."));
+                .andExpect(jsonPath("$.message").value("User with this e-mail is already registered. Try another e-mail."));
     }
 
-    @SneakyThrows
     @Test
+    @SneakyThrows
     public void shouldRejectRegisterReceiveNoPasswordTest() {
         String invalidUserDataJson = "{\"email\": \"email@mail.com\"}";
 
@@ -148,11 +169,11 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("Password field is required."))));
+                .andExpect(content().string((containsString("Password field is required."))));
     }
 
-    @SneakyThrows
     @Test
+    @SneakyThrows
     public void shouldRejectRegisterReceiveNoEmailTest() {
         String invalidUserDataJson = "{\"password\": \"12345678901\"}";
 
@@ -160,11 +181,11 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("E-mail field is required."))));
+                .andExpect(content().string((containsString("E-mail field is required."))));
     }
 
-    @SneakyThrows
     @Test
+    @SneakyThrows
     public void shouldRejectRegisterReceiveEmptyJsonTest() {
         String invalidEmplyJson = "{}";
 
@@ -172,18 +193,36 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidEmplyJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(content().string((Matchers.containsString("Password field is required."))))
-                .andExpect(content().string((Matchers.containsString("E-mail field is required."))));
+                .andExpect(content().string((containsString("Password field is required."))))
+                .andExpect(content().string((containsString("E-mail field is required."))));
     }
 
-    @SneakyThrows
     @Test
     @Parameters({"vbvsbb", "{vbvsbb}"})
+    @SneakyThrows
     public void shouldRejectRegisterReceiveNotJsonTest(String notJson) {
         this.mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(notJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Received malformed JSON."));
+                .andExpect(jsonPath("$.message").value("Received malformed JSON."));
+    }
+
+    @WithMockUser
+    @Test
+    public void shouldReturnFalseUniqueEmailTest() throws Exception {
+        createUser();
+        this.mockMvc.perform(get("/api/users/available").param("email", user.getEmail()).accept(APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().string("false"));
+    }
+
+    @Test
+    public void shouldReturnTrueUniqueEmailTest() throws Exception {
+        this.mockMvc.perform(get("/api/users/available").param("email", "noSuch@email.com").accept(APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().string("true"));
     }
 }

@@ -112,6 +112,12 @@ public class QuestionController {
     public ResponseEntity deleteOption(@PathVariable String optionId, @PathVariable String questionId) {
         long questionIdL = parseLong(questionId);
         long optionIdL = parseLong(optionId);
+        Question question = questionService.findById(questionIdL);
+        Option option = optionService.findById(optionIdL);
+        if (question == null || option == null) {
+            throw new NotFoundException("Specified question or option was not found.");
+        }
+        questionService.deleteOption(question, option);
         questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         return ResponseEntity
                 .noContent()

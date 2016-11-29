@@ -8,8 +8,7 @@ CREATE TABLE role (
 
 
 CREATE UNIQUE INDEX role_title_idx
- ON role
- ( title );
+ON role ( title );
 
 DROP TABLE IF EXISTS user;
 
@@ -27,12 +26,10 @@ CREATE TABLE user (
 
 
 CREATE UNIQUE INDEX user_email_idx
- ON user
- ( email );
+ON user ( email );
 
- CREATE UNIQUE INDEX user_username_idx
- ON user
- ( email );
+CREATE UNIQUE INDEX user_username_idx
+ON user ( email );
 
 DROP TABLE IF EXISTS user_role;
 
@@ -41,27 +38,6 @@ CREATE TABLE user_role (
                 role_id BIGINT NOT NULL,
                 PRIMARY KEY (user_id, role_id)
 );
-
-INSERT INTO role (title) VALUES ('ROLE_USER');
-INSERT INTO role (title) VALUES ('ROLE_ADMIN');
-INSERT INTO role (title) VALUES ('ROLE_EXPERT');
-INSERT INTO role (title) VALUES ('ROLE_MODERATOR');
-
-INSERT INTO user (username, email, password_hash, creation_date) VALUES
-  ('some_user1', 'some_user1@mail.com', '$2a$10$cHVXytfvSSDn5TAm5T/SfedKlSbEzBvFt2Y.AOqgA5jfhIOAlgZ4m',
-   now());
-INSERT INTO user (username, email, password_hash, creation_date) VALUES
-  ('admin', 'some_admin1@mail.com', '$2a$10$V/MgrWzBqwypVcu/RQMPt.iBYQlpHVHycyaGXCM.UwyeOLoSg6VwO',
-   now());
-INSERT INTO user (username, email, password_hash, creation_date) VALUES
-  ('expert', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
-   now());
-
-INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
-INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (2, 3);
-INSERT INTO user_role (user_id, role_id) VALUES (3, 3);
-
 
 ALTER TABLE question DROP FOREIGN KEY input_type_question_fk;
 
@@ -165,22 +141,16 @@ REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE option_ ADD CONSTRAINT question_option_fk
-FOREIGN KEY (question_id)
-REFERENCES question (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
 ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
-ON DELETE NO ACTION
+ON DELETE CASCADE
 ON UPDATE NO ACTION;
 
 ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
-FOREIGN KEY (next_question_id)
-REFERENCES question (id)
-ON DELETE NO ACTION
+FOREIGN KEY (option_id)
+REFERENCES option (id)
+ON DELETE CASCADE
 ON UPDATE NO ACTION;
 
 ALTER TABLE questionnaire ADD CONSTRAINT business_type_questionnaire_fk
@@ -201,7 +171,39 @@ REFERENCES question_option (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
+ALTER TABLE user_role ADD CONSTRAINT user_role_user_id_fk
+FOREIGN KEY (user_id)
+REFERENCES user (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE user_role ADD CONSTRAINT user_role_role_id_fk
+FOREIGN KEY (role_id)
+REFERENCES role (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
 insert into input_type(title) values("checkbox");
 insert into input_type(title) values("droplist");
 insert into input_type(title) values("radiobutton");
 insert into input_type(title) values("text");
+
+INSERT INTO role (title) VALUES ('ROLE_USER');
+INSERT INTO role (title) VALUES ('ROLE_ADMIN');
+INSERT INTO role (title) VALUES ('ROLE_EXPERT');
+INSERT INTO role (title) VALUES ('ROLE_MODERATOR');
+
+INSERT INTO user (username, email, password_hash, creation_date) VALUES
+  ('some_user1', 'some_user1@mail.com', '$2a$10$cHVXytfvSSDn5TAm5T/SfedKlSbEzBvFt2Y.AOqgA5jfhIOAlgZ4m',
+   now());
+INSERT INTO user (username, email, password_hash, creation_date) VALUES
+  ('admin', 'some_admin1@mail.com', '$2a$10$V/MgrWzBqwypVcu/RQMPt.iBYQlpHVHycyaGXCM.UwyeOLoSg6VwO',
+   now());
+INSERT INTO user (username, email, password_hash, creation_date) VALUES
+  ('expert', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
+   now());
+
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 3);
+INSERT INTO user_role (user_id, role_id) VALUES (3, 3);

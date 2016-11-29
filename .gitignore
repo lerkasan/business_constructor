@@ -10,4 +10,4 @@ logs
 .springBeans
 *jquery*.js
 .vagrant
-*.log
+*.log*

@@ -34,18 +34,27 @@ public class QuestionServiceImpl implements QuestionService {
         this.inputTypeRepo = inputTypeRepo;
     }
 
+    @Transactional
     private void beforePersist(final Question question) {
         InputType defaultInputType = new InputType();
         Objects.requireNonNull(question);
+        Long questionId = question.getId();
         InputType inputType = question.getInputType();
-        Optional<InputType> inputTypeOptional = inputTypeRepo.findByTitle("checkbox");
-        if (inputTypeOptional.isPresent()) {
-            defaultInputType = inputTypeOptional.get();
+        Optional<InputType> defaultInputTypeOptional = inputTypeRepo.findByTitle("checkbox");
+        if (defaultInputTypeOptional.isPresent()) {
+            defaultInputType = defaultInputTypeOptional.get();
         }
         if (inputType == null) {
-            question.setInputType(defaultInputType);
+            if (questionId != null) { //not to set default inputType when updating existing question if already set inputType field isn't repeated in json
+                question.setInputType(questionRepo.findOne(questionId)
+                        .getInputType());
+            } else {
+                question.setInputType(defaultInputType);
+            }
         } else if (!inputTypeRepo.findByTitle(inputType.getTitle()).isPresent()) {
             inputTypeRepo.saveAndFlush(inputType);
+        } else {
+            question.setInputType(inputTypeRepo.findByTitle(inputType.getTitle()).get());
         }
     }
 
@@ -102,28 +111,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Secured(ROLE_EXPERT)
-    public Question addOptions(Question question, List<Option> options) {
-        Objects.requireNonNull(question);
-        Objects.requireNonNull(options);
-        options.forEach(option -> addOption(question, option));
-        return question;
-    }
-
-    @Override
-    @Secured(ROLE_EXPERT)
     public Question deleteOption(Question question, Option option) {
         Objects.requireNonNull(question);
         Objects.requireNonNull(option);
         question.deleteOption(option);
-        return question;
-    }
-
-    @Override
-    @Secured(ROLE_EXPERT)
-    public Question deleteOptions(Question question, List<Option> options) {
-        Objects.requireNonNull(question);
-        Objects.requireNonNull(options);
-        options.forEach(option -> deleteOption(question, option));
         return question;
     }
 }

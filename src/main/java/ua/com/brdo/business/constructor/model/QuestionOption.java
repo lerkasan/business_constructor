@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -39,7 +40,7 @@ public class QuestionOption {
     @JoinColumn(name = "option_id")
     private Option option;
 
-    // private Question nextQuestion;
+    // private Question nextQuestion; TODO - uncomment in further tasks
 
-    // private Procedure procedure;
+    // private Procedure procedure; TODO - uncomment in further tasks
 }

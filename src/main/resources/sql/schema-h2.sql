@@ -4,7 +4,6 @@ CREATE TABLE role (
   CONSTRAINT role_id PRIMARY KEY (id)
 );
 
-
 CREATE UNIQUE INDEX user_role_title_idx
 ON role (title);
 
@@ -33,6 +32,13 @@ CREATE TABLE user_role (
   CONSTRAINT user_role_id PRIMARY KEY (id)
 );
 
+CREATE TABLE option_ (
+                id IDENTITY NOT NULL,
+                title VARCHAR(1000) NOT NULL,
+                CONSTRAINT option_id PRIMARY KEY (id)
+);
+
+
 CREATE TABLE input_type (
                 id IDENTITY NOT NULL,
                 title VARCHAR(255) NOT NULL,
@@ -43,19 +49,44 @@ CREATE TABLE input_type (
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                parent_id BIGINT,
-                next_id BIGINT,
                 input_type_id BIGINT NOT NULL,
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 
-CREATE UNIQUE INDEX question_text_idx
-ON question (text);
 
-CREATE UNIQUE INDEX input_type_title_idx
-ON input_type (title);
+CREATE TABLE question_option (
+                id IDENTITY NOT NULL,
+                question_id BIGINT NOT NULL,
+                option_id BIGINT NOT NULL,
+                procedure_id INTEGER,
+                next_question_id BIGINT,
+                CONSTRAINT question_option_id PRIMARY KEY (id)
+);
 
-/*
+ALTER TABLE question_option ADD CONSTRAINT option__question_option_fk
+FOREIGN KEY (option_id)
+REFERENCES option_ (id)
+ON DELETE CASCADE
+ON UPDATE NO ACTION;
+
+ALTER TABLE question ADD CONSTRAINT input_type_question_fk
+FOREIGN KEY (input_type_id)
+REFERENCES input_type (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
+ON DELETE CASCADE
+ON UPDATE NO ACTION;
+
+ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
+FOREIGN KEY (next_question_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
 ALTER TABLE user_role ADD CONSTRAINT user_role_user_id_fk
 FOREIGN KEY (user_id)
 REFERENCES user (id)
@@ -67,11 +98,3 @@ FOREIGN KEY (role_id)
 REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
-
-ALTER TABLE question ADD CONSTRAINT input_type_question_fk
-FOREIGN KEY (input_type_id)
-REFERENCES input_type (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-*/
-

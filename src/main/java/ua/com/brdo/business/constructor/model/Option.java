@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -21,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -38,10 +38,11 @@ public class Option {
     private Long id;
 
     @NotEmpty
-    @Size(max=500, message = "Maximum length of option is 500 characters.")
-    @Column(unique = true, nullable = false, length = 500)
+    @Size(max=1500, message = "Maximum length of option is 1500 characters.")
+    @Column(unique = true, nullable = false, length = 1500)
     private String title;
 
-    @OneToMany(mappedBy = "option")
-    private Set<QuestionOption> questions = new HashSet<>();
+    //it is neccessary to delete option occurrences from join table when option is deleted
+    @OneToMany(mappedBy = "option", cascade = ALL)
+    private Set<QuestionOption> questions;
 }

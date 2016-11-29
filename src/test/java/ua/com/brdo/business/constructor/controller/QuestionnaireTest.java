@@ -9,16 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.model.Option;
@@ -76,6 +72,8 @@ public class QuestionnaireTest {
 
     private final String USER = "USER";
 
+    private final String ADMIN = "ADMIN";
+
     private Question question;
 
     private Option option;
@@ -99,7 +97,17 @@ public class QuestionnaireTest {
     @Test
     @WithMockUser(roles = {USER})
     @SneakyThrows
-    public void shouldReturnQuestionsList() {
+    public void shouldShowQuestionListToUser() {
+        mockMvc.perform(get(QUESTIONS_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$").isArray()));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldShowQuestionListToExpert() {
         mockMvc.perform(get(QUESTIONS_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -129,9 +137,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectQuestionCreationByUserTest() {
+    public void shouldRejectQuestionCreationNotByExpertTest() {
         this.mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isForbidden());
@@ -186,9 +194,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectUpdateQuestionByUserTest() {
+    public void shouldRejectUpdateQuestionByNotExpertTest() {
         String updatedTextField = "{\"text\":\"What is your name?\"}";
 
         this.mockMvc.perform(
@@ -206,9 +214,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectDeleteQuestionByUserTest() {
+    public void shouldRejectDeleteQuestionByNotExpertTest() {
         this.mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isForbidden());
@@ -268,9 +276,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectOptionCreationByUserTest() {
+    public void shouldRejectOptionCreationByNotExpertTest() {
         this.mockMvc.perform(
                 post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isForbidden());
@@ -310,9 +318,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectUpdateOptionByUserTest() {
+    public void shouldRejectUpdateOptionByNotExpertTest() {
         String updatedTextField = "{\"title\":\"Updated option\"}";
 
         this.mockMvc.perform(
@@ -330,9 +338,9 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
-    public void shouldRejectDeleteOptionByUserTest() {
+    public void shouldRejectDeleteOptionByNotExpertTest() {
         this.mockMvc.perform(
                 delete(OPTIONS_URL + option.getId()))
                 .andExpect(status().isForbidden());
@@ -375,16 +383,16 @@ public class QuestionnaireTest {
 
     @Ignore
     @Test
-    @Rollback(false)
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRemoveOptionFromGivenQuestionByExpertTest() {
-        question.addOption(option);
-        question = questionService.update(question);
-        List<QuestionOption> options = new ArrayList<>(question.getOptions());
+        QuestionOption questionOption = new QuestionOption();
+        questionOption.setOption(option);
+        questionOption.setQuestion(question);
+        questionOption = questionOptionService.create(questionOption);
 
         this.mockMvc.perform(
-                delete(QUESTIONS_URL + question.getId() + "/options/" + options.get(0).getId()))
+                delete(QUESTIONS_URL + question.getId() + "/options/" + questionOption.getId()))
                 .andExpect(status().isNoContent());
     }
 

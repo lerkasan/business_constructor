@@ -21,9 +21,5 @@ public interface QuestionService {
 
     Question addOption(Question question, Option option);
 
-    Question addOptions(Question question, List<Option> options);
-
     Question deleteOption(Question question, Option option);
-
-    Question deleteOptions(Question question, List<Option> options);
 }

@@ -56,16 +56,16 @@ CREATE UNIQUE INDEX permitTypeNameIndx
 ON permit_type (name);
 
 CREATE TABLE permit (
-  id               BIGINT AUTO_INCREMENT NOT NULL,
-  name             VARCHAR(1023)         NOT NULL,
+  id                 BIGINT AUTO_INCREMENT NOT NULL,
+  name               VARCHAR(750)          NOT NULL,
   permit_type_id     BIGINT                NOT NULL,
   legal_document_id  BIGINT                NOT NULL,
-  form_id           BIGINT                NOT NULL,
-  number           VARCHAR(11)           NOT NULL,
-  file_example      BLOB,
-  term             varchar(3000)         NOT NULL,
-  propose          varchar(3000)         NOT NULL,
-  status           TINYINT               NOT NULL,
+  form_id            BIGINT                NOT NULL,
+  number             VARCHAR(11)           NOT NULL,
+  file_example       BLOB,
+  term               varchar(3000)         NOT NULL,
+  propose            varchar(3000)         NOT NULL,
+  status             TINYINT               NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
   FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
 );

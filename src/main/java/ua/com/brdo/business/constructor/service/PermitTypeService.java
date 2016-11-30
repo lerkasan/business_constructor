@@ -11,7 +11,7 @@ public interface PermitTypeService {
 
     void delete(Long id);
 
-    PermitType findById(Long id) throws Throwable;
+    PermitType findById(Long id);
 
     PermitType findByName(String name);
 

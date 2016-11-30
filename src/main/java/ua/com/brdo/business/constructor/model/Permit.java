@@ -29,17 +29,17 @@ public class Permit {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "permittypeid")
+    @Column(name = "permit_type_id")
     private Long permitTypeId;
-    @Column(name = "legaldocumentid")
+    @Column(name = "legal_document_id")
     private Long legalDocumentId;
-    @Column(name = "formid")
+    @Column(name = "form_id")
     private Long formId;
     @Column(name = "number")
     private String number;
     @Lob
     @Basic(fetch=FetchType.LAZY)
-    @Column(name = "fileexample", columnDefinition = "blob")
+    @Column(name = "file_example", columnDefinition = "blob")
     private byte[] fileExample;
     @Column(name = "term")
     private String term;
@@ -49,6 +49,6 @@ public class Permit {
     private Byte status;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permittypeid", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "permit_type_id", referencedColumnName = "id", insertable = false, updatable = false)
     private PermitType permitType;
 }

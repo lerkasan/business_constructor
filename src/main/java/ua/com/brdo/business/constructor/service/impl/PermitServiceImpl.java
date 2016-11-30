@@ -19,8 +19,8 @@ import static java.util.Objects.isNull;
 @Service
 public class PermitServiceImpl implements PermitService {
 
-    PermitRepository permitRepository;
-    PermitTypeRepository permitTypeRepository;
+    private PermitRepository permitRepository;
+    private PermitTypeRepository permitTypeRepository;
 
     @Autowired
     public PermitServiceImpl(PermitRepository permitRepository, PermitTypeRepository permitTypeRepository) {

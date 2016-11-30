@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.controller;
+package ua.com.brdo.business.constructor.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.service.PermitService;
@@ -27,8 +28,8 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api")
 public class PermitController {
 
-    PermitTypeService permitTypeService;
-    PermitService permitService;
+    private PermitTypeService permitTypeService;
+    private PermitService permitService;
 
     @Autowired
     public PermitController(PermitTypeService permitTypeService, PermitService permitService){
@@ -39,25 +40,18 @@ public class PermitController {
     @GetMapping(path = "/permits/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity getPermit(@PathVariable String id)throws Throwable {
         Permit permit = permitService.findById(Long.parseLong(id));
-        if(permit != null){
-            return ResponseEntity.ok().body(permit);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND");
-        }
-
+        if(permit == null) throw new NotFoundException(String.format("Permit with id=%s is not found", id));
+        return ResponseEntity.ok().body(permit);
     }
 
-    @GetMapping(path = "/permitstype/{id}", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/permittypes/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity getPermitType(@PathVariable String id) throws Throwable {
         PermitType permitType = permitTypeService.findById(Long.parseLong(id));
-        if(permitType != null){
-            return ResponseEntity.ok().body(permitType);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND");
-        }
+        if(permitType == null) throw new NotFoundException(String.format("PermitType with id=%s is not found", id));
+        return ResponseEntity.ok().body(permitType);
     }
 
-    @PostMapping(path = "/permits/permittype/{id}", produces = APPLICATION_JSON_VALUE
+    @PostMapping(path = "/permits/permittypes/{id}", produces = APPLICATION_JSON_VALUE
                                     ,consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createPermit(@PathVariable String id, @RequestBody Permit permit) throws Throwable {
         PermitType permitType = permitTypeService.findById(Long.parseLong(id));
@@ -70,28 +64,30 @@ public class PermitController {
         return ResponseEntity.created(location).body(addedPermit);
     }
 
-    @PostMapping(path = "/permitstype", consumes = APPLICATION_JSON_VALUE
+    @PostMapping(path = "/permittypes", consumes = APPLICATION_JSON_VALUE
                                             ,produces = APPLICATION_JSON_VALUE)
     public ResponseEntity createPermitType(@RequestBody PermitType permitType){
         PermitType addedPermitType = permitTypeService.create(permitType);
         URI location = ServletUriComponentsBuilder
-                .fromUriString("permittype")
+                .fromUriString("permittypes")
                 .path("/{id}")
                 .buildAndExpand(addedPermitType.getId())
                 .toUri();
         return ResponseEntity.created(location).body(addedPermitType);
     }
 
-    @PutMapping(path = "/permits", consumes = APPLICATION_JSON_VALUE
+    @PutMapping(path = "/permits/{id}", consumes = APPLICATION_JSON_VALUE
                                         ,produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updatePermit(@RequestBody Permit permit){
+    public ResponseEntity updatePermit(@PathVariable String id, @RequestBody Permit permit){
+        permit.setId(Long.parseLong(id));
         Permit updatedPermit = permitService.update(permit);
         return ResponseEntity.ok().body(updatedPermit);
     }
 
-    @PutMapping(path = "/permitstype", consumes = APPLICATION_JSON_VALUE
+    @PutMapping(path = "/permittypes/{id}", consumes = APPLICATION_JSON_VALUE
                                             , produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updatePermitType(@RequestBody PermitType permitType){
+    public ResponseEntity updatePermitType(@PathVariable String id, @RequestBody PermitType permitType){
+        permitType.setId(Long.parseLong(id));
         PermitType updatedPermitType = permitTypeService.update(permitType);
         return ResponseEntity.ok().body(updatedPermitType);
     }
@@ -102,7 +98,7 @@ public class PermitController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
     }
 
-    @DeleteMapping(path = "/permitstype/{id}")
+    @DeleteMapping(path = "/permittypes/{id}")
     public ResponseEntity deletePermitType(@PathVariable String id){
         permitTypeService.delete(Long.parseLong(id));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");

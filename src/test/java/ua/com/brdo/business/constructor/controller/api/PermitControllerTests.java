@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.controller;
+package ua.com.brdo.business.constructor.controller.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +62,7 @@ public class PermitControllerTests {
 
     @Test
     public void shouldGetPermitTest() throws Throwable {
-        mvc.perform(get("/api/permits/2"))
+        mvc.perform(get("/api/permits/1"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -70,7 +70,7 @@ public class PermitControllerTests {
 
     @Test
     public void shouldGetPermitTypeTest() throws Throwable {
-        mvc.perform(get("/api/permitstype/1").with(user("admin").roles("admin")))
+        mvc.perform(get("/api/permittypes/2").with(user("admin").roles("admin")))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -79,7 +79,7 @@ public class PermitControllerTests {
     @WithMockUser
     @Test
     public void shouldAddNewPermitTest() throws Throwable {
-        mvc.perform(post("/api/permits/permittype/1").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/permits/permittypes/1").contentType(MediaType.APPLICATION_JSON)
                 .content(permitRequestData("create")))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -93,11 +93,11 @@ public class PermitControllerTests {
         Map<String, String> permitTypeData = new HashMap<>();
         permitTypeData.put("name", "permitType test");
         String validPermitType = jsonMapper.writeValueAsString(permitTypeData);
-        mvc.perform(post("/api/permitstype").contentType(MediaType.APPLICATION_JSON).content(validPermitType))
+        mvc.perform(post("/api/permittypes").contentType(MediaType.APPLICATION_JSON).content(validPermitType))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-        clearpermitType();
+        clearPermitType();
     }
 
     @WithMockUser
@@ -107,7 +107,7 @@ public class PermitControllerTests {
         permitTypeData.put("id", "1");
         permitTypeData.put("name", "parmitType");
         String validPermitType = jsonMapper.writeValueAsString(permitTypeData);
-        mvc.perform(put("/api/permitstype").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/permittypes/1").contentType(MediaType.APPLICATION_JSON)
                 .content(validPermitType))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -117,7 +117,7 @@ public class PermitControllerTests {
     @WithMockUser
     @Test
     public void shouldUpdatePermitTest() throws Throwable {
-        mvc.perform(put("/api/permits").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/permits/1").contentType(MediaType.APPLICATION_JSON)
                 .content(permitRequestData("update")))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -132,7 +132,7 @@ public class PermitControllerTests {
         permitTypeService.create(permitType);
         permitType = permitTypeService.findByName("should delete");
         Long id = permitType.getId();
-        mvc.perform(delete("/api/permitstype/" + id))
+        mvc.perform(delete("/api/permittypes/" + id))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
@@ -196,7 +196,7 @@ public class PermitControllerTests {
             permitService.delete(permit.getId());
         }
     }
-    private void clearpermitType(){
+    private void clearPermitType(){
         PermitType permitType = permitTypeService.findByName("permitType test");
         if(permitType != null){
             permitTypeService.delete(permitType.getId());

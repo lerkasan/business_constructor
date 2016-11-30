@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "permittype")
+@Table(name = "permit_type")
 @Data
 @EqualsAndHashCode(of = {"name"})
 public class PermitType {

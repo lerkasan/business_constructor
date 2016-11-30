@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS question;
 CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL,
+                input_type_id BIGINT NOT NULL DEFAULT 1,
                 PRIMARY KEY (id)
 );
 

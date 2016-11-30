@@ -62,7 +62,11 @@ public class QuestionController {
     @GetMapping(path = "/{id}")
     public Question getQuestion(@PathVariable String id) {
         long longId = parseLong(id);
-        return questionService.findById(longId);
+        Question question = questionService.findById(longId);
+        if (question == null) {
+            throw new NotFoundException("Question with id = " + id + " does not exist.");
+        }
+        return question;
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)

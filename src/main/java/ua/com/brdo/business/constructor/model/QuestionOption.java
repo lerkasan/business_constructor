@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -33,11 +34,11 @@ public class QuestionOption {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @PrimaryKeyJoinColumn(name="question_id", referencedColumnName="id")
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "option_id")
+    @PrimaryKeyJoinColumn(name="option_id", referencedColumnName="id")
     private Option option;
 
     // private Question nextQuestion; TODO - uncomment in further tasks

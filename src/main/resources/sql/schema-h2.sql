@@ -49,7 +49,7 @@ CREATE TABLE input_type (
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL,
+                input_type_id BIGINT NOT NULL DEFAULT 1,
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 

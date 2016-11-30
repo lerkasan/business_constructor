@@ -74,6 +74,10 @@ public class QuestionnaireTest {
 
     private final String ADMIN = "ADMIN";
 
+    private final String questionText = "Who are you?";
+
+    private final String optionTitle = "My option";
+
     private Question question;
 
     private Option option;
@@ -86,12 +90,32 @@ public class QuestionnaireTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 
         question = new Question();
-        question.setText("Who are you?");
+        question.setText(questionText);
         question = questionService.create(question);
 
         option = new Option();
-        option.setTitle("My option");
+        option.setTitle(optionTitle);
         option = optionService.create(option);
+    }
+
+    @Test
+    @WithMockUser(roles = {USER, EXPERT})
+    @SneakyThrows
+    public void shouldShowQuestion() {
+        mockMvc.perform(get(QUESTIONS_URL + question.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.text").value(questionText)));
+    }
+
+    @Test
+    @WithMockUser(roles = {USER, EXPERT})
+    @SneakyThrows
+    public void shouldRejectShowNonExistentQuestion() {
+        mockMvc.perform(get(QUESTIONS_URL + NON_EXISTENT_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value("Question with id = " + NON_EXISTENT_ID + " does not exist.")));
     }
 
     @Test
@@ -123,7 +147,7 @@ public class QuestionnaireTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.text").value("Who are you?")))
+                .andExpect((jsonPath("$.text").value(questionText)))
                 .andExpect((jsonPath("$.inputType.title").value("check")));
     }
 
@@ -156,7 +180,7 @@ public class QuestionnaireTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.text").value("Who are you?")))
+                .andExpect((jsonPath("$.text").value(questionText)))
                 .andExpect((jsonPath("$.inputType.title").value("checkbox")));
     }
 
@@ -263,7 +287,7 @@ public class QuestionnaireTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.title").value("My option")));
+                .andExpect((jsonPath("$.title").value(optionTitle)));
     }
 
     @Test
@@ -378,7 +402,7 @@ public class QuestionnaireTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.title").value("My option")));
+                .andExpect((jsonPath("$.title").value(optionTitle)));
     }
 
     @Ignore

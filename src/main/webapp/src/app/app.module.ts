@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
+import { CarouselComponent } from './carousel/carousel.component';
+
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -24,7 +27,9 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AppComponent,
     HomeComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    CarouselComponent
   ],
   providers: [
     ApiService

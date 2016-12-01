@@ -70,24 +70,6 @@ CREATE TABLE permit (
 CREATE UNIQUE INDEX permitNameIndx
 ON permit (name);
 
-ALTER TABLE question DROP FOREIGN KEY input_type_question_fk;
-
-ALTER TABLE question_questionnaire DROP FOREIGN KEY question_question_questionnaire_fk;
-
-ALTER TABLE question_option DROP FOREIGN KEY question_question_option_fk;
-
-ALTER TABLE option_ DROP FOREIGN KEY question_option_fk;
-
-ALTER TABLE question_question DROP FOREIGN KEY question_question_question_fk;
-
-ALTER TABLE questionnaire DROP FOREIGN KEY business_type_questionnaire_fk;
-
-ALTER TABLE question_questionnaire DROP FOREIGN KEY questionnaire_question_questionnaire_fk;
-
-ALTER TABLE user_answer DROP FOREIGN KEY question_option_user_answer_fk;
-
-ALTER TABLE question_option DROP FOREIGN KEY question_option_fk;
-
 DROP TABLE IF EXISTS input_type;
 
 DROP TABLE IF EXISTS business_type;

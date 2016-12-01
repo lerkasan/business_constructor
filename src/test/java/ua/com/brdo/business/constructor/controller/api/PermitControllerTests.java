@@ -14,6 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 @SpringBootTest
 public class PermitControllerTests {
 
@@ -44,10 +46,14 @@ public class PermitControllerTests {
 
     private static final CharacterEncodingFilter CHARACTER_ENCODING_FILTER = new CharacterEncodingFilter();
 
+    private static final String EXPERT = "EXPERT";
+
     @Autowired
     private WebApplicationContext webApplicationContext;
+
     @Autowired
     private PermitTypeService permitTypeService;
+
     @Autowired
     private PermitService permitService;
 
@@ -61,6 +67,7 @@ public class PermitControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldGetPermitTest() throws Throwable {
         mvc.perform(get("/api/permits/1"))
                 .andExpect(status().isOk())
@@ -69,15 +76,16 @@ public class PermitControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldGetPermitTypeTest() throws Throwable {
-        mvc.perform(get("/api/permittypes/2").with(user("admin").roles("admin")))
+        mvc.perform(get("/api/permittypes/2"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldAddNewPermitTest() throws Throwable {
         mvc.perform(post("/api/permits/permittypes/1").contentType(MediaType.APPLICATION_JSON)
                 .content(permitRequestData("create")))
@@ -87,8 +95,8 @@ public class PermitControllerTests {
         clearPermit();
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldAddNewPermitTypeTest() throws Throwable {
         Map<String, String> permitTypeData = new HashMap<>();
         permitTypeData.put("name", "permitType test");
@@ -100,8 +108,8 @@ public class PermitControllerTests {
         clearPermitType();
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldUpdatePermitTypeTest() throws Throwable {
         Map<String, String> permitTypeData = new HashMap<>();
         permitTypeData.put("id", "1");
@@ -114,8 +122,8 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldUpdatePermitTest() throws Throwable {
         mvc.perform(put("/api/permits/1").contentType(MediaType.APPLICATION_JSON)
                 .content(permitRequestData("update")))
@@ -124,8 +132,8 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldDeletePermitType() throws Throwable {
         PermitType permitType = new PermitType();
         permitType.setName("should delete");
@@ -137,8 +145,8 @@ public class PermitControllerTests {
                 .andDo(print());
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldDeletePermit() throws Throwable {
         Permit permit = new Permit();
         permit.setName("should delete");
@@ -156,11 +164,10 @@ public class PermitControllerTests {
         mvc.perform(delete("/api/permits/" + id))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
     }
 
-    @WithMockUser
     @Test
+    @WithMockUser(roles = {EXPERT})
     public void shouldGetListPermits() throws Throwable {
         mvc.perform(get("/api/permits"))
                 .andDo(print())
@@ -188,7 +195,6 @@ public class PermitControllerTests {
         String validPermit = jsonMapper.writeValueAsString(permitData);
         return validPermit;
     }
-
 
     private void clearPermit() {
         Permit permit = permitService.findByName("Test permit");

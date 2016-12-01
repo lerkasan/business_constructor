@@ -1,18 +1,14 @@
+
+<my-header>
+
+</my-header>
 <div class="container">
 	<div class="row first_row">
-		<div class="col-md-4 carousel_list">
-			<h4>Етапи реалізації бізнесу</h4>
-			<p>Ресторан</p>
-			<ul class="carousel_list__step">
-				<li>Реєстрація ФОП</li>
-				<li>Реєстрація за загальною системою</li>
-				<li>Реєстрація касового апарата</li>
-				<li>Реєстрація еквайрінгу</li>
-				<li>Отримання ліцензії на право реалізації тютюнових виробів</li>
-				<li>Отримання висновку Державно санітарно-епідеміологічної служби</li>
-				<li>Реєстрація відповідності пожежній безпеці</li>
-				<li>Отримання дозволу на розміщення зовнішньої реклами</li>
-			</ul>
+	<div class="col-md-4 carousel_list">
+	<my-carousel>
+		
+	</my-carousel>
+
 		</div>
 	<div class="col-md-8 questionnaire">			
 			<h3>Ви бажаєте розпочати бізнес?</h3>
@@ -22,13 +18,13 @@
 				<div class="radio">
 				  <label>
 				  	<input type="radio" name="radioReg">ФОП 
-				  	<a href="#" data-toggle="tooltip" title="Привет!">?</a>
+				  	<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  </label>
 				</div>
 				<div class="radio">
 				  <label>
 				  <input type="radio" name="radioReg">Юридична особа
-					<a href="#" data-toggle="tooltip" title="Привет!">?</a>
+					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  </label>
 				</div>
 			</div>
@@ -38,20 +34,20 @@
 				<div class="radio">
 				  <label>
 				  	<input type="radio" name="optradio">До 1 000 000 грн. на рік
-					<a href="#" data-toggle="tooltip" title="Привет!">?</a>
+					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 
 				  </label>
 				</div>
 				<div class="radio">
 				  <label>
 				  	<input type="radio" name="optradio">Від 1 000 000 грн. на рік
-					<a href="#" data-toggle="tooltip" title="Привет!">?</a>
+					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  </label>
 				</div>
 				<div class="radio">
 				  <label>
 					  <input type="radio" name="optradio">Від 1 000 000 грн. на рік
-					 <a href="#" data-toggle="tooltip" title="Привет!">?</a>
+					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  </label>
 				</div>
 			</div>
@@ -60,13 +56,13 @@
 				<div class="checkbox">
 				  <label>
 				  	<input type="checkbox" value="">Реалізовувати алкогольні напої
-				  	 <a href="#" data-toggle="tooltip" title="Привет!">?</a>
+				  	<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  	</label>
 				</div>
 				<div class="checkbox">
 				  <label>
 				  	<input type="checkbox" value="">Реалізовувати тютюнові вироби
-					<a href="#" data-toggle="tooltip" title="Привет!">?</a>
+					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
 				  </label>
 				</div>
 			</div>
@@ -98,13 +94,13 @@
 					</select>
 				</div>
 			</div>
-				<div class="main-button">
-					<button type="button" class="btn btn-primary">Зберегти</button>
-					<button type="button" class="btn btn-danger">Відміна</button>
-					<button type="button" class="btn btn-warning">Відправити на почту</button>
+				<div class="main-button text-center">
+					<button type="button" class="btn btn-xs btn-primary">Зберегти</button>
+					<button type="button" class="btn btn-xs btn-danger">Відміна</button>
+					<button type="button" class="btn btn-xs btn-warning">Відправити на почту</button>
+					
 				</div>
-				<button type="button" class="btn btn-info btn-block">Сформулювати персональні етапи реєстрації бізнесу
-				</button>
+				<button type="button" class="btn btn-info  btn-block">Сформулювати персональні етапи реєстрації бізнесу</button>
 			
 		</div>
 	</div>
@@ -121,7 +117,8 @@
 					<li>Oтримання дозволу на розміщення зовнішньої реклами</li>
 				</ol>
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-8 ">
+
 				  <div class="panel panel-default">
 				        <div class="panel-heading">
 				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Куди звернутись</button>
@@ -202,8 +199,19 @@
 				          </div>
 				        </div>
 				      </div>
-				    <button type="button" class="btn btn-primary">Завершити етап</button>
-					<button type="button" class="btn btn-danger">Завершити етап</button>		
+				      
+				   <div class="[ form-group ] text-center">
+			            <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" />
+			            <div class="[ btn-group ]">
+			                <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+			                    <span class="[ glyphicon glyphicon-ok ]"></span>
+			                    <span> </span>
+			                </label>
+			                <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
+			                    Завершити етап
+			                </label>
+			            </div>
+			        </div>
 				</div>
 		</div>
 		

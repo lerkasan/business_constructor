@@ -39,6 +39,37 @@ CREATE TABLE user_role (
                 PRIMARY KEY (user_id, role_id)
 );
 
+DROP TABLE IF EXISTS permit;
+
+DROP TABLE IF EXISTS permit_type;
+
+CREATE TABLE permit_type (
+  id   BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255)          NOT NULL,
+  CONSTRAINT permit_type_id PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX permitTypeNameIndx
+ON permit_type (name);
+
+CREATE TABLE permit (
+  id                 BIGINT AUTO_INCREMENT NOT NULL,
+  name               VARCHAR(750)          NOT NULL,
+  permit_type_id     BIGINT                NOT NULL,
+  legal_document_id  BIGINT                NOT NULL,
+  form_id            BIGINT                NOT NULL,
+  number             VARCHAR(11)           NOT NULL,
+  file_example       BLOB,
+  term               varchar(3000)         NOT NULL,
+  propose            varchar(3000)         NOT NULL,
+  status             TINYINT               NOT NULL,
+  CONSTRAINT permit_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+);
+
+CREATE UNIQUE INDEX permitNameIndx
+ON permit (name);
+
 ALTER TABLE question DROP FOREIGN KEY input_type_question_fk;
 
 ALTER TABLE question_questionnaire DROP FOREIGN KEY question_question_questionnaire_fk;
@@ -207,3 +238,15 @@ INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 3);
+
+INSERT INTO permit_type (id, name) VALUES
+  (1, 'permitType1');
+INSERT INTO permit_type (id, name) VALUES
+  (2, 'permitType2');
+
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, file_example, term, propose, status) VALUES
+  (1, 'permit1', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, file_example, term, propose, status) VALUES
+  (2, 'permit2', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, file_example, term, propose, status) VALUES
+  (3, 'permit3', 2, 1, 1, ' ', '453d7a34', ' ', ' ', 1);

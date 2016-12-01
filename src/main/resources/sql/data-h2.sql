@@ -33,6 +33,18 @@ INSERT INTO user_role (user_id, role_id) VALUES (6, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (6, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (7, 3);
 
+INSERT INTO permit_type (id, name) VALUES
+  (1, 'permitType1');
+INSERT INTO permit_type (id, name) VALUES
+  (2, 'permitType2');
+
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, file_example, term, propose, status) VALUES
+  (1, 'permit1', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, filee_example, term, propose, status) VALUES
+  (2, 'permit2', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, filee_example, term, propose, status) VALUES
+  (3, 'permit3', 2, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+
 INSERT INTO input_type(title) VALUES('checkbox');
 INSERT INTO input_type(title) VALUES('droplist');
 INSERT INTO input_type(title) VALUES('radiobutton');

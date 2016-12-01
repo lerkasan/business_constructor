@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationEntryPoint;
 import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationSuccessHandler;
@@ -27,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -35,6 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/questions/**", "/api/options/**").hasAnyRole("USER", "EXPERT")
                 .antMatchers("/api/questions/**", "/api/options/**").hasAnyRole("EXPERT")
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "EXPERT");
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/expert/**").hasRole("EXPERT")
+                .antMatchers("/admin/**").hasRole("ADMIN");
         http.csrf().disable();
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
         http.formLogin().successHandler(authenticationSuccessHandler);

@@ -35,7 +35,7 @@ public class UserAuthentificationTest {
     @WithAnonymousUser
     @Test
     public void shouldReturnUnauthorizedStatus() throws Exception {
-        mvc.perform(get("/api"))
+        mvc.perform(get("/admin"))
                 .andExpect(status().isUnauthorized());
     }
 

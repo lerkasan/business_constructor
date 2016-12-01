@@ -32,6 +32,34 @@ CREATE TABLE user_role (
   CONSTRAINT user_role_id PRIMARY KEY (id)
 );
 
+CREATE TABLE permit_type (
+  id   IDENTITY      NOT NULL,
+  name VARCHAR(255)  NOT NULL,
+  CONSTRAINT permit_type_id PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX permitTypeNameIndx
+ON permit_type (name);
+
+
+CREATE TABLE permit (
+  id               IDENTITY      NOT NULL,
+  name             VARCHAR(1023) NOT NULL,
+  permit_type_id     BIGINT        NOT NULL,
+  legal_document_id  BIGINT        NOT NULL,
+  form_id           BIGINT        NOT NULL,
+  number           VARCHAR(11)   NOT NULL,
+  file_example      BLOB,
+  term             LONGVARCHAR   NOT NULL,
+  propose          LONGVARCHAR   NOT NULL,
+  status           TINYINT       NOT NULL,
+  CONSTRAINT permit_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+);
+
+CREATE UNIQUE INDEX permitNameIndx
+ON permit (name);
+
 CREATE TABLE option_ (
                 id IDENTITY NOT NULL,
                 title VARCHAR(1000) NOT NULL,

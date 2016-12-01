@@ -58,7 +58,11 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     public Option findById(final long id) {
-        return optionRepo.findOne(id);
+        Option option = optionRepo.findOne(id);
+        if (option == null) {
+            throw new NotFoundException("Option with id = " + id + " does not exist.");
+        }
+        return option;
     }
 
     @Override

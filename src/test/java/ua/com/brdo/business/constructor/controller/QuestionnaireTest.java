@@ -269,13 +269,33 @@ public class QuestionnaireTest {
     }
 
     @Test
-    @WithMockUser(roles = {USER})
+    @WithMockUser(roles = {USER, EXPERT})
     @SneakyThrows
     public void shouldReturnOptionsList() {
         mockMvc.perform(get(OPTIONS_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$").isArray()));
+    }
+
+    @Test
+    @WithMockUser(roles = {USER, EXPERT})
+    @SneakyThrows
+    public void shouldReturnOptionByID() {
+        mockMvc.perform(get(OPTIONS_URL + "/" + option.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.title").value(optionTitle)));
+    }
+
+    @Test
+    @WithMockUser(roles = {USER, EXPERT})
+    @SneakyThrows
+    public void shouldRejectShowNonExistentOptions() {
+        mockMvc.perform(get(OPTIONS_URL + NON_EXISTENT_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value("Option with id = " + NON_EXISTENT_ID + " does not exist.")));
     }
 
     @Test

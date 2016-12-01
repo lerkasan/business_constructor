@@ -1,11 +1,11 @@
 package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -52,21 +52,39 @@ public class Question {
     private InputType inputType;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private Set<QuestionOption> options = new HashSet<>();
+    @JsonProperty("options")
+    private Set<QuestionOption> questionOptions = new HashSet<>();
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         QuestionOption questionOption = new QuestionOption();
         questionOption.setQuestion(this);
         questionOption.setOption(option);
-        return options.add(questionOption);
+        if (option.getQuestionOptions() == null) {
+            option.setQuestionOptions(new HashSet<>());
+        }
+        if (questionOptions == null) {
+            this.setQuestionOptions(new HashSet<>());
+        }
+        boolean result = option.getQuestionOptions().add(questionOption);
+        result &= this.getQuestionOptions().add(questionOption);
+        return result;
     }
 
     public boolean deleteOption(Option option) {
+        boolean result = false;
         Objects.requireNonNull(option);
         QuestionOption questionOption = new QuestionOption();
         questionOption.setQuestion(this);
         questionOption.setOption(option);
-        return options.remove(questionOption);
+        Set<QuestionOption> questionOptions = option.getQuestionOptions();
+        Set<QuestionOption> optionQuestions = this.getQuestionOptions();
+        if (questionOptions != null) {
+           result = questionOptions.remove(questionOption);
+        }
+        if (optionQuestions != null) {
+            result &= optionQuestions.remove(questionOption);
+        }
+        return result;
     }
 }

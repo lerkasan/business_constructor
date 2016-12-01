@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = {"title"})
-@JsonIgnoreProperties(value = {"questions"})
+@JsonIgnoreProperties(value = {"questionOptions"})
 @Validated
 public class Option {
 
@@ -42,7 +43,7 @@ public class Option {
     @Column(unique = true, nullable = false, length = 1500)
     private String title;
 
-    //it is neccessary to delete option occurrences from join table when option is deleted
+    //it is necessary to delete option occurrences from join table when option is deleted
     @OneToMany(mappedBy = "option", cascade = ALL)
-    private Set<QuestionOption> questions;
+    private Set<QuestionOption> questionOptions = new HashSet<>();
 }

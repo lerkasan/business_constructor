@@ -35,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Transactional
-    private void beforePersist(final Question question) {
+    private void setInputTypeBeforePersistQuestion(final Question question) {
         InputType defaultInputType = new InputType();
         Objects.requireNonNull(question);
         Long questionId = question.getId();
@@ -62,7 +62,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Secured(ROLE_EXPERT)
     @Transactional
     public Question create(final Question question) {
-        beforePersist(question);
+        setInputTypeBeforePersistQuestion(question);
         return questionRepo.saveAndFlush(question);
     }
 
@@ -70,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Secured(ROLE_EXPERT)
     public Question update(final Question question) {
-        beforePersist(question);
+        setInputTypeBeforePersistQuestion(question);
         return questionRepo.saveAndFlush(question);
     }
 

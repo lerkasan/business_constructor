@@ -121,7 +121,6 @@ public class QuestionController {
         if (question == null || option == null) {
             throw new NotFoundException("Specified question or option was not found.");
         }
-        questionService.deleteOption(question, option);
         questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         return ResponseEntity
                 .noContent()

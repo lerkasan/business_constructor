@@ -425,6 +425,31 @@ public class QuestionnaireTest {
                 .andExpect((jsonPath("$.title").value(optionTitle)));
     }
 
+    @Test
+    @WithMockUser(roles = {EXPERT, USER})
+    @SneakyThrows
+    public void shouldGetOptionOfGivenQuestionTest() {
+        this.mockMvc.perform(
+                get(QUESTIONS_URL + question.getId() + "/options/" + option.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8));
+    }
+
+    @Ignore
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldModifyOptionToGivenQuestionByExpertTest() {
+        String modifiedOptionDataJson = "{\"title\":\"Modified option\"}";
+
+        this.mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + "/options/" + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.title").value("Modified option")));
+    }
+
     @Ignore
     @Test
     @WithMockUser(roles = {EXPERT})

@@ -112,6 +112,35 @@ public class QuestionController {
         return options;
     }
 
+    @GetMapping(path = "/{questionId}/options/{optionId}")
+    public Option getOption(@PathVariable String questionId, @PathVariable String optionId) {
+        long questionIdL = parseLong(questionId);
+        long optionIdL = parseLong(optionId);
+        Question question = questionService.findById(questionIdL);
+        Option option = optionService.findById(optionIdL);
+        if (question == null || option == null) {
+            throw new NotFoundException("Specified question or option was not found.");
+        }
+        return option;
+    }
+
+    @PutMapping(path = "/{questionId}/options/{optionId}", consumes = APPLICATION_JSON_VALUE)
+    public Option updateOption(@PathVariable String optionId, @PathVariable String questionId, @Valid @RequestBody Option modifiedOption) {
+        long questionIdL = parseLong(questionId);
+        long optionIdL = parseLong(optionId);
+        Question question = questionService.findById(questionIdL);
+        Option option = optionService.findById(optionIdL);
+        if (question == null || option == null) {
+            throw new NotFoundException("Specified question or option was not found.");
+        }
+        questionService.deleteOption(question, option);
+        questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
+        Option updatedOption = optionService.create(modifiedOption);
+        questionService.addOption(question, updatedOption);
+        questionService.update(question);
+        return updatedOption;
+    }
+
     @DeleteMapping(path = "/{questionId}/options/{optionId}")
     public ResponseEntity deleteOption(@PathVariable String optionId, @PathVariable String questionId) {
         long questionIdL = parseLong(questionId);

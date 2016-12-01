@@ -77,13 +77,13 @@ public class Question {
         QuestionOption questionOption = new QuestionOption();
         questionOption.setQuestion(this);
         questionOption.setOption(option);
-        Set<QuestionOption> questionOptions = option.getQuestionOptions();
-        Set<QuestionOption> optionQuestions = this.getQuestionOptions();
-        if (questionOptions != null) {
-           result = questionOptions.remove(questionOption);
+        Set<QuestionOption> questionOptionsInQuestion = option.getQuestionOptions();
+        Set<QuestionOption> questionOptionsInOption = this.getQuestionOptions();
+        if (questionOptionsInQuestion != null) {
+           result = questionOptionsInQuestion.remove(questionOption);
         }
-        if (optionQuestions != null) {
-            result &= optionQuestions.remove(questionOption);
+        if (questionOptionsInOption != null) {
+            result &= questionOptionsInOption.remove(questionOption);
         }
         return result;
     }

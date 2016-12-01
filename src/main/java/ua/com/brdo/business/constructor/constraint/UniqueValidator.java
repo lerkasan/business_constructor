@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.constraint.validator;
+package ua.com.brdo.business.constructor.constraint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,6 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.constraint.Unique;
 import ua.com.brdo.business.constructor.service.UserService;
 
 @Component

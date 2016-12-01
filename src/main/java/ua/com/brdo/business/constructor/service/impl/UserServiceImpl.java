@@ -19,7 +19,7 @@ import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.UserService;
 
-@Service
+@Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final String ROLE_USER = "ROLE_USER";
@@ -44,12 +44,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
+    public void delete(long id) {
         userRepo.delete(id);
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(long id) {
         return userRepo.findOne(id);
     }
 
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (email == null) {
             return false;
         }
-        return userRepo.countByEmailIgnoreCase(email) == 0 ? true : false;
+        return userRepo.countByEmailIgnoreCase(email) == 0;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (username == null) {
             return false;
         }
-        return userRepo.countByUsernameIgnoreCase(username) == 0 ? true : false;
+        return userRepo.countByUsernameIgnoreCase(username) == 0;
     }
 
     @Override

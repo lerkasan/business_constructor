@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -31,7 +32,12 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 public class UserServiceTest {
+
+    private User mockUser;
+
+    private Role role;
 
     @Mock
     private UserRepository userRepo;
@@ -40,13 +46,23 @@ public class UserServiceTest {
     private RoleRepository roleRepo;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
+    private UserService userServiceWithMocks = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
 
-    private User mockUser;
-    private Role role;
+    private User createUser() {
+        User user = new User();
+        user.setUsername("UserFromUserService");
+        user.setEmail("UserFrom@UserService.com");
+        user.setPassword("password");
+        user.setRawPassword("password");
+        userRepository.saveAndFlush(user);
+        return user;
+    }
 
     @Before
     public void init() {
@@ -61,26 +77,27 @@ public class UserServiceTest {
         when(userRepo.findByEmail("some_user1@mail.com")).thenReturn(Optional.of(mockUser));
         when(userRepo.findByEmail("test_user@mail.com")).thenReturn(Optional.empty());
         when(userRepo.countByEmailIgnoreCase("some_user1@mail.com")).thenReturn(1);
+
         role = roleRepo.findByTitle("ROLE_USER").get();
     }
 
     @Test
     public void shouldCreateUserTest() {
-        User user = userService.create(mockUser);
+        User user = userServiceWithMocks.create(mockUser);
 
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
     public void shouldCreateTest() {
-        User user = userService.create(mockUser, role);
+        User user = userServiceWithMocks.create(mockUser, role);
 
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 
     @Test
     public void shouldGrantRoleTest() {
-        userService.grantRole(mockUser, role);
+        userServiceWithMocks.grantRole(mockUser, role);
         Set<Role> actualRoles = mockUser.getAuthorities();
 
         assertTrue(actualRoles.contains(role));
@@ -88,7 +105,7 @@ public class UserServiceTest {
 
     @Test
     public void shouldRevokeRoleTest() {
-        userService.revokeRole(mockUser, role);
+        userServiceWithMocks.revokeRole(mockUser, role);
         Set<Role> actualRoles = mockUser.getAuthorities();
 
         assertFalse(actualRoles.contains(role));
@@ -96,20 +113,32 @@ public class UserServiceTest {
 
     @Test
     public void shouldCheckEmailAvailablityTest() {
-        assertFalse(userService.isEmailAvailable("some_user1@mail.com"));
+        assertFalse(userServiceWithMocks.isEmailAvailable("some_user1@mail.com"));
     }
 
     @Test
     public void shouldReturnAdminTest() throws UsernameNotFoundException {
-        UserDetails user = userServiceImpl.findByUsername("admin");
+        UserDetails user = userService.findByUsername("admin");
 
         assertNotNull(user);
     }
 
     @Test
     public void shouldReturnExpertTest() {
-        UserDetails user = userServiceImpl.findByUsername("expert");
+        UserDetails user = userService.findByUsername("expert");
 
         assertNotNull(user);
+    }
+
+    @Test
+    public void shouldReturnFalseForNonUniqueEmailIest() {
+        User user = createUser();
+        assertFalse(userService.isEmailAvailable(user.getEmail().toUpperCase()));
+
+    }
+
+    @Test
+    public void shouldReturnTrueForUniqueTest() {
+        assertTrue(userService.isEmailAvailable("noSuch@email.com"));
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -95,7 +96,7 @@ public class User implements UserDetails {
 
     @Override
     public Set<Role> getAuthorities() {
-        return this.authorities;
+        return Collections.unmodifiableSet(authorities);
     }
 
     @Override

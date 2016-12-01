@@ -1,9 +1,9 @@
 package ua.com.brdo.business.constructor.service;
 
+import java.util.List;
+
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -13,9 +13,9 @@ public interface UserService {
 
     User update(User user);
 
-    void delete(Long id);
+    void delete(long id);
 
-    User findById(Long id);
+    User findById(long id);
 
     User findByUsername(String username);
 

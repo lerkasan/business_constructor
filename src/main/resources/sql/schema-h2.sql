@@ -126,3 +126,25 @@ FOREIGN KEY (role_id)
 REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+
+CREATE TABLE legal_document (
+  id                      IDENTITY            NOT NULL,
+  id_rada                 VARCHAR(50)         NOT NULL,
+  id_liga                 VARCHAR(24)         NOT NULL,
+  id_state                INTEGER             NOT NULL,
+  date_pub                INTEGER             NOT NULL,
+  date_add                INTEGER             NOT NULL,
+  number_pub              VARCHAR(255)        NOT NULL,
+  title                   VARCHAR(1025)       NOT NULL,
+  number_rada             VARCHAR(255)        NOT NULL,
+  number_mj               VARCHAR(65)         NOT NULL,
+  in_rada                 TINYINT             NOT NULL,
+  in_liga                 TINYINT             NOT NULL,
+  in_brdo                 TINYINT             NOT NULL,
+  auto_liga               TINYINT             NOT NULL,
+  auto_brdo               TINYINT             NOT NULL,
+  regulation              INTEGER             NOT NULL,
+  manual_sector           VARCHAR(96)         NOT NULL,
+  tech_regulation         INTEGER             NOT NULL,
+  CONSTRAINT legal_document_id PRIMARY KEY (id)
+);

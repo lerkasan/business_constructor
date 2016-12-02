@@ -232,3 +232,30 @@ INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number
   (2, 'permit2', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
 INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, file_example, term, propose, status) VALUES
   (3, 'permit3', 2, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
+
+DROP TABLE IF EXISTS legal_document;
+CREATE TABLE legal_document (
+  id                      IDENTITY            NOT NULL,
+  id_rada                 VARCHAR(50)         NOT NULL,
+  id_liga                 VARCHAR(24)         NOT NULL,
+  id_state                INTEGER             NOT NULL,
+  date_pub                INTEGER             NOT NULL,
+  date_add                INTEGER             NOT NULL,
+  number_pub              VARCHAR(255)        NOT NULL,
+  title                   VARCHAR(1025)       NOT NULL,
+  number_rada             VARCHAR(255)        NOT NULL,
+  number_mj               VARCHAR(65)         NOT NULL,
+  in_rada                 TINYINT             NOT NULL,
+  in_liga                 TINYINT             NOT NULL,
+  in_brdo                 TINYINT             NOT NULL,
+  auto_liga               TINYINT             NOT NULL,
+  auto_brdo               TINYINT             NOT NULL,
+  regulation              INTEGER             NOT NULL,
+  manual_sector           VARCHAR(96)         NOT NULL,
+  tech_regulation         INTEGER             NOT NULL,
+  CONSTRAINT legal_document_id PRIMARY KEY (id)
+);
+INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, number_pub, title, number_rada, number_mj, in_rada, in_liga, in_brdo, auto_liga, auto_brdo, regulation, manual_sector, tech_regulation) VALUES
+  (1, 'idRada1', 'idLiga1', 1, 1, 1 ,'numberPub1', 'title1','numberRada1','numberMj1', 1, 1, 1, 1, 1, 1, 'manualSector1', 1);
+INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, number_pub, title, number_rada, number_mj, in_rada, in_liga, in_brdo, auto_liga, auto_brdo, regulation, manual_sector, tech_regulation) VALUES
+  (2, 'idRada2', 'idLiga2', 2, 2, 2 ,'numberPub2', 'title2','numberRada2','numberMj2', 2, 2, 2, 2, 2, 2, 'manualSector2', 2);

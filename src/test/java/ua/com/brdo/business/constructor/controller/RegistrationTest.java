@@ -80,7 +80,7 @@ public class RegistrationTest {
     public void setup() {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 
         invalidUserData.put("username", "test1@mail.com");
         invalidUserData.put("email", "test1@mail.com");
@@ -96,7 +96,7 @@ public class RegistrationTest {
         validUserData.put("rawPassword", "123456789");
         String validUserDataJson = jsonMapper.writeValueAsString(validUserData);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(validUserDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -111,7 +111,7 @@ public class RegistrationTest {
         invalidUserData.put("email", invalidEmail);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -125,7 +125,7 @@ public class RegistrationTest {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -139,7 +139,7 @@ public class RegistrationTest {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -153,7 +153,7 @@ public class RegistrationTest {
         invalidUserData.put("email", nonUniqueEmail);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -165,7 +165,7 @@ public class RegistrationTest {
     public void shouldRejectRegisterReceiveNoPasswordTest() {
         String invalidUserDataJson = "{\"email\": \"email@mail.com\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -177,7 +177,7 @@ public class RegistrationTest {
     public void shouldRejectRegisterReceiveNoEmailTest() {
         String invalidUserDataJson = "{\"password\": \"12345678901\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -189,7 +189,7 @@ public class RegistrationTest {
     public void shouldRejectRegisterReceiveEmptyJsonTest() {
         String invalidEmplyJson = "{}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(invalidEmplyJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -201,7 +201,7 @@ public class RegistrationTest {
     @Parameters({"vbvsbb", "{vbvsbb}"})
     @SneakyThrows
     public void shouldRejectRegisterReceiveNotJsonTest(String notJson) {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(notJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -212,7 +212,7 @@ public class RegistrationTest {
     @Test
     public void shouldReturnFalseUniqueEmailTest() throws Exception {
         createUser();
-        this.mockMvc.perform(get("/api/users/available").param("email", user.getEmail()).accept(APPLICATION_JSON_UTF8))
+        mockMvc.perform(get("/api/users/available").param("email", user.getEmail()).accept(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().string("false"));
@@ -220,7 +220,7 @@ public class RegistrationTest {
 
     @Test
     public void shouldReturnTrueUniqueEmailTest() throws Exception {
-        this.mockMvc.perform(get("/api/users/available").param("email", "noSuch@email.com").accept(APPLICATION_JSON_UTF8))
+        mockMvc.perform(get("/api/users/available").param("email", "noSuch@email.com").accept(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().string("true"));

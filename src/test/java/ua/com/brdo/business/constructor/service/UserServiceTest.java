@@ -22,6 +22,7 @@ import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -59,7 +60,7 @@ public class UserServiceTest {
         user.setUsername("UserFromUserService");
         user.setEmail("UserFrom@UserService.com");
         user.setPassword("password");
-        user.setRawPassword("password");
+        user.setRawPassword("password".toCharArray());
         userRepository.saveAndFlush(user);
         return user;
     }
@@ -70,7 +71,7 @@ public class UserServiceTest {
         mockUser.setId(1L);
         mockUser.setUsername("test_user@mail.com");
         mockUser.setEmail("test_user@mail.com");
-        mockUser.setRawPassword("12345678");
+        mockUser.setRawPassword("12345678".toCharArray());
 
         when(roleRepo.findByTitle("ROLE_USER")).thenReturn(Optional.of(new Role(1L, "ROLE_USER")));
         when(userRepo.saveAndFlush(any(User.class))).thenReturn(mockUser);
@@ -85,6 +86,7 @@ public class UserServiceTest {
     public void shouldCreateUserTest() {
         User user = userServiceWithMocks.create(mockUser);
 
+        assertEquals(new String(user.getRawPassword()), "        ");
         verify(userRepo, times(1)).saveAndFlush(user);
     }
 

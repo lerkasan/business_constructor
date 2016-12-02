@@ -25,11 +25,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import ua.com.brdo.business.constructor.constraint.Ascii;
 import ua.com.brdo.business.constructor.constraint.Unique;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -63,10 +64,10 @@ public class User implements UserDetails {
 
     @Transient
     @JsonProperty(access = WRITE_ONLY)
-    @NotEmpty(message = "Password field is required.")
+    @NotNull(message = "Password field is required.")
     @Size(min = 8, max = 32, message = "Password length must be between 8 and 32 characters.")
-    @Pattern(regexp = "^[!-~]{8,32}$", message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
-    private String rawPassword;
+    @Ascii(message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
+    private char[] rawPassword;
 
     @JsonIgnore
     @Column(name = "password_hash", length = 60, nullable = false)

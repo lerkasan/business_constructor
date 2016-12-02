@@ -87,7 +87,7 @@ public class QuestionnaireTest {
     public void setup() {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 
         question = new Question();
         question.setText(questionText);
@@ -142,7 +142,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -155,7 +155,7 @@ public class QuestionnaireTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectQuestionCreationByUnauthorizedTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isUnauthorized());
     }
@@ -164,7 +164,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectQuestionCreationNotByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isForbidden());
     }
@@ -175,7 +175,7 @@ public class QuestionnaireTest {
     public void shouldCreateQuestionWithDefaultCheckboxTest() {
         String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -190,7 +190,7 @@ public class QuestionnaireTest {
     public void shouldUpdateQuestionByExpertTest() {
         String updatedTextField = "{\"text\":\"What is your name?\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -201,7 +201,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldDeleteQuestionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isNoContent());
     }
@@ -212,7 +212,7 @@ public class QuestionnaireTest {
     public void shouldRejectUpdateQuestionByUnauthorizedTest() {
         String updatedTextField = "{\"text\":\"What is your name?\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isUnauthorized());
     }
@@ -223,7 +223,7 @@ public class QuestionnaireTest {
     public void shouldRejectUpdateQuestionByNotExpertTest() {
         String updatedTextField = "{\"text\":\"What is your name?\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isForbidden());
     }
@@ -232,7 +232,7 @@ public class QuestionnaireTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectDeleteQuestionByUnauthorizedTest() {
-         this.mockMvc.perform(
+         mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isUnauthorized());
     }
@@ -241,7 +241,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectDeleteQuestionByNotExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isForbidden());
     }
@@ -250,7 +250,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectUpdateNonExistentQuestionTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(QUESTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -261,7 +261,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectDeleteNonExistentQuestionTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -302,7 +302,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateOptionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -314,7 +314,7 @@ public class QuestionnaireTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectOptionCreationByUnauthorizedTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isUnauthorized());
     }
@@ -323,7 +323,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectOptionCreationByNotExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isForbidden());
     }
@@ -334,7 +334,7 @@ public class QuestionnaireTest {
     public void shouldUpdateOptionByExpertTest() {
         String updatedTextField = "{\"title\":\"Updated option\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -345,7 +345,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldDeleteOptionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(OPTIONS_URL + option.getId()))
                 .andExpect(status().isNoContent());
     }
@@ -356,7 +356,7 @@ public class QuestionnaireTest {
     public void shouldRejectUpdateOptionByUnauthorizedTest() {
         String updatedTextField = "{\"title\":\"Updated option\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isUnauthorized());
     }
@@ -367,7 +367,7 @@ public class QuestionnaireTest {
     public void shouldRejectUpdateOptionByNotExpertTest() {
         String updatedTextField = "{\"title\":\"Updated option\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isForbidden());
     }
@@ -376,7 +376,7 @@ public class QuestionnaireTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectDeleteOptionByUnauthorizedTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(OPTIONS_URL + option.getId()))
                 .andExpect(status().isUnauthorized());
     }
@@ -385,7 +385,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectDeleteOptionByNotExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(OPTIONS_URL + option.getId()))
                 .andExpect(status().isForbidden());
     }
@@ -394,7 +394,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectUpdateNonExistentOptionTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(OPTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -405,7 +405,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectDeleteNonExistentOptionTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(OPTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -416,9 +416,8 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldAddOptionToGivenQuestionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + "/options").contentType(APPLICATION_JSON).content(validOptionDataJson))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -429,7 +428,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT, USER})
     @SneakyThrows
     public void shouldGetOptionOfGivenQuestionTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 get(QUESTIONS_URL + question.getId() + "/options/" + option.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
@@ -442,7 +441,7 @@ public class QuestionnaireTest {
     public void shouldModifyOptionToGivenQuestionByExpertTest() {
         String modifiedOptionDataJson = "{\"title\":\"Modified option\"}";
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 put(QUESTIONS_URL + question.getId() + "/options/" + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -460,7 +459,7 @@ public class QuestionnaireTest {
         questionOption.setQuestion(question);
         questionOption = questionOptionService.create(questionOption);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId() + "/options/" + questionOption.getId()))
                 .andExpect(status().isNoContent());
     }
@@ -472,7 +471,7 @@ public class QuestionnaireTest {
         question.addOption(option);
         question = questionService.update(question);
 
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId() + "/options/" + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
     }
@@ -481,7 +480,7 @@ public class QuestionnaireTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectRemoveOptionFromNonExistentQuestionByExpertTest() {
-        this.mockMvc.perform(
+        mockMvc.perform(
                 delete(QUESTIONS_URL + NON_EXISTENT_ID + "/options/" + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
     }

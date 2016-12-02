@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import lombok.SneakyThrows;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class UserAuthentificationTest {
+
+    private final String QUESTIONS_URL = "/api/questions/";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -32,8 +36,8 @@ public class UserAuthentificationTest {
                 .apply(springSecurity()).build();
     }
 
-    @WithAnonymousUser
     @Test
+    @WithAnonymousUser
     public void shouldReturnUnauthorizedStatus() throws Exception {
         mvc.perform(get("/admin"))
                 .andExpect(status().isUnauthorized());
@@ -78,5 +82,14 @@ public class UserAuthentificationTest {
                 .param("password", "admin");
         mvc.perform(request)
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldSuccessfullyLogout() {
+        mvc.perform(post("/logout"))
+                .andExpect(status().isOk());
+        mvc.perform(get(QUESTIONS_URL))
+                .andExpect(status().isUnauthorized());
     }
 }

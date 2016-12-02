@@ -71,7 +71,7 @@ public class RegistrationTest {
         user.setUsername("UserFromUsersController");
         user.setEmail("UserFrom@UsersController.com");
         user.setPassword("password");
-        user.setRawPassword("password");
+        user.setRawPassword("password".toCharArray());
         userRepo.saveAndFlush(user);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Objects;
 
@@ -99,7 +100,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPassword(passwordEncoder.encode(user.getRawPassword()));
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(user.getRawPassword())));
+        for (int index = 0; index < user.getRawPassword().length; index++) {
+            user.getRawPassword()[index] = ' ';
+        }
     }
 
     @Override

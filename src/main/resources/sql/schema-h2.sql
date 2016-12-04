@@ -67,17 +67,10 @@ CREATE TABLE option_ (
 );
 
 
-CREATE TABLE input_type (
-                id IDENTITY NOT NULL,
-                title VARCHAR(255) NOT NULL,
-                CONSTRAINT input_type_id PRIMARY KEY (id)
-);
-
-
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL DEFAULT 1,
+                multi_choice BIT(1) NOT NULL DEFAULT 0,
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 
@@ -95,12 +88,6 @@ ALTER TABLE question_option ADD CONSTRAINT option__question_option_fk
 FOREIGN KEY (option_id)
 REFERENCES option_ (id)
 ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE question ADD CONSTRAINT input_type_question_fk
-FOREIGN KEY (input_type_id)
-REFERENCES input_type (id)
-ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk

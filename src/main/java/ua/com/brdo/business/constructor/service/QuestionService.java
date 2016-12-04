@@ -22,4 +22,6 @@ public interface QuestionService {
     Question addOption(Question question, Option option);
 
     Question deleteOption(Question question, Option option);
+
+    Long deleteByQuestionIdAndOptionId(Long questionId, Long optionId);
 }

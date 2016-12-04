@@ -10,19 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.QuestionOption;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class QuestionnaireServiceTest {
+public class QuestionServiceTest {
 
     private Option dummyOption;
 
@@ -66,15 +64,14 @@ public class QuestionnaireServiceTest {
     public void shouldSetDefaultInputTypeIfNoneSpecified() {
         dummyQuestion = questionService.create(dummyQuestion);
 
-        assertEquals("checkbox", dummyQuestion.getInputType().getTitle());
+        assertFalse(dummyQuestion.isMultiChoice());
     }
 
-    @Test
-    public void shouldNotOverrideExistentInputTypeWithDefault() {
-        InputType givenInputType = new InputType(2L, "new input type");
-        dummyQuestion.setInputType(givenInputType);
-        dummyQuestion = questionService.create(dummyQuestion);
-
-        assertEquals("new input type", dummyQuestion.getInputType().getTitle());
-    }
+//    @Test
+//    public void shouldNotOverrideExistentInputTypeWithDefault() {
+//        dummyQuestion.setMultiChoice(true);
+//        dummyQuestion = questionService.create(dummyQuestion);
+//
+//        assertFalse(dummyQuestion.isMultiChoice());
+//    }
 }

@@ -64,8 +64,21 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
     }
 
     @Override
-    public QuestionOption findByQuestionAndOptionId(long questionId, long optionId) {
+    public QuestionOption findByQuestionIdAndOptionId(long questionId, long optionId) {
         return questionOptionRepo.findByQuestionIdAndOptionId(questionId, optionId).orElseThrow(() -> new NotFoundException("Specified question_id and option_id weren't found."));
+    }
+
+    @Override
+    @Transactional
+    public Long deleteByQuestionIdAndOptionId(long questionId, long optionId) {
+        findByQuestionIdAndOptionId(questionId, optionId);
+        return questionOptionRepo.deleteByQuestionIdAndOptionId(questionId, optionId);
+    }
+
+    @Override
+    @Transactional
+    public Long deleteByQuestionId(long questionId) {
+        return questionOptionRepo.deleteByQuestionId(questionId);
     }
 
     @Override

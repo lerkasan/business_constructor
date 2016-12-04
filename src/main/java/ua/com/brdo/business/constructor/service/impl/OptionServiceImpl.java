@@ -51,7 +51,7 @@ public class OptionServiceImpl implements OptionService {
     @Secured(ROLE_EXPERT)
     public void delete(final long id) {
         if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException("Option with id = " + id + " does not exist.");
+            throw new NotFoundException("Option with given id does not exist.");
         }
         optionRepo.delete(id);
     }
@@ -60,7 +60,7 @@ public class OptionServiceImpl implements OptionService {
     public Option findById(final long id) {
         Option option = optionRepo.findOne(id);
         if (option == null) {
-            throw new NotFoundException("Option with id = " + id + " does not exist.");
+            throw new NotFoundException("Option with given id does not exist.");
         }
         return option;
     }

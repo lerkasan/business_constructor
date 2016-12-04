@@ -70,8 +70,6 @@ CREATE TABLE permit (
 CREATE UNIQUE INDEX permitNameIndx
 ON permit (name);
 
-DROP TABLE IF EXISTS input_type;
-
 DROP TABLE IF EXISTS business_type;
 
 CREATE TABLE business_type (
@@ -81,18 +79,12 @@ CREATE TABLE business_type (
                 PRIMARY KEY (id)
 );
 
-CREATE TABLE input_type (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
-);
-
 DROP TABLE IF EXISTS question;
 
 CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL DEFAULT 1,
+                multi_choice BOOLEAN NOT NULL DEFAULT 0,
                 PRIMARY KEY (id)
 );
 
@@ -195,11 +187,6 @@ FOREIGN KEY (role_id)
 REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
-
-insert into input_type(title) values("checkbox");
-insert into input_type(title) values("droplist");
-insert into input_type(title) values("radiobutton");
-insert into input_type(title) values("text");
 
 INSERT INTO role (title) VALUES ('ROLE_USER');
 INSERT INTO role (title) VALUES ('ROLE_ADMIN');

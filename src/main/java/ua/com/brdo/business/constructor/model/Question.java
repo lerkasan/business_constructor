@@ -14,8 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -34,7 +32,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"text"})
+@EqualsAndHashCode(of = {"id"})
 @JsonInclude(NON_NULL)
 @Validated
 public class Question {
@@ -47,9 +45,9 @@ public class Question {
     @Column(unique = true, nullable = false, length = 3000)
     private String text;
 
-    @ManyToOne
-    @JoinColumn(name="input_type_id", nullable=false)
-    private InputType inputType;
+    @Column(name="multi_choice", nullable = false, columnDefinition = "bit(1) default 0")
+   // @Type(type="true_false")
+    private boolean multiChoice;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
     @JsonProperty("options")

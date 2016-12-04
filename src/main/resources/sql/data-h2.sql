@@ -44,8 +44,3 @@ INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number
   (2, 'permit2', 1, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
 INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number, filee_example, term, propose, status) VALUES
   (3, 'permit3', 2, 1, 1, ' ', '453d7a34', ' ', ' ', 1);
-
-INSERT INTO input_type(title) VALUES('checkbox');
-INSERT INTO input_type(title) VALUES('droplist');
-INSERT INTO input_type(title) VALUES('radiobutton');
-INSERT INTO input_type(title) VALUES('text');

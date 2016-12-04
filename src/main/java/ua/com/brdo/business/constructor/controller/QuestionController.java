@@ -27,6 +27,7 @@ import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static java.lang.Long.parseLong;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -54,6 +55,23 @@ public class QuestionController {
         return ResponseEntity.created(location).body(createdQuestion);
     }
 
+    @PostMapping(path = "/list", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity createQuestions(@Valid @RequestBody List<Question> questions) {
+        if (questions != null) {
+            questions.forEach(question -> {
+                if (question != null) {
+                    questionService.create(question);
+                }
+            });
+        }
+//        URI location = ServletUriComponentsBuilder
+//                .fromUriString("questions").path("/{id}")
+//                .buildAndExpand(question.getId())
+//                .toUri();
+        return ResponseEntity.status(CREATED).build();
+    }
+
+
     @GetMapping
     public List<Question> listQuestions() {
         return questionService.findAll();
@@ -76,6 +94,9 @@ public class QuestionController {
             throw new NotFoundException("Question with id = " + id + " does not exist.");
         }
         question.setId(Long.valueOf(id));
+        if (question.getQuestionOptions() != null) {
+            questionOptionService.deleteByQuestionId(question.getId());
+        }
         return questionService.update(question);
     }
 
@@ -88,7 +109,7 @@ public class QuestionController {
                 .build();
     }
 
-    @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE) //TODO: add controller to consume list of options for given question
     public ResponseEntity createOption(@PathVariable String questionId, @Valid @RequestBody Option option) {
         Option createdOption = optionService.create(option);
         Question question = questionService.findById(parseLong(questionId));
@@ -103,6 +124,11 @@ public class QuestionController {
 
     @GetMapping(path = "/{questionId}/options")
     public List<Option> listOptions(@PathVariable String questionId) {
+        long questionIdL = parseLong(questionId);
+        Question question = questionService.findById(questionIdL);
+        if (question == null) {
+            throw new NotFoundException("Specified question was not found.");
+        }
         List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(parseLong(questionId));
         List<Option> options = new ArrayList<>();
         questionOptions.forEach(questionOption ->
@@ -121,7 +147,8 @@ public class QuestionController {
         if (question == null || option == null) {
             throw new NotFoundException("Specified question or option was not found.");
         }
-        return option;
+        QuestionOption questionOption = questionOptionService.findByQuestionIdAndOptionId(questionIdL, optionIdL);
+        return questionOption.getOption();
     }
 
     @PutMapping(path = "/{questionId}/options/{optionId}", consumes = APPLICATION_JSON_VALUE)
@@ -134,7 +161,8 @@ public class QuestionController {
             throw new NotFoundException("Specified question or option was not found.");
         }
         questionService.deleteOption(question, option);
-        questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
+        questionOptionService.deleteByQuestionIdAndOptionId(questionIdL, optionIdL);
+        //questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         Option updatedOption = optionService.create(modifiedOption);
         questionService.addOption(question, updatedOption);
         questionService.update(question);
@@ -150,7 +178,8 @@ public class QuestionController {
         if (question == null || option == null) {
             throw new NotFoundException("Specified question or option was not found.");
         }
-        questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
+        questionOptionService.deleteByQuestionIdAndOptionId(questionIdL, optionIdL);
+        //questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         return ResponseEntity
                 .noContent()
                 .build();

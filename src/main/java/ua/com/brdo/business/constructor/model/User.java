@@ -66,7 +66,8 @@ public class User implements UserDetails {
     @JsonProperty(access = WRITE_ONLY)
     @NotNull(message = "Password field is required.")
     @Size(min = 8, max = 32, message = "Password length must be between 8 and 32 characters.")
-    @Ascii(message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
+    @Ascii(message = "Password can include upper and lower case latin letters, numerals (0-9) and special symbols.")
+   // @Range(min = 32, max = 126, message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
     private char[] rawPassword;
 
     @JsonIgnore

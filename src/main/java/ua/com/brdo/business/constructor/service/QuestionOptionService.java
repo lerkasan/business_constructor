@@ -18,7 +18,11 @@ public interface QuestionOptionService {
 
     List<QuestionOption> findByOptionId(long id);
 
-    QuestionOption findByQuestionAndOptionId(long questionId, long optionId);
+    Long deleteByQuestionIdAndOptionId(long questionId, long optionId);
+
+    QuestionOption findByQuestionIdAndOptionId(long questionId, long optionId);
+
+    Long deleteByQuestionId(long questionId);
 
     List<QuestionOption> findAll();
 }

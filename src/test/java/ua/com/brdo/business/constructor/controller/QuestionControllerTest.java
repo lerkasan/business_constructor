@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @SpringBootTest
-public class QuestionnaireTest {
+public class QuestionControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -60,9 +60,7 @@ public class QuestionnaireTest {
 
     private final String QUESTIONS_URL = "/api/questions/";
 
-    private final String OPTIONS_URL = "/api/options/";
-
-    private final String validQuestionDataJson = "{\"inputType\":{\"title\":\"check\"},\"text\":\"Who are you?\"}";
+    private final String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
 
     private final String validOptionDataJson = "{\"title\":\"My option\"}";
 
@@ -148,7 +146,7 @@ public class QuestionnaireTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType.title").value("check")));
+                .andExpect((jsonPath("$.multiChoice").value(false)));
     }
 
     @Test
@@ -181,7 +179,7 @@ public class QuestionnaireTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType.title").value("checkbox")));
+                .andExpect((jsonPath("$.multiChoice").value(false)));
     }
 
     @Test
@@ -265,151 +263,7 @@ public class QuestionnaireTest {
                 delete(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question with id = " + NON_EXISTENT_ID + " does not exist.")));
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, EXPERT})
-    @SneakyThrows
-    public void shouldReturnOptionsList() {
-        mockMvc.perform(get(OPTIONS_URL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$").isArray()));
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, EXPERT})
-    @SneakyThrows
-    public void shouldReturnOptionByID() {
-        mockMvc.perform(get(OPTIONS_URL + "/" + option.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.title").value(optionTitle)));
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, EXPERT})
-    @SneakyThrows
-    public void shouldRejectShowNonExistentOptions() {
-        mockMvc.perform(get(OPTIONS_URL + NON_EXISTENT_ID))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Option with id = " + NON_EXISTENT_ID + " does not exist.")));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldCreateOptionByExpertTest() {
-        mockMvc.perform(
-                post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.title").value(optionTitle)));
-    }
-
-    @Test
-    @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectOptionCreationByUnauthorizedTest() {
-        mockMvc.perform(
-                post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectOptionCreationByNotExpertTest() {
-        mockMvc.perform(
-                post(OPTIONS_URL).contentType(APPLICATION_JSON).content(validOptionDataJson))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldUpdateOptionByExpertTest() {
-        String updatedTextField = "{\"title\":\"Updated option\"}";
-
-        mockMvc.perform(
-                put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.title").value("Updated option")));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldDeleteOptionByExpertTest() {
-        mockMvc.perform(
-                delete(OPTIONS_URL + option.getId()))
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectUpdateOptionByUnauthorizedTest() {
-        String updatedTextField = "{\"title\":\"Updated option\"}";
-
-        mockMvc.perform(
-                put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectUpdateOptionByNotExpertTest() {
-        String updatedTextField = "{\"title\":\"Updated option\"}";
-
-        mockMvc.perform(
-                put(OPTIONS_URL + option.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectDeleteOptionByUnauthorizedTest() {
-        mockMvc.perform(
-                delete(OPTIONS_URL + option.getId()))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectDeleteOptionByNotExpertTest() {
-        mockMvc.perform(
-                delete(OPTIONS_URL + option.getId()))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectUpdateNonExistentOptionTest() {
-        mockMvc.perform(
-                put(OPTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validOptionDataJson))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Option with id = " + NON_EXISTENT_ID + " does not exist.")));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectDeleteNonExistentOptionTest() {
-        mockMvc.perform(
-                delete(OPTIONS_URL + NON_EXISTENT_ID))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Option with id = " + NON_EXISTENT_ID + " does not exist.")));
+                .andExpect((jsonPath("$.message").value("Question was not found.")));
     }
 
     @Test
@@ -424,6 +278,7 @@ public class QuestionnaireTest {
                 .andExpect((jsonPath("$.title").value(optionTitle)));
     }
 
+    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT, USER})
     @SneakyThrows

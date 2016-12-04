@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -17,7 +16,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -28,6 +29,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = {"question", "option"})
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(value = {"question", "id"})
+//@NamedQuery(name = "QuestionOption.removeByQuestionId", query = "DELETE FROM question_option q WHERE q.question_id = :questionId")
 public class QuestionOption {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -37,7 +39,7 @@ public class QuestionOption {
     @PrimaryKeyJoinColumn(name="question_id", referencedColumnName="id")
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(cascade = {PERSIST, MERGE, REFRESH})
     @PrimaryKeyJoinColumn(name="option_id", referencedColumnName="id")
     private Option option;
 

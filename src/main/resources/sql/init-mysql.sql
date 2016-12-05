@@ -67,8 +67,8 @@ CREATE TABLE permit (
   FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
 );
 
-CREATE UNIQUE INDEX permitNameIndx
-ON permit (name);
+
+
 
 DROP TABLE IF EXISTS input_type;
 
@@ -235,7 +235,7 @@ INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number
 
 DROP TABLE IF EXISTS legal_document;
 CREATE TABLE legal_document (
-  id                      IDENTITY            NOT NULL,
+  id                      BIGINT              NOT NULL  AUTO_INCREMENT,
   id_rada                 VARCHAR(50)         NOT NULL,
   id_liga                 VARCHAR(24)         NOT NULL,
   id_state                INTEGER             NOT NULL,

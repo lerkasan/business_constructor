@@ -12,6 +12,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -40,18 +42,29 @@ public class Question {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Text field in question is required.")
     @Size(max=3000, message = "Maximum length of question is 3000 characters.")
     @Column(unique = true, nullable = false, length = 3000)
     private String text;
 
-    @Column(name="multi_choice", nullable = false, columnDefinition = "bit(1) default 0")
-   // @Type(type="true_false")
-    private boolean multiChoice;
+    @Enumerated(EnumType.STRING)
+    @Column(name="input_type", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT \"SINGLE_CHOICE\"")
+    private InputType inputType = InputType.SINGLE_CHOICE;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
     @JsonProperty("options")
     private Set<QuestionOption> questionOptions = new HashSet<>();
+
+    public String getInputType() {
+        if (inputType == null) {
+            inputType = InputType.SINGLE_CHOICE;
+        }
+        return inputType.name();
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = InputType.valueOf(inputType);
+    }
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);

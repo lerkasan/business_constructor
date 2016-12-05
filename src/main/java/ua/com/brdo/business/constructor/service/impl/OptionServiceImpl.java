@@ -17,7 +17,9 @@ import ua.com.brdo.business.constructor.service.OptionService;
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
 
-    private final String ROLE_EXPERT = "ROLE_EXPERT";
+    private static final String ROLE_EXPERT = "ROLE_EXPERT";
+
+    private static final String NOT_FOUND = "Option was not found.";
 
     private OptionRepository optionRepo;
 
@@ -42,7 +44,11 @@ public class OptionServiceImpl implements OptionService {
     @Transactional
     @Secured(ROLE_EXPERT)
     public Option update(final Option option) {
+        Long id = option.getId();
         Objects.requireNonNull(option);
+        if (optionRepo.findOne(id) == null) {
+            throw new NotFoundException(NOT_FOUND);
+        }
         return optionRepo.saveAndFlush(option);
     }
 
@@ -51,7 +57,7 @@ public class OptionServiceImpl implements OptionService {
     @Secured(ROLE_EXPERT)
     public void delete(final long id) {
         if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException("Option with given id does not exist.");
+            throw new NotFoundException(NOT_FOUND);
         }
         optionRepo.delete(id);
     }
@@ -60,14 +66,14 @@ public class OptionServiceImpl implements OptionService {
     public Option findById(final long id) {
         Option option = optionRepo.findOne(id);
         if (option == null) {
-            throw new NotFoundException("Option with given id does not exist.");
+            throw new NotFoundException(NOT_FOUND);
         }
         return option;
     }
 
     @Override
     public Option findByTitle(final String title) {
-        return optionRepo.findByTitle(title).orElseThrow(() -> new NotFoundException("Option with given title was not found."));
+        return optionRepo.findByTitle(title).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override

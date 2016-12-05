@@ -18,7 +18,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.QuestionOption;
@@ -64,13 +63,12 @@ public class QuestionController {
                 }
             });
         }
-//        URI location = ServletUriComponentsBuilder
+//        URI location = ServletUriComponentsBuilder  // TODO Decide how to return location for created list of questions
 //                .fromUriString("questions").path("/{id}")
 //                .buildAndExpand(question.getId())
 //                .toUri();
         return ResponseEntity.status(CREATED).build();
     }
-
 
     @GetMapping
     public List<Question> listQuestions() {
@@ -80,19 +78,12 @@ public class QuestionController {
     @GetMapping(path = "/{id}")
     public Question getQuestion(@PathVariable String id) {
         long longId = parseLong(id);
-        Question question = questionService.findById(longId);
-        if (question == null) {
-            throw new NotFoundException("Question with id = " + id + " does not exist.");
-        }
-        return question;
+        return questionService.findById(longId);
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
-    public Question updateQuestion(@PathVariable String id, @Valid @RequestBody Question question) {
+    public Question updateQuestion(@PathVariable String id, @Valid @RequestBody Question question) { //TODO Ask question about 422 and 404 error priority and maybe return back @Valid for question
         long longId = parseLong(id);
-        if (questionService.findById(longId) == null) {
-            throw new NotFoundException("Question with id = " + id + " does not exist.");
-        }
         question.setId(Long.valueOf(id));
         if (question.getQuestionOptions() != null) {
             questionOptionService.deleteByQuestionId(question.getId());
@@ -126,9 +117,6 @@ public class QuestionController {
     public List<Option> listOptions(@PathVariable String questionId) {
         long questionIdL = parseLong(questionId);
         Question question = questionService.findById(questionIdL);
-        if (question == null) {
-            throw new NotFoundException("Specified question was not found.");
-        }
         List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(parseLong(questionId));
         List<Option> options = new ArrayList<>();
         questionOptions.forEach(questionOption ->
@@ -142,11 +130,6 @@ public class QuestionController {
     public Option getOption(@PathVariable String questionId, @PathVariable String optionId) {
         long questionIdL = parseLong(questionId);
         long optionIdL = parseLong(optionId);
-        Question question = questionService.findById(questionIdL);
-        Option option = optionService.findById(optionIdL);
-        if (question == null || option == null) {
-            throw new NotFoundException("Specified question or option was not found.");
-        }
         QuestionOption questionOption = questionOptionService.findByQuestionIdAndOptionId(questionIdL, optionIdL);
         return questionOption.getOption();
     }
@@ -157,12 +140,8 @@ public class QuestionController {
         long optionIdL = parseLong(optionId);
         Question question = questionService.findById(questionIdL);
         Option option = optionService.findById(optionIdL);
-        if (question == null || option == null) {
-            throw new NotFoundException("Specified question or option was not found.");
-        }
         questionService.deleteOption(question, option);
         questionOptionService.deleteByQuestionIdAndOptionId(questionIdL, optionIdL);
-        //questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         Option updatedOption = optionService.create(modifiedOption);
         questionService.addOption(question, updatedOption);
         questionService.update(question);
@@ -173,13 +152,7 @@ public class QuestionController {
     public ResponseEntity deleteOption(@PathVariable String optionId, @PathVariable String questionId) {
         long questionIdL = parseLong(questionId);
         long optionIdL = parseLong(optionId);
-        Question question = questionService.findById(questionIdL);
-        Option option = optionService.findById(optionIdL);
-        if (question == null || option == null) {
-            throw new NotFoundException("Specified question or option was not found.");
-        }
         questionOptionService.deleteByQuestionIdAndOptionId(questionIdL, optionIdL);
-        //questionOptionService.delete(questionOptionService.findByQuestionAndOptionId(questionIdL, optionIdL).getId());
         return ResponseEntity
                 .noContent()
                 .build();

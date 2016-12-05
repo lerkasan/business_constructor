@@ -16,7 +16,7 @@ import ua.com.brdo.business.constructor.service.QuestionOptionService;
 @Service("QuestionOptionService")
 public class QuestionOptionServiceImpl implements QuestionOptionService {
 
-    private final String ROLE_EXPERT = "ROLE_EXPERT";
+    private static final String ROLE_EXPERT = "ROLE_EXPERT";
 
     private QuestionOptionRepository questionOptionRepo;
 
@@ -65,13 +65,13 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
 
     @Override
     public QuestionOption findByQuestionIdAndOptionId(long questionId, long optionId) {
-        return questionOptionRepo.findByQuestionIdAndOptionId(questionId, optionId).orElseThrow(() -> new NotFoundException("Specified question_id and option_id weren't found."));
+        return questionOptionRepo.findByQuestionIdAndOptionId(questionId, optionId).orElseThrow(() -> new NotFoundException("Question or option was not found."));
     }
 
     @Override
     @Transactional
     public Long deleteByQuestionIdAndOptionId(long questionId, long optionId) {
-        findByQuestionIdAndOptionId(questionId, optionId);
+        findByQuestionIdAndOptionId(questionId, optionId); //just to make findBy... throw NotFoundException if necessary
         return questionOptionRepo.deleteByQuestionIdAndOptionId(questionId, optionId);
     }
 

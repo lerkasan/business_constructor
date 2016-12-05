@@ -84,7 +84,8 @@ DROP TABLE IF EXISTS question;
 CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                multi_choice BOOLEAN NOT NULL DEFAULT 0,
+                input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
+               /* multi_choice BOOLEAN NOT NULL DEFAULT 0,*/
                 PRIMARY KEY (id)
 );
 

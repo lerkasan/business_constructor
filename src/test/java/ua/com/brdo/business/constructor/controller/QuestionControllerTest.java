@@ -113,7 +113,7 @@ public class QuestionControllerTest {
         mockMvc.perform(get(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question with id = " + NON_EXISTENT_ID + " does not exist.")));
+                .andExpect((jsonPath("$.message").value("Question was not found.")));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.multiChoice").value(false)));
+                .andExpect((jsonPath("$.inputType").value("SINGLE_CHOICE")));
     }
 
     @Test
@@ -179,7 +179,7 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.multiChoice").value(false)));
+                .andExpect((jsonPath("$.inputType").value("SINGLE_CHOICE")));
     }
 
     @Test
@@ -252,7 +252,7 @@ public class QuestionControllerTest {
                 put(QUESTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question with id = " + NON_EXISTENT_ID + " does not exist.")));
+                .andExpect((jsonPath("$.message").value("Question was not found.")));
     }
 
     @Test

@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
@@ -22,11 +24,11 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 @Service("QuestionService")
 public class QuestionServiceImpl implements QuestionService {
 
-    private final String ROLE_EXPERT = "ROLE_EXPERT";
+    private static final String ROLE_EXPERT = "ROLE_EXPERT";
 
-    private final String ROLE_USER = "ROLE_USER";
+    private static final String ROLE_USER = "ROLE_USER";
 
-    private final String NOT_FOUND = "Question was not found.";
+    private static final String NOT_FOUND = "Question was not found.";
 
     private QuestionRepository questionRepo;
 
@@ -42,6 +44,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private Question processOptionsBeforePersist(Question question) {
+        if (question.getInputType() == null) {
+            question.setInputType("SINGLE_CHOICE");
+        }
         Set<QuestionOption> questionOptions = question.getQuestionOptions();
         if (questionOptions != null) {
             questionOptions.forEach(questionOption -> {
@@ -61,7 +66,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Secured(ROLE_EXPERT)
     @Transactional
-    public Question create(final Question question) {
+    public Question create(@Valid final Question question) {
         Question processedQuestion = processOptionsBeforePersist(question);
         return questionRepo.saveAndFlush(processedQuestion);
     }
@@ -69,7 +74,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     @Secured(ROLE_EXPERT)
-    public Question update(Question question) {
+    public Question update(@Valid final Question question) {
+        Long id = question.getId();
+        if (questionRepo.findOne(id) == null) {
+            throw new NotFoundException(NOT_FOUND);
+        }
         Question processedQuestion = processOptionsBeforePersist(question);
         return questionRepo.saveAndFlush(processedQuestion);
     }
@@ -86,7 +95,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question findById(final long id) {
-        return questionRepo.findOne(id);
+        Question question = questionRepo.findOne(id);
+        if (question == null) {
+            throw new NotFoundException(NOT_FOUND);
+        }
+        return question;
     }
 
     @Override

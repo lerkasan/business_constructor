@@ -10,7 +10,6 @@ import java.util.Optional;
 import ua.com.brdo.business.constructor.model.QuestionOption;
 
 @Repository
-//@NamedQuery(name = "QuestionOptionRepository.removeByQuestionId", query = "DELETE FROM question_option q WHERE q.question_id = :questionId")
 public interface QuestionOptionRepository extends JpaRepository<QuestionOption, Long> {
 
     List<QuestionOption> findByQuestionId(long id);

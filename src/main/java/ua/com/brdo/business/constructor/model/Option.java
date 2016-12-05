@@ -38,12 +38,12 @@ public class Option {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Title field of option is required.")
     @Size(max=1500, message = "Maximum length of option is 1500 characters.")
     @Column(unique = true, nullable = false, length = 1500)
     private String title;
 
-    //it is necessary to delete option occurrences from join table when option is deleted
+    //Cascade = ALL is necessary to delete option occurrences from join table when option is deleted
     @OneToMany(mappedBy = "option", cascade = ALL)
     private Set<QuestionOption> questionOptions = new HashSet<>();
 }

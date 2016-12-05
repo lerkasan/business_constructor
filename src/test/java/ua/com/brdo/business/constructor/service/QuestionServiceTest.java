@@ -14,6 +14,7 @@ import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.QuestionOption;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -64,14 +65,6 @@ public class QuestionServiceTest {
     public void shouldSetDefaultInputTypeIfNoneSpecified() {
         dummyQuestion = questionService.create(dummyQuestion);
 
-        assertFalse(dummyQuestion.isMultiChoice());
+        assertEquals("SINGLE_CHOICE", dummyQuestion.getInputType());
     }
-
-//    @Test
-//    public void shouldNotOverrideExistentInputTypeWithDefault() {
-//        dummyQuestion.setMultiChoice(true);
-//        dummyQuestion = questionService.create(dummyQuestion);
-//
-//        assertFalse(dummyQuestion.isMultiChoice());
-//    }
 }

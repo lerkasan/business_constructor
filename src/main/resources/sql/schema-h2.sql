@@ -70,7 +70,8 @@ CREATE TABLE option_ (
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                multi_choice BIT(1) NOT NULL DEFAULT 0,
+                input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
+              /*  input_type BIT(1) NOT NULL DEFAULT 0, */
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 

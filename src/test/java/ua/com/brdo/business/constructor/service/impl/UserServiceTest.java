@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.service;
+package ua.com.brdo.business.constructor.service.impl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;
 import ua.com.brdo.business.constructor.repository.UserRepository;
-import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
+import ua.com.brdo.business.constructor.service.UserService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -66,7 +66,7 @@ public class UserServiceTest {
     }
 
     @Before
-    public void init() {
+    public void setUp() {
         mockUser = new User();
         mockUser.setId(1L);
         mockUser.setUsername("test_user@mail.com");

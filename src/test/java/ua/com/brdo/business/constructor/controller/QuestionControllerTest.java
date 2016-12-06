@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -58,23 +57,31 @@ public class QuestionControllerTest {
 
     private TestContextManager testContextManager;
 
-    private final String QUESTIONS_URL = "/api/questions/";
+    private static final String SINGLE_CHOICE = "SINGLE_CHOICE";
 
-    private final String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
+    private static final String QUESTION_NOT_FOUND = "Question was not found.";
 
-    private final String validOptionDataJson = "{\"title\":\"My option\"}";
+    private static final String QUESTIONS_URL = "/api/questions/";
+
+    private static final String OPTIONS_DIR = "/options/";
+
+    private static final String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
+
+    private static final String validOptionDataJson = "{\"title\":\"My option\"}";
+
+    private static final String updatedTextField = "{\"text\":\"What is your name?\"}";
 
     private static final int NON_EXISTENT_ID = 10000;
 
-    private final String EXPERT = "EXPERT";
+    private static final String EXPERT = "EXPERT";
 
-    private final String USER = "USER";
+    private static final String USER = "USER";
 
-    private final String ADMIN = "ADMIN";
+    private static final String ADMIN = "ADMIN";
 
-    private final String questionText = "Who are you?";
+    private static final String questionText = "Who are you?";
 
-    private final String optionTitle = "My option";
+    private static final String optionTitle = "My option";
 
     private Question question;
 
@@ -113,7 +120,7 @@ public class QuestionControllerTest {
         mockMvc.perform(get(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question was not found.")));
+                .andExpect((jsonPath("$.message").value(QUESTION_NOT_FOUND)));
     }
 
     @Test
@@ -146,7 +153,7 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType").value("SINGLE_CHOICE")));
+                .andExpect((jsonPath("$.inputType").value(SINGLE_CHOICE)));
     }
 
     @Test
@@ -171,23 +178,19 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionWithDefaultCheckboxTest() {
-        String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
-
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType").value("SINGLE_CHOICE")));
+                .andExpect((jsonPath("$.inputType").value(SINGLE_CHOICE)));
     }
 
     @Test
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldUpdateQuestionByExpertTest() {
-        String updatedTextField = "{\"text\":\"What is your name?\"}";
-
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isOk())
@@ -208,8 +211,6 @@ public class QuestionControllerTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectUpdateQuestionByUnauthorizedTest() {
-        String updatedTextField = "{\"text\":\"What is your name?\"}";
-
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isUnauthorized());
@@ -219,8 +220,6 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectUpdateQuestionByNotExpertTest() {
-        String updatedTextField = "{\"text\":\"What is your name?\"}";
-
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
                 .andExpect(status().isForbidden());
@@ -252,7 +251,7 @@ public class QuestionControllerTest {
                 put(QUESTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question was not found.")));
+                .andExpect((jsonPath("$.message").value(QUESTION_NOT_FOUND)));
     }
 
     @Test
@@ -263,7 +262,18 @@ public class QuestionControllerTest {
                 delete(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Question was not found.")));
+                .andExpect((jsonPath("$.message").value(QUESTION_NOT_FOUND)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldRejectShowOptionsForNonExistentQuestionTest() {
+        mockMvc.perform(
+                get(QUESTIONS_URL + NON_EXISTENT_ID + OPTIONS_DIR ))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value(QUESTION_NOT_FOUND)));
     }
 
     @Test
@@ -271,7 +281,7 @@ public class QuestionControllerTest {
     @SneakyThrows
     public void shouldAddOptionToGivenQuestionByExpertTest() {
         mockMvc.perform(
-                post(QUESTIONS_URL + question.getId() + "/options").contentType(APPLICATION_JSON).content(validOptionDataJson))
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -284,7 +294,7 @@ public class QuestionControllerTest {
     @SneakyThrows
     public void shouldGetOptionOfGivenQuestionTest() {
         mockMvc.perform(
-                get(QUESTIONS_URL + question.getId() + "/options/" + option.getId()))
+                get(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
     }
@@ -297,8 +307,7 @@ public class QuestionControllerTest {
         String modifiedOptionDataJson = "{\"title\":\"Modified option\"}";
 
         mockMvc.perform(
-                put(QUESTIONS_URL + question.getId() + "/options/" + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
-                .andDo(print())
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.title").value("Modified option")));
@@ -315,7 +324,7 @@ public class QuestionControllerTest {
         questionOption = questionOptionService.create(questionOption);
 
         mockMvc.perform(
-                delete(QUESTIONS_URL + question.getId() + "/options/" + questionOption.getId()))
+                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + questionOption.getId()))
                 .andExpect(status().isNoContent());
     }
 
@@ -327,7 +336,7 @@ public class QuestionControllerTest {
         question = questionService.update(question);
 
         mockMvc.perform(
-                delete(QUESTIONS_URL + question.getId() + "/options/" + NON_EXISTENT_ID))
+                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
     }
 
@@ -336,7 +345,7 @@ public class QuestionControllerTest {
     @SneakyThrows
     public void shouldRejectRemoveOptionFromNonExistentQuestionByExpertTest() {
         mockMvc.perform(
-                delete(QUESTIONS_URL + NON_EXISTENT_ID + "/options/" + NON_EXISTENT_ID))
+                delete(QUESTIONS_URL + NON_EXISTENT_ID + OPTIONS_DIR + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
     }
 }

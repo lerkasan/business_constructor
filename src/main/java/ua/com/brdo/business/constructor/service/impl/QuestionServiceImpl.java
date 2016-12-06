@@ -1,7 +1,6 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,8 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
-import javax.validation.Valid;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
@@ -23,10 +20,6 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 
 @Service("QuestionService")
 public class QuestionServiceImpl implements QuestionService {
-
-    private static final String ROLE_EXPERT = "ROLE_EXPERT";
-
-    private static final String ROLE_USER = "ROLE_USER";
 
     private static final String NOT_FOUND = "Question was not found.";
 
@@ -64,17 +57,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Secured(ROLE_EXPERT)
     @Transactional
-    public Question create(@Valid final Question question) {
+    public Question create(final Question question) {
         Question processedQuestion = processOptionsBeforePersist(question);
         return questionRepo.saveAndFlush(processedQuestion);
     }
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
-    public Question update(@Valid final Question question) {
+    public Question update(final Question question) {
         Long id = question.getId();
         if (questionRepo.findOne(id) == null) {
             throw new NotFoundException(NOT_FOUND);
@@ -85,7 +76,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public void delete(final long id) {
         if (questionRepo.findOne(id) == null) {
             throw new NotFoundException(NOT_FOUND);
@@ -108,13 +98,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Secured({ROLE_EXPERT, ROLE_USER})
     public List<Question> findAll() {
         return questionRepo.findAll();
     }
 
     @Override
-    @Secured(ROLE_EXPERT)
     public Question addOption(Question question, Option option) {
         Objects.requireNonNull(question);
         Objects.requireNonNull(option);
@@ -123,7 +111,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Secured(ROLE_EXPERT)
     public Question deleteOption(Question question, Option option) {
         Objects.requireNonNull(question);
         Objects.requireNonNull(option);

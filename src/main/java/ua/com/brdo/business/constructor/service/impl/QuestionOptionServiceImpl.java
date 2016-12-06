@@ -1,7 +1,6 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +15,6 @@ import ua.com.brdo.business.constructor.service.QuestionOptionService;
 @Service("QuestionOptionService")
 public class QuestionOptionServiceImpl implements QuestionOptionService {
 
-    private static final String ROLE_EXPERT = "ROLE_EXPERT";
-
     private QuestionOptionRepository questionOptionRepo;
 
     @Autowired
@@ -27,7 +24,6 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public QuestionOption create(final QuestionOption questionOption) {
         Objects.requireNonNull(questionOption);
         return questionOptionRepo.saveAndFlush(questionOption);
@@ -35,14 +31,12 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public QuestionOption update(final QuestionOption questionOption) {
         Objects.requireNonNull(questionOption);
         return questionOptionRepo.saveAndFlush(questionOption);
     }
 
     @Override
-    @Secured(ROLE_EXPERT)
     @Transactional
     public void delete(final long id) {
         questionOptionRepo.delete(id);

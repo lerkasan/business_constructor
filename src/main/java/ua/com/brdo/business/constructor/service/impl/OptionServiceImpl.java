@@ -1,7 +1,6 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +16,6 @@ import ua.com.brdo.business.constructor.service.OptionService;
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
 
-    private static final String ROLE_EXPERT = "ROLE_EXPERT";
-
     private static final String NOT_FOUND = "Option was not found.";
 
     private OptionRepository optionRepo;
@@ -30,11 +27,10 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public Option create(final Option option) {
         Objects.requireNonNull(option);
         Optional<Option> optionFromDb = optionRepo.findByTitle(option.getTitle());
-        if (optionFromDb.isPresent()) {
+        if (optionFromDb.isPresent()) { //used when adding existent option to new question
             return optionFromDb.get();
         }
         return optionRepo.saveAndFlush(option);
@@ -42,7 +38,6 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public Option update(final Option option) {
         Long id = option.getId();
         Objects.requireNonNull(option);
@@ -54,7 +49,6 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    @Secured(ROLE_EXPERT)
     public void delete(final long id) {
         if (optionRepo.findOne(id) == null) {
             throw new NotFoundException(NOT_FOUND);

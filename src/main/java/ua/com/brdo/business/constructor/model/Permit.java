@@ -27,7 +27,7 @@ public class Permit {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
     @Column(name = "permit_type_id")
     private Long permitTypeId;

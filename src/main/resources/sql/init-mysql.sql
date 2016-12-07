@@ -64,7 +64,7 @@ CREATE TABLE permit (
   status             TINYINT               NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
   FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
-  UNIQUE (name)
+  UNIQUE (name(255))
 );
 
 

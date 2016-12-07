@@ -45,9 +45,15 @@ DROP TABLE IF EXISTS permit_type;
 
 CREATE TABLE permit_type (
   id   BIGINT AUTO_INCREMENT NOT NULL,
+<<<<<<< HEAD
   name VARCHAR               NOT NULL,
   CONSTRAINT permit_type_id PRIMARY KEY (id),
   UNIQUE KEY (name(255))
+=======
+  name VARCHAR(255)          NOT NULL,
+  CONSTRAINT permit_type_id PRIMARY KEY (id),
+  UNIQUE KEY (name)
+>>>>>>> 3f30e47f1741fa523bb122c47fa4d0b55628cf09
 );
 
 
@@ -64,7 +70,11 @@ CREATE TABLE permit (
   status             TINYINT               NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
   FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
+<<<<<<< HEAD
   UNIQUE KEY (name(750))
+=======
+  UNIQUE KEY (name)
+>>>>>>> 3f30e47f1741fa523bb122c47fa4d0b55628cf09
 );
 
 

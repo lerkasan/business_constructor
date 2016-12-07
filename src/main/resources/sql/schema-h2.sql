@@ -35,11 +35,9 @@ CREATE TABLE user_role (
 CREATE TABLE permit_type (
   id   IDENTITY      NOT NULL,
   name VARCHAR(255)  NOT NULL,
-  CONSTRAINT permit_type_id PRIMARY KEY (id)
+  CONSTRAINT permit_type_id PRIMARY KEY (id),
+  UNIQUE KEY (name)
 );
-
-CREATE UNIQUE INDEX permitTypeNameIndx
-ON permit_type (name);
 
 
 CREATE TABLE permit (
@@ -54,11 +52,9 @@ CREATE TABLE permit (
   propose          LONGVARCHAR   NOT NULL,
   status           TINYINT       NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
-  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
+  UNIQUE KEY (name)
 );
-
-CREATE UNIQUE INDEX permitNameIndx
-ON permit (name);
 
 CREATE TABLE option_ (
                 id IDENTITY NOT NULL,

@@ -45,16 +45,15 @@ DROP TABLE IF EXISTS permit_type;
 
 CREATE TABLE permit_type (
   id   BIGINT AUTO_INCREMENT NOT NULL,
-  name VARCHAR(255)          NOT NULL,
-  CONSTRAINT permit_type_id PRIMARY KEY (id)
+  name VARCHAR               NOT NULL,
+  CONSTRAINT permit_type_id PRIMARY KEY (id),
+  UNIQUE KEY (name(255))
 );
 
-CREATE UNIQUE INDEX permitTypeNameIndx
-ON permit_type (name);
 
 CREATE TABLE permit (
   id                 BIGINT AUTO_INCREMENT NOT NULL,
-  name               VARCHAR(750)          NOT NULL,
+  name               VARCHAR               NOT NULL,
   permit_type_id     BIGINT                NOT NULL,
   legal_document_id  BIGINT                NOT NULL,
   form_id            BIGINT                NOT NULL,
@@ -64,7 +63,8 @@ CREATE TABLE permit (
   propose            varchar(3000)         NOT NULL,
   status             TINYINT               NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
-  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
+  UNIQUE KEY (name(750))
 );
 
 

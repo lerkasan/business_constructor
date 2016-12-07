@@ -1,5 +1,7 @@
 package ua.com.brdo.business.constructor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,21 +18,26 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
-import ua.com.brdo.business.constructor.model.QuestionOption;
 import ua.com.brdo.business.constructor.service.OptionService;
-import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.http.MediaType.valueOf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,41 +57,31 @@ public class QuestionControllerTest {
     @Autowired
     private OptionService optionService;
 
-    @Autowired
-    private QuestionOptionService questionOptionService;
-
     private MockMvc mockMvc;
-
     private TestContextManager testContextManager;
 
     private static final String SINGLE_CHOICE = "SINGLE_CHOICE";
-
+    private static final String MULTI_CHOICE = "MULTI_CHOICE";
     private static final String QUESTION_NOT_FOUND = "Question was not found.";
-
+    private static final String MALFORMED_JSON = "Received malformed JSON.";
+    private static final String MALFORMED_URL = "Received malformed URL.";
+    private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
-
     private static final String OPTIONS_DIR = "/options/";
-
     private static final String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
-
+    private static final String validQuestionDataWithChoiceJson = "{\"text\":\"Who are you?\", \"input_type\": \"MULTI_CHOICE\"}";
+    private static final String invalidQuestionDataJson = "{\"text\":\"Who are you?\", \"input_type\": \"MULT\"}";
+    private static final String malformedJson = "{\"text\":\"Who are you?}";
     private static final String validOptionDataJson = "{\"title\":\"My option\"}";
-
     private static final String updatedTextField = "{\"text\":\"What is your name?\"}";
-
     private static final int NON_EXISTENT_ID = 10000;
-
     private static final String EXPERT = "EXPERT";
-
     private static final String USER = "USER";
-
     private static final String ADMIN = "ADMIN";
-
     private static final String questionText = "Who are you?";
-
     private static final String optionTitle = "My option";
 
     private Question question;
-
     private Option option;
 
     @Before
@@ -100,6 +97,7 @@ public class QuestionControllerTest {
 
         option = new Option();
         option.setTitle(optionTitle);
+        option.setQuestion(question);
         option = optionService.create(option);
     }
 
@@ -153,7 +151,7 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType").value(SINGLE_CHOICE)));
+                .andExpect((jsonPath("$.input_type").value(SINGLE_CHOICE)));
     }
 
     @Test
@@ -177,14 +175,72 @@ public class QuestionControllerTest {
     @Test
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
-    public void shouldCreateQuestionWithDefaultCheckboxTest() {
+    public void shouldCreateQuestionWithDefaultSingleChoiceTest() {
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.text").value(questionText)))
-                .andExpect((jsonPath("$.inputType").value(SINGLE_CHOICE)));
+                .andExpect((jsonPath("$.input_type").value(SINGLE_CHOICE)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldCreateQuestionWithMultiChoiceTest() {
+        System.out.println(validQuestionDataWithChoiceJson);
+        mockMvc.perform(
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataWithChoiceJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.text").value(questionText)))
+                .andExpect((jsonPath("$.input_type").value(MULTI_CHOICE)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldRejectCreateQuestionWithWrongChoiceTest() {
+        mockMvc.perform(
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(invalidQuestionDataJson))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value("Received malformed JSON.")));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldCreateQuestionWithOptionsArrayTest() {
+//        ObjectMapper jsonMapper = new ObjectMapper();
+//        Map<String, Object> validQuestionData = new HashMap<>();
+//        Map<String, String> optionData1 = new HashMap<>();
+//        Map<String, String> optionData2 = new HashMap<>();
+//        optionData1.put("title", "option1");
+//        optionData2.put("title", "option2");
+//        Set<Map<String,String>> options = new HashSet<>();
+//        options.add(optionData1);
+//        options.add(optionData2);
+//        validQuestionData.put("text", questionText);
+//        validQuestionData.put("input_type", MULTI_CHOICE);
+//        validQuestionData.put("options", options);
+//        String questionDataJson = jsonMapper.writeValueAsString(validQuestionData);
+        String questionDataJson = "{\"options\":[{\"title\":\"option1\"},{\"title\":\"option2\"}],\"input_type\":\"MULTI_CHOICE\",\"text\":\"Who are you?\"}";
+
+        mockMvc.perform(
+                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(questionDataJson))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.text").value(questionText)))
+                .andExpect((jsonPath("$.input_type").value(MULTI_CHOICE)))
+                .andExpect(jsonPath("$.options").isArray())
+                .andExpect(jsonPath("$.options").isNotEmpty());
     }
 
     @Test
@@ -283,12 +339,12 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + OPTIONS_DIR).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isCreated())
+                .andDo(print())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.title").value(optionTitle)));
     }
 
-    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT, USER})
     @SneakyThrows
@@ -299,7 +355,6 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8));
     }
 
-    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
@@ -309,22 +364,19 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.title").value("Modified option")));
     }
 
-    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRemoveOptionFromGivenQuestionByExpertTest() {
-        QuestionOption questionOption = new QuestionOption();
-        questionOption.setOption(option);
-        questionOption.setQuestion(question);
-        questionOption = questionOptionService.create(questionOption);
+        option = optionService.create(option);
 
         mockMvc.perform(
-                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + questionOption.getId()))
+                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()))
                 .andExpect(status().isNoContent());
     }
 
@@ -347,5 +399,27 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 delete(QUESTIONS_URL + NON_EXISTENT_ID + OPTIONS_DIR + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldReturnMalformedJsonErrorTest() {
+        mockMvc.perform(
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value(MALFORMED_JSON)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldReturnMalformedURLErrorTest() {
+        mockMvc.perform(
+                get(MALFORMED_URL_PARAM))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value(MALFORMED_URL)));
     }
 }

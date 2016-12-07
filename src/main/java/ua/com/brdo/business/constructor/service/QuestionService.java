@@ -25,5 +25,5 @@ public interface QuestionService {
 
     Question deleteOption(Question question, Option option);
 
-    Long deleteByQuestionIdAndOptionId(Long questionId, Long optionId);
+    void deleteOptions(Question question);
 }

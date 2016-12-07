@@ -14,19 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
-import ua.com.brdo.business.constructor.model.QuestionOption;
 import ua.com.brdo.business.constructor.service.OptionService;
-import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
-import static java.lang.Long.parseLong;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -36,13 +33,11 @@ public class QuestionController {
 
     private QuestionService questionService;
     private OptionService optionService;
-    private QuestionOptionService questionOptionService;
 
     @Autowired
-    public QuestionController(QuestionService questionService, OptionService optionService, QuestionOptionService questionOptionService) {
+    public QuestionController(QuestionService questionService, OptionService optionService) {
         this.questionService = questionService;
         this.optionService = optionService;
-        this.questionOptionService = questionOptionService;
     }
 
     @ModelAttribute
@@ -93,10 +88,8 @@ public class QuestionController {
     @PutMapping(path = "/{questionId}", consumes = APPLICATION_JSON_VALUE)
     public Question updateQuestion(@ModelAttribute Question question, @Valid @RequestBody Question updatedQuestion) {
        Long questionId = question.getId();
-        updatedQuestion.setId(Long.valueOf(questionId));
-        if (updatedQuestion.getQuestionOptions() != null) {
-            questionOptionService.deleteByQuestionId(updatedQuestion.getId());
-        }
+        optionService.deleteByQuestionId(questionId);
+        updatedQuestion.setId(questionId);
         return questionService.update(updatedQuestion);
     }
 
@@ -110,51 +103,41 @@ public class QuestionController {
 
     @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE) //TODO: add controller to consume list of options for given updatedQuestion
     public ResponseEntity createOption(@ModelAttribute Question question, @Valid @RequestBody Option option) {
-        Option createdOption = optionService.create(option);
-        questionService.addOption(question, createdOption);
+        questionService.addOption(question, option);
         question = questionService.update(question);
         URI location = ServletUriComponentsBuilder
                 .fromUriString("questions/{questionId}/options").path("/{id}")
                 .buildAndExpand(question.getId(), option.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(createdOption);
+        return ResponseEntity.created(location).body(option);
     }
 
     @GetMapping(path = "/{questionId}/options")
-    public List<Option> listOptions(@ModelAttribute Question question) {
-        Long questionId = question.getId();
-        List<QuestionOption> questionOptions = questionOptionService.findByQuestionId(questionId);
-        List<Option> options = new ArrayList<>();
-        questionOptions.forEach(questionOption ->
-                options.add(optionService
-                        .findById(questionOption
-                                .getOption().getId())));
-        return options;
+    public Set<Option> listOptions(@ModelAttribute Question question) {
+        return question.getOptions();
     }
 
     @GetMapping(path = "/{questionId}/options/{optionId}")
     public Option getOption(@ModelAttribute Question question, @PathVariable Long optionId) {
         long questionId = question.getId();
-        QuestionOption questionOption = questionOptionService.findByQuestionIdAndOptionId(questionId, optionId);
-        return questionOption.getOption();
+        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
+        return option;
     }
 
     @PutMapping(path = "/{questionId}/options/{optionId}", consumes = APPLICATION_JSON_VALUE)
     public Option updateOption(@ModelAttribute Question question, @PathVariable Long optionId, @Valid @RequestBody Option modifiedOption) {
         long questionId = question.getId();
-        Option option = optionService.findById(optionId);
-        questionService.deleteOption(question, option);
-        questionOptionService.deleteByQuestionIdAndOptionId(questionId, optionId);
-        Option updatedOption = optionService.create(modifiedOption);
-        questionService.addOption(question, updatedOption);
-        questionService.update(question);
-        return updatedOption;
+        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
+        modifiedOption.setId(optionId);
+        modifiedOption.setQuestion(question);
+        return optionService.update(modifiedOption);
     }
 
     @DeleteMapping(path = "/{questionId}/options/{optionId}")
     public ResponseEntity deleteOption(@ModelAttribute Question question, @PathVariable Long optionId) {
         Long questionId = question.getId();
-        questionOptionService.deleteByQuestionIdAndOptionId(questionId, optionId);
+        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
+        optionService.delete(option);
         return ResponseEntity
                 .noContent()
                 .build();

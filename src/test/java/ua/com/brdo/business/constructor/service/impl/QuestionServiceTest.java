@@ -16,10 +16,7 @@ import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
-import ua.com.brdo.business.constructor.model.QuestionOption;
-import ua.com.brdo.business.constructor.repository.OptionRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
-import ua.com.brdo.business.constructor.service.QuestionOptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static org.junit.Assert.assertEquals;
@@ -39,37 +36,26 @@ public class QuestionServiceTest {
 
     private static final String newQuestionText = "That is this new question about?";
 
-    private Option dummyOption;
-
     private Question dummyQuestion;
 
-    private QuestionOption dummyQuestionOption;
-
-    @Mock
-    private OptionRepository optionRepo;
+    private Option dummyOption;
 
     @Mock
     private QuestionRepository questionRepo;
 
-    @Mock
-    private QuestionOptionService questionOptionService;
-
     @InjectMocks
-    private QuestionService serviceUnderTest = new QuestionServiceImpl(questionRepo, optionRepo, questionOptionService);
+    private QuestionService serviceUnderTest = new QuestionServiceImpl(questionRepo);
 
     @Before
     public void setUp() {
-        dummyOption = new Option();
-        dummyOption.setId(1L);
-        dummyOption.setTitle("dummy option");
-
         dummyQuestion = new Question();
         dummyQuestion.setId(1L);
         dummyQuestion.setText(questionText);
 
-        dummyQuestionOption = new QuestionOption();
-        dummyQuestionOption.setQuestion(dummyQuestion);
-        dummyQuestionOption.setOption(dummyOption);
+        dummyOption = new Option();
+        dummyOption.setId(1L);
+        dummyOption.setTitle("dummy option");
+        dummyOption.setQuestion(dummyQuestion);
 
         when(questionRepo.findByText(questionText)).thenReturn(Optional.of(dummyQuestion));
         when(questionRepo.findByText(newQuestionText)).thenReturn(Optional.empty());
@@ -81,16 +67,16 @@ public class QuestionServiceTest {
     @Test
     public void shouldAddOptiontoQuestionTest() {
         serviceUnderTest.addOption(dummyQuestion, dummyOption);
-        Set<QuestionOption> actualQuestionOptions = dummyQuestion.getQuestionOptions();
-        boolean questionContainsOption = actualQuestionOptions.contains(dummyQuestionOption);
+        Set<Option> actualOptions = dummyQuestion.getOptions();
+        boolean questionContainsOption = actualOptions.contains(dummyOption);
         assertTrue(questionContainsOption);
     }
 
     @Test
     public void shouldRemoveOptionFromQuestionTest() {
         serviceUnderTest.deleteOption(dummyQuestion, dummyOption);
-        Set<QuestionOption> actualQuestionOptions = dummyQuestion.getQuestionOptions();
-        boolean questionContainsOption = actualQuestionOptions.contains(dummyQuestionOption);
+        Set<Option> actualOptions = dummyQuestion.getOptions();
+        boolean questionContainsOption = actualOptions.contains(dummyOption);
 
         assertFalse(questionContainsOption);
     }

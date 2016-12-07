@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
@@ -70,5 +72,12 @@ public class ControllerAdviceHandler {
     @ResponseBody
     public Map<String, String> handleNotFoundException(Exception e) {
         return Collections.singletonMap("message", e.getMessage());
+    }
+
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(value = BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleMethodArgumentTypeMismatchException(Exception e) {
+        return Collections.singletonMap("message", "Received malformed URL.");
     }
 }

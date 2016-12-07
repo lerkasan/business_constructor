@@ -6,7 +6,6 @@ CREATE TABLE role (
                 PRIMARY KEY (id)
 );
 
-
 CREATE UNIQUE INDEX role_title_idx
 ON role ( title );
 
@@ -23,7 +22,6 @@ CREATE TABLE user (
                 creation_date DATE NOT NULL,
                 PRIMARY KEY (id)
 );
-
 
 CREATE UNIQUE INDEX user_email_idx
 ON user ( email );
@@ -85,15 +83,6 @@ CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
                 input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
-               /* multi_choice BOOLEAN NOT NULL DEFAULT 0,*/
-                PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS option_;
-
-CREATE TABLE option_ (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(1000) NOT NULL,
                 PRIMARY KEY (id)
 );
 
@@ -114,17 +103,16 @@ CREATE TABLE question_questionnaire (
                 PRIMARY KEY (question_id, questionnaire_id)
 );
 
-DROP TABLE IF EXISTS question_option;
+DROP TABLE IF EXISTS option_;
 
-CREATE TABLE question_option (
+CREATE TABLE option_ (
                 id BIGINT AUTO_INCREMENT NOT NULL,
+                title VARCHAR(500) NOT NULL,
                 question_id BIGINT NOT NULL,
-                option_id BIGINT NOT NULL,
-                procedure_id INT,
+                procedure_id BIGINT,
                 next_question_id BIGINT,
                 PRIMARY KEY (id)
 );
-
 
 DROP TABLE IF EXISTS user_answer;
 
@@ -141,22 +129,22 @@ REFERENCES input_type (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_questionnaire ADD CONSTRAINT question_question_questionnaire_fk
+ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
-FOREIGN KEY (question_id)
+ALTER TABLE option_ ADD CONSTRAINT option_next_question_fk
+FOREIGN KEY (next_question_id)
 REFERENCES question (id)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
-FOREIGN KEY (option_id)
-REFERENCES option_ (id)
-ON DELETE CASCADE
+ALTER TABLE question_questionnaire ADD CONSTRAINT question_question_questionnaire_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
+ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
 ALTER TABLE questionnaire ADD CONSTRAINT business_type_questionnaire_fk

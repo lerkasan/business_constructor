@@ -60,44 +60,29 @@ CREATE TABLE permit (
 CREATE UNIQUE INDEX permitNameIndx
 ON permit (name);
 
-CREATE TABLE option_ (
-                id IDENTITY NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                CONSTRAINT option_id PRIMARY KEY (id)
-);
-
-
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
-                text VARCHAR(3000) NOT NULL,
+                text VARCHAR(1000) NOT NULL,
                 input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
-              /*  input_type BIT(1) NOT NULL DEFAULT 0, */
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 
-
-CREATE TABLE question_option (
+CREATE TABLE option_ (
                 id IDENTITY NOT NULL,
+                title VARCHAR(500) NOT NULL,
                 question_id BIGINT NOT NULL,
-                option_id BIGINT NOT NULL,
-                procedure_id INTEGER,
+                procedure_id BIGINT,
                 next_question_id BIGINT,
-                CONSTRAINT question_option_id PRIMARY KEY (id)
+                CONSTRAINT option_id PRIMARY KEY (id)
 );
 
-ALTER TABLE question_option ADD CONSTRAINT option__question_option_fk
-FOREIGN KEY (option_id)
-REFERENCES option_ (id)
-ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
+ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
+ALTER TABLE option_ ADD CONSTRAINT option_next_question_fk
 FOREIGN KEY (next_question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION

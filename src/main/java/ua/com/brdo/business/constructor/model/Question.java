@@ -43,17 +43,17 @@ public class Question {
     private Long id;
 
     @NotEmpty(message = "Text field in question is required.")
-    @Size(max=3000, message = "Maximum length of question is 3000 characters.")
-    @Column(unique = true, nullable = false, length = 3000)
+    @Size(max=1000, message = "Maximum length of question is 1000 characters.")
+    @Column(nullable = false, length = 1000)
     private String text;
 
+    @JsonProperty("input_type")
     @Enumerated(EnumType.STRING)
     @Column(name="input_type", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT \"SINGLE_CHOICE\"")
     private InputType inputType = InputType.SINGLE_CHOICE;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
-    @JsonProperty("options")
-    private Set<QuestionOption> questionOptions = new HashSet<>();
+    private Set<Option> options = new HashSet<>();
 
     public String getInputType() {
         if (inputType == null) {
@@ -68,34 +68,14 @@ public class Question {
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
-        QuestionOption questionOption = new QuestionOption();
-        questionOption.setQuestion(this);
-        questionOption.setOption(option);
-        if (option.getQuestionOptions() == null) {
-            option.setQuestionOptions(new HashSet<>());
+        if (options == null) {
+            options = new HashSet<>();
         }
-        if (questionOptions == null) {
-            this.setQuestionOptions(new HashSet<>());
-        }
-        boolean result = option.getQuestionOptions().add(questionOption);
-        result &= this.getQuestionOptions().add(questionOption);
-        return result;
+        return options.add(option);
     }
 
     public boolean deleteOption(Option option) {
-        boolean result = false;
         Objects.requireNonNull(option);
-        QuestionOption questionOption = new QuestionOption();
-        questionOption.setQuestion(this);
-        questionOption.setOption(option);
-        Set<QuestionOption> questionOptionsInQuestion = option.getQuestionOptions();
-        Set<QuestionOption> questionOptionsInOption = this.getQuestionOptions();
-        if (questionOptionsInQuestion != null) {
-           result = questionOptionsInQuestion.remove(questionOption);
-        }
-        if (questionOptionsInOption != null) {
-            result &= questionOptionsInOption.remove(questionOption);
-        }
-        return result;
+        return options == null || options.remove(option);
     }
 }

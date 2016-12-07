@@ -46,7 +46,8 @@ DROP TABLE IF EXISTS permit_type;
 CREATE TABLE permit_type (
   id   BIGINT AUTO_INCREMENT NOT NULL,
   name VARCHAR(255)          NOT NULL,
-  CONSTRAINT permit_type_id PRIMARY KEY (id)
+  CONSTRAINT permit_type_id PRIMARY KEY (id),
+  UNIQUE (name)
 );
 
 
@@ -62,7 +63,8 @@ CREATE TABLE permit (
   propose            varchar(3000)         NOT NULL,
   status             TINYINT               NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
-  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
+  UNIQUE (name)
 );
 
 

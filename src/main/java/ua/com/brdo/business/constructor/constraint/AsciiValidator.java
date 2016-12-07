@@ -10,6 +10,10 @@ import lombok.SneakyThrows;
 @Component
 public class AsciiValidator implements ConstraintValidator<Ascii, char[]> {
 
+    private static final char MIN_ALLOWED_CHAR_SPACE = 32;
+    private static final char MAX_ALLOWED_CHAR_TILDE = 126;
+
+    @Override
     public void initialize(Ascii annotation) {
     }
 
@@ -20,7 +24,7 @@ public class AsciiValidator implements ConstraintValidator<Ascii, char[]> {
             return false;
         }
         for (int index = 0; index < param.length; index++) {
-            if ((param[index] < 32) || (param[index] > 126)) {
+            if ((param[index] < MIN_ALLOWED_CHAR_SPACE) || (param[index] > MAX_ALLOWED_CHAR_TILDE)) {
                 return false;
             }
         }

@@ -84,6 +84,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
+    public void delete(Question question) {
+        questionRepo.delete(question);
+    }
+
+    @Override
     public Question findById(final long id) {
         Question question = questionRepo.findOne(id);
         if (question == null) {

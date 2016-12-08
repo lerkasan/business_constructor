@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.service.impl;
+package ua.com.brdo.business.constructor.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.OptionRepository;
 import ua.com.brdo.business.constructor.service.OptionService;
+import ua.com.brdo.business.constructor.service.impl.OptionServiceImpl;
 
 import static org.mockito.Mockito.when;
 

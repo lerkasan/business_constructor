@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.service.impl;
+package ua.com.brdo.business.constructor.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.service.QuestionService;
+import ua.com.brdo.business.constructor.service.impl.QuestionServiceImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

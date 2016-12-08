@@ -35,11 +35,9 @@ CREATE TABLE user_role (
 CREATE TABLE permit_type (
   id   IDENTITY      NOT NULL,
   name VARCHAR(255)  NOT NULL,
-  CONSTRAINT permit_type_id PRIMARY KEY (id)
+  CONSTRAINT permit_type_id PRIMARY KEY (id),
+  UNIQUE (name)
 );
-
-CREATE UNIQUE INDEX permitTypeNameIndx
-ON permit_type (name);
 
 
 CREATE TABLE permit (
@@ -54,11 +52,9 @@ CREATE TABLE permit (
   propose          LONGVARCHAR   NOT NULL,
   status           TINYINT       NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
-  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+  FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
+  UNIQUE (NAME )
 );
-
-CREATE UNIQUE INDEX permitNameIndx
-ON permit (name);
 
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
@@ -99,3 +95,25 @@ FOREIGN KEY (role_id)
 REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
+
+CREATE TABLE legal_document (
+  id                      IDENTITY            NOT NULL,
+  id_rada                 VARCHAR(50)         NOT NULL,
+  id_liga                 VARCHAR(24)         NOT NULL,
+  id_state                INTEGER             NOT NULL,
+  date_pub                INTEGER             NOT NULL,
+  date_add                INTEGER             NOT NULL,
+  number_pub              VARCHAR(255)        NOT NULL,
+  title                   VARCHAR(1025)       NOT NULL,
+  number_rada             VARCHAR(255)        NOT NULL,
+  number_mj               VARCHAR(65)         NOT NULL,
+  in_rada                 TINYINT             NOT NULL,
+  in_liga                 TINYINT             NOT NULL,
+  in_brdo                 TINYINT             NOT NULL,
+  auto_liga               TINYINT             NOT NULL,
+  auto_brdo               TINYINT             NOT NULL,
+  regulation              INTEGER             NOT NULL,
+  manual_sector           VARCHAR(96)         NOT NULL,
+  tech_regulation         INTEGER             NOT NULL,
+  CONSTRAINT legal_document_id PRIMARY KEY (id)
+);

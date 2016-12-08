@@ -143,7 +143,7 @@ public class RegistrationTest {
                 post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.message").value("Password could include upper and lower case latin letters, numerals (0-9) and special symbols."));
+                .andExpect(jsonPath("$.message").value("Password can include upper and lower case latin letters, numerals (0-9) and special symbols."));
     }
 
     @Test

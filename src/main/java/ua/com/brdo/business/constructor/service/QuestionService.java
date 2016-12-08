@@ -13,6 +13,8 @@ public interface QuestionService {
 
     void delete(long id);
 
+    void delete(Question question);
+
     Question findById(long id);
 
     Question findByText(String text);
@@ -22,4 +24,6 @@ public interface QuestionService {
     Question addOption(Question question, Option option);
 
     Question deleteOption(Question question, Option option);
+
+    void deleteOptions(Question question);
 }

@@ -12,10 +12,10 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"text"})
+@EqualsAndHashCode(of = {"id"})
 @JsonInclude(NON_NULL)
 @Validated
 public class Question {
@@ -42,49 +42,40 @@ public class Question {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotEmpty
-    @Size(max=3000, message = "Maximum length of question is 3000 characters.")
-    @Column(unique = true, nullable = false, length = 3000)
+    @NotEmpty(message = "Text field in question is required.")
+    @Size(max=1000, message = "Maximum length of question is 1000 characters.")
+    @Column(nullable = false, length = 1000)
     private String text;
 
-    @ManyToOne
-    @JoinColumn(name="input_type_id", nullable=false)
-    private InputType inputType;
+    @JsonProperty("input_type")
+    @Enumerated(EnumType.STRING)
+    @Column(name="input_type", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT \"SINGLE_CHOICE\"")
+    private InputType inputType = InputType.SINGLE_CHOICE;
 
     @OneToMany(mappedBy = "question", cascade = ALL)
-    @JsonProperty("options")
-    private Set<QuestionOption> questionOptions = new HashSet<>();
+    private Set<Option> options = new HashSet<>();
+
+    public String getInputType() {
+        if (inputType == null) {
+            inputType = InputType.SINGLE_CHOICE;
+        }
+        return inputType.name();
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = InputType.valueOf(inputType);
+    }
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
-        QuestionOption questionOption = new QuestionOption();
-        questionOption.setQuestion(this);
-        questionOption.setOption(option);
-        if (option.getQuestionOptions() == null) {
-            option.setQuestionOptions(new HashSet<>());
+        if (options == null) {
+            options = new HashSet<>();
         }
-        if (questionOptions == null) {
-            this.setQuestionOptions(new HashSet<>());
-        }
-        boolean result = option.getQuestionOptions().add(questionOption);
-        result &= this.getQuestionOptions().add(questionOption);
-        return result;
+        return options.add(option);
     }
 
     public boolean deleteOption(Option option) {
-        boolean result = false;
         Objects.requireNonNull(option);
-        QuestionOption questionOption = new QuestionOption();
-        questionOption.setQuestion(this);
-        questionOption.setOption(option);
-        Set<QuestionOption> questionOptionsInQuestion = option.getQuestionOptions();
-        Set<QuestionOption> questionOptionsInOption = this.getQuestionOptions();
-        if (questionOptionsInQuestion != null) {
-           result = questionOptionsInQuestion.remove(questionOption);
-        }
-        if (questionOptionsInOption != null) {
-            result &= questionOptionsInOption.remove(questionOption);
-        }
-        return result;
+        return options == null || options.remove(option);
     }
 }

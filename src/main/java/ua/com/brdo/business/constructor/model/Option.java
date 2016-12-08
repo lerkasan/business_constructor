@@ -47,4 +47,8 @@ public class Option {
     // private Question nextQuestion; TODO - uncomment in further tasks
 
     // private Procedure procedure; TODO - uncomment in further tasks
+
+    public Option(String title) {
+        this.title = title;
+    }
 }

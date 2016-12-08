@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.http.MediaType.valueOf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -57,6 +55,9 @@ public class QuestionControllerTest {
     @Autowired
     private OptionService optionService;
 
+    @Autowired
+    ObjectMapper jsonMapper;
+
     private MockMvc mockMvc;
     private TestContextManager testContextManager;
 
@@ -68,25 +69,54 @@ public class QuestionControllerTest {
     private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
     private static final String OPTIONS_DIR = "/options/";
-    private static final String validQuestionDataJson = "{\"text\":\"Who are you?\"}";
-    private static final String validQuestionDataWithChoiceJson = "{\"text\":\"Who are you?\", \"input_type\": \"MULTI_CHOICE\"}";
-    private static final String invalidQuestionDataJson = "{\"text\":\"Who are you?\", \"input_type\": \"MULT\"}";
-    private static final String malformedJson = "{\"text\":\"Who are you?}";
     private static final String validOptionDataJson = "{\"title\":\"My option\"}";
-    private static final String updatedTextField = "{\"text\":\"What is your name?\"}";
     private static final int NON_EXISTENT_ID = 10000;
     private static final String EXPERT = "EXPERT";
     private static final String USER = "USER";
     private static final String ADMIN = "ADMIN";
     private static final String questionText = "Who are you?";
+    private static final String updatedText = "What is your name?";
     private static final String optionTitle = "My option";
 
     private Question question;
     private Option option;
 
+    private Question generateValidQuestionWithOptions() {
+        Option option1 = new Option("option1");
+        Option option2 = new Option("option2");
+        Set<Option> options = new HashSet<>();
+        options.add(option1);
+        options.add(option2);
+        Question questionWithOptions = new Question();
+        questionWithOptions.setText(questionText);
+        questionWithOptions.setInputType(MULTI_CHOICE);
+        questionWithOptions.setOptions(options);
+        return questionWithOptions;
+    }
+
+    private Question generateValidQuestionWithInputType() {
+        Question validQuestion = new Question();
+        validQuestion.setText(questionText);
+        validQuestion.setInputType(MULTI_CHOICE);
+        return validQuestion;
+    }
+
+    private Question generateValidQuestionWithTextOnly(String text) {
+        Question validQuestion = new Question();
+        validQuestion.setText(text);
+        return validQuestion;
+    }
+
+    private Map<String, String> generateInvalidQuestionWithWrongInputType() {
+        Map<String, String> questionData = new HashMap<>();
+        questionData.put("text", questionText);
+        questionData.put("input_type", "MULT");
+        return questionData;
+    }
+
     @Before
     @SneakyThrows
-    public void setup() {
+    public void setUp() {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
@@ -95,8 +125,7 @@ public class QuestionControllerTest {
         question.setText(questionText);
         question = questionService.create(question);
 
-        option = new Option();
-        option.setTitle(optionTitle);
+        option = new Option(optionTitle);
         option.setQuestion(question);
         option = optionService.create(option);
     }
@@ -145,8 +174,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionByExpertTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(questionText);
+        String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -158,8 +190,11 @@ public class QuestionControllerTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectQuestionCreationByUnauthorizedTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(questionText);
+        String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -167,8 +202,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectQuestionCreationNotByExpertTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(questionText);
+        String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
                 .andExpect(status().isForbidden());
     }
 
@@ -176,8 +214,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionWithDefaultSingleChoiceTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(questionText);
+        String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataJson))
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -189,9 +230,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionWithMultiChoiceTest() {
-        System.out.println(validQuestionDataWithChoiceJson);
+        Question validQuestionWithInputType = generateValidQuestionWithInputType();
+        String validQuestionWithInputTypeJson = jsonMapper.writeValueAsString(validQuestionWithInputType);
+
         mockMvc.perform(
-                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionDataWithChoiceJson))
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionWithInputTypeJson))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -204,9 +247,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectCreateQuestionWithWrongChoiceTest() {
+        Map<String, String> invalidQuestionData = generateInvalidQuestionWithWrongInputType();
+        String invalidQuestionDataJson = jsonMapper.writeValueAsString(invalidQuestionData);
+
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(invalidQuestionDataJson))
-                .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.message").value("Received malformed JSON.")));
@@ -216,24 +261,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldCreateQuestionWithOptionsArrayTest() {
-//        ObjectMapper jsonMapper = new ObjectMapper();
-//        Map<String, Object> validQuestionData = new HashMap<>();
-//        Map<String, String> optionData1 = new HashMap<>();
-//        Map<String, String> optionData2 = new HashMap<>();
-//        optionData1.put("title", "option1");
-//        optionData2.put("title", "option2");
-//        Set<Map<String,String>> options = new HashSet<>();
-//        options.add(optionData1);
-//        options.add(optionData2);
-//        validQuestionData.put("text", questionText);
-//        validQuestionData.put("input_type", MULTI_CHOICE);
-//        validQuestionData.put("options", options);
-//        String questionDataJson = jsonMapper.writeValueAsString(validQuestionData);
-        String questionDataJson = "{\"options\":[{\"title\":\"option1\"},{\"title\":\"option2\"}],\"input_type\":\"MULTI_CHOICE\",\"text\":\"Who are you?\"}";
+        Question questionWithOptions = generateValidQuestionWithOptions();
+        String questionDataJson = jsonMapper.writeValueAsString(questionWithOptions);
 
         mockMvc.perform(
                  post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(questionDataJson))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -247,11 +279,14 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldUpdateQuestionByExpertTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(updatedText);
+        String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
+                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(modifiedQuestion))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.text").value("What is your name?")));
+                .andExpect((jsonPath("$.text").value(updatedText)));
     }
 
     @Test
@@ -267,8 +302,11 @@ public class QuestionControllerTest {
     @WithAnonymousUser
     @SneakyThrows
     public void shouldRejectUpdateQuestionByUnauthorizedTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(updatedText);
+        String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
+                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(modifiedQuestion))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -276,8 +314,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {USER, ADMIN})
     @SneakyThrows
     public void shouldRejectUpdateQuestionByNotExpertTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(updatedText);
+        String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(updatedTextField))
+                put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(modifiedQuestion))
                 .andExpect(status().isForbidden());
     }
 
@@ -303,8 +344,11 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldRejectUpdateNonExistentQuestionTest() {
+        Question validQuestion = generateValidQuestionWithTextOnly(questionText);
+        String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
+
         mockMvc.perform(
-                put(QUESTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validQuestionDataJson))
+                put(QUESTIONS_URL + NON_EXISTENT_ID).contentType(APPLICATION_JSON).content(validQuestionJson))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.message").value(QUESTION_NOT_FOUND)));
@@ -405,11 +449,26 @@ public class QuestionControllerTest {
     @WithMockUser(roles = {EXPERT})
     @SneakyThrows
     public void shouldReturnMalformedJsonErrorTest() {
+        String malformedJson = "{\"text\": Who are you?}";
+
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.message").value(MALFORMED_JSON)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldRejectCreateQuestionWithoutTextTest() {
+        String malformedJson = "{\"te\": \"Who are you?\"}";
+
+        mockMvc.perform(
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value("Text field in question is required.")));
     }
 
     @Test

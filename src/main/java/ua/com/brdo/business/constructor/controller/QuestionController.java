@@ -59,22 +59,6 @@ public class QuestionController {
         return ResponseEntity.created(location).body(createdQuestion);
     }
 
-    @PostMapping(path = "/list", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity createQuestions(@Valid @RequestBody List<Question> questions) {
-        if (questions != null) {
-            questions.forEach(question -> {
-                if (question != null) {
-                    questionService.create(question);
-                }
-            });
-        }
-//        URI location = ServletUriComponentsBuilder  // TODO Decide how to return location for created list of questions - maybe it should be in Questionnaire controller and return location of new questionnaire
-//                .fromUriString("questions").path("/{id}")
-//                .buildAndExpand(updatedQuestion.getId())
-//                .toUri();
-        return ResponseEntity.status(CREATED).build();
-    }
-
     @GetMapping
     public List<Question> listQuestions() {
         return questionService.findAll();
@@ -101,7 +85,7 @@ public class QuestionController {
                 .build();
     }
 
-    @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE) //TODO: add controller to consume list of options for given updatedQuestion
+    @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createOption(@ModelAttribute Question question, @Valid @RequestBody Option option) {
         questionService.addOption(question, option);
         question = questionService.update(question);

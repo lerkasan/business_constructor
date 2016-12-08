@@ -9,7 +9,10 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { CarouselComponent } from './carousel/carousel.component';
-
+import { AdminComponent } from './admin/admin.component';
+import { ConstructorComponent } from './constructor/constructor.component';
+import { UserAdministrationComponent } from './user-administration/user-administration.component';
+import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -29,7 +32,11 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     RegisterComponent,
     LoginComponent,
     HeaderComponent,
-    CarouselComponent
+    CarouselComponent,
+    AdminComponent,
+    ConstructorComponent,
+    UserAdministrationComponent,
+    UserStatisticsComponent
   ],
   providers: [
     ApiService

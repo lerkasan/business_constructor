@@ -123,12 +123,6 @@ CREATE TABLE user_answer (
                 PRIMARY KEY (id)
 );
 
-ALTER TABLE question ADD CONSTRAINT input_type_question_fk
-FOREIGN KEY (input_type_id)
-REFERENCES input_type (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
 ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)

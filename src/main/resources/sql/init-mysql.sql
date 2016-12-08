@@ -48,7 +48,6 @@ CREATE TABLE permit_type (
   UNIQUE (name)
 );
 
-
 CREATE TABLE permit (
   id                 BIGINT AUTO_INCREMENT NOT NULL,
   name               VARCHAR(750)          NOT NULL,
@@ -65,18 +64,6 @@ CREATE TABLE permit (
   UNIQUE (name(255))
 );
 
-
-
-
-DROP TABLE IF EXISTS business_type;
-
-CREATE TABLE business_type (
-                id INT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(500) NOT NULL,
-                kved VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
-);
-
 DROP TABLE IF EXISTS question;
 
 CREATE TABLE question (
@@ -84,23 +71,6 @@ CREATE TABLE question (
                 text VARCHAR(3000) NOT NULL,
                 input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
                 PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS questionnaire;
-
-CREATE TABLE questionnaire (
-                id INT AUTO_INCREMENT NOT NULL,
-                business_type_id INT NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS question_questionnaire;
-
-CREATE TABLE question_questionnaire (
-                question_id BIGINT NOT NULL,
-                questionnaire_id INT NOT NULL,
-                PRIMARY KEY (question_id, questionnaire_id)
 );
 
 DROP TABLE IF EXISTS option_;
@@ -114,15 +84,6 @@ CREATE TABLE option_ (
                 PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS user_answer;
-
-CREATE TABLE user_answer (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                user_id BIGINT NOT NULL,
-                question_option_id BIGINT NOT NULL,
-                PRIMARY KEY (id)
-);
-
 ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
@@ -132,30 +93,6 @@ ON UPDATE NO ACTION;
 ALTER TABLE option_ ADD CONSTRAINT option_next_question_fk
 FOREIGN KEY (next_question_id)
 REFERENCES question (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_questionnaire ADD CONSTRAINT question_question_questionnaire_fk
-FOREIGN KEY (question_id)
-REFERENCES question (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE questionnaire ADD CONSTRAINT business_type_questionnaire_fk
-FOREIGN KEY (business_type_id)
-REFERENCES business_type (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_questionnaire ADD CONSTRAINT questionnaire_question_questionnaire_fk
-FOREIGN KEY (questionnaire_id)
-REFERENCES questionnaire (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE user_answer ADD CONSTRAINT question_option_user_answer_fk
-FOREIGN KEY (question_option_id)
-REFERENCES question_option (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 

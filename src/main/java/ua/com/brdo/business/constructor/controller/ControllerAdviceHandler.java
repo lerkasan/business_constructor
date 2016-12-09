@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -57,6 +59,13 @@ public class ControllerAdviceHandler {
     @ResponseBody
     public Map<String, String> handleIllegalArgumentException(Exception e) {
 
+        return Collections.singletonMap("message", e.getMessage());
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public Map<String, String> handleConstraintViolationExceptionException(Exception e) {
         return Collections.singletonMap("message", e.getMessage());
     }
 

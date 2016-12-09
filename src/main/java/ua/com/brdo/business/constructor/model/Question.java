@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class Question {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Text field in question is required.")
+    @NotEmpty(message = "Text field of question is required.")
     @Size(max=1000, message = "Maximum length of question is 1000 characters.")
     @Column(nullable = false, length = 1000)
     private String text;
@@ -52,6 +53,7 @@ public class Question {
     @Column(name="input_type", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT \"SINGLE_CHOICE\"")
     private InputType inputType = InputType.SINGLE_CHOICE;
 
+    @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
     private Set<Option> options = new HashSet<>();
 

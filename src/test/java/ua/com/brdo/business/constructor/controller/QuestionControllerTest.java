@@ -468,7 +468,19 @@ public class QuestionControllerTest {
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Text field in question is required.")));
+                .andExpect((jsonPath("$.message").value("Text field of question is required.")));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    @SneakyThrows
+    public void shouldRejectCreateQuestionWithOptionWithoutTitleTest() {
+        String malformedJson = "{\"text\": \"Who are you?\", \"options\": [{ }] }";
+        mockMvc.perform(
+                post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.message").value("Title field of option is required.")));
     }
 
     @Test

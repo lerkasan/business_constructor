@@ -29,7 +29,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"title", "question"})
 @JsonInclude(NON_NULL)
-@JsonIgnoreProperties(value = {"id", "question"})
+@JsonIgnoreProperties(value = {"question"})
 public class Option {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -44,7 +44,10 @@ public class Option {
     @PrimaryKeyJoinColumn(name="question_id", referencedColumnName="id")
     private Question question;
 
-    // private Question nextQuestion; TODO - uncomment in further tasks
+//    @ManyToOne
+//    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
+//    @JsonIgnoreProperties({"text", "input_type", "options" })
+//    private Question nextQuestion; TODO - uncomment in further tasks
 
     // private Procedure procedure; TODO - uncomment in further tasks
 

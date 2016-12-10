@@ -34,7 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private Question addOptions(Question question) {
-        Set<Option> options = question.getOptions();
+        List<Option> options = question.getOptions();
         if (options != null && !options.isEmpty()) {
            options.forEach(option -> option.setQuestion(question));
         }
@@ -120,7 +120,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void deleteOptions(Question question) {
         Objects.requireNonNull(question);
-        Set<Option> options = question.getOptions();
+        List<Option> options = question.getOptions();
         if (options != null) {
             options.clear();
         }

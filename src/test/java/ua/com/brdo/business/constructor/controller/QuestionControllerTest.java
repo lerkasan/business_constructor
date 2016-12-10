@@ -17,8 +17,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -84,7 +86,7 @@ public class QuestionControllerTest {
     private Question generateValidQuestionWithOptions() {
         Option option1 = new Option("option1");
         Option option2 = new Option("option2");
-        Set<Option> options = new HashSet<>();
+        List<Option> options = new ArrayList<>();
         options.add(option1);
         options.add(option2);
         Question questionWithOptions = new Question();

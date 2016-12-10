@@ -97,7 +97,7 @@ public class QuestionController {
     }
 
     @GetMapping(path = "/{questionId}/options")
-    public Set<Option> listOptions(@ModelAttribute Question question) {
+    public List<Option> listOptions(@ModelAttribute Question question) {
         return question.getOptions();
     }
 
@@ -112,9 +112,9 @@ public class QuestionController {
     public Option updateOption(@ModelAttribute Question question, @PathVariable Long optionId, @Valid @RequestBody Option modifiedOption) {
         long questionId = question.getId();
         Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        modifiedOption.setId(optionId);
-        modifiedOption.setQuestion(question);
-        return optionService.update(modifiedOption);
+        String modifiedTitle = modifiedOption.getTitle();
+        option.setTitle(modifiedTitle); //TODO Don't forget set here modified nextQuestion and procedure in future tasks
+        return optionService.update(option);
     }
 
     @DeleteMapping(path = "/{questionId}/options/{optionId}")

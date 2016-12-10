@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -55,7 +57,7 @@ public class Question {
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private Set<Option> options = new HashSet<>();
+    private List<Option> options = new ArrayList<>();
 
     public String getInputType() {
         if (inputType == null) {
@@ -71,7 +73,7 @@ public class Question {
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         if (options == null) {
-            options = new HashSet<>();
+            options = new ArrayList<>();
         }
         return options.add(option);
     }

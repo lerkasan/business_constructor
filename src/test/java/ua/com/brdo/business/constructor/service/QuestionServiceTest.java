@@ -82,14 +82,7 @@ public class QuestionServiceTest {
 
         assertFalse(questionContainsOption);
     }
-
-    @Test
-    public void shouldSetDefaultInputTypeIfNoneSpecifiedOnCreate() {
-        Question createdQuestion = serviceUnderTest.create(dummyQuestion);
-
-        assertEquals("SINGLE_CHOICE", createdQuestion.getInputType());
-    }
-
+    
     @Test(expected = NullPointerException.class)
     @SneakyThrows
     public void shouldThrowNullPointerExceptionOnAttemptToCreateNullTest() {

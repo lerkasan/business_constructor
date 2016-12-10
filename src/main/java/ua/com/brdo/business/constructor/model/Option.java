@@ -44,10 +44,11 @@ public class Option {
     @PrimaryKeyJoinColumn(name="question_id", referencedColumnName="id")
     private Question question;
 
-//    @ManyToOne
+//    @ManyToOne  TODO - uncomment in further tasks
 //    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
-//    @JsonIgnoreProperties({"text", "input_type", "options" })
-//    private Question nextQuestion; TODO - uncomment in further tasks
+//    @JsonIgnore
+//    private Question nextQuestion; // private Procedure procedure;
+
 
     // private Procedure procedure; TODO - uncomment in further tasks
 

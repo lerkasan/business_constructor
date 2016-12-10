@@ -1,16 +1,13 @@
 package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -50,25 +48,14 @@ public class Question {
     @Column(nullable = false, length = 1000)
     private String text;
 
-    @JsonProperty("input_type")
+    @NotNull(message = "Input type is required.")
     @Enumerated(EnumType.STRING)
-    @Column(name="input_type", nullable = false, columnDefinition = "VARCHAR(255) DEFAULT \"SINGLE_CHOICE\"")
-    private InputType inputType = InputType.SINGLE_CHOICE;
+    @Column(name="input_type", nullable = false)
+    private InputType inputType;
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
     private List<Option> options = new ArrayList<>();
-
-    public String getInputType() {
-        if (inputType == null) {
-            inputType = InputType.SINGLE_CHOICE;
-        }
-        return inputType.name();
-    }
-
-    public void setInputType(String inputType) {
-        this.inputType = InputType.valueOf(inputType);
-    }
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);

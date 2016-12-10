@@ -15,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -24,7 +23,6 @@ import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.service.OptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -42,7 +40,7 @@ public class QuestionController {
 
     @ModelAttribute
     private Question lookupQuestionById(@PathVariable(value = "questionId", required = false) Long id) {
-        Question question = null;
+        Question question = new Question();
         if (id != null) {
             question = questionService.findById(id);
         }

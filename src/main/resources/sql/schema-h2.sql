@@ -59,7 +59,7 @@ CREATE TABLE permit (
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(1000) NOT NULL,
-                input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
+                input_type VARCHAR(255) NOT NULL,
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 

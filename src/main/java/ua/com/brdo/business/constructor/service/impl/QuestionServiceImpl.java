@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
@@ -26,13 +25,6 @@ public class QuestionServiceImpl implements QuestionService {
         this.questionRepo = questionRepo;
     }
 
-    private Question setDefaultInputType(Question question) {
-        if (question.getInputType() == null) {
-            question.setInputType("SINGLE_CHOICE");
-        }
-        return question;
-    }
-
     private Question addOptions(Question question) {
         List<Option> options = question.getOptions();
         if (options != null && !options.isEmpty()) {
@@ -42,8 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private Question preprocess(Question question) {
-        Question processedQuestion = setDefaultInputType(question);
-        return addOptions(processedQuestion);
+        return addOptions(question);
     }
 
     @Override

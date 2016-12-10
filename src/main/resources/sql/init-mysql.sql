@@ -69,7 +69,7 @@ DROP TABLE IF EXISTS question;
 CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type VARCHAR(255) NOT NULL DEFAULT 'SINGLE_CHOICE',
+                input_type VARCHAR(255) NOT NULL,
                 PRIMARY KEY (id)
 );
 

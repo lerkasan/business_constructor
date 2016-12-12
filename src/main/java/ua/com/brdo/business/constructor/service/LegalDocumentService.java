@@ -11,4 +11,5 @@ public interface LegalDocumentService {
     LegalDocument findById(long id);
     LegalDocument update(LegalDocument legalDocument);
     void delete (long id);
+    void delete (LegalDocument legalDocument);
 }

@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.service.OptionService;
@@ -38,6 +39,7 @@ public class QuestionController {
         this.optionService = optionService;
     }
 
+    @ApiIgnore
     @ModelAttribute
     private Question lookupQuestionById(@PathVariable(value = "questionId", required = false) Long id) {
         Question question = new Question();
@@ -63,12 +65,12 @@ public class QuestionController {
     }
 
     @GetMapping(path = "/{questionId}")
-    public Question getQuestion(@ModelAttribute Question question) {
+    public Question getQuestion(@ApiIgnore @ModelAttribute Question question) {
         return question;
     }
 
     @PutMapping(path = "/{questionId}", consumes = APPLICATION_JSON_VALUE)
-    public Question updateQuestion(@ModelAttribute Question question, @Valid @RequestBody Question updatedQuestion) {
+    public Question updateQuestion(@ApiIgnore @ModelAttribute Question question, @Valid @RequestBody Question updatedQuestion) {
        Long questionId = question.getId();
         optionService.deleteByQuestionId(questionId);
         updatedQuestion.setId(questionId);
@@ -76,7 +78,7 @@ public class QuestionController {
     }
 
     @DeleteMapping(path = "/{questionId}")
-    public ResponseEntity deleteQuestion(@ModelAttribute Question question) {
+    public ResponseEntity deleteQuestion(@ApiIgnore @ModelAttribute Question question) {
         questionService.delete(question);
         return ResponseEntity
                 .noContent()
@@ -84,7 +86,7 @@ public class QuestionController {
     }
 
     @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity createOption(@ModelAttribute Question question, @Valid @RequestBody Option option) {
+    public ResponseEntity createOption(@ApiIgnore @ModelAttribute Question question, @Valid @RequestBody Option option) {
         questionService.addOption(question, option);
         question = questionService.update(question);
         URI location = ServletUriComponentsBuilder
@@ -95,19 +97,18 @@ public class QuestionController {
     }
 
     @GetMapping(path = "/{questionId}/options")
-    public List<Option> listOptions(@ModelAttribute Question question) {
+    public List<Option> listOptions(@ApiIgnore @ModelAttribute Question question) {
         return question.getOptions();
     }
 
     @GetMapping(path = "/{questionId}/options/{optionId}")
-    public Option getOption(@ModelAttribute Question question, @PathVariable Long optionId) {
+    public Option getOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId) {
         long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        return option;
+        return optionService.findByQuestionIdAndOptionId(questionId, optionId);
     }
 
     @PutMapping(path = "/{questionId}/options/{optionId}", consumes = APPLICATION_JSON_VALUE)
-    public Option updateOption(@ModelAttribute Question question, @PathVariable Long optionId, @Valid @RequestBody Option modifiedOption) {
+    public Option updateOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId, @Valid @RequestBody Option modifiedOption) {
         long questionId = question.getId();
         Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
         String modifiedTitle = modifiedOption.getTitle();
@@ -116,7 +117,7 @@ public class QuestionController {
     }
 
     @DeleteMapping(path = "/{questionId}/options/{optionId}")
-    public ResponseEntity deleteOption(@ModelAttribute Question question, @PathVariable Long optionId) {
+    public ResponseEntity deleteOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId) {
         Long questionId = question.getId();
         Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
         optionService.delete(option);

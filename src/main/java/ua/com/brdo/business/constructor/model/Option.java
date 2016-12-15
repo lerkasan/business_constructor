@@ -26,8 +26,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "option_")
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = {"title"})
 @JsonIgnoreProperties(value = {"questionOptions"})

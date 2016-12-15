@@ -27,28 +27,40 @@ public class Permit {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "permit_type_id")
     private Long permitTypeId;
+
     @Column(name = "legal_document_id")
     private Long legalDocumentId;
+
     @Column(name = "form_id")
     private Long formId;
+
     @Column(name = "number")
     private String number;
+
     @Lob
     @Basic(fetch=FetchType.LAZY)
     @Column(name = "file_example", columnDefinition = "blob")
     private byte[] fileExample;
+
     @Column(name = "term")
     private String term;
+
     @Column(name = "propose")
     private String propose;
+
     @Column(name = "status")
     private Byte status;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permit_type_id", referencedColumnName = "id", insertable = false, updatable = false)
     private PermitType permitType;
+
+
 }

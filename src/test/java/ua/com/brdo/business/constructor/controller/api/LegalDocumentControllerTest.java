@@ -79,7 +79,7 @@ public class LegalDocumentControllerTest {
     }
     @Test
     public void shouldReturnAllListLegalDocumentTest() throws Exception {
-        mvc.perform(get("/api/laws"))
+        mvc.perform(get("/api/laws")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }

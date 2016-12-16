@@ -24,7 +24,6 @@ import java.util.Map;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.Application;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.UserRepository;
@@ -76,8 +75,7 @@ public class RegistrationTest {
     }
 
     @Before
-    @SneakyThrows
-    public void setup() {
+    public void setup() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
@@ -88,8 +86,7 @@ public class RegistrationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldSuccessfullyRegisterTest() {
+    public void shouldSuccessfullyRegisterTest() throws Exception {
         Map<String, String> validUserData = new HashMap<>();
         validUserData.put("username", "test@mail.com");
         validUserData.put("email", "test@mail.com");
@@ -106,8 +103,7 @@ public class RegistrationTest {
 
     @Test
     @Parameters({"testmail", "user@localhost"})
-    @SneakyThrows
-    public void shouldRejectRegisterWrongEmailTest(String invalidEmail) {
+    public void shouldRejectRegisterWrongEmailTest(String invalidEmail) throws Exception {
         invalidUserData.put("email", invalidEmail);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
@@ -120,8 +116,7 @@ public class RegistrationTest {
 
     @Test
     @Parameters({"", "1", "1234", "1234567", "123456789012345678901234567890123"})
-    @SneakyThrows
-    public void shouldRejectRegisterPasswordShortTest(String invalidPassword) {
+    public void shouldRejectRegisterPasswordShortTest(String invalidPassword) throws Exception {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
@@ -134,8 +129,7 @@ public class RegistrationTest {
 
     @Test
     @Parameters({"абвгдежзийкл", "abcdФz923435m"})
-    @SneakyThrows
-    public void shouldRejectRegisterPasswordUnallowedCharsTest(String invalidPassword) {
+    public void shouldRejectRegisterPasswordUnallowedCharsTest(String invalidPassword) throws Exception {
         invalidUserData.put("rawPassword", invalidPassword);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
@@ -147,8 +141,7 @@ public class RegistrationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldRejectRegisterEmailNotUniqueTest() {
+    public void shouldRejectRegisterEmailNotUniqueTest() throws Exception {
         String nonUniqueEmail = "some_user1@mail.com";
         invalidUserData.put("email", nonUniqueEmail);
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
@@ -161,8 +154,7 @@ public class RegistrationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldRejectRegisterReceiveNoPasswordTest() {
+    public void shouldRejectRegisterReceiveNoPasswordTest() throws Exception {
         String invalidUserDataJson = "{\"email\": \"email@mail.com\"}";
 
         mockMvc.perform(
@@ -173,8 +165,7 @@ public class RegistrationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldRejectRegisterReceiveNoEmailTest() {
+    public void shouldRejectRegisterReceiveNoEmailTest() throws Exception {
         String invalidUserDataJson = "{\"password\": \"12345678901\"}";
 
         mockMvc.perform(
@@ -185,8 +176,7 @@ public class RegistrationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldRejectRegisterReceiveEmptyJsonTest() {
+    public void shouldRejectRegisterReceiveEmptyJsonTest() throws Exception {
         String invalidEmplyJson = "{}";
 
         mockMvc.perform(
@@ -199,8 +189,7 @@ public class RegistrationTest {
 
     @Test
     @Parameters({"vbvsbb", "{vbvsbb}"})
-    @SneakyThrows
-    public void shouldRejectRegisterReceiveNotJsonTest(String notJson) {
+    public void shouldRejectRegisterReceiveNotJsonTest(String notJson) throws Exception {
         mockMvc.perform(
                 post("/register").contentType(APPLICATION_JSON).content(notJson))
                 .andExpect(status().isUnprocessableEntity())

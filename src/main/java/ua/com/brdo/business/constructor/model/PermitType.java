@@ -26,10 +26,8 @@ public class PermitType {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
-
     @JsonIgnore
     @OneToMany(mappedBy = "permitType", cascade = CascadeType.REMOVE)
     private Set<Permit> permits;

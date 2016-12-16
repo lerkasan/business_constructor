@@ -100,7 +100,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private void encodePassword(User user) {
         Objects.requireNonNull(user);
-        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(user.getRawPassword())));
+        CharBuffer buffer = CharBuffer.wrap(user.getRawPassword());
+        user.setPassword(passwordEncoder.encode(buffer));
+        buffer.clear();
         for (int index = 0; index < user.getRawPassword().length; index++) {
             user.getRawPassword()[index] = ' ';
         }

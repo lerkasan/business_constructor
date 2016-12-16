@@ -1,30 +1,6 @@
 package ua.com.brdo.business.constructor.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-@Entity
-@Table(name = "input_type")
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-@EqualsAndHashCode(of = {"title"})
-public class InputType {
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
-    private String title;
+public enum InputType {
+    SINGLE_CHOICE,
+    MULTI_CHOICE
 }

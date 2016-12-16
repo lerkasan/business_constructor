@@ -11,17 +11,25 @@ import ua.com.brdo.business.constructor.service.LegalDocumentService;
 import java.net.URI;
 import java.util.List;
 
-import static java.lang.Long.parseLong;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(path = "/api/laws")
 public class LegalDocumentController {
     private LegalDocumentService legalDocumentService;
+
     @Autowired
     public LegalDocumentController(LegalDocumentService legalDocumentService) {
         this.legalDocumentService = legalDocumentService;
     }
+
+    @ModelAttribute
+    private LegalDocument lookUpLegalDocumentById(@PathVariable(value = "id", required = false) Long id) {
+        LegalDocument legalDocument = null;
+        if (id != null) legalDocument = legalDocumentService.findById(id);
+        return legalDocument;
+    }
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createLegalDocument(@RequestBody LegalDocument legalDocument) {
         LegalDocument createdLegalDocument = legalDocumentService.create(legalDocument);
@@ -31,27 +39,26 @@ public class LegalDocumentController {
                 .toUri();
         return ResponseEntity.created(location).body(createdLegalDocument);
     }
+
     @GetMapping
     public List<LegalDocument> listLegalDocuments() {
         return legalDocumentService.findAll();
     }
 
-    @GetMapping(path="/{id}")
-    public LegalDocument getLegalDocument(@PathVariable String id){
-        long longId = parseLong(id);
-        return legalDocumentService.findById(longId);
+    @GetMapping(path = "/{id}")
+    public LegalDocument getLegalDocument(@ModelAttribute("id") LegalDocument legalDocument) {
+        return legalDocument;
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateLegalDocument(@PathVariable String id, @RequestBody LegalDocument legalDocument){
-        legalDocument.setId(Long.parseLong(id));
-        LegalDocument updatedLegalDocument = legalDocumentService.update(legalDocument);
-        return ResponseEntity.ok().body(updatedLegalDocument);
+    public ResponseEntity updateLegalDocument(@ModelAttribute("id") LegalDocument legalDocument,@RequestBody LegalDocument updatedLegalDocument) {
+        updatedLegalDocument.setId(legalDocument.getId());
+        return ResponseEntity.ok().body(legalDocumentService.update(updatedLegalDocument));
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity deleteLegalDocument(@PathVariable String id){
-        legalDocumentService.delete(Long.parseLong(id));
+    public ResponseEntity deleteLegalDocument(@ModelAttribute("id") LegalDocument legalDocument) {
+        legalDocumentService.delete(legalDocument);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

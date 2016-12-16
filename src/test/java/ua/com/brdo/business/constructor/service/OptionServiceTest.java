@@ -21,7 +21,6 @@ import ua.com.brdo.business.constructor.service.impl.OptionServiceImpl;
 
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
 public class OptionServiceTest {

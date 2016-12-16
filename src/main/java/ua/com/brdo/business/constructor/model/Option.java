@@ -44,15 +44,21 @@ public class Option {
     @PrimaryKeyJoinColumn(name="question_id", referencedColumnName="id")
     private Question question;
 
-//    @ManyToOne  TODO - uncomment in further tasks
-//    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
-//    @JsonIgnore
-//    private Question nextQuestion; // private Procedure procedure;
-
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
+    @JsonIgnoreProperties(value = {"options", "inputType", "text"})
+    private Question nextQuestion;
 
     // private Procedure procedure; TODO - uncomment in further tasks
 
     public Option(String title) {
         this.title = title;
+    }
+
+    public void setNextQuestion(Question nextQuestion) {
+        if ((nextQuestion != null) && (question != null) && (nextQuestion.getId().equals(question.getId()))) {
+            throw new IllegalArgumentException("Question can't be linked to itself.");
+        }
+        this.nextQuestion = nextQuestion;
     }
 }

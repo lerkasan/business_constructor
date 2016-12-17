@@ -123,7 +123,7 @@ CREATE TABLE option_ (
                 procedure_id BIGINT,
                 next_question_id BIGINT,
                 CONSTRAINT option_id PRIMARY KEY (id),
-                FOREIGN KEY (question_id ) REFERENCES question(id)
+                FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
 ALTER TABLE option_ ADD CONSTRAINT option_question_fk

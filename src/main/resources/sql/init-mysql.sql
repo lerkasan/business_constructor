@@ -82,7 +82,7 @@ CREATE TABLE option_ (
                 procedure_id BIGINT,
                 next_question_id BIGINT,
                 PRIMARY KEY (id),
-                FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
+                FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
 CREATE TABLE procedure_type (

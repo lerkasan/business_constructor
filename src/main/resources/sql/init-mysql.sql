@@ -225,6 +225,6 @@ VALUES ('procedure1', 'reason1', 'result1', 3, 1, 'coast1', 'term1', 'method1', 
 INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
 VALUES ('procedure4', 'reason4', 'result4', 1, 1, 'coast4', 'term4', 'method4', 'decision4', 'deny4', 'abuse4');
 
-INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document1', 40, '453d7a34');
-INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document3', 41, '453d7a34');
-INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document2', 42, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document1', 1, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document3', 2, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document2', 3, '453d7a34');

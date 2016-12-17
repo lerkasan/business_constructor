@@ -1,16 +1,21 @@
 package ua.com.brdo.business.constructor.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-
-import javax.persistence.*;
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -29,18 +34,12 @@ public class ProcedureDocument {
     @Column(name = "name", nullable = false)
     private String name;
 
-//    @Column(name = "procedure_id")
-//    private Long procedureId;
-
     @Lob
     @Basic(fetch=FetchType.LAZY)
     @Column(name = "example_file", columnDefinition = "blob")
     private byte[] exampleFile;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "procedure_id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
     private Procedure procedure;
-
-
 }

@@ -81,8 +81,49 @@ CREATE TABLE option_ (
                 question_id BIGINT NOT NULL,
                 procedure_id BIGINT,
                 next_question_id BIGINT,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id),
+                FOREIGN KEY (permit_type_id) REFERENCES permit_type(id),
 );
+
+CREATE TABLE procedure_type (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255)  NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE procedure_ (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR (2048)  NOT NULL,
+  reason     VARCHAR (2048)    NOT NULL,
+  result  VARCHAR (2048)       NOT NULL,
+  permit_id          BIGINT        NOT NULL,
+  procedure_type_id  BIGINT    NOT NULL,
+  cost      VARCHAR (2048)    NOT NULL,
+  term      VARCHAR (2048)    NOT NULL,
+  method VARCHAR(2048) NOT NULL ,
+  decision VARCHAR (2048)    NOT NULL,
+  deny VARCHAR (2048)    NOT NULL,
+  abuse VARCHAR (2048)   NOT NULL,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_id) REFERENCES permit(id),
+  FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_ (name);
+
+CREATE TABLE procedure_document (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR (255) NOT NULL ,
+  procedure_id          BIGINT        NOT NULL,
+  example_file BLOB,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (procedure_id ) REFERENCES procedure_(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_document (name);
+
 
 ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)

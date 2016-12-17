@@ -1,27 +1,29 @@
 package ua.com.brdo.business.constructor.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-
-
-import javax.persistence.*;
 import java.util.Set;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Entity
 @Table(name = "procedure_type")
 @EqualsAndHashCode(of = {"name"})
 @JsonInclude(NON_NULL)
-
 
 public class ProcedureType {
     @Id
@@ -35,5 +37,4 @@ public class ProcedureType {
     @JsonIgnore
     @OneToMany(mappedBy = "procedureType", cascade = CascadeType.REMOVE)
     private Set<Procedure> procedures;
-
 }

@@ -1,21 +1,28 @@
 package ua.com.brdo.business.constructor.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-
-import javax.persistence.*;
 
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
 @Entity (name = "procedure")
-@Table(name = "procedure")
+@Table(name = "procedure_")
 @EqualsAndHashCode(of = {"name"})
 @JsonInclude(NON_NULL)
 
@@ -34,13 +41,7 @@ public class Procedure {
     @Column(name = "result", length = 2048, nullable = false)
     private String result;
 
-//    @Column(name="permit_id", nullable = false)
-//    private Long permitId;
-
-//    @Column(name="id_type", nullable = false)
-//    private Long idType;
-
-   /* @Column(name = "id_tool", nullable = false) // where the field?   create a Join
+   /* @Column(name = "id_tool", nullable = false) // TODO: where the field?   create a Join
     private Long id_tool;*/
 
     @Column(name = "cost", nullable = false)
@@ -61,17 +62,14 @@ public class Procedure {
     @Column(name = "abuse", nullable = false)
     private String abuse;
 
-    @JsonIgnore  //TODO: Remove JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_type", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="procedure_type_id", referencedColumnName="id")
     private ProcedureType procedureType;
 
-    @JsonIgnore  //TODO: Remove JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permit_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="permit_id", referencedColumnName="id")
     private Permit permit;
 
-    @JsonIgnore  //TODO: Remove JsonIgnore
     @OneToMany(mappedBy = "procedure", cascade = CascadeType.REMOVE)
     private Set<ProcedureDocument> procedureDocuments;
 

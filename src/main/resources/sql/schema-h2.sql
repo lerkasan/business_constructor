@@ -68,13 +68,13 @@ CREATE TABLE procedure_type (
 CREATE UNIQUE INDEX permitTypeNameIndx
 ON procedure_type (name);
 
-CREATE TABLE procedure (
+CREATE TABLE procedure_ (
   id               IDENTITY      NOT NULL,
   name             VARCHAR(1023) NOT NULL,
   reason     LONGVARCHAR        NOT NULL,
   result  VARCHAR (2048)       NOT NULL,
   permit_id          BIGINT        NOT NULL,
-  id_type          BIGINT    NOT NULL,
+  procedure_type_id  BIGINT    NOT NULL,
  /* id_tool       TINYINT    NOT NULL,*/
   cost       LONGVARCHAR   NOT NULL,
   term        LONGVARCHAR   NOT NULL,
@@ -83,11 +83,12 @@ CREATE TABLE procedure (
   deny LONGVARCHAR   NOT NULL,
   abuse LONGVARCHAR   NOT NULL,
   CONSTRAINT procedure_id PRIMARY KEY (id),
-  FOREIGN KEY (id_type) REFERENCES procedure_type(id)
+  FOREIGN KEY (permit_id) REFERENCES permit(id),
+  FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
 );
 
 CREATE UNIQUE INDEX procedureNameIndx
-ON procedure (name);
+ON procedure_ (name);
 
 CREATE TABLE procedure_document (
   id               IDENTITY      NOT NULL,
@@ -95,7 +96,7 @@ CREATE TABLE procedure_document (
   procedure_id          BIGINT        NOT NULL,
   example_file BLOB,
   CONSTRAINT procedure_id PRIMARY KEY (id),
-  FOREIGN KEY (procedure_id ) REFERENCES procedure(id)
+  FOREIGN KEY (procedure_id ) REFERENCES procedure_(id)
 );
 
 CREATE UNIQUE INDEX procedureNameIndx

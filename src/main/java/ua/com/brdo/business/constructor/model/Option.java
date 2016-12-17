@@ -45,7 +45,7 @@ public class Option {
     private Question question;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
+    @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"options", "inputType", "text"})
     private Question nextQuestion;
 

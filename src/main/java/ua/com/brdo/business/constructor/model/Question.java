@@ -36,8 +36,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@JsonInclude(NON_NULL)
 @Validated
+@JsonInclude(NON_NULL)
 public class Question {
     @Id
     @GeneratedValue(strategy = IDENTITY)

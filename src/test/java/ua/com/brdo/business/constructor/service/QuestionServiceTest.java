@@ -29,7 +29,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
 public class QuestionServiceTest {

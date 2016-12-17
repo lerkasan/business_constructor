@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.SneakyThrows;
 import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
@@ -70,6 +70,7 @@ public class QuestionControllerTest {
     private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
     private static final String OPTIONS_DIR = "/options/";
+    private static final String NEXT_QUESTION_DIR = "/next-question";
     private static final String validOptionDataJson = "{\"title\":\"My option\"}";
     private static final int NON_EXISTENT_ID = 100000;
     private static final String EXPERT = "EXPERT";
@@ -80,7 +81,10 @@ public class QuestionControllerTest {
     private static final String optionTitle = "My option";
 
     private Question question;
+    private Question nextQuestion;
+
     private Option option;
+    private Option nextOption;
 
     private Question generateValidQuestionWithOptions() {
         Option option1 = new Option("option1");
@@ -123,27 +127,43 @@ public class QuestionControllerTest {
         return questionData;
     }
 
+    private Option generateOptionWithNextQuestion(Question nextQuestion) {
+        Option option = new Option(optionTitle);
+        option.setQuestion(question);
+        option.setNextQuestion(nextQuestion);
+        return option;
+    }
+
     @Before
-    @SneakyThrows
-    public void setUp() {
+    public void setUp() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
+                .apply(springSecurity())
+                .build();
 
         question = new Question();
         question.setText(questionText);
         question.setInputType(InputType.SINGLE_CHOICE);
         question = questionService.create(question);
 
+        nextQuestion = new Question();
+        nextQuestion.setText(questionText);
+        nextQuestion.setInputType(InputType.SINGLE_CHOICE);
+        nextQuestion = questionService.create(nextQuestion);
+
         option = new Option(optionTitle);
         option.setQuestion(question);
         option = optionService.create(option);
+
+        nextOption = new Option(optionTitle);
+        nextOption.setQuestion(nextQuestion);
+        nextOption = optionService.create(nextOption);
     }
 
     @Test
     @WithMockUser(roles = {USER, EXPERT})
-    @SneakyThrows
-    public void shouldShowQuestion() {
+    public void shouldShowQuestion() throws Exception {
         mockMvc.perform(get(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -152,8 +172,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {USER, EXPERT})
-    @SneakyThrows
-    public void shouldRejectShowNonExistentQuestion() {
+    public void shouldRejectShowNonExistentQuestion() throws Exception {
         mockMvc.perform(get(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -162,8 +181,17 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {USER})
-    @SneakyThrows
-    public void shouldShowQuestionListToUser() {
+    public void shouldShowQuestionListToUser() throws Exception {
+        mockMvc.perform(get(QUESTIONS_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$").isArray()));
+    }
+
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldShowQuestionListToExpert() throws Exception {
         mockMvc.perform(get(QUESTIONS_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -172,18 +200,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldShowQuestionListToExpert() {
-        mockMvc.perform(get(QUESTIONS_URL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$").isArray()));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldCreateQuestionByExpertTest() {
+    public void shouldCreateQuestionByExpertTest() throws Exception {
         Question validQuestion = generateValidQuestion();
         String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
 
@@ -198,8 +215,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectQuestionCreationByUnauthorizedTest() {
+    public void shouldRejectQuestionCreationByUnauthorizedTest() throws Exception {
         Question validQuestion = generateValidQuestion();
         String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
 
@@ -210,8 +226,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectQuestionCreationNotByExpertTest() {
+    public void shouldRejectQuestionCreationNotByExpertTest() throws Exception {
         Question validQuestion = generateValidQuestion();
         String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
 
@@ -222,8 +237,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldCreateQuestionWithMultiChoiceTest() {
+    public void shouldCreateQuestionWithMultiChoiceTest() throws Exception {
         Question validQuestionWithInputType = generateValidQuestion();
         String validQuestionWithInputTypeJson = jsonMapper.writeValueAsString(validQuestionWithInputType);
 
@@ -239,8 +253,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectCreateQuestionWithWrongChoiceTest() {
+    public void shouldRejectCreateQuestionWithWrongChoiceTest() throws Exception {
         Map<String, String> invalidQuestionData = generateInvalidQuestionWithWrongInputType();
         String invalidQuestionDataJson = jsonMapper.writeValueAsString(invalidQuestionData);
 
@@ -253,8 +266,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldCreateQuestionWithOptionsArrayTest() {
+    public void shouldCreateQuestionWithOptionsArrayTest() throws Exception {
         Question questionWithOptions = generateValidQuestionWithOptions();
         String questionDataJson = jsonMapper.writeValueAsString(questionWithOptions);
 
@@ -271,8 +283,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldUpdateQuestionByExpertTest() {
+    public void shouldUpdateQuestionByExpertTest() throws Exception {
         Question validQuestion = generateValidQuestion(updatedText);
         String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
 
@@ -285,8 +296,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldDeleteQuestionByExpertTest() {
+    public void shouldDeleteQuestionByExpertTest() throws Exception {
         mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isNoContent());
@@ -294,8 +304,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectUpdateQuestionByUnauthorizedTest() {
+    public void shouldRejectUpdateQuestionByUnauthorizedTest() throws Exception {
         Question validQuestion = generateValidQuestion(updatedText);
         String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
 
@@ -306,8 +315,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectUpdateQuestionByNotExpertTest() {
+    public void shouldRejectUpdateQuestionByNotExpertTest() throws Exception {
         Question validQuestion = generateValidQuestion(updatedText);
         String modifiedQuestion = jsonMapper.writeValueAsString(validQuestion);
 
@@ -318,8 +326,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithAnonymousUser
-    @SneakyThrows
-    public void shouldRejectDeleteQuestionByUnauthorizedTest() {
+    public void shouldRejectDeleteQuestionByUnauthorizedTest() throws Exception {
          mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isUnauthorized());
@@ -327,8 +334,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {USER, ADMIN})
-    @SneakyThrows
-    public void shouldRejectDeleteQuestionByNotExpertTest() {
+    public void shouldRejectDeleteQuestionByNotExpertTest() throws Exception {
         mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
                 .andExpect(status().isForbidden());
@@ -336,8 +342,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectUpdateNonExistentQuestionTest() {
+    public void shouldRejectUpdateNonExistentQuestionTest() throws Exception {
         Question validQuestion = generateValidQuestion(questionText);
         String validQuestionJson = jsonMapper.writeValueAsString(validQuestion);
 
@@ -350,8 +355,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectDeleteNonExistentQuestionTest() {
+    public void shouldRejectDeleteNonExistentQuestionTest() throws Exception {
         mockMvc.perform(
                 delete(QUESTIONS_URL + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound())
@@ -361,8 +365,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectShowOptionsForNonExistentQuestionTest() {
+    public void shouldRejectShowOptionsForNonExistentQuestionTest() throws Exception {
         mockMvc.perform(
                 get(QUESTIONS_URL + NON_EXISTENT_ID + OPTIONS_DIR ))
                 .andExpect(status().isNotFound())
@@ -372,8 +375,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldAddOptionToGivenQuestionByExpertTest() {
+    public void shouldAddOptionToGivenQuestionByExpertTest() throws Exception {
         mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + OPTIONS_DIR).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isCreated())
@@ -385,8 +387,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT, USER})
-    @SneakyThrows
-    public void shouldGetOptionOfGivenQuestionTest() {
+    public void shouldGetOptionOfGivenQuestionTest() throws Exception {
         mockMvc.perform(
                 get(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()))
                 .andExpect(status().isOk())
@@ -395,8 +396,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldModifyOptionToGivenQuestionByExpertTest() {
+    public void shouldModifyOptionToGivenQuestionByExpertTest() throws Exception {
         String modifiedOptionDataJson = "{\"title\":\"Modified option\"}";
 
         mockMvc.perform(
@@ -409,8 +409,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRemoveOptionFromGivenQuestionByExpertTest() {
+    public void shouldRemoveOptionFromGivenQuestionByExpertTest() throws Exception {
         option = optionService.create(option);
 
         mockMvc.perform(
@@ -420,8 +419,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectRemoveNonExistentOptionFromGivenQuestionByExpertTest() {
+    public void shouldRejectRemoveNonExistentOptionFromGivenQuestionByExpertTest() throws Exception {
         question.addOption(option);
         question = questionService.update(question);
 
@@ -432,8 +430,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectRemoveOptionFromNonExistentQuestionByExpertTest() {
+    public void shouldRejectRemoveOptionFromNonExistentQuestionByExpertTest() throws Exception {
         mockMvc.perform(
                 delete(QUESTIONS_URL + NON_EXISTENT_ID + OPTIONS_DIR + NON_EXISTENT_ID))
                 .andExpect(status().isNotFound());
@@ -441,8 +438,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldReturnMalformedJsonErrorTest() {
+    public void shouldReturnMalformedJsonErrorTest() throws Exception {
         String malformedJson = "{\"text\": Who are you?}";
 
         mockMvc.perform(
@@ -454,8 +450,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectCreateQuestionWithoutTextTest() {
+    public void shouldRejectCreateQuestionWithoutTextTest() throws Exception {
         String malformedJson = "{\"inputType\": \"SINGLE_CHOICE\"}";
 
         mockMvc.perform(
@@ -467,8 +462,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectCreateQuestionWithOptionWithoutTitleTest() {
+    public void shouldRejectCreateQuestionWithOptionWithoutTitleTest() throws Exception {
         String malformedJson = "{\"text\": \"Who are you?\", \"inputType\": \"SINGLE_CHOICE\", \"options\": [{ }] }";
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(malformedJson))
@@ -479,8 +473,7 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldRejectCreateQuestionWithoutInputTypeTest() {
+    public void shouldRejectCreateQuestionWithoutInputTypeTest() throws Exception {
         Map<String,String> malformedData = generateInvalidQuestionWithWrongInputField();
         String malformedJson = jsonMapper.writeValueAsString(malformedData);
         mockMvc.perform(
@@ -492,12 +485,144 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    @SneakyThrows
-    public void shouldReturnMalformedURLErrorTest() {
+    public void shouldReturnMalformedURLErrorTest() throws Exception {
         mockMvc.perform(
                 get(MALFORMED_URL_PARAM))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.message").value(MALFORMED_URL)));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldCreateNextQuestionInOptionTest() throws Exception {
+        Map<String, String> nextQuestionData = new HashMap<>();
+        nextQuestionData.put("id", nextQuestion.getId().toString());
+        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
+                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldGetNextQuestionInOptionTest() throws Exception {
+        Map<String, String> nextQuestionData = new HashMap<>();
+        nextQuestionData.put("id", nextQuestion.getId().toString());
+        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
+                        .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+
+        mockMvc.perform(
+                get(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldRejectCreateNextQuestionLinkingToCurrentQuestionTest() throws Exception {
+        Map<String, String> nextQuestionData = new HashMap<>();
+        nextQuestionData.put("id", question.getId().toString());
+        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
+                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message").value("Question can't be linked to itself."));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldUpdateNextQuestionInOptionTest() throws Exception {
+        Map<String, String> nextQuestionData = new HashMap<>();
+        nextQuestionData.put("id", nextQuestion.getId().toString());
+        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
+
+        mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
+                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldDeleteNextQuestionInOptionTest() throws Exception {
+        mockMvc.perform(
+                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR))
+                .andExpect(status().isNoContent());
+    }
+
+    @Ignore
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldCreateNextQuestionInEntireOptionTest() throws Exception {
+        Option optionWithNextQuestion = generateOptionWithNextQuestion(nextQuestion);
+        String optionWithNextQuestionJson = jsonMapper.writeValueAsString(optionWithNextQuestion);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR)
+                .contentType(APPLICATION_JSON).content(optionWithNextQuestionJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @WithMockUser(roles = {EXPERT})
+    public void shouldRejectCreateNextQuestionLinkingToCurrentQuestionInEntireOptionTest() throws Exception {
+        Option optionWithNextQuestionSelfLink = generateOptionWithNextQuestion(question);
+        String optionWithNextQuestionSelfLinkJson = jsonMapper.writeValueAsString(optionWithNextQuestionSelfLink);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR)
+                .contentType(APPLICATION_JSON).content(optionWithNextQuestionSelfLinkJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message").value("Question can't be linked to itself."));
+    }
+
+    @Ignore
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldUpdateNextQuestionInEntireOptionTest() throws Exception {
+        Option optionWithNextQuestion = generateOptionWithNextQuestion(nextQuestion);
+        String optionWithNextQuestionJson = jsonMapper.writeValueAsString(optionWithNextQuestion);
+
+        mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())
+                .contentType(APPLICATION_JSON).content(optionWithNextQuestionJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldDeleteNextQuestionInEntireOptionTest() throws Exception {
+        Option optionWithoutNextQuestion = new Option(optionTitle);
+        String optionWithoutNextQuestionJson = jsonMapper.writeValueAsString(optionWithoutNextQuestion);
+
+        mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())
+                .contentType(APPLICATION_JSON).content(optionWithoutNextQuestionJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.nextQuestion").doesNotExist()));
     }
 }

@@ -12,8 +12,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import lombok.SneakyThrows;
-
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,8 +83,7 @@ public class UserAuthentificationTest {
     }
 
     @Test
-    @SneakyThrows
-    public void shouldSuccessfullyLogout() {
+    public void shouldSuccessfullyLogout() throws Exception {
         mvc.perform(post("/logout"))
                 .andExpect(status().isOk());
         mvc.perform(get(QUESTIONS_URL))

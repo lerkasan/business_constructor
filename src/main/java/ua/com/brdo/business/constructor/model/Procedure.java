@@ -1,5 +1,6 @@
 package ua.com.brdo.business.constructor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Set;
@@ -70,6 +71,7 @@ public class Procedure {
     @PrimaryKeyJoinColumn(name="permit_id", referencedColumnName="id")
     private Permit permit;
 
+    @JsonIgnoreProperties(value = {"procedure"})
     @OneToMany(mappedBy = "procedure", cascade = CascadeType.REMOVE)
     private Set<ProcedureDocument> procedureDocuments;
 

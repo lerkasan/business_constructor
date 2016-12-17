@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "permit_type")
 @Data
 @EqualsAndHashCode(of = {"name"})
+@JsonIgnoreProperties(value = {"permits"})
 public class PermitType {
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Set;
@@ -24,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Table(name = "procedure_type")
 @EqualsAndHashCode(of = {"name"})
 @JsonInclude(NON_NULL)
-
+@JsonIgnoreProperties(value = {"procedures"})
 public class ProcedureType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

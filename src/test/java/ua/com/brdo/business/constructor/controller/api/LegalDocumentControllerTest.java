@@ -47,23 +47,23 @@ public class LegalDocumentControllerTest {
 
     private LegalDocument generateLegalDocument() {
         LegalDocument legalDocument = new LegalDocument();
-        legalDocument.setAutoBrdo((byte) 1);
-        legalDocument.setAutoLiga((byte) 1);
-        legalDocument.setDateAdd(1);
-        legalDocument.setDatePub(1);
-        legalDocument.setIdLiga("1");
-        legalDocument.setIdRada("1");
-        legalDocument.setIdState(1);
-        legalDocument.setManualSector("1");
-        legalDocument.setNumberMj("1");
-        legalDocument.setNumberPub("1");
-        legalDocument.setNumberRada("1");
-        legalDocument.setRegulation(1);
-        legalDocument.setTechRegulation(1);
-        legalDocument.setTitle("1");
-        legalDocument.setInBrdo((byte) 1);
-        legalDocument.setInLiga((byte) 1);
-        legalDocument.setInRada((byte) 1);
+        legalDocument.setAutoBrdo((byte) 9);
+        legalDocument.setAutoLiga((byte) 9);
+        legalDocument.setDateAdd(9);
+        legalDocument.setDatePub(9);
+        legalDocument.setIdLiga("9");
+        legalDocument.setIdRada("idRada9");
+        legalDocument.setIdState(0);
+        legalDocument.setManualSector("9");
+        legalDocument.setNumberMj("9");
+        legalDocument.setNumberPub("9");
+        legalDocument.setNumberRada("9");
+        legalDocument.setRegulation(9);
+        legalDocument.setTechRegulation(9);
+        legalDocument.setTitle("9");
+        legalDocument.setInBrdo((byte) 9);
+        legalDocument.setInLiga((byte) 9);
+        legalDocument.setInRada((byte) 9);
         return legalDocument;
     }
 
@@ -86,7 +86,6 @@ public class LegalDocumentControllerTest {
     }
 
     @Test
-    @Transactional
     @WithMockUser(roles = {EXPERT, ADMIN})
     public void shouldCreateLegalDocumentTest() throws Throwable {
         LegalDocument legalDocumentToSave = generateLegalDocument();

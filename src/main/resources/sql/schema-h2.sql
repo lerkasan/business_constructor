@@ -29,7 +29,9 @@ CREATE TABLE user_role (
   id      IDENTITY NOT NULL,
   user_id BIGINT   NOT NULL,
   role_id BIGINT   NOT NULL,
-  CONSTRAINT user_role_id PRIMARY KEY (id)
+  CONSTRAINT user_role_id PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES user(id),
+  FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 CREATE TABLE permit_type (

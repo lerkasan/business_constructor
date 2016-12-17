@@ -34,7 +34,9 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
                 user_id BIGINT NOT NULL,
                 role_id BIGINT NOT NULL,
-                PRIMARY KEY (user_id, role_id)
+                PRIMARY KEY (user_id, role_id),
+                FOREIGN KEY (user_id) REFERENCES user(id),
+                FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 DROP TABLE IF EXISTS permit;
@@ -203,3 +205,26 @@ INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, 
   (1, 'idRada1', 'idLiga1', 1, 1, 1 ,'numberPub1', 'title1','numberRada1','numberMj1', 1, 1, 1, 1, 1, 1, 'manualSector1', 1);
 INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, number_pub, title, number_rada, number_mj, in_rada, in_liga, in_brdo, auto_liga, auto_brdo, regulation, manual_sector, tech_regulation) VALUES
   (2, 'idRada2', 'idLiga2', 2, 2, 2 ,'numberPub2', 'title2','numberRada2','numberMj2', 2, 2, 2, 2, 2, 2, 'manualSector2', 2);
+
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType1');
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType2');
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType3');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure2', 'reason2', 'result2', 1, 2, 'coast2', 'term2', 'method2', 'decision2', 'deny2', 'abuse2');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure3', 'reason3', 'result3', 2, 3, 'coast3', 'term3', 'method3', 'decision3', 'deny3', 'abuse3');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure1', 'reason1', 'result1', 3, 1, 'coast1', 'term1', 'method1', 'decision1', 'deny1', 'abuse1');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure4', 'reason4', 'result4', 1, 1, 'coast4', 'term4', 'method4', 'decision4', 'deny4', 'abuse4');
+
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document1', 40, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document3', 41, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document2', 42, '453d7a34');

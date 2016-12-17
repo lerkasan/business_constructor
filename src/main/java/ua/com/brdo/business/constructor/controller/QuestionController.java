@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.model.Option;
+import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.service.OptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
@@ -116,8 +117,10 @@ public class QuestionController {
         Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
         String modifiedTitle = modifiedOption.getTitle();
         Question modifiedNextQuestion = modifiedOption.getNextQuestion();
+        Procedure modifiedProcedure = modifiedOption.getProcedure();
         option.setTitle(modifiedTitle); //TODO Don't forget set here modified procedure in future tasks
         option.setNextQuestion(modifiedNextQuestion);
+        option.setProcedure(modifiedProcedure);
         return optionService.update(option);
     }
 

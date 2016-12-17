@@ -109,9 +109,6 @@ CREATE TABLE procedure_ (
   FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
 );
 
-CREATE UNIQUE INDEX procedureNameIndx
-ON procedure_ (name);
-
 CREATE TABLE procedure_document (
   id BIGINT AUTO_INCREMENT NOT NULL,
   name VARCHAR (255) NOT NULL ,

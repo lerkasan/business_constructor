@@ -2,6 +2,7 @@ package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -16,21 +18,24 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-@Entity
-@Table(name = "permit_type")
 @Data
+@Entity
+@Table(name = "procedure_type")
 @EqualsAndHashCode(of = {"name"})
-@JsonIgnoreProperties(value = {"permits"})
-public class PermitType {
+@JsonInclude(NON_NULL)
+@JsonIgnoreProperties(value = {"procedures"})
+public class ProcedureType {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
-    @Column(name = "name", unique = true)
+
+    @Column(name = "name", nullable = false)
     private String name;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "permitType", cascade = CascadeType.REMOVE)
-    private Set<Permit> permits;
+    @OneToMany(mappedBy = "procedureType", cascade = CascadeType.REMOVE)
+    private Set<Procedure> procedures;
 }

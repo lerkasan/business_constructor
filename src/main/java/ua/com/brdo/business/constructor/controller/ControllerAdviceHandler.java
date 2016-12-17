@@ -3,7 +3,6 @@ package ua.com.brdo.business.constructor.controller;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.core.NestedRuntimeException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
@@ -57,14 +57,24 @@ public class ControllerAdviceHandler {
         return Collections.singletonMap("message", e.getMessage());
     }
 
-    @ExceptionHandler(value = {ConstraintViolationException.class, DataIntegrityViolationException.class})
+   /* @ExceptionHandler(value = ConstraintViolationException.class)
     @ResponseStatus(value = UNPROCESSABLE_ENTITY)
     @ResponseBody
     public Map<String, String> handleConstraintViolationExceptionException(Exception e) {
         return Collections.singletonMap("message", e.getMessage());
+    }*/
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public Map<String, String> handleConstraintViolationExceptionException(ConstraintViolationException e) {
+        StringBuilder error = new StringBuilder();
+        for(ConstraintViolation c : e.getConstraintViolations()){
+            error.append(c.getMessageTemplate()).append(" ");
+        }
+        return Collections.singletonMap("message", error.toString());
     }
 
-    @ExceptionHandler(value = {NestedRuntimeException.class})
+    @ExceptionHandler(value = NestedRuntimeException.class)
     @ResponseStatus(value = INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Map<String, String> handleRuntimeException(Exception e) {

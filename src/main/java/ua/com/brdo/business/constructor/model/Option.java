@@ -45,11 +45,15 @@ public class Option {
     private Question question;
 
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="next_question", referencedColumnName="id")
+    @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"options", "inputType", "text"})
     private Question nextQuestion;
 
-    // private Procedure procedure; TODO - uncomment in further tasks
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
+    @JsonIgnoreProperties(value = {"reason", "result", "cost", "term", "method", "desicion",
+            "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
+    private Procedure procedure;
 
     public Option(String title) {
         this.title = title;

@@ -101,13 +101,6 @@ CREATE TABLE procedure_document (
 CREATE UNIQUE INDEX procedureNameIndx
 ON procedure_document (name);
 
-CREATE TABLE option_ (
-                id IDENTITY NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                CONSTRAINT option_id PRIMARY KEY (id)
-);
-
-
 CREATE TABLE input_type (
                 id IDENTITY NOT NULL,
                 title VARCHAR(255) NOT NULL,

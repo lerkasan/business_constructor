@@ -45,7 +45,10 @@ public class ProcedureDocumentController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deletelistProcedureDocument(@PathVariable String id){
         procedureDocumentService.delete(Long.parseLong(id));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
+        return ResponseEntity
+                .noContent()
+                .build();
+        //return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
     }
 
     @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE
@@ -55,7 +58,6 @@ public class ProcedureDocumentController {
         ProcedureDocument updatedProcedureDocument = procedureDocumentService.update(procedureDocument);
         return ResponseEntity.ok().body(updatedProcedureDocument);
     }
-
 
     @PostMapping(produces = APPLICATION_JSON_VALUE
             ,consumes = APPLICATION_JSON_VALUE)

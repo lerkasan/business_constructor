@@ -29,8 +29,8 @@ public class ProcedureDocument {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "procedure_id")
-    private Long procedureId;
+//    @Column(name = "procedure_id")
+//    private Long procedureId;
 
     @Lob
     @Basic(fetch=FetchType.LAZY)

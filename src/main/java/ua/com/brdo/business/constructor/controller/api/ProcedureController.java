@@ -48,20 +48,22 @@ public class ProcedureController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity deleteProcedure(@PathVariable String id){
         procedureService.delete(Long.parseLong(id));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
+        return ResponseEntity
+                .noContent()
+                .build();
+       // return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
     }
 
-    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE
-            ,produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateProcedure(@PathVariable String id, @RequestBody Procedure procedure){
         procedure.setId(Long.parseLong(id));
         Procedure updatedProcedure = procedureService.update(procedure);
         return ResponseEntity.ok().body(updatedProcedure);
     }
 
-
-    @PostMapping(produces = APPLICATION_JSON_VALUE
-            ,consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(produces = APPLICATION_JSON_VALUE,
+            consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createProcedure(@Valid @RequestBody Procedure procedure){
         Procedure addedProcedure = procedureService.create(procedure);
         URI location = ServletUriComponentsBuilder
@@ -71,6 +73,4 @@ public class ProcedureController {
                 .toUri();
         return ResponseEntity.created(location).body(addedProcedure);
     }
-
-
 }

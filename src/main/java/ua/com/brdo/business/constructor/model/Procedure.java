@@ -34,11 +34,11 @@ public class Procedure {
     @Column(name = "result", length = 2048, nullable = false)
     private String result;
 
-    @Column(name="permit_id", nullable = false)
-    private Long permitId;
+//    @Column(name="permit_id", nullable = false)
+//    private Long permitId;
 
-    @Column(name="id_type", nullable = false)
-    private Long idType;
+//    @Column(name="id_type", nullable = false)
+//    private Long idType;
 
    /* @Column(name = "id_tool", nullable = false) // where the field?   create a Join
     private Long id_tool;*/
@@ -61,17 +61,17 @@ public class Procedure {
     @Column(name = "abuse", nullable = false)
     private String abuse;
 
-    @JsonIgnore
+    @JsonIgnore  //TODO: Remove JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type", referencedColumnName = "id", insertable = false, updatable = false)
     private ProcedureType procedureType;
 
-    @JsonIgnore
+    @JsonIgnore  //TODO: Remove JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "permit_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Permit permit;
 
-    @JsonIgnore
+    @JsonIgnore  //TODO: Remove JsonIgnore
     @OneToMany(mappedBy = "procedure", cascade = CascadeType.REMOVE)
     private Set<ProcedureDocument> procedureDocuments;
 

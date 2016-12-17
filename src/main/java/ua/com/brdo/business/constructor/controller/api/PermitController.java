@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.PermitType;
@@ -38,6 +39,7 @@ public class PermitController {
         this.permitTypeService = permitTypeService;
     }
 
+    @ApiIgnore
     @ModelAttribute
     private Permit lookUpPermitById(@PathVariable(value = "permitId", required = false) Long id){
         Permit permit = null;
@@ -51,7 +53,7 @@ public class PermitController {
     }
 
     @GetMapping(path = "/permits/{permitId}", produces = APPLICATION_JSON_VALUE)
-    public Permit getPermit(@ModelAttribute("permitId") Permit permit){
+    public Permit getPermit(@ApiIgnore @ModelAttribute("permitId") Permit permit){
         return permit;
     }
 

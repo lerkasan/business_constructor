@@ -73,7 +73,6 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    @WithMockUser
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldGetPermitTypeTest() throws Throwable {

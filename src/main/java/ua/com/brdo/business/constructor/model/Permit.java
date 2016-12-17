@@ -1,6 +1,6 @@
 package ua.com.brdo.business.constructor.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,12 +17,14 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "permit")
 @Table(name = "permit")
 @Data
 @EqualsAndHashCode(of = {"name"})
+@JsonInclude(NON_NULL)
 public class Permit {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -52,8 +54,7 @@ public class Permit {
     @Column(name = "status")
     private Byte status;
     @NotNull(message = "The field permit type in the permit can't be null")
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "permit_type_id", referencedColumnName = "id")
     private PermitType permitType;
 }

@@ -146,16 +146,16 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldDeletePermit() throws Throwable {
+        PermitType permitType = permitTypeService.findById(1L);
         Permit permit = new Permit();
         permit.setName("should delete");
-        permit.setPermitTypeId(1L);
         permit.setLegalDocumentId(1L);
+        permit.setPermitType(permitType);
         permit.setFormId(1L);
         permit.setNumber(" ");
         permit.setTerm(" ");
         permit.setPropose(" ");
         permit.setStatus((byte) 1);
-        PermitType permitType = permitTypeService.findById(1L);
         permitService.create(permit, permitType);
         permit = permitService.findByName("should delete");
         Long id = permit.getId();
@@ -188,7 +188,6 @@ public class PermitControllerTests {
 
     private String updateProvisoryPermitData() throws JsonProcessingException {
         Map<String, String> permitData = new HashMap<>();
-        permitData.put("permitTypeId", "1");
         permitData.put("legalDocumentId", "1");
         permitData.put("formId", "1");
         permitData.put("number", " ");

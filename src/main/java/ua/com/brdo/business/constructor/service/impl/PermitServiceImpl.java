@@ -33,7 +33,7 @@ public class PermitServiceImpl implements PermitService {
     public Permit create(Permit permit, PermitType permitType) {
         Objects.requireNonNull(permit);
         Objects.requireNonNull(permitType);
-        permit.setPermitTypeId(permitType.getId());
+        permit.setPermitType(permitTypeRepository.findOne(permitType.getId()));
         return permitRepository.saveAndFlush(permit);
     }
 
@@ -41,6 +41,8 @@ public class PermitServiceImpl implements PermitService {
     @Override
     public Permit update(Permit permit) {
         Objects.requireNonNull(permit);
+        PermitType permitType = permitRepository.findOne(permit.getId()).getPermitType();
+        permit.setPermitType(permitType);
         return permitRepository.saveAndFlush(permit);
     }
 

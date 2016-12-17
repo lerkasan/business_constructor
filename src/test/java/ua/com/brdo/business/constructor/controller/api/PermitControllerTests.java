@@ -68,9 +68,10 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @WithMockUser
     @Test
     public void shouldGetPermitTypeTest() throws Throwable {
-        mvc.perform(get("/api/permittypes/2").with(user("admin").roles("admin")))
+        mvc.perform(get("/api/permittypes/2"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -79,8 +80,8 @@ public class PermitControllerTests {
     @WithMockUser
     @Test
     public void shouldAddNewPermitTest() throws Throwable {
-        mvc.perform(post("/api/permits/permittypes/1").contentType(MediaType.APPLICATION_JSON)
-                .content(permitRequestData("create")))
+        mvc.perform(post("/api/permittypes/1/permits").contentType(MediaType.APPLICATION_JSON)
+                .content(newProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -118,7 +119,7 @@ public class PermitControllerTests {
     @Test
     public void shouldUpdatePermitTest() throws Throwable {
         mvc.perform(put("/api/permits/1").contentType(MediaType.APPLICATION_JSON)
-                .content(permitRequestData("update")))
+                .content(updateProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -168,9 +169,21 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    private String permitRequestData(String method) throws JsonProcessingException {
+    private String newProvisoryPermitData() throws JsonProcessingException {
         Map<String, String> permitData = new HashMap<>();
+        permitData.put("legalDocumentId", "1");
+        permitData.put("formId", "1");
+        permitData.put("number", " ");
+        permitData.put("term", " ");
+        permitData.put("propose", " ");
+        permitData.put("status", "1");
+        permitData.put("name", "Test permit");
+        String validPermit = jsonMapper.writeValueAsString(permitData);
+        return validPermit;
+    }
 
+    private String updateProvisoryPermitData() throws JsonProcessingException {
+        Map<String, String> permitData = new HashMap<>();
         permitData.put("permitTypeId", "1");
         permitData.put("legalDocumentId", "1");
         permitData.put("formId", "1");
@@ -178,17 +191,10 @@ public class PermitControllerTests {
         permitData.put("term", " ");
         permitData.put("propose", " ");
         permitData.put("status", "1");
-        if (method.equals("update") || method.equals("delete")) {
-            permitData.put("id", "1");
-            permitData.put("name", "Test permit updated");
-        }
-        else {
-            permitData.put("name", "Test permit");
-        }
+        permitData.put("name", "Test permit updated");
         String validPermit = jsonMapper.writeValueAsString(permitData);
         return validPermit;
     }
-
 
     private void clearPermit() {
         Permit permit = permitService.findByName("Test permit");

@@ -56,6 +56,59 @@ CREATE TABLE permit (
   UNIQUE (NAME )
 );
 
+CREATE UNIQUE INDEX permitNameIndx
+ON permit (name);
+
+CREATE TABLE procedure_type (
+  id   IDENTITY      NOT NULL,
+  name VARCHAR(255)  NOT NULL,
+  CONSTRAINT procedure_type_id PRIMARY KEY (id)
+);
+
+CREATE UNIQUE INDEX permitTypeNameIndx
+ON procedure_type (name);
+
+CREATE TABLE procedure_ (
+  id               IDENTITY      NOT NULL,
+  name             VARCHAR(1023) NOT NULL,
+  reason     LONGVARCHAR        NOT NULL,
+  result  VARCHAR (2048)       NOT NULL,
+  permit_id          BIGINT        NOT NULL,
+  procedure_type_id  BIGINT    NOT NULL,
+ /* id_tool       TINYINT    NOT NULL,*/
+  cost       LONGVARCHAR   NOT NULL,
+  term        LONGVARCHAR   NOT NULL,
+  method VARCHAR(2047) NOT NULL ,
+  decision LONGVARCHAR   NOT NULL,
+  deny LONGVARCHAR   NOT NULL,
+  abuse LONGVARCHAR   NOT NULL,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_id) REFERENCES permit(id),
+  FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_ (name);
+
+CREATE TABLE procedure_document (
+  id               IDENTITY      NOT NULL,
+  name VARCHAR (255) NOT NULL ,
+  procedure_id          BIGINT        NOT NULL,
+  example_file BLOB,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (procedure_id ) REFERENCES procedure_(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_document (name);
+
+CREATE TABLE input_type (
+                id IDENTITY NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                CONSTRAINT input_type_id PRIMARY KEY (id)
+);
+
+
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
                 text VARCHAR(1000) NOT NULL,

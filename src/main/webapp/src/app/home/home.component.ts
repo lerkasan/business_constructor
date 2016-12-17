@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+
 declare var $: any;
 
 @Component({

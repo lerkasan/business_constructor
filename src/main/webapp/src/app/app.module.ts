@@ -7,6 +7,12 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './header/header.component';
+import { CarouselComponent } from './carousel/carousel.component';
+import { AdminComponent } from './admin/admin.component';
+import { ConstructorComponent } from './constructor/constructor.component';
+import { UserAdministrationComponent } from './user-administration/user-administration.component';
+import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -24,7 +30,13 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AppComponent,
     HomeComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    CarouselComponent,
+    AdminComponent,
+    ConstructorComponent,
+    UserAdministrationComponent,
+    UserStatisticsComponent
   ],
   providers: [
     ApiService

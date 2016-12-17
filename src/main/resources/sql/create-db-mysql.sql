@@ -1,3 +1,5 @@
-CREATE DATABASE business_constructor;
-CREATE USER 'brdo'@'localhost' IDENTIFIED BY '4En!W83*aM#i';
+DROP DATABASE business_constructor;
+CREATE DATABASE business_constructor
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_unicode_ci;
 GRANT ALL PRIVILEGES ON business_constructor.* TO 'brdo'@'localhost';

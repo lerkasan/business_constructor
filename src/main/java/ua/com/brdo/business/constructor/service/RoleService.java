@@ -1,8 +1,8 @@
 package ua.com.brdo.business.constructor.service;
 
-import ua.com.brdo.business.constructor.model.Role;
-
 import java.util.List;
+
+import ua.com.brdo.business.constructor.model.Role;
 
 public interface RoleService {
 
@@ -10,9 +10,9 @@ public interface RoleService {
 
     Role update(Role role);
 
-    void delete(Long id);
+    void delete(long id);
 
-    Role findById(Long id);
+    Role findById(long id);
 
     Role findByTitle(String title);
 

@@ -4,20 +4,34 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import ua.com.brdo.business.constructor.constraint.Unique;
 
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import ua.com.brdo.business.constructor.constraint.Ascii;
+import ua.com.brdo.business.constructor.constraint.Unique;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -50,10 +64,10 @@ public class User implements UserDetails {
 
     @Transient
     @JsonProperty(access = WRITE_ONLY)
-    @NotEmpty(message = "Password field is required.")
+    @NotNull(message = "Password field is required.")
     @Size(min = 8, max = 32, message = "Password length must be between 8 and 32 characters.")
-    @Pattern(regexp = "^[!-~]{8,32}$", message = "Password could include upper and lower case latin letters, numerals (0-9) and special symbols.")
-    private String rawPassword;
+    @Ascii(message = "Password can include upper and lower case latin letters, numerals (0-9) and special symbols.")
+    private char[] rawPassword;
 
     @JsonIgnore
     @Column(name = "password_hash", length = 60, nullable = false)
@@ -67,6 +81,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonProperty("roles")
     private Set<Role> authorities;
 
     public User() {
@@ -83,7 +98,7 @@ public class User implements UserDetails {
 
     @Override
     public Set<Role> getAuthorities() {
-        return this.authorities;
+        return Collections.unmodifiableSet(authorities);
     }
 
     @Override

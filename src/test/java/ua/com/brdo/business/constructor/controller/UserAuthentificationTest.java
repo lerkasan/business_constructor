@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class UserAuthentificationTest {
 
+    private final String QUESTIONS_URL = "/api/questions/";
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -32,8 +34,8 @@ public class UserAuthentificationTest {
                 .apply(springSecurity()).build();
     }
 
-    @WithAnonymousUser
     @Test
+    @WithAnonymousUser
     public void shouldReturnUnauthorizedStatus() throws Exception {
         mvc.perform(get("/admin"))
                 .andExpect(status().isUnauthorized());
@@ -78,5 +80,13 @@ public class UserAuthentificationTest {
                 .param("password", "admin");
         mvc.perform(request)
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldSuccessfullyLogout() throws Exception {
+        mvc.perform(post("/logout"))
+                .andExpect(status().isOk());
+        mvc.perform(get(QUESTIONS_URL))
+                .andExpect(status().isUnauthorized());
     }
 }

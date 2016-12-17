@@ -81,7 +81,8 @@ CREATE TABLE option_ (
                 question_id BIGINT NOT NULL,
                 procedure_id BIGINT,
                 next_question_id BIGINT,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id),
+                FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
 ALTER TABLE option_ ADD CONSTRAINT option_question_fk

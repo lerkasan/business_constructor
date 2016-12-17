@@ -9,7 +9,6 @@ import ua.com.brdo.business.constructor.repository.LegalDocumentRepository;
 import ua.com.brdo.business.constructor.service.LegalDocumentService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -25,24 +24,19 @@ public class LegalDocumentServiceImpl implements LegalDocumentService {
 
     @Override
     @Transactional
-    public LegalDocument create( LegalDocument legalDocument) {
-        Objects.requireNonNull (legalDocument);
-        return legalDocumentRepository.saveAndFlush(legalDocument);
+    public LegalDocument create(final LegalDocument legalDocument) {
+        return legalDocumentRepository.saveAndFlush(Optional.ofNullable(legalDocument)
+                .orElseThrow(() -> new NotFoundException("Cannot create Null legalDocument")));
     }
 
 
     @Override
     public List<LegalDocument> findAll() {
-        return  legalDocumentRepository.findAll();
+        return legalDocumentRepository.findAll();
     }
 
-    //    @Override
-//    public LegalDocument findById(long id) {
-//        Optional<LegalDocument> legalDocument = Optional.ofNullable(legalDocumentRepository.findOne(id));
-//        return legalDocument.orElseThrow(() -> new NotFoundException(NOT_FOUND));
-//    }
     @Override
-    public LegalDocument findById(long id) {
+    public LegalDocument findById(final long id) {
         Optional<LegalDocument> legalDocument = Optional.ofNullable(legalDocumentRepository.findOne(id));
         return legalDocument.orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
@@ -51,22 +45,26 @@ public class LegalDocumentServiceImpl implements LegalDocumentService {
     @Transactional
     @Override
     public LegalDocument update(final LegalDocument legalDocument) {
-        Optional<LegalDocument> existingLegalDocument = Optional.ofNullable(legalDocumentRepository.findOne(legalDocument.getId()));
-        if (!existingLegalDocument.isPresent()) throw new NotFoundException(NOT_FOUND);
-        return legalDocumentRepository.saveAndFlush(legalDocument);
+        Optional.ofNullable(legalDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if(legalDocumentRepository.exists(legalDocument.getId()))
+            return legalDocumentRepository.saveAndFlush(legalDocument);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Transactional
     @Override
-    public void delete(long id) {
-        Optional<LegalDocument> legalDocument = Optional.ofNullable(legalDocumentRepository.findOne(id));
-        if (!legalDocument.isPresent()) throw new NotFoundException(NOT_FOUND);
-        else legalDocumentRepository.delete(id);
+    public void delete(final long id) {
+        if (legalDocumentRepository.exists(id))
+            legalDocumentRepository.delete(id);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Transactional
     @Override
-    public void delete(LegalDocument legalDocument) {
-        legalDocumentRepository.delete(legalDocument);
+    public void delete(final LegalDocument legalDocument) {
+        Optional.ofNullable(legalDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if (legalDocumentRepository.exists(legalDocument.getId()))
+            legalDocumentRepository.delete(legalDocument);
+        else throw new NotFoundException(NOT_FOUND);
     }
 }

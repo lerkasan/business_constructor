@@ -29,8 +29,6 @@ public class Permit {
     private Long id;
     @Column(name = "name", unique = true)
     private String name;
-    @Column(name = "permit_type_id")
-    private Long permitTypeId;
     @Column(name = "legal_document_id")
     private Long legalDocumentId;
     @Column(name = "form_id")
@@ -49,6 +47,6 @@ public class Permit {
     private Byte status;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permit_type_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "permit_type_id", referencedColumnName = "id")
     private PermitType permitType;
 }

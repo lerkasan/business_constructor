@@ -85,8 +85,8 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldAddNewPermitTest() throws Throwable {
-        mvc.perform(post("/api/permits/permittypes/1").contentType(MediaType.APPLICATION_JSON)
-                .content(permitRequestData("create")))
+        mvc.perform(post("/api/permittypes/1/permits").contentType(MediaType.APPLICATION_JSON)
+                .content(newProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -124,7 +124,7 @@ public class PermitControllerTests {
     @WithMockUser(roles = {EXPERT})
     public void shouldUpdatePermitTest() throws Throwable {
         mvc.perform(put("/api/permits/1").contentType(MediaType.APPLICATION_JSON)
-                .content(permitRequestData("update")))
+                .content(updateProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -146,16 +146,16 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldDeletePermit() throws Throwable {
+        PermitType permitType = permitTypeService.findById(1L);
         Permit permit = new Permit();
         permit.setName("should delete");
-        permit.setPermitTypeId(1L);
         permit.setLegalDocumentId(1L);
+        permit.setPermitType(permitType);
         permit.setFormId(1L);
         permit.setNumber(" ");
         permit.setTerm(" ");
         permit.setPropose(" ");
         permit.setStatus((byte) 1);
-        PermitType permitType = permitTypeService.findById(1L);
         permitService.create(permit, permitType);
         permit = permitService.findByName("should delete");
         Long id = permit.getId();
@@ -173,23 +173,28 @@ public class PermitControllerTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-    private String permitRequestData(String method) throws JsonProcessingException {
+    private String newProvisoryPermitData() throws JsonProcessingException {
         Map<String, String> permitData = new HashMap<>();
-
-        permitData.put("permitTypeId", "1");
         permitData.put("legalDocumentId", "1");
         permitData.put("formId", "1");
         permitData.put("number", " ");
         permitData.put("term", " ");
         permitData.put("propose", " ");
         permitData.put("status", "1");
-        if (method.equals("update") || method.equals("delete")) {
-            permitData.put("id", "1");
-            permitData.put("name", "Test permit updated");
-        }
-        else {
-            permitData.put("name", "Test permit");
-        }
+        permitData.put("name", "Test permit");
+        String validPermit = jsonMapper.writeValueAsString(permitData);
+        return validPermit;
+    }
+
+    private String updateProvisoryPermitData() throws JsonProcessingException {
+        Map<String, String> permitData = new HashMap<>();
+        permitData.put("legalDocumentId", "1");
+        permitData.put("formId", "1");
+        permitData.put("number", " ");
+        permitData.put("term", " ");
+        permitData.put("propose", " ");
+        permitData.put("status", "1");
+        permitData.put("name", "Test permit updated");
         String validPermit = jsonMapper.writeValueAsString(permitData);
         return validPermit;
     }

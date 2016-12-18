@@ -20,8 +20,8 @@ INSERT INTO user (username, email, password_hash, creation_date) VALUES
 INSERT INTO user (username, email, password_hash, creation_date) VALUES
   ('admin', 'some_admin1@mail.com', '$2a$10$V/MgrWzBqwypVcu/RQMPt.iBYQlpHVHycyaGXCM.UwyeOLoSg6VwO',
    now());
-INSERT INTO user (username, email, password_hash, creation_date) VALUES
-  ('expert', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
+INSERT INTO user (username, first_name, email, password_hash, creation_date) VALUES
+  ('expert', 'vasia', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
    now());
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);

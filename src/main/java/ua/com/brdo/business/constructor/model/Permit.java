@@ -54,7 +54,7 @@ public class Permit {
     private Byte status;
     @JsonInclude(NON_NULL)
     @NotNull(message = "The field permit type in the permit can't be null")
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "permit_type_id", referencedColumnName = "id")
     private PermitType permitType;
 }

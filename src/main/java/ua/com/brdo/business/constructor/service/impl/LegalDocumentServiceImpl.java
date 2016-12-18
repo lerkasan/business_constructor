@@ -26,7 +26,7 @@ public class LegalDocumentServiceImpl implements LegalDocumentService {
     @Transactional
     public LegalDocument create(final LegalDocument legalDocument) {
         return legalDocumentRepository.saveAndFlush(Optional.ofNullable(legalDocument)
-                .<NotFoundException>orElseThrow(() -> new NotFoundException("Cannot create Null legalDocument")));
+                .orElseThrow(() -> new NotFoundException("Cannot create Null legalDocument")));
     }
 
 

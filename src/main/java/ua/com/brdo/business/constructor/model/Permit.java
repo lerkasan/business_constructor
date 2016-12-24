@@ -24,7 +24,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "permit")
 @Data
 @EqualsAndHashCode(of = {"name"})
-@JsonInclude(NON_NULL)
 public class Permit {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -53,6 +52,7 @@ public class Permit {
     @NotNull(message = "The field status in the permit can't be null")
     @Column(name = "status")
     private Byte status;
+    @JsonInclude(NON_NULL)
     @NotNull(message = "The field permit type in the permit can't be null")
     @ManyToOne
     @JoinColumn(name = "permit_type_id", referencedColumnName = "id")

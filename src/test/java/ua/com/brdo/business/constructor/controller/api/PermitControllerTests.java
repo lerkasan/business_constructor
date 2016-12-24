@@ -187,14 +187,21 @@ public class PermitControllerTests {
     }
 
     private String updateProvisoryPermitData() throws JsonProcessingException {
-        Map<String, String> permitData = new HashMap<>();
-        permitData.put("legalDocumentId", "1");
-        permitData.put("formId", "1");
-        permitData.put("number", " ");
-        permitData.put("term", " ");
-        permitData.put("propose", " ");
-        permitData.put("status", "1");
-        permitData.put("name", "Test permit updated");
+        PermitType permitType = new PermitType();
+        permitType.setId(1L);
+        permitType.setName("permitType1");
+        byte unsignedByte = 1;
+
+        Permit permitData = new Permit();
+        permitData.setPermitType(permitType);
+        permitData.setName("permit1");
+        permitData.setLegalDocumentId(1L);
+        permitData.setFormId(1L);
+        permitData.setNumber("");
+        permitData.setFileExample("e04fd020ea3a6910a2d808002b30309d".getBytes());
+        permitData.setTerm(" ");
+        permitData.setPropose(" ");
+        permitData.setStatus(unsignedByte);
         String validPermit = jsonMapper.writeValueAsString(permitData);
         return validPermit;
     }

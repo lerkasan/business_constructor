@@ -40,9 +40,10 @@ public class PermitServiceImpl implements PermitService {
     @Transactional
     @Override
     public Permit update(Permit permit) {
-        Objects.requireNonNull(permit);
-        PermitType permitType = permitRepository.findOne(permit.getId()).getPermitType();
-        permit.setPermitType(permitType);
+        if(isNull(permitRepository.getOne(permit.getId())))
+            throw new NotFoundException(String.format("Permit with id=%s is not found", permit.getId()));
+        if(isNull(permitTypeRepository.getOne(permit.getPermitType().getId())))
+            throw new NotFoundException("Permit type with this id is not found");
         return permitRepository.saveAndFlush(permit);
     }
 

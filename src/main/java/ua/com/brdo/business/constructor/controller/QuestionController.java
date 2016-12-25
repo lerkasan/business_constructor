@@ -90,7 +90,9 @@ public class QuestionController {
 
     @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createOption(@ApiIgnore @ModelAttribute Question question, @Valid @RequestBody Option option) {
+        Question nextQuestion = option.getNextQuestion();
         questionService.addOption(question, option);
+        option.setNextQuestion(nextQuestion);
         question = questionService.update(question);
         URI location = ServletUriComponentsBuilder
                 .fromUriString("/api/questions/{questionId}/options").path("/{id}")

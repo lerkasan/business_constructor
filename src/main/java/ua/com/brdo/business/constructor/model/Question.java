@@ -21,7 +21,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,7 +33,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "question")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 @Validated
 @JsonInclude(NON_NULL)

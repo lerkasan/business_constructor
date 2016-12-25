@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,16 @@ import java.util.Map;
 
 import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.model.Option;
+import ua.com.brdo.business.constructor.model.Permit;
+import ua.com.brdo.business.constructor.model.PermitType;
+import ua.com.brdo.business.constructor.model.Procedure;
+import ua.com.brdo.business.constructor.model.ProcedureType;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.service.OptionService;
+import ua.com.brdo.business.constructor.service.PermitService;
+import ua.com.brdo.business.constructor.service.PermitTypeService;
+import ua.com.brdo.business.constructor.service.ProcedureService;
+import ua.com.brdo.business.constructor.service.ProcedureTypeService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -36,7 +43,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,6 +61,18 @@ public class QuestionControllerTest {
 
     @Autowired
     private OptionService optionService;
+
+    @Autowired
+    private ProcedureTypeService procedureTypeService;
+
+    @Autowired
+    private ProcedureService procedureService;
+
+    @Autowired
+    private PermitTypeService permitTypeService;
+
+    @Autowired
+    private PermitService permitService;
 
     @Autowired
     ObjectMapper jsonMapper;
@@ -87,8 +105,10 @@ public class QuestionControllerTest {
     private Option nextOption;
 
     private Question generateValidQuestionWithOptions() {
-        Option option1 = new Option("option1");
-        Option option2 = new Option("option2");
+        Option option1 = new Option();
+        Option option2 = new Option();
+        option1.setTitle("option1");
+        option2.setTitle("option2");
         List<Option> options = new ArrayList<>();
         options.add(option1);
         options.add(option2);
@@ -128,9 +148,50 @@ public class QuestionControllerTest {
     }
 
     private Option generateOptionWithNextQuestion(Question nextQuestion) {
-        Option option = new Option(optionTitle);
+        Option option = new Option();
+        option.setTitle(optionTitle);
         option.setQuestion(question);
         option.setNextQuestion(nextQuestion);
+        return option;
+    }
+
+    private Option generateOptionWithProcedure() {
+        ProcedureType procedureType = new ProcedureType();
+        procedureType.setName("procType");
+        procedureType = procedureTypeService.create(procedureType);
+
+        PermitType permitType = new PermitType();
+        permitType.setName("test");
+        permitType = permitTypeService.create(permitType);
+
+        Permit permit = new Permit();
+        permit.setName("should delete");
+        permit.setLegalDocumentId(1L);
+        permit.setFormId(1L);
+        permit.setNumber(" ");
+        permit.setTerm(" ");
+        permit.setPropose(" ");
+        permit.setStatus((byte) 1);
+        permit = permitService.create(permit, permitType);
+
+        Procedure procedure = new Procedure();
+        procedure.setName("1");
+        procedure.setReason("1");
+        procedure.setResult("1");
+        procedure.setCost("1");
+        procedure.setTerm("1");
+        procedure.setMethod("1");
+        procedure.setDecision("1");
+        procedure.setDeny("1");
+        procedure.setAbuse("1");
+        procedure.setProcedureType(procedureType);
+        procedure.setPermit(permit);
+        procedure = procedureService.create(procedure);
+
+        Option option = new Option();
+        option.setTitle(optionTitle);
+        option.setQuestion(question);
+        option.setProcedure(procedure);
         return option;
     }
 
@@ -152,11 +213,13 @@ public class QuestionControllerTest {
         nextQuestion.setInputType(InputType.SINGLE_CHOICE);
         nextQuestion = questionService.create(nextQuestion);
 
-        option = new Option(optionTitle);
+        option = new Option();
+        option.setTitle(optionTitle);
         option.setQuestion(question);
         option = optionService.create(option);
 
-        nextOption = new Option(optionTitle);
+        nextOption = new Option();
+        nextOption.setTitle(optionTitle);
         nextOption.setQuestion(nextQuestion);
         nextOption = optionService.create(nextOption);
     }
@@ -243,7 +306,6 @@ public class QuestionControllerTest {
 
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionWithInputTypeJson))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -379,7 +441,6 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + OPTIONS_DIR).contentType(APPLICATION_JSON).content(validOptionDataJson))
                 .andExpect(status().isCreated())
-                .andDo(print())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.title").value(optionTitle)));
@@ -402,7 +463,6 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()).contentType(APPLICATION_JSON).content(modifiedOptionDataJson))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.title").value("Modified option")));
     }
@@ -568,10 +628,9 @@ public class QuestionControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT})
-    public void shouldCreateNextQuestionInEntireOptionTest() throws Exception {
+    public void shouldAddNextQuestionInEntireOptionTest() throws Exception {
         Option optionWithNextQuestion = generateOptionWithNextQuestion(nextQuestion);
         String optionWithNextQuestionJson = jsonMapper.writeValueAsString(optionWithNextQuestion);
 
@@ -582,6 +641,21 @@ public class QuestionControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
                 .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldAddProcedureInEntireOptionTest() throws Exception {
+        Option optionWithProcedure = generateOptionWithProcedure();
+        String optionWithProcedureJson = jsonMapper.writeValueAsString(optionWithProcedure);
+
+        mockMvc.perform(
+                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR)
+                        .contentType(APPLICATION_JSON).content(optionWithProcedureJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
+                .andExpect((jsonPath("$.procedure.id").value(optionWithProcedure.getProcedure().getId())));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -597,7 +671,6 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.message").value("Question can't be linked to itself."));
     }
 
-    @Ignore
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldUpdateNextQuestionInEntireOptionTest() throws Exception {
@@ -612,10 +685,38 @@ public class QuestionControllerTest {
                 .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    @WithMockUser(roles = {EXPERT})
+    public void shouldRejectUpdateNextQuestionLinkingToCurrentQuestionInEntireOptionTest() throws Exception {
+        Option optionWithNextQuestionSelfLink = generateOptionWithNextQuestion(question);
+        String optionWithNextQuestionSelfLinkJson = jsonMapper.writeValueAsString(optionWithNextQuestionSelfLink);
+
+        mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())
+                        .contentType(APPLICATION_JSON).content(optionWithNextQuestionSelfLinkJson))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message").value("Question can't be linked to itself."));
+    }
+
+    @Test
+    @WithMockUser(roles = {EXPERT})
+    public void shouldUpdateProcedureInEntireOptionTest() throws Exception {
+        Option optionWithProcedure = generateOptionWithProcedure();
+        String optionWithProcedureJson = jsonMapper.writeValueAsString(optionWithProcedure);
+
+        mockMvc.perform(
+                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())
+                        .contentType(APPLICATION_JSON).content(optionWithProcedureJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect((jsonPath("$.procedure.id").value(optionWithProcedure.getProcedure().getId())));
+    }
+
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldDeleteNextQuestionInEntireOptionTest() throws Exception {
-        Option optionWithoutNextQuestion = new Option(optionTitle);
+        Option optionWithoutNextQuestion = new Option();
+        optionWithoutNextQuestion.setTitle(optionTitle);
         String optionWithoutNextQuestionJson = jsonMapper.writeValueAsString(optionWithoutNextQuestion);
 
         mockMvc.perform(

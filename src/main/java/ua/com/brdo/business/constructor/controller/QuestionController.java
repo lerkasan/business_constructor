@@ -90,7 +90,9 @@ public class QuestionController {
 
     @PostMapping(path = "/{questionId}/options", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity createOption(@ApiIgnore @ModelAttribute Question question, @Valid @RequestBody Option option) {
+        Question nextQuestion = option.getNextQuestion();
         questionService.addOption(question, option);
+        option.setNextQuestion(nextQuestion);
         question = questionService.update(question);
         URI location = ServletUriComponentsBuilder
                 .fromUriString("/api/questions/{questionId}/options").path("/{id}")
@@ -118,7 +120,7 @@ public class QuestionController {
         String modifiedTitle = modifiedOption.getTitle();
         Question modifiedNextQuestion = modifiedOption.getNextQuestion();
         Procedure modifiedProcedure = modifiedOption.getProcedure();
-        option.setTitle(modifiedTitle); //TODO Don't forget set here modified procedure in future tasks
+        option.setTitle(modifiedTitle);
         option.setNextQuestion(modifiedNextQuestion);
         option.setProcedure(modifiedProcedure);
         return optionService.update(option);

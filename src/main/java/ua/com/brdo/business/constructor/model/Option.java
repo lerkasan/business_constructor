@@ -14,7 +14,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "option_")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = {"title", "question"})
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(value = {"question"})
@@ -51,13 +49,9 @@ public class Option {
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
-    @JsonIgnoreProperties(value = {"reason", "result", "cost", "term", "method", "desicion",
+    @JsonIgnoreProperties(value = {"decision", "reason", "result", "cost", "term", "method",
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
     private Procedure procedure;
-
-    public Option(String title) {
-        this.title = title;
-    }
 
     public void setNextQuestion(Question nextQuestion) {
         if ((nextQuestion != null) && (question != null) && (nextQuestion.getId().equals(question.getId()))) {

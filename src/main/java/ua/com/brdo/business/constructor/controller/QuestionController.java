@@ -118,7 +118,7 @@ public class QuestionController {
         String modifiedTitle = modifiedOption.getTitle();
         Question modifiedNextQuestion = modifiedOption.getNextQuestion();
         Procedure modifiedProcedure = modifiedOption.getProcedure();
-        option.setTitle(modifiedTitle); //TODO Don't forget set here modified procedure in future tasks
+        option.setTitle(modifiedTitle);
         option.setNextQuestion(modifiedNextQuestion);
         option.setProcedure(modifiedProcedure);
         return optionService.update(option);

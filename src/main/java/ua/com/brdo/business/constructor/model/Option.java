@@ -2,6 +2,7 @@ package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -47,11 +48,13 @@ public class Option {
     @ManyToOne
     @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"options", "inputType", "text"})
+    //@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+    //@JsonTypeInfo(use = JsonTypeInfo.Id.NONE, defaultImpl=Question.class)
     private Question nextQuestion;
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
-    @JsonIgnoreProperties(value = {"reason", "result", "cost", "term", "method", "desicion",
+    @JsonIgnoreProperties(value = {"decision", "reason", "result", "cost", "term", "method",
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
     private Procedure procedure;
 

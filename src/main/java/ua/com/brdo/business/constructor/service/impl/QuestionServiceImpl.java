@@ -11,7 +11,6 @@ import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
-import ua.com.brdo.business.constructor.service.OptionService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 @Service("QuestionService")

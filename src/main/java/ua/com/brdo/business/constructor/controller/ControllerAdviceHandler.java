@@ -2,8 +2,10 @@ package ua.com.brdo.business.constructor.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.validation.FieldError;
@@ -14,16 +16,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
+import ua.com.brdo.business.constructor.exception.NotFoundException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ControllerAdvice
 public class ControllerAdviceHandler {
@@ -103,5 +110,12 @@ public class ControllerAdviceHandler {
     @ResponseBody
     public Map<String, String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return Collections.singletonMap("message", "Illegal id of related object.");
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public Map<String, String> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
+        return Collections.singletonMap("message", e.getCause().getMessage());
     }
 }

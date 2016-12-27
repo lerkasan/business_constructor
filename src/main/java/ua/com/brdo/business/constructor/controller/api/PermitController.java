@@ -91,9 +91,10 @@ public class PermitController {
 
     @PutMapping(path = "/permits/{permitId}", consumes = APPLICATION_JSON_VALUE
                                         ,produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updatePermit(@PathVariable String permitId, @RequestBody Permit permit){
-        permit.setId(Long.parseLong(permitId));
+    public ResponseEntity updatePermit(@PathVariable Long permitId, @RequestBody Permit permit){
+        permit.setId(permitId);
         Permit updatedPermit = permitService.update(permit);
+        updatedPermit.setPermitType(permitTypeService.findById(updatedPermit.getPermitType().getId()));
         return ResponseEntity.ok().body(updatedPermit);
     }
 

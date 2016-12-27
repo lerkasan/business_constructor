@@ -54,9 +54,13 @@ public class Option {
     private Procedure procedure;
 
     public void setNextQuestion(Question nextQuestion) {
+        checkLinkBetweenQuestionAndNextQuestion();
+        this.nextQuestion = nextQuestion;
+    }
+
+    public void checkLinkBetweenQuestionAndNextQuestion() {
         if ((nextQuestion != null) && (question != null) && (nextQuestion.getId().equals(question.getId()))) {
             throw new IllegalArgumentException("Question can't be linked to itself.");
         }
-        this.nextQuestion = nextQuestion;
     }
 }

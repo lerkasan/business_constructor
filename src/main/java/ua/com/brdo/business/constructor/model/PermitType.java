@@ -23,7 +23,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "permit_type")
 @Data
 @EqualsAndHashCode(of = {"name"})
-@JsonIgnoreProperties(value = {"permits"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PermitType {
     @Id
     @GeneratedValue(strategy = IDENTITY)

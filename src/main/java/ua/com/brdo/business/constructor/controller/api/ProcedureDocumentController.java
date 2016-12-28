@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.ProcedureDocument;
 import ua.com.brdo.business.constructor.service.ProcedureDocumentService;
@@ -29,39 +30,39 @@ public class ProcedureDocumentController {
         this.procedureDocumentService = procedureDocumentService;
     }
 
+    @ApiIgnore
+    @ModelAttribute
+    private ProcedureDocument lookUpProcedureDocumentById(@PathVariable(value = "id", required = false) Long id) {
+        return id == null ? null : procedureDocumentService.findById(id);
+    }
+
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity getProcedureDocument(@PathVariable String id){
-        ProcedureDocument procedureDocument = procedureDocumentService.findById(parseLong(id));
-        if(procedureDocument == null) throw new NotFoundException(String.format("procedure Document with id=%s is not found", id));
-        return ResponseEntity.ok().body(procedureDocument);
+    public ProcedureDocument getProcedureDocument(@ApiIgnore @ModelAttribute("id") ProcedureDocument procedureDocument) {
+        return procedureDocument;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity getListProcedureDocument(){
-        List<ProcedureDocument> listProcedureDocument = procedureDocumentService.getAll();
-        return ResponseEntity.ok().body(listProcedureDocument);
+    public List<ProcedureDocument> getListProcedureDocument() {
+        return procedureDocumentService.getAll();
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity deletelistProcedureDocument(@PathVariable String id){
-        procedureDocumentService.delete(Long.parseLong(id));
-        return ResponseEntity
-                .noContent()
-                .build();
-        //return ResponseEntity.status(HttpStatus.NO_CONTENT).body("NO_CONTENT");
+    public ResponseEntity deleteProcedureDocument(@ApiIgnore @ModelAttribute("id") ProcedureDocument procedureDocument) {
+        procedureDocumentService.delete(procedureDocument);
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE
-            ,produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateProcedureDocument(@PathVariable String id, @RequestBody ProcedureDocument procedureDocument){
-        procedureDocument.setId(Long.parseLong(id));
-        ProcedureDocument updatedProcedureDocument = procedureDocumentService.update(procedureDocument);
-        return ResponseEntity.ok().body(updatedProcedureDocument);
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity updateProcedureDocument(@ApiIgnore @ModelAttribute("id") ProcedureDocument procedureDocument, @RequestBody ProcedureDocument updateProcedureDocument) {
+        final long id = procedureDocument.getId();
+        updateProcedureDocument.setId(id);
+        final ProcedureDocument updatedProcDoc = procedureDocumentService.update(updateProcedureDocument);
+        return ResponseEntity.ok().body(updatedProcDoc);
     }
 
-    @PostMapping(produces = APPLICATION_JSON_VALUE
-            ,consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity createProcedure(@Valid @RequestBody ProcedureDocument procedureDocument){
+    @PostMapping(produces = APPLICATION_JSON_VALUE,
+            consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity createProcedureDocument(@Valid @RequestBody ProcedureDocument procedureDocument) {
         ProcedureDocument addedProcedureDocument = procedureDocumentService.create(procedureDocument);
         URI location = ServletUriComponentsBuilder
                 .fromUriString("documents")

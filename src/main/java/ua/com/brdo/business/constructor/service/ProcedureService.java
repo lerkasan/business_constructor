@@ -20,6 +20,9 @@ public interface ProcedureService {
 
     List<Procedure> getAll();
 
+    void delete(Procedure procedure);
+
+
     //Procedure addProcedureType(Procedure procedure, ProcedureType procedureType);
 
     //Procedure deleteProcedureType(Procedure procedure, ProcedureType procedureType);

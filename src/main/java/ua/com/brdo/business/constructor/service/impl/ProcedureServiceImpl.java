@@ -12,10 +12,11 @@ import ua.com.brdo.business.constructor.service.ProcedureService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service("ProcedureService")
 public class ProcedureServiceImpl implements ProcedureService {
-
+    private static final String NOT_FOUND = "Procedure was not found.";
     private ProcedureRepository procedureRepository;
 
     @Autowired
@@ -24,39 +25,55 @@ public class ProcedureServiceImpl implements ProcedureService {
     }
     @Transactional
     @Override
-     public Procedure create(Procedure procedure){
-        Objects.requireNonNull(procedure);
-        return procedureRepository.saveAndFlush(procedure);
+     public Procedure create(final Procedure procedure){
+        return procedureRepository.saveAndFlush(Optional.ofNullable(procedure)
+                .orElseThrow(() -> new NotFoundException("Cannot create Null procedure")));
     }
 
     @Override
     @Transactional
-    public Procedure update(Procedure procedure){
-        Objects.requireNonNull(procedure);
-        return procedureRepository.saveAndFlush(procedure);
+    public Procedure update(final Procedure procedure){
+        Optional.ofNullable(procedure).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if(procedureRepository.exists(procedure.getId()))
+            return procedureRepository.saveAndFlush(procedure);
+        else throw new NotFoundException(NOT_FOUND);
         }
 
     @Override
     @Transactional
-    public void delete(Long id){
-        procedureRepository.delete(id);
+    public void delete(final Long id){
+        if (procedureRepository.exists(id))
+            procedureRepository.delete(id);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
-    public Procedure findById(Long id){
-        return procedureRepository.findOne(id);
+    public void delete(final Procedure procedure) {
+        Optional.ofNullable(procedure).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if (procedureRepository.exists(procedure.getId()))
+            procedureRepository.delete(procedure);
+        else throw new NotFoundException(NOT_FOUND);
+    }
+
+
+    @Override
+    public Procedure findById(final Long id){
+        Optional<Procedure> procedure = Optional.ofNullable(procedureRepository.findOne(id));
+        return procedure.orElseThrow(() -> new NotFoundException(NOT_FOUND));
 
     }
 
     @Override
-    public Procedure findByName(String name){
-        return procedureRepository.findByName(name).orElseThrow(() -> new NotFoundException("Procedure Document with given name was not found."));
+    public Procedure findByName(final String name){
+        return procedureRepository.findByName(name).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     public List<Procedure> getAll(){
         return procedureRepository.findAll();
     }
+
+
 
 
 }

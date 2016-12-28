@@ -11,10 +11,12 @@ import ua.com.brdo.business.constructor.service.ProcedureDocumentService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service("ProcedureDocumentService")
 public class ProcedureDocumentServiceImpl implements ProcedureDocumentService {
 
+    private static final String NOT_FOUND = "Procedure Document was not found.";
     private ProcedureDocumentRepository procedureDocumentRepository;
 
     @Autowired
@@ -25,35 +27,50 @@ public class ProcedureDocumentServiceImpl implements ProcedureDocumentService {
     @Override
     @Transactional
     public ProcedureDocument create(ProcedureDocument procedureDocument){
-        Objects.requireNonNull(procedureDocument);
-        return procedureDocumentRepository.saveAndFlush(procedureDocument);
+        return procedureDocumentRepository.saveAndFlush(Optional.ofNullable(procedureDocument)
+                .orElseThrow(() -> new NotFoundException("Cannot create Null procedure document")));
     }
 
     @Override
     @Transactional
     public ProcedureDocument update(ProcedureDocument procedureDocument){
-        Objects.requireNonNull(procedureDocument);
-        return procedureDocumentRepository.saveAndFlush(procedureDocument);
+        Optional.ofNullable(procedureDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if(procedureDocumentRepository.exists(procedureDocument.getId()))
+            return procedureDocumentRepository.saveAndFlush(procedureDocument);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
     @Transactional
     public void delete(Long id){
-        procedureDocumentRepository.delete(id);
+        if (procedureDocumentRepository.exists(id))
+            procedureDocumentRepository.delete(id);
+        else throw new NotFoundException(NOT_FOUND);
+    }
+
+    @Override
+    public void delete(ProcedureDocument procedureDocument) {
+        Optional.ofNullable(procedureDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if (procedureDocumentRepository.exists(procedureDocument.getId()))
+            procedureDocumentRepository.delete(procedureDocument);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
     public ProcedureDocument findById(Long id){
-        return procedureDocumentRepository.findOne(id);
+        Optional<ProcedureDocument> procedure = Optional.ofNullable(procedureDocumentRepository.findOne(id));
+        return procedure.orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     public ProcedureDocument findByName(String name){
-        return procedureDocumentRepository.findByName(name).orElseThrow(() -> new NotFoundException("Procedure Document with given name was not found."));
+        return procedureDocumentRepository.findByName(name).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     public List<ProcedureDocument> getAll(){
         return procedureDocumentRepository.findAll();
     }
+
+
 }

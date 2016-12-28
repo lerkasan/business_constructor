@@ -20,4 +20,5 @@ public interface ProcedureDocumentService {
 
     List<ProcedureDocument> getAll();
 
+    void delete(ProcedureDocument procedureDocument);
 }

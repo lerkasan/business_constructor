@@ -135,43 +135,4 @@ public class QuestionController {
                 .noContent()
                 .build();
     }
-
-    @GetMapping(path = "/{questionId}/options/{optionId}/next-question")
-    public Question getNextQuestionForOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId) {
-        long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        return option.getNextQuestion();
-    }
-
-    @PostMapping(path = "/{questionId}/options/{optionId}/next-question", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity setNextQuestionForOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId, @RequestBody Question nextQuestion) {
-        long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        option.setNextQuestion(nextQuestion);
-        option = optionService.update(option);
-        URI location = ServletUriComponentsBuilder
-                .fromUriString("/api/questions/{questionId}/options/{optionId}")
-                .build()
-                .toUri();
-        return ResponseEntity.created(location).body(option);
-    }
-
-    @PutMapping(path = "/{questionId}/options/{optionId}/next-question", consumes = APPLICATION_JSON_VALUE)
-    public Option updateNextQuestionForOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId, @RequestBody Question nextQuestion) {
-        long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        option.setNextQuestion(nextQuestion);
-        return optionService.update(option);
-    }
-
-    @DeleteMapping(path = "/{questionId}/options/{optionId}/next-question")
-    public ResponseEntity deleteNextQuestionFromOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId) {
-        Long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        option.setNextQuestion(null);
-        optionService.update(option);
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
 }

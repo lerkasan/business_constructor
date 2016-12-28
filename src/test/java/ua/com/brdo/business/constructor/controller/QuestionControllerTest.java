@@ -88,7 +88,6 @@ public class QuestionControllerTest {
     private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
     private static final String OPTIONS_DIR = "/options/";
-    private static final String NEXT_QUESTION_DIR = "/next-question";
     private static final String validOptionDataJson = "{\"title\":\"My option\"}";
     private static final int NON_EXISTENT_ID = 100000;
     private static final String EXPERT = "EXPERT";
@@ -555,81 +554,6 @@ public class QuestionControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT})
-    public void shouldCreateNextQuestionInOptionTest() throws Exception {
-        Map<String, String> nextQuestionData = new HashMap<>();
-        nextQuestionData.put("id", nextQuestion.getId().toString());
-        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
-
-        mockMvc.perform(
-                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
-                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    public void shouldGetNextQuestionInOptionTest() throws Exception {
-        Map<String, String> nextQuestionData = new HashMap<>();
-        nextQuestionData.put("id", nextQuestion.getId().toString());
-        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
-
-        mockMvc.perform(
-                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
-                        .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
-
-        mockMvc.perform(
-                get(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    public void shouldRejectCreateNextQuestionLinkingToCurrentQuestionTest() throws Exception {
-        Map<String, String> nextQuestionData = new HashMap<>();
-        nextQuestionData.put("id", question.getId().toString());
-        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
-
-        mockMvc.perform(
-                post(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
-                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message").value("Question can't be linked to itself."));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    public void shouldUpdateNextQuestionInOptionTest() throws Exception {
-        Map<String, String> nextQuestionData = new HashMap<>();
-        nextQuestionData.put("id", nextQuestion.getId().toString());
-        String nextQuestionDataJson = jsonMapper.writeValueAsString(nextQuestionData);
-
-        mockMvc.perform(
-                put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR)
-                .contentType(APPLICATION_JSON).content(nextQuestionDataJson))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
-    public void shouldDeleteNextQuestionInOptionTest() throws Exception {
-        mockMvc.perform(
-                delete(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId() + NEXT_QUESTION_DIR))
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    @WithMockUser(roles = {EXPERT})
     public void shouldAddNextQuestionInEntireOptionTest() throws Exception {
         Option optionWithNextQuestion = generateOptionWithNextQuestion(nextQuestion);
         String optionWithNextQuestionJson = jsonMapper.writeValueAsString(optionWithNextQuestion);
@@ -658,11 +582,10 @@ public class QuestionControllerTest {
                 .andExpect((jsonPath("$.procedure.id").value(optionWithProcedure.getProcedure().getId())));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldRejectCreateNextQuestionLinkingToCurrentQuestionInEntireOptionTest() throws Exception {
-        Option optionWithNextQuestionSelfLink = generateOptionWithNextQuestion(question);
-        String optionWithNextQuestionSelfLinkJson = jsonMapper.writeValueAsString(optionWithNextQuestionSelfLink);
+        String optionWithNextQuestionSelfLinkJson = "{ \"title\": \"My option 1\", \"nextQuestion\": { \"id\": " + question.getId() + "} }";
 
         mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + OPTIONS_DIR)
@@ -685,11 +608,10 @@ public class QuestionControllerTest {
                 .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldRejectUpdateNextQuestionLinkingToCurrentQuestionInEntireOptionTest() throws Exception {
-        Option optionWithNextQuestionSelfLink = generateOptionWithNextQuestion(question);
-        String optionWithNextQuestionSelfLinkJson = jsonMapper.writeValueAsString(optionWithNextQuestionSelfLink);
+        String optionWithNextQuestionSelfLinkJson = "{ \"title\": \"My option 1\", \"nextQuestion\": { \"id\": " + question.getId() + "} }";
 
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())

@@ -20,4 +20,6 @@ public interface ProcedureTypeService {
     ProcedureType findByName(String name);
 
     List<ProcedureType> getAll();
+
+    void delete(ProcedureType procedureType);
 }

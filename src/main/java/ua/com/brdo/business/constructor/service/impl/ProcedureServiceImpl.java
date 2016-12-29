@@ -72,8 +72,4 @@ public class ProcedureServiceImpl implements ProcedureService {
     public List<Procedure> getAll(){
         return procedureRepository.findAll();
     }
-
-
-
-
 }

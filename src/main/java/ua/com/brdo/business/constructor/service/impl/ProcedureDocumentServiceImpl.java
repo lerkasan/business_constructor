@@ -26,14 +26,14 @@ public class ProcedureDocumentServiceImpl implements ProcedureDocumentService {
 
     @Override
     @Transactional
-    public ProcedureDocument create(ProcedureDocument procedureDocument){
+    public ProcedureDocument create(final ProcedureDocument procedureDocument){
         return procedureDocumentRepository.saveAndFlush(Optional.ofNullable(procedureDocument)
                 .orElseThrow(() -> new NotFoundException("Cannot create Null procedure document")));
     }
 
     @Override
     @Transactional
-    public ProcedureDocument update(ProcedureDocument procedureDocument){
+    public ProcedureDocument update(final ProcedureDocument procedureDocument){
         Optional.ofNullable(procedureDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
         if(procedureDocumentRepository.exists(procedureDocument.getId()))
             return procedureDocumentRepository.saveAndFlush(procedureDocument);
@@ -42,14 +42,14 @@ public class ProcedureDocumentServiceImpl implements ProcedureDocumentService {
 
     @Override
     @Transactional
-    public void delete(Long id){
+    public void delete(final Long id){
         if (procedureDocumentRepository.exists(id))
             procedureDocumentRepository.delete(id);
         else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
-    public void delete(ProcedureDocument procedureDocument) {
+    public void delete(final ProcedureDocument procedureDocument) {
         Optional.ofNullable(procedureDocument).orElseThrow(()->new NotFoundException(NOT_FOUND));
         if (procedureDocumentRepository.exists(procedureDocument.getId()))
             procedureDocumentRepository.delete(procedureDocument);
@@ -57,13 +57,13 @@ public class ProcedureDocumentServiceImpl implements ProcedureDocumentService {
     }
 
     @Override
-    public ProcedureDocument findById(Long id){
+    public ProcedureDocument findById(final Long id){
         Optional<ProcedureDocument> procedure = Optional.ofNullable(procedureDocumentRepository.findOne(id));
         return procedure.orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
-    public ProcedureDocument findByName(String name){
+    public ProcedureDocument findByName(final String name){
         return procedureDocumentRepository.findByName(name).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 

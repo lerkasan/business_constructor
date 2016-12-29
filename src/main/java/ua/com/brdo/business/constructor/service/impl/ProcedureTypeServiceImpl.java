@@ -16,6 +16,7 @@ import java.util.Optional;
 @Service("ProcedureTypeService")
 public class ProcedureTypeServiceImpl implements ProcedureTypeService {
 
+    private static final String NOT_FOUND = "Procedure Type was not found.";
     private ProcedureTypeRepository procedureTypeRepository;
 
     @Autowired
@@ -23,45 +24,53 @@ public class ProcedureTypeServiceImpl implements ProcedureTypeService {
         this.procedureTypeRepository = procedureTypeRepository;
     }
 
-    @Override
     @Transactional
-    public ProcedureType create(ProcedureType procedureType){
-        Objects.requireNonNull(procedureType);
-        Optional<ProcedureType> procedureTypeFromDb = procedureTypeRepository.findByName(procedureType.getName());
-        if (procedureTypeFromDb.isPresent()) {
-            return procedureTypeFromDb.get();
-        }
-        return procedureTypeRepository.saveAndFlush(procedureType);
-    }
     @Override
-    @Transactional
-    public ProcedureType update(ProcedureType procedureType) {
-        Objects.requireNonNull(procedureType);
-        return procedureTypeRepository.saveAndFlush(procedureType);
+    public ProcedureType create(final ProcedureType procedureType){
+        return procedureTypeRepository.saveAndFlush(Optional.ofNullable(procedureType)
+                .orElseThrow(() -> new NotFoundException("Cannot create Null procedure type")));
     }
 
     @Override
     @Transactional
-    public void delete(Long id){
-        procedureTypeRepository.delete(id);
+    public ProcedureType update(final ProcedureType procedureType){
+        Optional.ofNullable(procedureType).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if(procedureTypeRepository.exists(procedureType.getId()))
+            return procedureTypeRepository.saveAndFlush(procedureType);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
-    public ProcedureType findById(Long id){
-        return procedureTypeRepository.findOne(id);
+    @Transactional
+    public void delete(final Long id){
+        if (procedureTypeRepository.exists(id))
+            procedureTypeRepository.delete(id);
+        else throw new NotFoundException(NOT_FOUND);
     }
 
     @Override
-    public ProcedureType findByName(String name){
-        return procedureTypeRepository.findByName(name).orElseThrow(() -> new NotFoundException("Procedure Type with given name was not found."));
+    public void delete(final ProcedureType procedureType) {
+        Optional.ofNullable(procedureType).orElseThrow(()->new NotFoundException(NOT_FOUND));
+        if (procedureTypeRepository.exists(procedureType.getId()))
+            procedureTypeRepository.delete(procedureType);
+        else throw new NotFoundException(NOT_FOUND);
+    }
+
+
+    @Override
+    public ProcedureType findById(final Long id){
+        Optional<ProcedureType> procedureType = Optional.ofNullable(procedureTypeRepository.findOne(id));
+        return procedureType.orElseThrow(() -> new NotFoundException(NOT_FOUND));
+
+    }
+
+    @Override
+    public ProcedureType findByName(final String name){
+        return procedureTypeRepository.findByName(name).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     public List<ProcedureType> getAll(){
         return procedureTypeRepository.findAll();
     }
-
-
-
-
 }

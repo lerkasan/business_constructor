@@ -7,7 +7,7 @@ import {User} from "../model/user";
 export class AuthService {
 
   private authenticatedUser = new User;
-  private url = 'http://localhost:8080/';
+  private url = 'http://edu.bionic-university.com:2280/';
 
   constructor(private http: Http) {
   }

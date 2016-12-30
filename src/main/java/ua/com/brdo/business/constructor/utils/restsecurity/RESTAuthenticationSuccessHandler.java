@@ -7,6 +7,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,8 @@ import ua.com.brdo.business.constructor.model.User;
 @Component
 public class RESTAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
     private ObjectMapper jsonMapper = new ObjectMapper();
 
     @Override
@@ -28,6 +32,8 @@ public class RESTAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     }
 
     protected void handle(HttpServletResponse response, Authentication authentication) throws IOException {
+
+        jsonMapper.setDateFormat(dateFormat);
         User user = (User) authentication.getPrincipal();
         String userJsonDetails = jsonMapper.writeValueAsString(user);
 

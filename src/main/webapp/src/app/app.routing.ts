@@ -12,7 +12,7 @@ import { UserStatisticsComponent } from './user-statistics/user-statistics.compo
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
   { path: 'carousel', component: CarouselComponent},

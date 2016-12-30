@@ -1,15 +1,23 @@
 <header>
   <div class="container">
-      <div class="row">
-        <div class="col-lg-2">
-            <a [routerLink]="['']" ><img src="/img/logo.png" alt="BRDO"></a>
+    <div class="row">
+      <div class="col-lg-2">
+        <a [routerLink]="['']"><img src="/img/logo.png" alt="BRDO"></a>
+      </div>
+      <div class="col-lg-4 col-lg-offset-7 nav_button">
+        <a class="btn btn-default" [routerLink]="['../admin']" role="button">Адміністрування</a>
+        <a class="btn btn-default" [routerLink]="['../login']" role="button">Вхід</a>
+        <a class="btn btn-default" [routerLink]="['../register']" role="button">Реєстрація</a>
+      </div>
+      <div [hidden]="loggedin">
+        <div class="col-lg-1">
+          <span class="label label-info">Logged in as: {{model.username}}</span>
         </div>
-        <div class="col-lg-4 col-lg-offset-7 nav_button">
-          <a class="btn btn-default" [routerLink]="['../admin']" role="button">Адміністрування</a>
-          <a class="btn btn-default" [routerLink]="['../login']" role="button">Вхід</a>
-          <a class="btn btn-default" [routerLink]="['../register']" role="button">Реєстрація</a>
+        <div class="col-lg-1">
+          <span class="label label-info"><a href="#">logout</a></span>
         </div>
       </div>
+    </div>
   </div>
 </header>
 

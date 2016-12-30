@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {User} from "../model/user";
 import {AuthService} from "../service/auth.service";
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'my-login',
   templateUrl: './login.component.html',
@@ -10,28 +10,30 @@ import {AuthService} from "../service/auth.service";
 
 export class LoginComponent {
 
-  user = new User();
-  model = this.user;
-  submitted = false;
+  model = new User();
   errorMessage = '';
   mode = 'Observable';
 
-  constructor (private authService: AuthService) {}
+  constructor (private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    this.submitted = true;
+    console.log('Must be roted to the home');
   }
 
   authRequest() {
 
+    console.log('I am hear');
     this.authService.authRequest(this.model.username, this.model.password)
-      .subscribe(
-        user => this.user = user,
-        error => this.errorMessage = <any>error
+      .subscribe((result) => {
+        if(result == 200) {
+          this.router.navigate(['/']);
+        }
+      },
+        (error) => { this.errorMessage = <any>error; console.log(this.errorMessage)}
       );
-    console.log(this.user.toString());
-    this.model = this.user;
+      // .subscribe(
+      //   user => this.model = user,
+      //   error => this.errorMessage = <any>error
+      // );
   }
 }
-
-

@@ -6,12 +6,13 @@ import {User} from "../model/user";
 @Injectable()
 export class AuthService {
 
+  private authenticatedUser = new User;
   private url = 'http://localhost:8080/';
 
   constructor(private http: Http) {
   }
 
-  public authRequest(username: string, password: string): Observable<User> {
+  public authRequest(username: string, password: string){
     let body = this.authBodyGenerator(username, password);
     let headers = new Headers({'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'});
     headers.append('cache-control', 'no-cache');
@@ -19,7 +20,14 @@ export class AuthService {
     let options = new RequestOptions({headers: headers});
 
     return this.http.post(this.url + 'login', body, options)
-      .map((response:Response) => {response.json() as User; console.log(response.status); console.log(response.json())})
+      // .map((response:Response) => {return response.json() as User;})
+      // .map(res => res.json())
+      .map((res) => {
+        if (res.status == 200){
+          this.authenticatedUser = res.json() as User;
+        }
+        return res.status;
+        })
       .catch(this.handleError);
   }
 
@@ -44,4 +52,9 @@ export class AuthService {
     body += '------WebKitFormBoundary7MA4YWxkTrZu0gW--';
     return body;
   }
+
+  public getAuthUser() {
+    return this.authenticatedUser;
+  }
+
 }

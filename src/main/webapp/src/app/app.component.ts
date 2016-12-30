@@ -3,6 +3,7 @@ import { ApiService } from './shared';
 
 import '../style/app.scss';
 import './rxjs-operators';
+import {HomeComponent} from "./home/home.component";
 
 @Component({
   selector: 'my-app', // <my-app></my-app>
@@ -17,4 +18,3 @@ export class AppComponent {
     // Do something with api
   }
 }
-

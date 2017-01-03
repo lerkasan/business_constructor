@@ -11,17 +11,24 @@ import {User} from "../model/user";
 export class HeaderComponent implements OnInit {
 
   loggedin = true;
-  model = new User;
+  user = new User;
+  model = this.user;
 
   constructor(private authService: AuthService) {
     // Do stuff
   }
 
   ngOnInit() {
-    if(this.authService.getAuthUser().username != undefined){
+    if(localStorage.getItem('currentUser')){
       this.loggedin = false;
-      this.model = this.authService.getAuthUser();
+      this.user = JSON.parse(localStorage.getItem('currentUser'));
+      this.model = this.user;
     }
+  }
+
+  logout() {
+    this.loggedin = true;
+    this.authService.logout();
   }
 
 }

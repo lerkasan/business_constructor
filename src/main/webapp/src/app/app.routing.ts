@@ -19,8 +19,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent},
   { path: 'constructor', component: ConstructorComponent},
   { path: 'user-administration', component: UserAdministrationComponent},
-  { path: 'user-statistics', component: UserStatisticsComponent}
-
+  { path: 'user-statistics', component: UserStatisticsComponent},
+  { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(routes);

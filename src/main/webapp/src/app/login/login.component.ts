@@ -22,7 +22,6 @@ export class LoginComponent {
 
   authRequest() {
 
-    console.log('I am hear');
     this.authService.authRequest(this.model.username, this.model.password)
       .subscribe((result) => {
         if(result == 200) {

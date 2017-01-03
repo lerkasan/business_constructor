@@ -12,23 +12,27 @@ export class AuthService {
   constructor(private http: Http) {
   }
 
-  public authRequest(username: string, password: string){
+  public authRequest(username: string, password: string) {
     let body = this.authBodyGenerator(username, password);
     let headers = new Headers({'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'});
     headers.append('cache-control', 'no-cache');
-    headers.append('postman-token', '5c363745-122b-7901-b85c-9b17c82c19d6');
     let options = new RequestOptions({headers: headers});
 
     return this.http.post(this.url + 'login', body, options)
-      // .map((response:Response) => {return response.json() as User;})
-      // .map(res => res.json())
       .map((res) => {
-        if (res.status == 200){
+        if (res.status == 200) {
           this.authenticatedUser = res.json() as User;
+          localStorage.setItem('currentUser', JSON.stringify(this.authenticatedUser));
         }
         return res.status;
-        })
+      })
       .catch(this.handleError);
+  }
+
+  public logout() {
+    localStorage.removeItem('currentUser');
+    return this.http.get(this.url + 'logout')
+      .subscribe();
   }
 
   private handleError(error: Response | any) {

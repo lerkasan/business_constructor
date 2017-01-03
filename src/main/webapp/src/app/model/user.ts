@@ -9,6 +9,10 @@ export class User {
   roles: string[];
   username: string;
   password: string;
+  firstname: string;
+  midlename: string;
+  lastname: string;
+
 
     constructor() {
   }

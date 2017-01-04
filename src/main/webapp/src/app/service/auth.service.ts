@@ -7,7 +7,6 @@ import {User} from "../model/user";
 export class AuthService {
 
   private authenticatedUser = new User;
-  private url = window.location.hostname;
 
   constructor(private http: Http) {
   }
@@ -18,7 +17,7 @@ export class AuthService {
     headers.append('cache-control', 'no-cache');
     let options = new RequestOptions({headers: headers});
 
-    return this.http.post(this.url + '/login', body, options)
+    return this.http.post('/login', body, options)
       .map((res) => {
         if (res.status == 200) {
           this.authenticatedUser = res.json() as User;
@@ -31,7 +30,7 @@ export class AuthService {
 
   public logout() {
     localStorage.removeItem('currentUser');
-    return this.http.get(this.url + '/logout')
+    return this.http.get('/logout')
       .subscribe();
   }
 

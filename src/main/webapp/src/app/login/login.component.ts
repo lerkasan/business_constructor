@@ -30,9 +30,5 @@ export class LoginComponent {
       },
         (error) => { this.errorMessage = <any>error; console.log(this.errorMessage)}
       );
-      // .subscribe(
-      //   user => this.model = user,
-      //   error => this.errorMessage = <any>error
-      // );
   }
 }

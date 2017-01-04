@@ -1,4 +1,4 @@
-
+DROP DATABASE business_constructor;
 CREATE DATABASE business_constructor
   DEFAULT CHARACTER SET utf8
   DEFAULT COLLATE utf8_unicode_ci;

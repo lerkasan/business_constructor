@@ -23,8 +23,6 @@ export class AuthService {
         if (res.status == 200) {
           this.authenticatedUser = res.json() as User;
           localStorage.setItem('currentUser', JSON.stringify(this.authenticatedUser));
-          console.log(res.json());
-          console.log(this.authenticatedUser.roles);
         }
         return res.status;
       })

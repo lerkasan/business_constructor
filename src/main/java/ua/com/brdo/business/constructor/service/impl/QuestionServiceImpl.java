@@ -17,6 +17,7 @@ import ua.com.brdo.business.constructor.service.QuestionService;
 public class QuestionServiceImpl implements QuestionService {
 
     private static final String NOT_FOUND = "Question was not found.";
+    private static final String NEXT_QUESTION_NOT_FOUND = "Specified next question was not found.";
 
     private QuestionRepository questionRepo;
 
@@ -28,7 +29,14 @@ public class QuestionServiceImpl implements QuestionService {
     private Question addOptions(Question question) {
         List<Option> options = question.getOptions();
         if (options != null && !options.isEmpty()) {
-           options.forEach(option -> option.setQuestion(question));
+           options.forEach(option -> {
+               option.setQuestion(question);
+               Question nextQuestion = option.getNextQuestion();
+               if ((nextQuestion != null) && (questionRepo.findOne(nextQuestion.getId()) == null)) {
+                   throw new NotFoundException(NEXT_QUESTION_NOT_FOUND);
+               }
+               option.checkLinkBetweenQuestionAndNextQuestion();
+           });
         }
         return question;
     }

@@ -9,6 +9,7 @@ export class User {
   roles: string[];
   username: string;
   password: string;
+  rawPassword: string;
   firstname: string;
   midlename: string;
   lastname: string;

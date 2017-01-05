@@ -6,15 +6,17 @@
       </div>
       <div class="col-lg-4 col-lg-offset-7 nav_button">
         <a class="btn btn-default" [routerLink]="['../admin']" role="button">Адміністрування</a>
-        <a class="btn btn-default" [routerLink]="['../login']" role="button">Вхід</a>
-        <a class="btn btn-default" [routerLink]="['../register']" role="button">Реєстрація</a>
+        <div [hidden]="!loggedin">
+          <a class="btn btn-default" [routerLink]="['../login']" role="button">Вхід</a>
+          <a class="btn btn-default" [routerLink]="['../register']" role="button">Реєстрація</a>
+        </div>
       </div>
       <div [hidden]="loggedin">
         <div class="col-lg-1">
-          <span class="label label-info">Logged in as: {{model.username}}</span>
+          <span class="label label-info">Ви увійшли як: {{model.username}}</span>
         </div>
         <div class="col-lg-1">
-          <a class="btn btn-info" (click)="logout()">logout</a>
+          <a class="btn btn-default" (click)="logout()">Вийти</a>
         </div>
       </div>
     </div>

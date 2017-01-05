@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 
 export class LoginComponent {
 
+  wrongcredentials = false;
   model = new User();
-  errorMessage = '';
+  message = '';
   mode = 'Observable';
 
   constructor (private authService: AuthService, private router: Router) {}
@@ -28,7 +29,7 @@ export class LoginComponent {
           this.router.navigate(['/']);
         }
       },
-        (error) => { this.errorMessage = <any>error; console.log(this.errorMessage)}
+        (error) => { this.message = <any>error; this.wrongcredentials = true;}
       );
   }
 }

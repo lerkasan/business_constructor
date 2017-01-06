@@ -1,1 +1,48 @@
 
+.btn-big {
+	margin: 10px 0;
+	color: white;
+	font-size: 16px;
+}
+form {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 0 3%;
+}
+input {
+	margin: 10px 0;
+	width: 100%;
+}
+.question {
+	height: 9vh;
+}
+// .nameInput {
+// 	display: inline-block;
+	
+// }
+// .nameInput {
+// 	margin: 20px 0;
+// 	width: 50%;
+// }
+.btn-single {
+	margin: 10px 0;
+}
+.clear {
+	clear: both;
+}
+.btn-accept {
+	float: right;
+	color: #000;
+}
+.btn-exit {
+	float: right;
+	color: #000;
+	margin-left: 10px;
+}
+.btn-accept:hover {
+	background-color: green;
+}
+.btn-exit:hover {
+	background-color: red;
+}
+

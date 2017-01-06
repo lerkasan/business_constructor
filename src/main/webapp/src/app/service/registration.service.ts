@@ -7,8 +7,6 @@ import { Headers, RequestOptions } from '@angular/http';
 @Injectable()
 export class RegistrationService {
 
-  private url = window.location.hostname;
-
   constructor(private http: Http) {
   }
 
@@ -16,7 +14,7 @@ export class RegistrationService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(this.url+"/register", JSON.stringify(user), options)
+    return this.http.post("/register", JSON.stringify(user), options)
       .map((res) => {return res.status})
       .catch(this.handleError);
   }

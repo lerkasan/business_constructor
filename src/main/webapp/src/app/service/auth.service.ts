@@ -7,7 +7,7 @@ import {User} from "../model/user";
 export class AuthService {
 
   private authenticatedUser = new User;
-  private url = window.location.hostname;
+  private url = "http://localhost:8080";
 
   constructor(private http: Http) {
   }

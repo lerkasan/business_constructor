@@ -7,10 +7,19 @@ import { Component } from '@angular/core';
 
 })
 
+
 export class ConstructorComponent{
-	 constructor() {
-  
-  }
+	constructor() {
+  		
+	}
+	showForm (){
+		var parent = document.getElementById('constructor');
+		var button = document.getElementById('startButton');
+		var form = document.getElementById('formQustionare');
+		form.removeAttribute('hidden');
+		parent.replaceChild(form, button);
+	}
+
 }
 
 

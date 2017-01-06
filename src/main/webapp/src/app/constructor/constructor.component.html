@@ -1,4 +1,68 @@
-<h2>Модуль конструктора питань (в розробці)</h2>
+<div id="constructor">
+	<button class="btn btn-primary btn-big" (click)="showForm()">Створити нову анкету</button>
+
+<form id="formQustionare" hidden="">
+	<div id="constructorForm" class="form-group" action="">
+
+		<input class="nameInput form-control" type="text" placeholder="НАЗВА БІЗНЕСУ">
+		
+		<input class="titleInput form-control" type="text" placeholder="Запитання 1">
+		<span>Виберіть спосіб відображення відповіді:</span>
+		<button type="button" class="btn btn-success">Один варіант відповіді</button>
+		<button type="button" class="btn btn-danger">Декілька варіантів відповіді</button>
+		<input class="question form-control" type="text" placeholder="Відповідь 1">
+		<div class="btn-group">
+	  		<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Зв'язок
+	  			<span class="caret"></span>
+	  		</button>
+  			<ul class="dropdown-menu">
+    			...
+  			</ul>
+		</div>
+		<div class="btn-group">
+	  		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Завантажити картку
+	  			<span class="caret"></span>
+	  		</button>
+  			<ul class="dropdown-menu">
+    			...
+  			</ul>
+		</div>
+		<input class="question form-control" type="text" placeholder="Відповідь 2">
+				<div class="btn-group">
+	  		<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Зв'язок
+	  			<span class="caret"></span>
+	  		</button>
+  			<ul class="dropdown-menu">
+    			...
+  			</ul>
+		</div>
+		<div class="btn-group">
+	  		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Завантажити картку
+	  			<span class="caret"></span>
+	  		</button>
+  			<ul class="dropdown-menu">
+    			...
+  			</ul>
+		</div>
+		<div class="clear"></div>
+		<button type="button" class="btn btn-primary btn-single">Створити ще одну відповідь</button>
+		<div class="clear"></div>
+		<button type="button" class="btn btn-primary btn-single">Додати стандартне питання</button>
+		<div class="clear"></div>
+		<button type="button" class="btn btn-big btn-primary btn-single">Створити ще одне запитання</button>
+		<button type="button" class="btn btn-big btn-exit btn-default">Відхілиті</button>
+		<button type="button" class="btn btn-big btn-accept btn-default btn-single">Зберегти зміни</button>
+
+
+
+
+	</div>
+</form>
+</div>
+
+
+
+
 
 
 

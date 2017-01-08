@@ -1,48 +1,63 @@
-
-.btn-big {
-	margin: 10px 0;
-	color: white;
-	font-size: 16px;
-}
-form {
-	border: 1px solid gray;
-	border-radius: 5px;
-	padding: 0 3%;
-}
-input {
-	margin: 10px 0;
-	width: 100%;
-}
-.question {
-	height: 9vh;
-}
-// .nameInput {
-// 	display: inline-block;
-	
-// }
-// .nameInput {
-// 	margin: 20px 0;
-// 	width: 50%;
-// }
-.btn-single {
-	margin: 10px 0;
-}
-.clear {
-	clear: both;
-}
-.btn-accept {
-	float: right;
-	color: #000;
-}
-.btn-exit {
-	float: right;
-	color: #000;
-	margin-left: 10px;
-}
-.btn-accept:hover {
-	background-color: green;
-}
-.btn-exit:hover {
-	background-color: red;
+.selected {
+  background-color: #DDD !important;
+  color: black;
 }
 
+.questions {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 50em;
+  cursor: pointer;
+  background-color: #F8F8FF;
+  border-radius: 4px;
+}
+
+.questions ul.selected:hover{
+  background-color: #DDD !important;
+  color: black;
+}
+
+.questions ul:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.questions li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  //height: 1.6em;
+  border-radius: 4px;
+}
+.questions li.selected:hover {
+  background-color: #BBD8DC !important;
+  color: white;
+}
+.questions li:hover {
+  color: #607D8B;
+  background-color: #FFFAFA;
+  //left: .1em;
+}
+.questions .text {
+  position: relative;
+  top: -3px;
+}
+.questions .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}

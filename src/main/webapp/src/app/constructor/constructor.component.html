@@ -1,4 +1,61 @@
-<h2>Модуль конструктора питань (в розробці)</h2>
+<h3>Виберіть тип бізнесу</h3>
+<form>
+  <input placeholder=" Тип бізнесу"
+         type="text"
+         id="businesType"
+         required
+         [(ngModel)]="businesType"
+         name="businesType"
+         #name="ngModel">
+  <button type="submit" class="btn btn-default">Зберегти</button>
+  <a class="btn btn-default">Дістати з бази</a>
+</form>
+<h3>Тип бізнесу для якого буде створенний конструктор питань: {{businesType}}</h3>
+
+<div class="questions">
+  <ul *ngFor="let question of questions"
+      [class.selected]="question === selectedQuestion"
+      (click)="onSelectQuestion(question)">
+    {{question.text}}
+
+    <div *ngIf="selectedQuestion == question">
+      <div><label>id: </label>{{selectedQuestion.id}}</div>
+      <div>
+        <label>Редагувати: </label>
+        <input [(ngModel)]="selectedQuestion.text" placeholder="text"/>
+      </div>
+    </div>
+
+    <li *ngFor="let option of question.options" (click)="onSelectOption(option)">
+      <span class="badge">{{option.id}}</span>{{option.title}}
+
+      <div *ngIf="selectedOption == option && selectedQuestion == question">
+        <label>Редагувати: </label>
+        <input [(ngModel)]="selectedOption.title" placeholder="text"/>
+        <div>
+          <button class="btn btn-default">Приєднати питання</button>
+          <button class="btn btn-default">Приєднати картку</button>
+        </div>
+      </div>
+
+    </li>
+
+    <div *ngIf="selectedQuestion == question">
+      <div>
+        <button class="btn btn-default" (click)="addOption(question.options)">Додати відповідь</button>
+        <button class="btn btn-default" (click)="deleteLastOption(question.options)">Видалити останюю відповідь</button>
+      </div>
+    </div>
+
+    <br>
+  </ul>
+
+  <button class="btn btn-default" (click)="addQuestion()">Додати ще питання</button>
+  <button class="btn btn-default" (click)="deleteLastQuestion()">Видалити останне питання</button>
+</div>
+
+
+
 
 
 

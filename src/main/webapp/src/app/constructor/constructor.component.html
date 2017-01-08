@@ -1,65 +1,58 @@
-<div id="constructor">
-	<button class="btn btn-primary btn-big" (click)="showForm()">Створити нову анкету</button>
-
-<form id="formQustionare" hidden="">
-	<div id="constructorForm" class="form-group" action="">
-
-		<input class="nameInput form-control" type="text" placeholder="НАЗВА БІЗНЕСУ">
-		
-		<input class="titleInput form-control" type="text" placeholder="Запитання 1">
-		<span>Виберіть спосіб відображення відповіді:</span>
-		<button type="button" class="btn btn-success">Один варіант відповіді</button>
-		<button type="button" class="btn btn-danger">Декілька варіантів відповіді</button>
-		<input class="question form-control" type="text" placeholder="Відповідь 1">
-		<div class="btn-group">
-	  		<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Зв'язок
-	  			<span class="caret"></span>
-	  		</button>
-  			<ul class="dropdown-menu">
-    			...
-  			</ul>
-		</div>
-		<div class="btn-group">
-	  		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Завантажити картку
-	  			<span class="caret"></span>
-	  		</button>
-  			<ul class="dropdown-menu">
-    			...
-  			</ul>
-		</div>
-		<input class="question form-control" type="text" placeholder="Відповідь 2">
-				<div class="btn-group">
-	  		<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Зв'язок
-	  			<span class="caret"></span>
-	  		</button>
-  			<ul class="dropdown-menu">
-    			...
-  			</ul>
-		</div>
-		<div class="btn-group">
-	  		<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Завантажити картку
-	  			<span class="caret"></span>
-	  		</button>
-  			<ul class="dropdown-menu">
-    			...
-  			</ul>
-		</div>
-		<div class="clear"></div>
-		<button type="button" class="btn btn-primary btn-single">Створити ще одну відповідь</button>
-		<div class="clear"></div>
-		<button type="button" class="btn btn-primary btn-single">Додати стандартне питання</button>
-		<div class="clear"></div>
-		<button type="button" class="btn btn-big btn-primary btn-single">Створити ще одне запитання</button>
-		<button type="button" class="btn btn-big btn-exit btn-default">Відхілиті</button>
-		<button type="button" class="btn btn-big btn-accept btn-default btn-single">Зберегти зміни</button>
-
-
-
-
-	</div>
+<h3>Виберіть тип бізнесу</h3>
+<form>
+  <input placeholder=" Тип бізнесу"
+         type="text"
+         id="businesType"
+         required
+         [(ngModel)]="businesType"
+         name="businesType"
+         #name="ngModel">
+  <button type="submit" class="btn btn-default">Зберегти</button>
+  <a class="btn btn-default">Дістати з бази</a>
 </form>
-</div>
+<h3>Тип бізнесу для якого буде створенний конструктор питань: {{businesType}}</h3>
 
+<div class="questions">
+  <ul *ngFor="let question of questions"
+      [class.selected]="question === selectedQuestion"
+      (click)="onSelectQuestion(question)">
+    {{question.text}}
+
+    <div *ngIf="selectedQuestion == question">
+      <div><label>id: </label>{{selectedQuestion.id}}</div>
+      <div>
+        <label>Редагувати: </label>
+        <input [(ngModel)]="selectedQuestion.text" placeholder="text"/>
+      </div>
+    </div>
+
+    <li *ngFor="let option of question.options" (click)="onSelectOption(option)">
+      <span class="badge">{{option.id}}</span>{{option.title}}
+
+      <div *ngIf="selectedOption == option && selectedQuestion == question">
+        <label>Редагувати: </label>
+        <input [(ngModel)]="selectedOption.title" placeholder="text"/>
+        <div>
+          <button class="btn btn-default">Приєднати питання</button>
+          <button class="btn btn-default">Приєднати картку</button>
+        </div>
+      </div>
+
+    </li>
+
+    <div *ngIf="selectedQuestion == question">
+      <div>
+        <button class="btn btn-default" (click)="addOption(question.options)">Додати відповідь</button>
+        <button class="btn btn-default" (click)="deleteLastOption(question.options)">Видалити останюю відповідь</button>
+      </div>
+    </div>
+
+    <br>
+  </ul>
+
+  <button class="btn btn-default" (click)="addQuestion()">Додати ще питання</button>
+  <button class="btn btn-default" (click)="deleteLastQuestion()">Видалити останне питання</button>
+</div>
 
 
 

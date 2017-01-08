@@ -12,9 +12,17 @@ public interface OptionService {
 
     void delete(long id);
 
+    void delete(Option option);
+
     Option findById(long id);
 
     Option findByTitle(String title);
+
+    List<Option> findByQuestionId(long id);
+
+    Option findByQuestionIdAndOptionId(long questionId, long optionId);
+
+    Long deleteByQuestionId(long id);
 
     List<Option> findAll();
 }

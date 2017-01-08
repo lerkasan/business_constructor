@@ -6,7 +6,6 @@ CREATE TABLE role (
                 PRIMARY KEY (id)
 );
 
-
 CREATE UNIQUE INDEX role_title_idx
 ON role ( title );
 
@@ -24,7 +23,6 @@ CREATE TABLE user (
                 PRIMARY KEY (id)
 );
 
-
 CREATE UNIQUE INDEX user_email_idx
 ON user ( email );
 
@@ -36,7 +34,9 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
                 user_id BIGINT NOT NULL,
                 role_id BIGINT NOT NULL,
-                PRIMARY KEY (user_id, role_id)
+                PRIMARY KEY (user_id, role_id),
+                FOREIGN KEY (user_id) REFERENCES user(id),
+                FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 DROP TABLE IF EXISTS permit;
@@ -49,7 +49,6 @@ CREATE TABLE permit_type (
   CONSTRAINT permit_type_id PRIMARY KEY (id),
   UNIQUE (name)
 );
-
 
 CREATE TABLE permit (
   id                 BIGINT AUTO_INCREMENT NOT NULL,
@@ -67,32 +66,12 @@ CREATE TABLE permit (
   UNIQUE (name(255))
 );
 
-
-
-
-DROP TABLE IF EXISTS input_type;
-
-DROP TABLE IF EXISTS business_type;
-
-CREATE TABLE business_type (
-                id INT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(500) NOT NULL,
-                kved VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
-);
-
-CREATE TABLE input_type (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
-);
-
 DROP TABLE IF EXISTS question;
 
 CREATE TABLE question (
                 id BIGINT AUTO_INCREMENT NOT NULL,
                 text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL DEFAULT 1,
+                input_type VARCHAR(255) NOT NULL,
                 PRIMARY KEY (id)
 );
 
@@ -100,87 +79,60 @@ DROP TABLE IF EXISTS option_;
 
 CREATE TABLE option_ (
                 id BIGINT AUTO_INCREMENT NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS questionnaire;
-
-CREATE TABLE questionnaire (
-                id INT AUTO_INCREMENT NOT NULL,
-                business_type_id INT NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS question_questionnaire;
-
-CREATE TABLE question_questionnaire (
+                title VARCHAR(500) NOT NULL,
                 question_id BIGINT NOT NULL,
-                questionnaire_id INT NOT NULL,
-                PRIMARY KEY (question_id, questionnaire_id)
-);
-
-DROP TABLE IF EXISTS question_option;
-
-CREATE TABLE question_option (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                question_id BIGINT NOT NULL,
-                option_id BIGINT NOT NULL,
-                procedure_id INT,
+                procedure_id BIGINT,
                 next_question_id BIGINT,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id),
+                FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
-
-DROP TABLE IF EXISTS user_answer;
-
-CREATE TABLE user_answer (
-                id BIGINT AUTO_INCREMENT NOT NULL,
-                user_id BIGINT NOT NULL,
-                question_option_id BIGINT NOT NULL,
-                PRIMARY KEY (id)
+CREATE TABLE procedure_type (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255)  NOT NULL,
+  PRIMARY KEY (id)
 );
 
-ALTER TABLE question ADD CONSTRAINT input_type_question_fk
-FOREIGN KEY (input_type_id)
-REFERENCES input_type (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
+CREATE TABLE procedure_ (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR (2048)  NOT NULL,
+  reason     VARCHAR (2048)    NOT NULL,
+  result  VARCHAR (2048)       NOT NULL,
+  permit_id          BIGINT        NOT NULL,
+  procedure_type_id  BIGINT    NOT NULL,
+  cost      VARCHAR (2048)    NOT NULL,
+  term      VARCHAR (2048)    NOT NULL,
+  method VARCHAR(2048) NOT NULL ,
+  decision VARCHAR (2048)    NOT NULL,
+  deny VARCHAR (2048)    NOT NULL,
+  abuse VARCHAR (2048)   NOT NULL,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_id) REFERENCES permit(id),
+  FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
+);
 
-ALTER TABLE question_questionnaire ADD CONSTRAINT question_question_questionnaire_fk
+CREATE TABLE procedure_document (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  name VARCHAR (255) NOT NULL ,
+  procedure_id          BIGINT        NOT NULL,
+  example_file BLOB,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (procedure_id ) REFERENCES procedure_(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_document (name);
+
+
+ALTER TABLE option_ ADD CONSTRAINT option_question_fk
 FOREIGN KEY (question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
-FOREIGN KEY (question_id)
+ALTER TABLE option_ ADD CONSTRAINT option_next_question_fk
+FOREIGN KEY (next_question_id)
 REFERENCES question (id)
-ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
-FOREIGN KEY (option_id)
-REFERENCES option_ (id)
-ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE questionnaire ADD CONSTRAINT business_type_questionnaire_fk
-FOREIGN KEY (business_type_id)
-REFERENCES business_type (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_questionnaire ADD CONSTRAINT questionnaire_question_questionnaire_fk
-FOREIGN KEY (questionnaire_id)
-REFERENCES questionnaire (id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-ALTER TABLE user_answer ADD CONSTRAINT question_option_user_answer_fk
-FOREIGN KEY (question_option_id)
-REFERENCES question_option (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
@@ -195,11 +147,6 @@ FOREIGN KEY (role_id)
 REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
-
-insert into input_type(title) values("checkbox");
-insert into input_type(title) values("droplist");
-insert into input_type(title) values("radiobutton");
-insert into input_type(title) values("text");
 
 INSERT INTO role (title) VALUES ('ROLE_USER');
 INSERT INTO role (title) VALUES ('ROLE_ADMIN');
@@ -218,7 +165,6 @@ INSERT INTO user (username, email, password_hash, creation_date) VALUES
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (2, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 3);
 
 INSERT INTO permit_type (id, name) VALUES
@@ -236,21 +182,21 @@ INSERT INTO permit (id, name, permit_type_id, legal_document_id, form_id, number
 DROP TABLE IF EXISTS legal_document;
 CREATE TABLE legal_document (
   id                      BIGINT              NOT NULL  AUTO_INCREMENT,
-  id_rada                 VARCHAR(50)         NOT NULL,
+  id_rada                 VARCHAR(50)         NOT NULL  UNIQUE,
   id_liga                 VARCHAR(24)         NOT NULL,
-  id_state                INTEGER             NOT NULL,
-  date_pub                INTEGER             NOT NULL,
+  id_state                INTEGER             NOT NULL  UNIQUE,
+  date_pub                INTEGER             NOT NULL  UNIQUE,
   date_add                INTEGER             NOT NULL,
-  number_pub              VARCHAR(255)        NOT NULL,
+  number_pub              VARCHAR(255)        NOT NULL  UNIQUE,
   title                   VARCHAR(1025)       NOT NULL,
   number_rada             VARCHAR(255)        NOT NULL,
   number_mj               VARCHAR(65)         NOT NULL,
-  in_rada                 TINYINT             NOT NULL,
-  in_liga                 TINYINT             NOT NULL,
-  in_brdo                 TINYINT             NOT NULL,
+  in_rada                 TINYINT             NOT NULL  UNIQUE,
+  in_liga                 TINYINT             NOT NULL  UNIQUE,
+  in_brdo                 TINYINT             NOT NULL  UNIQUE,
   auto_liga               TINYINT             NOT NULL,
   auto_brdo               TINYINT             NOT NULL,
-  regulation              INTEGER             NOT NULL,
+  regulation              INTEGER             NOT NULL  UNIQUE,
   manual_sector           VARCHAR(96)         NOT NULL,
   tech_regulation         INTEGER             NOT NULL,
   CONSTRAINT legal_document_id PRIMARY KEY (id)
@@ -259,3 +205,26 @@ INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, 
   (1, 'idRada1', 'idLiga1', 1, 1, 1 ,'numberPub1', 'title1','numberRada1','numberMj1', 1, 1, 1, 1, 1, 1, 'manualSector1', 1);
 INSERT INTO legal_document (id, id_rada, id_liga, id_state, date_pub, date_add, number_pub, title, number_rada, number_mj, in_rada, in_liga, in_brdo, auto_liga, auto_brdo, regulation, manual_sector, tech_regulation) VALUES
   (2, 'idRada2', 'idLiga2', 2, 2, 2 ,'numberPub2', 'title2','numberRada2','numberMj2', 2, 2, 2, 2, 2, 2, 'manualSector2', 2);
+
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType1');
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType2');
+INSERT INTO procedure_type (name) VALUES
+  ('procedureType3');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure2', 'reason2', 'result2', 1, 2, 'coast2', 'term2', 'method2', 'decision2', 'deny2', 'abuse2');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure3', 'reason3', 'result3', 2, 3, 'coast3', 'term3', 'method3', 'decision3', 'deny3', 'abuse3');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure1', 'reason1', 'result1', 3, 1, 'coast1', 'term1', 'method1', 'decision1', 'deny1', 'abuse1');
+
+INSERT INTO procedure_ (name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES ('procedure4', 'reason4', 'result4', 1, 1, 'coast4', 'term4', 'method4', 'decision4', 'deny4', 'abuse4');
+
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document1', 1, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document3', 2, '453d7a34');
+INSERT INTO procedure_document (name, procedure_id, example_file) VALUES ('procedure_document2', 3, '453d7a34');

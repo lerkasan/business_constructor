@@ -1,48 +1,169 @@
 <my-header></my-header>
-	<div class="container">
-			<div class="row main">
-				<div class="panel-heading">
-	               <div class="panel-title text-center">
-	               		<h1 class="title">Реєстрація</h1>
-	               		<hr />
-	               	</div>
-	            </div> 
-				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="#">
-					
+<div class="container">
+  <div class="row main">
+    <div class="panel-heading">
+      <div class="panel-title text-center">
+        <h1 class="title">Реєстрація</h1>
+        <hr/>
+      </div>
+    </div>
+    <div class="main-login main-center">
+      <form class="form-horizontal" #registration="ngForm">
 
-						<div class="form-group">
-							<label for="email" class="cols-sm-2 control-label">Ваш Email</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="email" id="email"  placeholder=" Ваш Email"/>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="password" class="cols-sm-2 control-label">Пароль</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder=" Ваш пароль"/>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="confirm" class="cols-sm-2 control-label">Підтвердити пароль</label>
-							<div class="cols-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Підтвердіть Ваш пароль"/>
-								</div>
-							</div>
-						</div>
-						<div class="form-group ">
-							<button type="button" class="btn btn-primary login-button">Зареєструватись</button>
-							<button type="button" class="btn btn-danger  login-button">Відмінити</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
+        <div>{{message}}</div>
+        <div class="form-group">
+          <label for="username" class="cols-sm-2 control-label">Введіть бажаний логін</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-envelope fa"
+                                                 aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="username" id="username"
+                     placeholder=" Ваш логін"
+                     required minlength="5" maxlength="254"
+                     [(ngModel)]="user.username" #username="ngModel"/>
+              <div *ngIf="username.errors && (username.dirty || username.touched)"
+                   class="alert alert-danger">
+                <div [hidden]="!username.errors.required">
+                  Обов'язкове для заповнення
+                </div>
+                <div [hidden]="!username.errors.minlength">
+                  Мінімальна довжина логіна 5 символів
+                </div>
+                <div [hidden]="!username.errors.maxlength">
+                  Максимальна довжина логіну 254 символи
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="cols-sm-2 control-label">Ваша поточна e-mail адреса</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-envelope fa"
+                                                 aria-hidden="true"></i></span>
+              <input type="email" class="form-control" name="email" id="email"
+                     placeholder=" Ваш Email" [(ngModel)]="user.email"
+                     required minlength="5" maxlength="254"
+                     #email="ngModel"/>
+              <div *ngIf="email.errors && (email.dirty || email.touched)"
+                   class="alert alert-danger">
+                <div [hidden]="!email.errors.required">
+                  Обов'язкове для заповнення
+                </div>
+                <div [hidden]="!email.errors.minlength">
+                  Мінімальна довжина електронної адреси 5 символів
+                </div>
+                <div [hidden]="!email.errors.maxlength">
+                  Максимальна довжина електронної адреси 254 символів
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="duplicatePassword" class="cols-sm-2 control-label">Оберіть пароль</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg"
+                                                 aria-hidden="true"></i></span>
+              <input type="password" class="form-control" name="duplicatePassword"
+                     id="duplicatePassword"
+                     placeholder=" Ваш пароль" [(ngModel)]="duplicatePassword.duplicatePassword"
+                     required minlength="8" maxlength="32" #duplicatePassword="ngModel"/>
+              <div
+                *ngIf="duplicatePassword.errors && (duplicatePassword.dirty || duplicatePassword.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!duplicatePassword.errors.required">
+                  Обов'язкове для заповнення
+                </div>
+                <div [hidden]="!duplicatePassword.errors.minlength">
+                  Мінімальна довжина поля пароль 8 знаків
+                </div>
+                <div [hidden]="!duplicatePassword.errors.maxlength">
+                  Максимальна довжина поля пароль 32 знаків
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm" class="cols-sm-2 control-label">Підтвердіть пароль</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg"
+                                                 aria-hidden="true"></i></span>
+              <input type="password" class="form-control" name="confirm" id="confirm"
+                     placeholder="Підтвердіть Ваш пароль" [(ngModel)]="user.password"
+                     required minlength="8" maxlength="32" #password="ngModel"/>
+              <div *ngIf="password.errors && (password.dirty || password.touched)"
+                   class="alert alert-danger">
+                <div [hidden]="!password.errors.required">
+                  Обов'язкове для заповнення
+                </div>
+                <div [hidden]="!password.errors.minlength">
+                  Мінімальна довжина поля пароль 8 знаків
+                </div>
+                <div [hidden]="!password.errors.maxlength">
+                  Максимальна довжина поля пароль 254 знаків
+                </div>
+              </div>
+              <div
+                *ngIf="(user.password != duplicatePassword.duplicatePassword) && password.touched"
+                class="alert alert-danger">
+                Підтвердження пароля не вірне
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="firstname" class="cols-sm-2 control-label">Введіть ім'я</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg"
+                                                 aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="confirm" id="firstname"
+                     placeholder="Не обов'язкове для заповнення" [(ngModel)]="user.firstname"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastname" class="cols-sm-2 control-label">Введіть прізвище</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg"
+                                                 aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="confirm" id="lastname"
+                     placeholder="Не обов'язкове для заповнення" [(ngModel)]="user.lastname"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="midlename" class="cols-sm-2 control-label">Введіть ім'я по батькові</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg"
+                                                 aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="confirm" id="midlename"
+                     placeholder="Не обов'язкове для заповнення" [(ngModel)]="user.midlename"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <button type="submit" class="btn btn-primary login-button"
+                  (click)="registrationRequest(); registration.reset()"
+                  [disabled]="!registration.valid || (user.password != duplicatePassword.duplicatePassword)">
+            Зареєструватись
+          </button>
+          <button type="button" class="btn btn-danger  login-button"
+                  (click)="registrationAway()">Відмінити
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

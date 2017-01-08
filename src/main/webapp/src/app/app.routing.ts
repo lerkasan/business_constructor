@@ -12,15 +12,15 @@ import { UserStatisticsComponent } from './user-statistics/user-statistics.compo
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
   { path: 'carousel', component: CarouselComponent},
   { path: 'admin', component: AdminComponent},
   { path: 'constructor', component: ConstructorComponent},
   { path: 'user-administration', component: UserAdministrationComponent},
-  { path: 'user-statistics', component: UserStatisticsComponent}
-
+  { path: 'user-statistics', component: UserStatisticsComponent},
+  { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(routes);

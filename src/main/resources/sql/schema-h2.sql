@@ -29,7 +29,9 @@ CREATE TABLE user_role (
   id      IDENTITY NOT NULL,
   user_id BIGINT   NOT NULL,
   role_id BIGINT   NOT NULL,
-  CONSTRAINT user_role_id PRIMARY KEY (id)
+  CONSTRAINT user_role_id PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES user(id),
+  FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 CREATE TABLE permit_type (
@@ -56,12 +58,51 @@ CREATE TABLE permit (
   UNIQUE (NAME )
 );
 
-CREATE TABLE option_ (
-                id IDENTITY NOT NULL,
-                title VARCHAR(1000) NOT NULL,
-                CONSTRAINT option_id PRIMARY KEY (id)
+CREATE UNIQUE INDEX permitNameIndx
+ON permit (name);
+
+CREATE TABLE procedure_type (
+  id   IDENTITY      NOT NULL,
+  name VARCHAR(255)  NOT NULL,
+  CONSTRAINT procedure_type_id PRIMARY KEY (id)
 );
 
+CREATE UNIQUE INDEX permitTypeNameIndx
+ON procedure_type (name);
+
+CREATE TABLE procedure_ (
+  id               IDENTITY      NOT NULL,
+  name             VARCHAR(1023) NOT NULL,
+  reason     LONGVARCHAR        NOT NULL,
+  result  VARCHAR (2048)       NOT NULL,
+  permit_id          BIGINT        NOT NULL,
+  procedure_type_id  BIGINT    NOT NULL,
+ /* id_tool       TINYINT    NOT NULL,*/
+  cost       LONGVARCHAR   NOT NULL,
+  term        LONGVARCHAR   NOT NULL,
+  method VARCHAR(2047) NOT NULL ,
+  decision LONGVARCHAR   NOT NULL,
+  deny LONGVARCHAR   NOT NULL,
+  abuse LONGVARCHAR   NOT NULL,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (permit_id) REFERENCES permit(id),
+  FOREIGN KEY (procedure_type_id) REFERENCES procedure_type(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_ (name);
+
+CREATE TABLE procedure_document (
+  id               IDENTITY      NOT NULL,
+  name VARCHAR (255) NOT NULL ,
+  procedure_id          BIGINT        NOT NULL,
+  example_file BLOB,
+  CONSTRAINT procedure_id PRIMARY KEY (id),
+  FOREIGN KEY (procedure_id ) REFERENCES procedure_(id)
+);
+
+CREATE UNIQUE INDEX procedureNameIndx
+ON procedure_document (name);
 
 CREATE TABLE input_type (
                 id IDENTITY NOT NULL,
@@ -72,40 +113,28 @@ CREATE TABLE input_type (
 
 CREATE TABLE question (
                 id IDENTITY NOT NULL,
-                text VARCHAR(3000) NOT NULL,
-                input_type_id BIGINT NOT NULL DEFAULT 1,
+                text VARCHAR(1000) NOT NULL,
+                input_type VARCHAR(255) NOT NULL,
                 CONSTRAINT question_id PRIMARY KEY (id)
 );
 
-
-CREATE TABLE question_option (
+CREATE TABLE option_ (
                 id IDENTITY NOT NULL,
+                title VARCHAR(500) NOT NULL,
                 question_id BIGINT NOT NULL,
-                option_id BIGINT NOT NULL,
-                procedure_id INTEGER,
+                procedure_id BIGINT,
                 next_question_id BIGINT,
-                CONSTRAINT question_option_id PRIMARY KEY (id)
+                CONSTRAINT option_id PRIMARY KEY (id),
+                FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
-ALTER TABLE question_option ADD CONSTRAINT option__question_option_fk
-FOREIGN KEY (option_id)
-REFERENCES option_ (id)
-ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE question ADD CONSTRAINT input_type_question_fk
-FOREIGN KEY (input_type_id)
-REFERENCES input_type (id)
+ALTER TABLE option_ ADD CONSTRAINT option_question_fk
+FOREIGN KEY (question_id)
+REFERENCES question (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk
-FOREIGN KEY (question_id)
-REFERENCES question (id)
-ON DELETE CASCADE
-ON UPDATE NO ACTION;
-
-ALTER TABLE question_option ADD CONSTRAINT question_question_option_fk1
+ALTER TABLE option_ ADD CONSTRAINT option_next_question_fk
 FOREIGN KEY (next_question_id)
 REFERENCES question (id)
 ON DELETE NO ACTION
@@ -125,21 +154,21 @@ ON UPDATE NO ACTION;
 
 CREATE TABLE legal_document (
   id                      IDENTITY            NOT NULL,
-  id_rada                 VARCHAR(50)         NOT NULL,
+  id_rada                 VARCHAR(50)         NOT NULL  UNIQUE,
   id_liga                 VARCHAR(24)         NOT NULL,
-  id_state                INTEGER             NOT NULL,
-  date_pub                INTEGER             NOT NULL,
+  id_state                INTEGER             NOT NULL  UNIQUE,
+  date_pub                INTEGER             NOT NULL  UNIQUE,
   date_add                INTEGER             NOT NULL,
-  number_pub              VARCHAR(255)        NOT NULL,
+  number_pub              VARCHAR(255)        NOT NULL  UNIQUE,
   title                   VARCHAR(1025)       NOT NULL,
   number_rada             VARCHAR(255)        NOT NULL,
   number_mj               VARCHAR(65)         NOT NULL,
-  in_rada                 TINYINT             NOT NULL,
-  in_liga                 TINYINT             NOT NULL,
-  in_brdo                 TINYINT             NOT NULL,
+  in_rada                 TINYINT             NOT NULL  UNIQUE,
+  in_liga                 TINYINT             NOT NULL  UNIQUE,
+  in_brdo                 TINYINT             NOT NULL  UNIQUE,
   auto_liga               TINYINT             NOT NULL,
   auto_brdo               TINYINT             NOT NULL,
-  regulation              INTEGER             NOT NULL,
+  regulation              INTEGER             NOT NULL  UNIQUE,
   manual_sector           VARCHAR(96)         NOT NULL,
   tech_regulation         INTEGER             NOT NULL,
   CONSTRAINT legal_document_id PRIMARY KEY (id)

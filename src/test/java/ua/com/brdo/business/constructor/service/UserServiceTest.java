@@ -12,23 +12,30 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.model.Role;
-import ua.com.brdo.business.constructor.model.User;
-import ua.com.brdo.business.constructor.repository.RoleRepository;
-import ua.com.brdo.business.constructor.repository.UserRepository;
-import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.RoleRepository;
+import ua.com.brdo.business.constructor.repository.UserRepository;
+import ua.com.brdo.business.constructor.service.UserService;
+import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class UserServiceImplTest {
+public class UserServiceTest {
 
     private User mockUser;
 
@@ -49,8 +56,18 @@ public class UserServiceImplTest {
     @InjectMocks
     private UserService userServiceWithMocks = new UserServiceImpl(userRepo, roleRepo, new BCryptPasswordEncoder());
 
+    private User createUser() {
+        User user = new User();
+        user.setUsername("UserFromUserService");
+        user.setEmail("UserFrom@UserService.com");
+        user.setPassword("password");
+        user.setRawPassword("password".toCharArray());
+        userRepository.saveAndFlush(user);
+        return user;
+    }
+
     @Before
-    public void init() {
+    public void setUp() {
         mockUser = new User();
         mockUser.setId(1L);
         mockUser.setUsername("test_user@mail.com");
@@ -117,16 +134,14 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void shouldReturnFalseForNonUniqueEmailTest() {
-        String nonUniqueEmail = "nonUniqueEmail@mail.com";
-        when(userRepo.countByEmailIgnoreCase(nonUniqueEmail)).thenReturn(1);
-        assertFalse(userServiceWithMocks.isEmailAvailable(nonUniqueEmail));
+    public void shouldReturnFalseForNonUniqueEmailIest() {
+        User user = createUser();
+        assertFalse(userService.isEmailAvailable(user.getEmail().toUpperCase()));
+
     }
 
     @Test
     public void shouldReturnTrueForUniqueTest() {
-        String uniqueEmail = "uniqueEmail@mail.com";
-        when(userRepo.countByEmailIgnoreCase(uniqueEmail)).thenReturn(0);
-        assertTrue(userServiceWithMocks.isEmailAvailable(uniqueEmail));
+        assertTrue(userService.isEmailAvailable("noSuch@email.com"));
     }
 }

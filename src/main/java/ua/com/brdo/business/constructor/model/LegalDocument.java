@@ -6,11 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "legal_document")
+@Table(name = "legalDocument")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,38 +22,52 @@ public class LegalDocument {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
-    @Column(name = "id_rada", length = 50, nullable = false)
+    @NotNull(message = "Legal Document idRada must not be null!")
+    @Size(max=50, message = "Legal Document idRada must be shorter than 50 symbols!")
+    @Column(name = "idRada", length = 50, nullable = false)
     private String idRada;
-    @Column(name = "id_liga", length = 24, nullable = false)
+    @NotNull(message = "Legal Document idLiga must not be null!")
+    @Size(max=24, message = "Legal Document idLiga must be shorter than 24 symbols!")
+    @Column(name = "idLiga", length = 24, nullable = false)
     private String idLiga;
-    @Column(name = "id_state", nullable = false)
+    @Column(name = "idState", nullable = false)
     private int idState;
-    @Column(name = "date_pub", nullable = false)
+    @Column(name = "datePub", nullable = false)
     private int datePub;
-    @Column(name = "date_add", nullable = false)
+    @Column(name = "dateAdd", nullable = false)
     private int dateAdd;
-    @Column(name = "number_pub", nullable = false)
+    @NotNull(message = "Legal Document numberPub must not be null!")
+    @Size(max=255, message = "Legal Document numberPub must be shorter than 50 symbols!")
+    @Column(name = "numberPub", nullable = false)
     private String numberPub;
+    @NotNull(message = "Legal Document title must not be null!")
+    @Size(max=1024, message = "Legal Document title must be shorter than 1024 symbols!")
     @Column(name = "title", length =1024, nullable = false)
     private String title;
-    @Column(name = "number_rada", nullable = false)
+    @NotNull(message = "Legal Document numberRada must not be null!")
+    @Size(max=255, message = "Legal Document numberRada must be shorter than 255 symbols!")
+    @Column(name = "numberRada", nullable = false)
     private String numberRada;
-    @Column(name = "number_mj", nullable = false)
+    @NotNull(message = "Legal Document numberMj must not be null!")
+    @Size(max=64, message = "Legal Document numberMj must be shorter than 64 symbols!")
+    @Column(name = "numberMj", nullable = false)
     private String numberMj;
-    @Column(name = "in_rada", nullable = false)
+    @Column(name = "inRada", nullable = false)
     private byte inRada;
-    @Column(name = "in_liga", nullable = false)
+    @Column(name = "inLiga", nullable = false)
     private byte inLiga;
-    @Column(name = "in_brdo", nullable = false)
+    @Column(name = "inBrdo", nullable = false)
     private byte inBrdo;
-    @Column(name = "auto_liga", nullable = false)
+    @Column(name = "autoLiga", nullable = false)
     private byte autoLiga;
-    @Column(name = "auto_brdo", nullable = false)
+    @Column(name = "autoBrdo", nullable = false)
     private byte autoBrdo;
     @Column(name = "regulation", nullable = false)
     private int regulation;
-    @Column(name = "manual_sector", length = 96, nullable = false)
+    @NotNull(message = "Legal Document manualSector must not be null!")
+    @Size(max=96, message = "Legal Document manualSector must be shorter than 96 symbols!")
+    @Column(name = "manualSector", length = 96, nullable = false)
     private String manualSector;
-    @Column(name = "tech_regulation", nullable = false)
+    @Column(name = "techRegulation", nullable = false)
     private int techRegulation;
 }

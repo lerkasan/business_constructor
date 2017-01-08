@@ -20,8 +20,8 @@ INSERT INTO user (username, email, password_hash, creation_date) VALUES
 INSERT INTO user (username, email, password_hash, creation_date) VALUES
   ('admin', 'some_admin1@mail.com', '$2a$10$V/MgrWzBqwypVcu/RQMPt.iBYQlpHVHycyaGXCM.UwyeOLoSg6VwO',
    now());
-INSERT INTO user (username, email, password_hash, creation_date) VALUES
-  ('expert', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
+INSERT INTO user (username, first_name, email, password_hash, creation_date) VALUES
+  ('expert', 'vasia', 'some_expert1@mail.com', '$2a$10$U2JdYU2ypsJVS3SFZD8mue68PZLWXSySjrYKtVL44.uZl3KflfXRa',
    now());
 
 INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
@@ -30,7 +30,6 @@ INSERT INTO user_role (user_id, role_id) VALUES (3, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (4, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (5, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (6, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (6, 3);
 INSERT INTO user_role (user_id, role_id) VALUES (7, 3);
 
 INSERT INTO permit_type (id, name) VALUES
@@ -54,3 +53,27 @@ INSERT INTO input_type(title) VALUES('checkbox');
 INSERT INTO input_type(title) VALUES('droplist');
 INSERT INTO input_type(title) VALUES('radiobutton');
 INSERT INTO input_type(title) VALUES('text');
+
+INSERT INTO procedure_type (id, name) VALUES
+  (1, 'procedureType1');
+INSERT INTO procedure_type (id, name) VALUES
+  (2, 'procedureType2');
+INSERT INTO procedure_type (id, name) VALUES
+  (3, 'procedureType3');
+
+
+INSERT INTO procedure_ (id, name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES (2, 'procedure2', 'reason2', 'result2', 1, 2, 'coast2', 'term2', 'method2', 'decision2', 'deny2', 'abuse2');
+
+INSERT INTO procedure_ (id, name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES (3, 'procedure3', 'reason3', 'result3', 2, 3, 'coast3', 'term3', 'method3', 'decision3', 'deny3', 'abuse3');
+
+INSERT INTO procedure_ (id, name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES (1, 'procedure1', 'reason1', 'result1', 3, 1, 'coast1', 'term1', 'method1', 'decision1', 'deny1', 'abuse1');
+
+INSERT INTO procedure_ (id, name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
+VALUES (4, 'procedure4', 'reason4', 'result4', 1, 1, 'coast4', 'term4', 'method4', 'decision4', 'deny4', 'abuse4');
+
+INSERT INTO procedure_document (id, name, procedure_id, example_file) VALUES (1, 'procedure_document1', 1, '453d7a34');
+INSERT INTO procedure_document (id, name, procedure_id, example_file) VALUES (2, 'procedure_document3', 2, '453d7a34');
+INSERT INTO procedure_document (id, name, procedure_id, example_file) VALUES (3, 'procedure_document2', 3, '453d7a34');

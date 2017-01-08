@@ -1,7 +1,7 @@
-h1.title { 
+h1.title {
 	font-size: 50px;
-	font-family: 'Passion One', cursive; 
-	font-weight: 400; 
+	font-family: 'Passion One', cursive;
+	font-weight: 400;
 }
 
 hr{
@@ -53,9 +53,15 @@ input::-webkit-input-placeholder {
 	text-align: center;
 }
 
+//.form-group .ng-valid{
+//	box-shadow: 0 0 10px blue;
+//}
 
-
-.form-group .ng-valid{
-
-	box-shadow: 0 0 10px blue;
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
 }
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+

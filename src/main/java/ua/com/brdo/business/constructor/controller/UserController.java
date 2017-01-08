@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -52,4 +53,7 @@ public class UserController {
     public boolean isAvailableEmailGet(@RequestParam("email") String email) {
         return userService.isEmailAvailable(email);
     }
+
+    @GetMapping(path = "/admin/users", produces = APPLICATION_JSON_VALUE)
+    public List<User> getListUsers() { return userService.findAll();}
 }

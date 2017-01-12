@@ -1,10 +1,10 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.GenerationType.IDENTITY;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "option_")
@@ -53,20 +50,31 @@ public class Option {
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
     private Procedure procedure;
 
+    public void setProcedure(Procedure procedure) {
+        if (procedure != null) {
+            if (procedure.getId() == null) {
+                throw new IllegalArgumentException("Illegal id in related procedure.");
+            } else {
+                this.procedure = procedure;
+            }
+        }
+    }
+
     public void setNextQuestion(Question nextQuestion) {
         if (nextQuestion != null) {
             if (nextQuestion.getId() == null) {
                 throw new IllegalArgumentException("Illegal id in related question.");
             }
             else {
+                checkLinkBetweenQuestionAndNextQuestion(nextQuestion);
                 this.nextQuestion = nextQuestion;
-                checkLinkBetweenQuestionAndNextQuestion();
             }
         }
     }
 
-    public void checkLinkBetweenQuestionAndNextQuestion() {
-        if ((nextQuestion != null) && (question != null) && (question.getId() != null) && (question.getId().equals(nextQuestion.getId()))) {
+    public void checkLinkBetweenQuestionAndNextQuestion(Question nextQuestion) {
+        if ((nextQuestion != null) && (question != null) && (question.getId() != null)
+            && (question.getId().equals(nextQuestion.getId()))) {
             throw new IllegalArgumentException("Question can't be linked to itself.");
         }
     }

@@ -1,27 +1,25 @@
 package ua.com.brdo.business.constructor.utils.restsecurity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import ua.com.brdo.business.constructor.model.User;
 
 @Component
 public class RESTAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private ObjectMapper jsonMapper;
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
-    private ObjectMapper jsonMapper = new ObjectMapper();
+    @Autowired
+    public RESTAuthenticationSuccessHandler(ObjectMapper objectMapper) {
+        this.jsonMapper = objectMapper;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,7 +31,6 @@ public class RESTAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
     protected void handle(HttpServletResponse response, Authentication authentication) throws IOException {
 
-        jsonMapper.setDateFormat(dateFormat);
         User user = (User) authentication.getPrincipal();
         String userJsonDetails = jsonMapper.writeValueAsString(user);
 

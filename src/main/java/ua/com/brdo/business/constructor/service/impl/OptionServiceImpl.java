@@ -1,13 +1,11 @@
 package ua.com.brdo.business.constructor.service.impl;
 
+import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-
-import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.repository.OptionRepository;
 import ua.com.brdo.business.constructor.service.OptionService;
@@ -55,7 +53,7 @@ public class OptionServiceImpl implements OptionService {
 
     @Override
     @Transactional
-    public void delete(Option option) {
+    public void delete(final Option option) {
         Objects.requireNonNull(option);
         optionRepo.delete(option);
     }
@@ -75,18 +73,18 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> findByQuestionId(long id) {
+    public List<Option> findByQuestionId(final long id) {
         return optionRepo.findByQuestionId(id);
     }
 
     @Override
-    public Option findByQuestionIdAndOptionId(long questionId, long optionId) {
+    public Option findByQuestionIdAndOptionId(final long questionId, final long optionId) {
         return optionRepo.findByIdAndQuestionId(optionId, questionId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     @Transactional
-    public Long deleteByQuestionId(long id) {
+    public Long deleteByQuestionId(final long id) {
         return optionRepo.deleteByQuestionId(id);
     }
 

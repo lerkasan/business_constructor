@@ -9,6 +9,7 @@ import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.model.Question;
+import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.service.QuestionService;
@@ -110,6 +111,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> findByQuestionnaire(Questionnaire questionnaire) {
+        return questionRepo.findByQuestionnaire(questionnaire);
+    }
+
+    @Override
     public List<Question> findAll() {
         return questionRepo.findAll();
     }
@@ -140,4 +146,3 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 }
-

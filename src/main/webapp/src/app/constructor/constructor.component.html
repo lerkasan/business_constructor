@@ -1,53 +1,55 @@
-
 <div class="constructor">
-	<form class="form-group businesType">
-		<label for="businesType">Виберіть тип бізнесу або створить новий</label>
-		<input class="form-control" 
-			placeholder="Введіть назву бізнесу" type="text" 
-			id="businesType" 
-			required [(ngModel)]="businesType" 
-			name="businesType" #name="ngModel">
-		<div class="clear"></div>
-		<button type="submit" class="btn btn-primary">Зберегти</button>
-		<a class="btn btn-primary">Загрузити існуючій</a>
-	</form>
-	<div class="questions">
-		<label>Тип бізнесу до якого буде використаний конструктор питань</label>
-		<div class="clear"></div>
-		<div class="businesName">{{businesType}}</div>
-	  	<div *ngFor="let question of questions"
-	     	[class.selected]="question === selectedQuestion"
-	     	(click)="onSelectQuestion(question)">
-	    <label>Питання</label>
-	    <div class="questionField form-control">{{question.text}}</div>
-	    <div *ngIf="selectedQuestion == question">
-<!-- 	      <div><label>id: </label>{{selectedQuestion.id}}</div>
-	 -->	<div>
-		        <label>Редагування питання</label>
-		        <input class="form-control" [(ngModel)]="selectedQuestion.text" placeholder="Редагування питання"/>
-		    </div>
-		</div>
-		<div class="option" *ngFor="let option of question.options" (click)="onSelectOption(option)">
-		<!-- 	    	<span class="badge">{{option.id}}</span>
-		 --><label>Відповідь</label>
-			<div class="form-control">{{option.title}}</div>
-			<div *ngIf="selectedOption == option && selectedQuestion == question">
-			<label>Редагувати відповідь</label>
-			<input class="form-control" [(ngModel)]="selectedOption.title" placeholder="Редагування відповіді"/>    
-			<div>
-				<button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">Додати зв'язок</button>
-				<button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Приєднати картку</button>
-			</div>
-		</div> 
-	</div>
-	<div class="btnAddOption" *ngIf="selectedQuestion == question">
-	    <button class="btn btn-sm btn-success" (click)="addOption(question.options)">Додати відповідь</button>
-	    <button class="btn btn-sm btn-danger" (click)="deleteLastOption(question.options)">Видалити останюю відповідь</button>
-	</div>
-	</div>
-		<button class="btn btn-success" (click)="addQuestion()">Додати питання</button>
-		<button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
-	</div>
+  <form class="form-group businesType">
+    <label for="businesType">Виберіть тип бізнесу або створить новий</label>
+    <input class="form-control"
+           placeholder="Введіть назву бізнесу" type="text"
+           id="businesType"
+           required [(ngModel)]="businesType"
+           name="businesType" #name="ngModel">
+    <div class="clear"></div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a class="btn btn-primary">Завантажити існуючій</a>
+  </form>
+  <div class="questions">
+    <div *ngFor="let question of questions"
+         [class.selected]="question === selectedQuestion"
+         (click)="onSelectQuestion(question)">
+      <label>Питання</label>
+      <input class="form-control"
+             (ngModel)="selectedQuestion.text"
+             placeholder="Редагування питання"
+             (blur)="saveQuestion(question)"/>
+      <input type="checkbox"
+             (change)="changeInputType(question)">Декілька варіантів відповіді
+      <div class="option" *ngFor="let option of question.options" (click)="onSelectOption(option)">
+        <label>Відповідь</label>
+        <input class="form-control"
+               (ngModel)="selectedOption.title"
+               placeholder="Редагування відповіді"
+               (blur)="saveOption(question, option)"/>
+        <div *ngIf="selectedOption == option && selectedQuestion == question">
+          <div>
+            <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">Додати
+              зв'язок
+            </button>
+            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Приєднати
+              картку
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="btnAddOption" *ngIf="selectedQuestion == question">
+        <button class="btn btn-sm btn-success" (click)="addOption(question.options)">Додати
+          відповідь
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteLastOption(question.options)">Видалити
+          останюю відповідь
+        </button>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="addQuestion()">Додати питання</button>
+    <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
+  </div>
 </div>
 
 

@@ -7,6 +7,7 @@ import {Option} from "../model/option";
 @Injectable()
 export class QuestionService{
 
+  private url = 'http://localhost:8080';
   private question = new Question();
 
   constructor(private http: Http) {
@@ -15,14 +16,11 @@ export class QuestionService{
   public createQuestion(question: Question){
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+    options.withCredentials = true;
 
-    return this.http.post('/api/questions', JSON.stringify(question), RequestOptions)
+    return this.http.post('http://localhost:8080/api/questions', JSON.stringify(question), options)
       .map((response) => {
-        if(response.status == 200){
-          this.question = response.json() as Question;
-          localStorage.setItem('question' + this.question.id , JSON.stringify(this.question));
-        }
-        return response.status;
+        return response.json() as Question
       })
       .catch(this.handleError);
   }
@@ -31,6 +29,7 @@ export class QuestionService{
     let path = '/api/questions' + questionId + '/options/' + option.id;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+    options.withCredentials = true;
 
     return this.http.put(path, JSON.stringify(option), options)
       .map((response) => {

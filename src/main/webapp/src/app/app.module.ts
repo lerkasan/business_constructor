@@ -21,6 +21,7 @@ import { routing } from './app.routing';
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthService} from "./service/auth.service";
 import {RegistrationService} from "./service/registration.service";
+import {QuestionService} from "./service/questions.service";
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import {RegistrationService} from "./service/registration.service";
   providers: [
     ApiService,
     AuthService,
-    RegistrationService
+    RegistrationService,
+    QuestionService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,13 +1,15 @@
 package ua.com.brdo.business.constructor.model;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.GenerationType.IDENTITY;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,11 +21,15 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
+import ua.com.brdo.business.constructor.constraint.Unique;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "questionnaire")
@@ -39,7 +45,8 @@ public class Questionnaire {
 
     @NotEmpty(message = "Title field of questionnaire is required.")
     @Size(max = 1000, message = "Maximum length of questionnaire title is 1000 characters.")
-    @Column(nullable = false, length = 1000)
+    @Column(unique = true, nullable = false, length = 1000)
+    @Unique(object = Questionnaire.class, field = "title", message = "Questionnaire with specified title already exists in database. Title should be unique.")
     private String title;
 
     @ManyToOne
@@ -49,6 +56,7 @@ public class Questionnaire {
 
     @Valid
     @OneToMany(mappedBy = "questionnaire", cascade = ALL)
+    @JsonIgnoreProperties(value = {"questionnaire"})
     private List<Question> questions = new ArrayList<>();
 
     public boolean addQuestion(Question question) {

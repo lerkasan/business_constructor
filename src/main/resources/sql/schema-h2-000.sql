@@ -1,7 +1,8 @@
 CREATE TABLE role (
   id    IDENTITY     NOT NULL,
   title VARCHAR(255) NOT NULL,
-  CONSTRAINT role_id PRIMARY KEY (id)
+  CONSTRAINT role_id PRIMARY KEY (id),
+  UNIQUE (title)
 );
 
 CREATE UNIQUE INDEX user_role_title_idx
@@ -16,7 +17,9 @@ CREATE TABLE user (
   email                   VARCHAR(255)         NOT NULL,
   password_hash           VARCHAR(60)          NOT NULL,
   creation_date           DATE                 NOT NULL,
-  CONSTRAINT user_id PRIMARY KEY (id)
+  CONSTRAINT user_id PRIMARY KEY (id),
+  UNIQUE (username),
+  UNIQUE (email)
 );
 
 CREATE UNIQUE INDEX user_username_idx
@@ -103,13 +106,6 @@ CREATE TABLE procedure_document (
 
 CREATE UNIQUE INDEX procedureNameIndx
 ON procedure_document (name);
-
-CREATE TABLE input_type (
-                id IDENTITY NOT NULL,
-                title VARCHAR(255) NOT NULL,
-                CONSTRAINT input_type_id PRIMARY KEY (id)
-);
-
 
 CREATE TABLE question (
                 id IDENTITY NOT NULL,

@@ -41,6 +41,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
         annotatedObjectName = annotatedObjectName.substring(0, 1).toLowerCase() + annotatedObjectName.substring(1);
         switch (annotatedObjectName) {
             case "user":
+            case "role":
             case "businessType":
             case "questionnaire":
                 if (applicationContext != null) {

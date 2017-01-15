@@ -1,10 +1,12 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
+
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Question;
@@ -15,7 +17,7 @@ import ua.com.brdo.business.constructor.service.QuestionnaireService;
 @Service("QuestionnaireService")
 public class QuestionnaireServiceImpl implements QuestionnaireService {
 
-  private static final String NOT_FOUND = "Question was not found.";
+  private static final String NOT_FOUND = "Questionnaire was not found.";
 
   private QuestionnaireRepository questionnaireRepo;
 

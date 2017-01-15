@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 import ua.com.brdo.business.constructor.constraint.Unique;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.REMOVE;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -55,7 +55,7 @@ public class Questionnaire {
     private BusinessType businessType;
 
     @Valid
-    @OneToMany(mappedBy = "questionnaire", cascade = ALL)
+    @OneToMany(mappedBy = "questionnaire", cascade = REMOVE)
     @JsonIgnoreProperties(value = {"questionnaire"})
     private List<Question> questions = new ArrayList<>();
 

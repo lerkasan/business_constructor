@@ -12,4 +12,4 @@ logs
 .vagrant
 *.log*
 .directory
-.gitignore
+.DS_Store

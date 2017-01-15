@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -102,7 +103,7 @@ public class QuestionController {
     }
 
     @GetMapping(path = "/{questionId}/options")
-    public List<Option> listOptions(@ApiIgnore @ModelAttribute Question question) {
+    public Set<Option> listOptions(@ApiIgnore @ModelAttribute Question question) {
         return question.getOptions();
     }
 

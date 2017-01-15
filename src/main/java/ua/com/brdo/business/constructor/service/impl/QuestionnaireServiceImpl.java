@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.BusinessType;
@@ -27,7 +28,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   }
 
   private Questionnaire addQuestions(final Questionnaire questionnaire) {
-    List<Question> questions = questionnaire.getQuestions();
+    Set<Question> questions = questionnaire.getQuestions();
     if (questions != null && !questions.isEmpty()) {
       questions.forEach(question -> question.setQuestionnaire(questionnaire));
     }
@@ -117,7 +118,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   @Override
   public void deleteQuestions(final Questionnaire questionnaire) {
     Objects.requireNonNull(questionnaire);
-    List<Question> questions = questionnaire.getQuestions();
+    Set<Question> questions = questionnaire.getQuestions();
     if (questions != null) {
       questions.clear();
     }

@@ -24,7 +24,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "business_type")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"codeKved"})
+@EqualsAndHashCode(of = {"title", "codeKved"})
 @JsonInclude(NON_NULL)
 public class BusinessType {
 

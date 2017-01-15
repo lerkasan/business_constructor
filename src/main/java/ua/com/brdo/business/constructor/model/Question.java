@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +36,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "question")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"text", "questionnaire"})
 @Validated
 @JsonInclude(NON_NULL)
 public class Question {
@@ -56,7 +56,7 @@ public class Question {
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private List<Option> options = new ArrayList<>();
+    private Set<Option> options = new LinkedHashSet<>();
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="questionnaire_id", referencedColumnName="id")
@@ -66,7 +66,7 @@ public class Question {
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         if (options == null) {
-            options = new ArrayList<>();
+            options = new LinkedHashSet<>();
         }
         return options.add(option);
     }

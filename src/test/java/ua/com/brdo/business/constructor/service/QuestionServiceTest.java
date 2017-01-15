@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import lombok.SneakyThrows;
@@ -68,7 +67,7 @@ public class QuestionServiceTest {
     @Test
     public void shouldAddOptiontoQuestionTest() {
         serviceUnderTest.addOption(dummyQuestion, dummyOption);
-        List<Option> actualOptions = dummyQuestion.getOptions();
+        Set<Option> actualOptions = dummyQuestion.getOptions();
         boolean questionContainsOption = actualOptions.contains(dummyOption);
         assertTrue(questionContainsOption);
     }
@@ -76,7 +75,7 @@ public class QuestionServiceTest {
     @Test
     public void shouldRemoveOptionFromQuestionTest() {
         serviceUnderTest.deleteOption(dummyQuestion, dummyOption);
-        List<Option> actualOptions = dummyQuestion.getOptions();
+        Set<Option> actualOptions = dummyQuestion.getOptions();
         boolean questionContainsOption = actualOptions.contains(dummyOption);
 
         assertFalse(questionContainsOption);

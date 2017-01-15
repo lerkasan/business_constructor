@@ -2,6 +2,7 @@ package ua.com.brdo.business.constructor.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private Question addOptions(Question question) {
-        List<Option> options = question.getOptions();
+        Set<Option> options = question.getOptions();
         if (options != null && !options.isEmpty()) {
             options.forEach(option -> {
                 option.setQuestion(question);
@@ -140,7 +141,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void deleteOptions(Question question) {
         Objects.requireNonNull(question);
-        List<Option> options = question.getOptions();
+        Set<Option> options = question.getOptions();
         if (options != null) {
             options.clear();
         }

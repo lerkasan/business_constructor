@@ -10,20 +10,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
-import ua.com.brdo.business.constructor.utils.restsecurity.RESTAuthenticationSuccessHandler;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -31,35 +32,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("register/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/available**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/questions/**", "/api/options/**", "/api/permits/**").hasAnyRole("USER", "EXPERT")
-                .antMatchers("/api/questions/**", "/api/options/**").hasAnyRole("EXPERT")
-                .antMatchers(HttpMethod.GET, "/api/laws/**").permitAll()
-                .antMatchers("/api/laws/**").hasAnyRole("ADMIN", "EXPERT")
-                .antMatchers("/api/**").hasAnyRole("ADMIN", "EXPERT")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/expert/**").hasRole("EXPERT")
-                .antMatchers("/admin/**").hasRole("ADMIN");
-
-        http
-                .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                .formLogin().successHandler(authenticationSuccessHandler).failureHandler(new SimpleUrlAuthenticationFailureHandler())
-                .and()
-                .logout()
-                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
+            .antMatchers("register/*").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/users/available**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/questions/**", "/api/options/**", "/api/permits/**")
+            .hasAnyRole("USER", "EXPERT")
+            .antMatchers("/api/questions/**", "/api/options/**").hasAnyRole("EXPERT")
+            .antMatchers(HttpMethod.GET, "/api/laws/**").permitAll()
+            .antMatchers("/api/laws/**").hasAnyRole("ADMIN", "EXPERT")
+            .antMatchers("/api/**").hasAnyRole("ADMIN", "EXPERT")
+            .antMatchers("/user/**").hasRole("USER")
+            .antMatchers("/expert/**").hasRole("EXPERT")
+            .antMatchers("/admin/**").hasRole("ADMIN")
+            .and()
+            .csrf().disable()
+            .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+            .and()
+            .formLogin().successHandler(authenticationSuccessHandler)
+            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+            .and()
+            .logout()
+            .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK));
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userServiceImpl)
-                .passwordEncoder(bCryptPasswordEncoder);
+            .passwordEncoder(passwordEncoder);
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder createPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

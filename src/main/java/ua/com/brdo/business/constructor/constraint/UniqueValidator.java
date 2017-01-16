@@ -1,5 +1,7 @@
 package ua.com.brdo.business.constructor.constraint;
 
+import static java.util.Objects.isNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +32,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
         }
     }
 
-    private boolean validateParam(String param) {
+    private boolean isValid(String param) {
         boolean valid = false;
 
         if ("email".equals(type)) {
@@ -44,6 +46,6 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
     @SneakyThrows
     @Override
     public boolean isValid(String param, ConstraintValidatorContext context) {
-        return (userService == null) || (param == null) || validateParam(param);
+        return isNull(userService) || isNull(param) || isValid(param);
     }
 }

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UserAuthentificationTest {
+public class UserAuthenticationTest {
 
     private final String QUESTIONS_URL = "/api/questions/";
 
@@ -41,7 +41,7 @@ public class UserAuthentificationTest {
     @WithAnonymousUser
     public void shouldReturnUnauthorizedStatus() throws Exception {
         mvc.perform(get("/admin"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -93,7 +93,7 @@ public class UserAuthentificationTest {
         mvc.perform(post("/logout"))
                 .andExpect(status().isOk());
         mvc.perform(get(QUESTIONS_URL))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(roles = "ADMIN")

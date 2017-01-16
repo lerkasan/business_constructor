@@ -283,7 +283,7 @@ public class QuestionControllerTest {
 
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -371,7 +371,7 @@ public class QuestionControllerTest {
 
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(modifiedQuestion))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -390,7 +390,7 @@ public class QuestionControllerTest {
     public void shouldRejectDeleteQuestionByUnauthorizedTest() throws Exception {
          mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test

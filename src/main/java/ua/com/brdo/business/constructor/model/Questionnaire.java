@@ -32,7 +32,7 @@ import ua.com.brdo.business.constructor.constraint.Unique;
 @Table(name = "questionnaire")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"title", "businessType"})
+@EqualsAndHashCode(of = {"title", "businessType.codeKved"})
 @Validated
 @JsonInclude(NON_NULL)
 public class Questionnaire {

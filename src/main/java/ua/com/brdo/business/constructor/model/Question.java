@@ -33,7 +33,7 @@ import org.springframework.validation.annotation.Validated;
 @Table(name = "question")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"text", "questionnaire.id"})
+@EqualsAndHashCode(of = {"text", "questionnaire.title"})
 @Validated
 @JsonInclude(NON_NULL)
 public class Question {
@@ -53,7 +53,7 @@ public class Question {
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
-    @OrderBy(value = "id DESC")
+    @OrderBy(value = "id ASC")
     private Set<Option> options = new HashSet<>();
 
     @ManyToOne

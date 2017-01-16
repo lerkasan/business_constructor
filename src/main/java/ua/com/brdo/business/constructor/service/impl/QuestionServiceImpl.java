@@ -41,7 +41,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private Question preprocess(Question question) {
-        isQuestionUniqueInQuestionnaire(question);
+        if (question.getId() == null) {
+            isQuestionUniqueInQuestionnaire(question);
+        }
         return addOptions(question);
     }
 

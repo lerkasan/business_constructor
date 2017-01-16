@@ -25,7 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "option_")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"title", "question"})
+@EqualsAndHashCode(of = {"title", "question.text", "question.questionnaire.title"})
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(value = {"question"})
 public class Option {

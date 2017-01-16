@@ -4,9 +4,8 @@ package ua.com.brdo.business.constructor.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Procedure;
-import ua.com.brdo.business.constructor.model.ProcedureType;
 import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.service.ProcedureService;
 

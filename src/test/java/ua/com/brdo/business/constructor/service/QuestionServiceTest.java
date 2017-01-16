@@ -6,20 +6,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
-import ua.com.brdo.business.constructor.service.QuestionService;
 import ua.com.brdo.business.constructor.service.impl.QuestionServiceImpl;
 
 import static org.junit.Assert.assertEquals;

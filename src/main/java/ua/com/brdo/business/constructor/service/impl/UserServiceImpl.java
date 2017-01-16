@@ -13,7 +13,7 @@ import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.RoleRepository;

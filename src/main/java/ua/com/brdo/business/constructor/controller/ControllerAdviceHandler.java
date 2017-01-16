@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;

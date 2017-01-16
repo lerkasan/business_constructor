@@ -3,15 +3,12 @@ package ua.com.brdo.business.constructor.controller.api;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Procedure;
-import ua.com.brdo.business.constructor.model.ProcedureType;
 import ua.com.brdo.business.constructor.service.ProcedureService;
-import ua.com.brdo.business.constructor.service.ProcedureTypeService;
 
 import javax.validation.Valid;
 import java.net.URI;

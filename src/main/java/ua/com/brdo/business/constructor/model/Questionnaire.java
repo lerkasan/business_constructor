@@ -1,35 +1,32 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 import ua.com.brdo.business.constructor.constraint.Unique;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "questionnaire")
@@ -57,12 +54,16 @@ public class Questionnaire {
     @Valid
     @OneToMany(mappedBy = "questionnaire", cascade = REMOVE)
     @JsonIgnoreProperties(value = {"questionnaire"})
-    private Set<Question> questions = new LinkedHashSet<>();
+    @OrderBy(value = "id ASC")
+    private Set<Question> questions = new HashSet<>();
 
     public boolean addQuestion(Question question) {
         Objects.requireNonNull(question);
         if (questions == null) {
-            questions = new LinkedHashSet<>();
+            questions = new HashSet<>();
+        }
+        if (questions.contains(question)) {
+            throw new IllegalArgumentException("Question with the same text already exists in this questionnaire.");
         }
         return questions.add(question);
     }

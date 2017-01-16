@@ -1,15 +1,14 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,25 +17,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.GenerationType.IDENTITY;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 
 @Entity
 @Table(name = "question")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"text", "questionnaire"})
+@EqualsAndHashCode(of = {"text", "questionnaire.id"})
 @Validated
 @JsonInclude(NON_NULL)
 public class Question {
@@ -56,7 +53,8 @@ public class Question {
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private Set<Option> options = new LinkedHashSet<>();
+    @OrderBy(value = "id DESC")
+    private Set<Option> options = new HashSet<>();
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="questionnaire_id", referencedColumnName="id")
@@ -66,7 +64,10 @@ public class Question {
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         if (options == null) {
-            options = new LinkedHashSet<>();
+            options = new HashSet<>();
+        }
+        if (options.contains(option)) {
+            throw new IllegalArgumentException("Option with the same title already exists in this question.");
         }
         return options.add(option);
     }

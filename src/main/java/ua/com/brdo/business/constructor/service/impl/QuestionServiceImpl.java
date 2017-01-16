@@ -6,6 +6,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.com.brdo.business.constructor.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Procedure;
@@ -13,26 +17,49 @@ import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
+import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 @Service("QuestionService")
 public class QuestionServiceImpl implements QuestionService {
 
     private static final String NOT_FOUND = "Question was not found.";
+    private static final String QUESTIONNAIRE_NOT_FOUND = "Questionnaire was not found.";
+    private static final String QUESTIONNAIRE_REQUIRED = "Questionnaire id is required.";
     private static final String NEXT_QUESTION_NOT_FOUND = "Specified next question was not found.";
     private static final String PROCEDURE_NOT_FOUND = "Specified procedure was not found.";
 
     private QuestionRepository questionRepo;
     private ProcedureRepository procedureRepo;
+    private QuestionnaireRepository questionnaireRepo;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepo, ProcedureRepository procedureRepo) {
+    public QuestionServiceImpl(QuestionRepository questionRepo, QuestionnaireRepository questionnaireRepo, ProcedureRepository procedureRepo) {
         this.questionRepo = questionRepo;
+        this.questionnaireRepo = questionnaireRepo;
         this.procedureRepo = procedureRepo;
     }
 
     private Question preprocess(Question question) {
+        isQuestionUniqueInQuestionnaire(question);
         return addOptions(question);
+    }
+
+    private boolean isQuestionUniqueInQuestionnaire(Question question) {
+        Objects.requireNonNull(question);
+        Questionnaire questionnaire = question.getQuestionnaire();
+        Objects.requireNonNull(questionnaire, QUESTIONNAIRE_REQUIRED);
+        Long questionnaireId = questionnaire.getId();
+        Objects.requireNonNull(questionnaireId, QUESTIONNAIRE_REQUIRED);
+        Questionnaire persistedQuestionnaire = questionnaireRepo.findOne(questionnaireId);
+        if (persistedQuestionnaire == null) {
+            throw new NotFoundException(QUESTIONNAIRE_NOT_FOUND);
+        }
+        Set<Question> questions = persistedQuestionnaire.getQuestions();
+        if (questions.contains(question)) {
+            throw new IllegalArgumentException("Question with the same text already exists in this questionnaire.");
+        }
+        return true;
     }
 
     private Question addOptions(Question question) {

@@ -9,10 +9,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 import lombok.SneakyThrows;
+import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
+import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
@@ -34,6 +37,10 @@ public class QuestionServiceTest {
 
     private static final String newQuestionText = "That is this new question about?";
 
+    private BusinessType dummyBusinessType;
+
+    private Questionnaire dummyQuestionnaire;
+
     private Question dummyQuestion;
 
     private Option dummyOption;
@@ -52,9 +59,20 @@ public class QuestionServiceTest {
 
     @Before
     public void setUp() {
+        dummyBusinessType = new BusinessType();
+        dummyBusinessType.setId(1L);
+        dummyBusinessType.setTitle("Business title");
+        dummyBusinessType.setCodeKved("12.34");
+
+        dummyQuestionnaire = new Questionnaire();
+        dummyQuestionnaire.setId(1L);
+        dummyQuestionnaire.setTitle("Questionnaire title");
+        dummyQuestionnaire.setBusinessType(dummyBusinessType);
+
         dummyQuestion = new Question();
         dummyQuestion.setId(1L);
         dummyQuestion.setText(questionText);
+        dummyQuestion.setQuestionnaire(dummyQuestionnaire);
 
         dummyOption = new Option();
         dummyOption.setId(1L);
@@ -66,6 +84,7 @@ public class QuestionServiceTest {
         when(questionRepo.findOne(1L)).thenReturn(dummyQuestion);
         when(questionRepo.findOne(2L)).thenReturn(null);
         when(questionRepo.saveAndFlush(any(Question.class))).thenAnswer(method -> method.getArgumentAt(0, Question.class));
+        when(questionnaireRepo.findOne(1L)).thenReturn(dummyQuestionnaire);
     }
 
     @Test
@@ -96,6 +115,7 @@ public class QuestionServiceTest {
     public void shouldCreateQuestionTest() {
         Question newQuestion = new Question();
         newQuestion.setText(questionText);
+        newQuestion.setQuestionnaire(dummyQuestionnaire);
         serviceUnderTest.create(newQuestion);
 
         verify(questionRepo, times(1)).saveAndFlush(newQuestion);

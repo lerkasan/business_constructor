@@ -108,8 +108,10 @@ CREATE TABLE IF NOT EXISTS option_ (
   PRIMARY KEY (id),
   FOREIGN KEY (question_id) REFERENCES question (id)
     ON DELETE CASCADE,
-  FOREIGN KEY (next_question_id) REFERENCES question (id),
+  FOREIGN KEY (next_question_id) REFERENCES question (id)
+    ON DELETE SET NULL,
   FOREIGN KEY (procedure_id) REFERENCES procedure_ (id)
+    ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS procedure_document (

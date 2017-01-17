@@ -1,13 +1,15 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+
+import java.util.List;
+import java.util.Objects;
+
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.repository.OptionRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.OptionService;
 
 @Service("OptionService")
@@ -36,18 +38,14 @@ public class OptionServiceImpl implements OptionService {
     public Option update(final Option option) {
         Long id = option.getId();
         Objects.requireNonNull(option);
-        if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException(OPTION_NOT_FOUND);
-        }
+        findById(id);
         return optionRepo.saveAndFlush(option);
     }
 
     @Override
     @Transactional
     public void delete(final long id) {
-        if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException(OPTION_NOT_FOUND);
-        }
+        findById(id);
         optionRepo.delete(id);
     }
 

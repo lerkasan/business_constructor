@@ -1,23 +1,21 @@
 package ua.com.brdo.business.constructor.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.service.NotFoundException;
+
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
-import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.service.ProcedureService;
 import ua.com.brdo.business.constructor.service.QuestionService;
 
 @Service("QuestionService")
@@ -26,18 +24,16 @@ public class QuestionServiceImpl implements QuestionService {
     private static final String NOT_FOUND = "Question was not found.";
     private static final String QUESTIONNAIRE_NOT_FOUND = "Questionnaire was not found.";
     private static final String QUESTIONNAIRE_REQUIRED = "Questionnaire id is required.";
-    private static final String NEXT_QUESTION_NOT_FOUND = "Specified next question was not found.";
-    private static final String PROCEDURE_NOT_FOUND = "Specified procedure was not found.";
 
     private QuestionRepository questionRepo;
-    private ProcedureRepository procedureRepo;
+    private ProcedureService procedureService;
     private QuestionnaireRepository questionnaireRepo;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepo, QuestionnaireRepository questionnaireRepo, ProcedureRepository procedureRepo) {
+    public QuestionServiceImpl(QuestionRepository questionRepo, QuestionnaireRepository questionnaireRepo, ProcedureService procedureService) {
         this.questionRepo = questionRepo;
         this.questionnaireRepo = questionnaireRepo;
-        this.procedureRepo = procedureRepo;
+        this.procedureService = procedureService;
     }
 
     private Question preprocess(Question question) {
@@ -71,24 +67,17 @@ public class QuestionServiceImpl implements QuestionService {
                 option.setQuestion(question);
                 Question nextQuestion = option.getNextQuestion();
                 Procedure procedure = option.getProcedure();
-                checkIfNextQuestionExistsInDB(nextQuestion);
-                option.checkLinkBetweenQuestionAndNextQuestion(nextQuestion);
-                checkIfProcedureExistsInDB(procedure);
+                if (nextQuestion != null) {
+                    Question persistedNextQuestion = findById(nextQuestion.getId());
+                    option.checkLinkBetweenQuestionAndNextQuestion(persistedNextQuestion);
+                }
+                if (procedure != null) {
+                    Long id = procedure.getId();
+                    procedureService.findById(id);
+                }
             });
         }
         return question;
-    }
-
-    private void checkIfProcedureExistsInDB(Procedure procedure) {
-        if ((procedure != null) && (procedureRepo.findOne(procedure.getId()) == null)) {
-            throw new NotFoundException(PROCEDURE_NOT_FOUND);
-        }
-    }
-
-    private void checkIfNextQuestionExistsInDB(Question nextQuestion) {
-        if ((nextQuestion != null) && (questionRepo.findOne(nextQuestion.getId()) == null)) {
-            throw new NotFoundException(NEXT_QUESTION_NOT_FOUND);
-        }
     }
 
     @Override
@@ -104,9 +93,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question update(final Question question) {
         Objects.requireNonNull(question);
         Long id = question.getId();
-        if (questionRepo.findOne(id) == null) {
-            throw new NotFoundException(NOT_FOUND);
-        }
+        findById(id);
         Question processedQuestion = preprocess(question);
         return questionRepo.saveAndFlush(processedQuestion);
     }
@@ -114,9 +101,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void delete(final long id) {
-        if (questionRepo.findOne(id) == null) {
-            throw new NotFoundException(NOT_FOUND);
-        }
+        findById(id);
         questionRepo.delete(id);
     }
 

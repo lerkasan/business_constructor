@@ -1,16 +1,18 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.QuestionnaireService;
 
 @Service("QuestionnaireService")
@@ -55,9 +57,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   public Questionnaire update(final Questionnaire questionnaire) {
     Objects.requireNonNull(questionnaire);
     Long id = questionnaire.getId();
-    if (questionnaireRepo.findOne(id) == null) {
-      throw new NotFoundException(NOT_FOUND);
-    }
+    findById(id);
     Questionnaire processedQuestionnaire = preprocess(questionnaire);
     return questionnaireRepo.saveAndFlush(processedQuestionnaire);
   }
@@ -65,9 +65,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
   @Override
   @Transactional
   public void delete(final long id) {
-    if (questionnaireRepo.findOne(id) == null) {
-      throw new NotFoundException(NOT_FOUND);
-    }
+    findById(id);
     questionnaireRepo.delete(id);
   }
 

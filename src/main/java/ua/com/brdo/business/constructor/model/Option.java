@@ -44,7 +44,7 @@ public class Option {
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
-    @JsonIgnoreProperties(value = {"options", "inputType", "text"})
+    @JsonIgnoreProperties(value = {"options", "inputType", "text", "questionnaire"})
     private Question nextQuestion;
 
     @ManyToOne
@@ -76,9 +76,15 @@ public class Option {
     }
 
     public void checkLinkBetweenQuestionAndNextQuestion(Question nextQuestion) {
-        if ((nextQuestion != null) && (question != null) && (question.getId() != null)
-            && (question.getId().equals(nextQuestion.getId()))) {
-            throw new IllegalArgumentException("Question can't be linked to itself.");
+        if ((nextQuestion != null) && (question != null)) {
+            if ((question.getId() != null) && (question.getId().equals(nextQuestion.getId()))) {
+                throw new IllegalArgumentException("Question can't be linked to itself.");
+            }
+            Questionnaire questionnaire = question.getQuestionnaire();
+            Questionnaire nextQuestionnaire = nextQuestion.getQuestionnaire();
+            if ((nextQuestionnaire != null) && (!nextQuestionnaire.equals(questionnaire))) {
+                throw new IllegalArgumentException("Question can be linked only to the questions from the same questionnaire.");
+            }
         }
     }
 }

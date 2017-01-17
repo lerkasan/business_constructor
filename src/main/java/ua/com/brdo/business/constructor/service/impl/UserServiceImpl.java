@@ -1,5 +1,7 @@
 package ua.com.brdo.business.constructor.service.impl;
 
+import static java.util.Objects.nonNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -124,18 +126,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean isEmailAvailable(String email) {
-        if (email == null) {
-            return false;
-        }
-        return userRepo.countByEmailIgnoreCase(email) == 0;
+        return nonNull(email) && userRepo.emailAvailable(email);
     }
 
     @Override
     public boolean isUsernameAvailable(String username) {
-        if (username == null) {
-            return false;
-        }
-        return userRepo.countByUsernameIgnoreCase(username) == 0;
+        return nonNull(username) && userRepo.usernameAvailable(username);
     }
 
     @Override

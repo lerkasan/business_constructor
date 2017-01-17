@@ -10,9 +10,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findOne(long id);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 
     @Query("SELECT count(u) = 0 FROM User u WHERE LOWER(u.email) = LOWER(?)")
     boolean emailAvailable(String email);

@@ -14,7 +14,7 @@ export class RegistrationService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post("/register", JSON.stringify(user), options)
+    return this.http.post("/api/users", JSON.stringify(user), options)
       .map((res) => {return res.status})
       .catch(this.handleError);
   }

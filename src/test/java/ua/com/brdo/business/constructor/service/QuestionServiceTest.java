@@ -16,7 +16,6 @@ import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
-import ua.com.brdo.business.constructor.repository.ProcedureRepository;
 import ua.com.brdo.business.constructor.repository.QuestionRepository;
 import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
 import ua.com.brdo.business.constructor.service.impl.QuestionServiceImpl;
@@ -52,10 +51,10 @@ public class QuestionServiceTest {
     private QuestionnaireRepository questionnaireRepo;
 
     @Mock
-    private ProcedureRepository procedureRepo;
+    private ProcedureService procedureService;
 
     @InjectMocks
-    private QuestionService serviceUnderTest = new QuestionServiceImpl(questionRepo, questionnaireRepo, procedureRepo);
+    private QuestionService serviceUnderTest = new QuestionServiceImpl(questionRepo, questionnaireRepo, procedureService);
 
     @Before
     public void setUp() {

@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ua.com.brdo.business.constructor.constraint.Unique;
 
 @Entity
 @Table(name = "role")
@@ -30,7 +29,6 @@ public class Role implements GrantedAuthority {
 
     @NotEmpty
     @Column(name = "title", length = 100, unique = true, nullable = false)
-    @Unique(object = Role.class, field = "title", message = "Business type with specified title already exists in database. Title should be unique.")
     private String title;
 
     public Role(String title) {

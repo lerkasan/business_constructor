@@ -1,7 +1,5 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import static java.util.Objects.nonNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,12 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.model.Role;
-import ua.com.brdo.business.constructor.model.User;
-import ua.com.brdo.business.constructor.repository.RoleRepository;
-import ua.com.brdo.business.constructor.repository.UserRepository;
-import ua.com.brdo.business.constructor.service.NotFoundException;
-import ua.com.brdo.business.constructor.service.UserService;
 
 import java.nio.CharBuffer;
 import java.util.Arrays;
@@ -22,8 +14,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.RoleRepository;
+import ua.com.brdo.business.constructor.repository.UserRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.service.UserService;
+
+import static java.util.Objects.nonNull;
+
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService, UniqueValidatable {
 
     private static final String ROLE_USER = "ROLE_USER";
 
@@ -79,5 +81,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         return userRepo.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User with given user was not found."));
+    }
+
+    public boolean isAvailable(String field, String value) {
+        switch (field) {
+            case "username":
+                return isUsernameAvailable(value);
+            case "email":
+                return isEmailAvailable(value);
+            default:
+                throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
+        }
     }
 }

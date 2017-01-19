@@ -1,10 +1,7 @@
 package ua.com.brdo.business.constructor.constraint;
 
-import static java.util.Objects.isNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -14,13 +11,15 @@ import javax.validation.ConstraintValidatorContext;
 
 import lombok.SneakyThrows;
 
+import static java.util.Objects.isNull;
+
 @Component
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     @Autowired
     private ApplicationContext applicationContext;
 
-    private JpaRepository repository;
+    private UniqueValidatable service;
 
     private String field = "";
 
@@ -38,14 +37,12 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
         }
 
         String annotatedObjectName = annotation.object().getSimpleName();
-        annotatedObjectName = annotatedObjectName.substring(0, 1).toLowerCase() + annotatedObjectName.substring(1);
         switch (annotatedObjectName) {
-            case "user":
-            case "role":
-            case "businessType":
-            case "questionnaire":
+            case "User":
+            case "BusinessType":
+            case "Questionnaire":
                 if (applicationContext != null) {
-                    repository = this.applicationContext.getBean(annotatedObjectName + "Repository", JpaRepository.class);
+                    service = this.applicationContext.getBean(annotatedObjectName.toLowerCase() + "ServiceImpl", UniqueValidatable.class);
                 }
                 break;
             default:
@@ -55,14 +52,13 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     @SneakyThrows
     private boolean isValid(String param) {
-        Method countByMethod = repository.getClass().getMethod("countBy" + field + "IgnoreCase", String.class);
-        int counter = (int) countByMethod.invoke(repository, param);
-        return counter == 0;
+        Method isAvailableMethod = service.getClass().getMethod("is" + field + "Available", String.class);
+        return (boolean) isAvailableMethod.invoke(service, param);
     }
 
     @SneakyThrows
     @Override
     public boolean isValid(String param, ConstraintValidatorContext context) {
-        return isNull(applicationContext) || isNull(repository) || isNull(param) || isValid(param);
+        return isNull(applicationContext) || isNull(service) || isNull(param) || isValid(param);
     }
 }

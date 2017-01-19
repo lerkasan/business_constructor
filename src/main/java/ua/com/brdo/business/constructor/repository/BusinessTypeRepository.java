@@ -1,6 +1,7 @@
 package ua.com.brdo.business.constructor.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,7 +15,9 @@ public interface BusinessTypeRepository extends JpaRepository<BusinessType, Long
 
     BusinessType findByCodeKved(final String codeKved);
 
-    int countByTitleIgnoreCase(final String title);
+    @Query("SELECT count(b) = 0 FROM BusinessType b WHERE LOWER(b.title) = LOWER(?)")
+    boolean titleAvailable(String title);
 
-    int countByCodeKvedIgnoreCase(final String codeKved);
+    @Query("SELECT count(b) = 0 FROM BusinessType b WHERE b.codeKved = ?")
+    boolean codeKvedAvailable(String codeKved);
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
@@ -15,8 +16,10 @@ import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.QuestionnaireService;
 
+import static java.util.Objects.nonNull;
+
 @Service("QuestionnaireService")
-public class QuestionnaireServiceImpl implements QuestionnaireService {
+public class QuestionnaireServiceImpl implements QuestionnaireService, UniqueValidatable {
 
   private static final String NOT_FOUND = "Questionnaire was not found.";
 
@@ -122,6 +125,18 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     Set<Question> questions = questionnaire.getQuestions();
     if (questions != null) {
       questions.clear();
+    }
+  }
+
+  public boolean isTitleAvailable(String title) {
+    return nonNull(title) && questionnaireRepo.titleAvailable(title);
+  }
+
+  public boolean isAvailable(String field, String value) {
+    if ("title".equals(field)) {
+      return isTitleAvailable(value);
+    } else {
+      throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
     }
   }
 }

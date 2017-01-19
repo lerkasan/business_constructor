@@ -1,14 +1,5 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,16 +9,26 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ua.com.brdo.business.constructor.model.Role;
-import ua.com.brdo.business.constructor.model.User;
-import ua.com.brdo.business.constructor.repository.RoleRepository;
-import ua.com.brdo.business.constructor.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import ua.com.brdo.business.constructor.model.Role;
+import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.RoleRepository;
+import ua.com.brdo.business.constructor.repository.UserRepository;
+
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -75,7 +76,7 @@ public class UserServiceImplTest {
         assertThat(resultAuthorities, contains(ROLE_USER));
     }
 
-    @Ignore("Currently implementation of User class doesn't allowed authorities to be null.")
+    @Ignore("Currently implementation of User class doesn't allow authorities to be null.")
     @Test
     public void shouldCreateUserWithRoleUserIfAuthoritiesAreNull() throws Exception {
         final User user = createUser();

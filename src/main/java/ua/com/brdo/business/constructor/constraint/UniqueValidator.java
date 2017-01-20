@@ -1,17 +1,15 @@
 package ua.com.brdo.business.constructor.constraint;
 
+import static java.util.Objects.isNull;
+
+import java.lang.reflect.Method;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import lombok.SneakyThrows;
+import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import lombok.SneakyThrows;
-
-import static java.util.Objects.isNull;
 
 @Component
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
@@ -30,19 +28,26 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
             case "title":
             case "codeKved":
                 field = annotation.field();
-                field = field.substring(0, 1).toUpperCase() + field.substring(1);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected field was passed to Unique annotation.");
         }
 
         String annotatedObjectName = annotation.object().getSimpleName();
+        annotatedObjectName = annotatedObjectName.substring(0,1).toLowerCase() + annotatedObjectName.substring(1);
         switch (annotatedObjectName) {
-            case "User":
-            case "BusinessType":
-            case "Questionnaire":
+            case "user":
+            case "businessType":
+            case "questionnaire":
                 if (applicationContext != null) {
-                    service = this.applicationContext.getBean(annotatedObjectName.toLowerCase() + "ServiceImpl", UniqueValidatable.class);
+                    service = this.applicationContext.getBean(annotatedObjectName + "ServiceImpl", UniqueValidatable.class);
+                    Advised advisedService = (Advised) service;
+                    Class<?> serviceCls = advisedService.getTargetSource().getTargetClass();
+                    if (!UniqueValidatable.class.isAssignableFrom(serviceCls)) {
+                        new ReflectiveOperationException("Service " + serviceCls.getSimpleName()
+                            + " should implement interface " + UniqueValidatable.class.getSimpleName()
+                            + " in order to maintain correct processing of annotation Unique for entity fields.");
+                    }
                 }
                 break;
             default:
@@ -52,8 +57,9 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     @SneakyThrows
     private boolean isValid(String param) {
-        Method isAvailableMethod = service.getClass().getMethod("is" + field + "Available", String.class);
-        return (boolean) isAvailableMethod.invoke(service, param);
+        String methodName = "isAvailable";
+        Method isAvailableMethod = service.getClass().getMethod(methodName, String.class, String.class);
+        return (boolean) isAvailableMethod.invoke(service, field, param);
     }
 
     @SneakyThrows

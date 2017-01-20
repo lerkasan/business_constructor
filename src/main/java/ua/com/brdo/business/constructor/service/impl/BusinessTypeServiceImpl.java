@@ -1,21 +1,19 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.Objects.nonNull;
 
 import java.util.List;
 import java.util.Objects;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.repository.BusinessTypeRepository;
 import ua.com.brdo.business.constructor.service.BusinessTypeService;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 
-import static java.util.Objects.nonNull;
-
-@Service("BusinessTypeService")
+@Service
 public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValidatable {
 
   private BusinessTypeRepository businessTypeRepo;
@@ -52,7 +50,11 @@ public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValid
 
   @Override
   public BusinessType findById(final long id) {
-    return businessTypeRepo.findOne(id);
+    BusinessType businessType = businessTypeRepo.findOne(id);
+    if (businessType == null) {
+      throw new NotFoundException("Specified business type was not found.");
+    }
+    return businessType;
   }
 
   @Override
@@ -63,7 +65,8 @@ public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValid
 
   @Override
   public BusinessType findByCodeKved(final String codeKved) {
-    return businessTypeRepo.findByCodeKved(codeKved);
+    return businessTypeRepo.findByCodeKved(codeKved)
+        .orElseThrow(() -> new NotFoundException("Business type with given code kved was not found."));
   }
 
   @Override
@@ -74,19 +77,11 @@ public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValid
   public boolean isAvailable(String field, String value) {
     switch (field) {
       case "title":
-        return isTitleAvailable(value);
+        return nonNull(value) && businessTypeRepo.titleAvailable(value);
       case "codeKved":
-        return isCodeKvedAvailable(value);
+        return nonNull(value) && businessTypeRepo.codeKvedAvailable(value);
       default:
         throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
     }
-  }
-
-  public boolean isCodeKvedAvailable(String codeKved) {
-    return nonNull(codeKved) && businessTypeRepo.codeKvedAvailable(codeKved);
-  }
-
-  public boolean isTitleAvailable(String title) {
-    return nonNull(title) && businessTypeRepo.titleAvailable(title);
   }
 }

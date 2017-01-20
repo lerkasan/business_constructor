@@ -1,24 +1,20 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static java.util.Objects.nonNull;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.BusinessType;
-import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.QuestionnaireService;
 
-import static java.util.Objects.nonNull;
-
-@Service("QuestionnaireService")
+@Service
 public class QuestionnaireServiceImpl implements QuestionnaireService, UniqueValidatable {
 
   private static final String NOT_FOUND = "Questionnaire was not found.";
@@ -30,45 +26,23 @@ public class QuestionnaireServiceImpl implements QuestionnaireService, UniqueVal
     this.questionnaireRepo = questionnaireRepo;
   }
 
-  private Questionnaire addQuestions(final Questionnaire questionnaire) {
-    Set<Question> questions = questionnaire.getQuestions();
-    if (questions != null && !questions.isEmpty()) {
-      questions.forEach(question -> {
-        if (questions.contains(question)) {
-          throw new IllegalArgumentException("Question with the same text already exists in this questionnaire.");
-        }
-        question.setQuestionnaire(questionnaire);
-      });
-    }
-    return questionnaire;
-  }
-
-  private Questionnaire preprocess(final Questionnaire questionnaire) {
-    return addQuestions(questionnaire);
-  }
-
   @Override
   @Transactional
   public Questionnaire create(final Questionnaire questionnaire) {
     Objects.requireNonNull(questionnaire);
-    Questionnaire processedQuestionnaire = preprocess(questionnaire);
-    return questionnaireRepo.saveAndFlush(processedQuestionnaire);
+    return questionnaireRepo.saveAndFlush(questionnaire);
   }
 
   @Override
   @Transactional
   public Questionnaire update(final Questionnaire questionnaire) {
     Objects.requireNonNull(questionnaire);
-    Long id = questionnaire.getId();
-    findById(id);
-    Questionnaire processedQuestionnaire = preprocess(questionnaire);
-    return questionnaireRepo.saveAndFlush(processedQuestionnaire);
+    return questionnaireRepo.saveAndFlush(questionnaire);
   }
 
   @Override
   @Transactional
   public void delete(final long id) {
-    findById(id);
     questionnaireRepo.delete(id);
   }
 
@@ -102,39 +76,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService, UniqueVal
     return questionnaireRepo.findByBusinessType(businessType);
   }
 
-  @Override
-  public Questionnaire addQuestion(final Questionnaire questionnaire, final Question question) {
-    Objects.requireNonNull(question);
-    Objects.requireNonNull(questionnaire);
-    question.setQuestionnaire(questionnaire);
-    questionnaire.addQuestion(question);
-    return questionnaire;
-  }
-
-  @Override
-  public Questionnaire deleteQuestion(final Questionnaire questionnaire, final Question question) {
-    Objects.requireNonNull(question);
-    Objects.requireNonNull(questionnaire);
-    questionnaire.deleteQuestion(question);
-    return questionnaire;
-  }
-
-  @Override
-  public void deleteQuestions(final Questionnaire questionnaire) {
-    Objects.requireNonNull(questionnaire);
-    Set<Question> questions = questionnaire.getQuestions();
-    if (questions != null) {
-      questions.clear();
-    }
-  }
-
-  public boolean isTitleAvailable(String title) {
-    return nonNull(title) && questionnaireRepo.titleAvailable(title);
-  }
-
-  public boolean isAvailable(String field, String value) {
+  public boolean isAvailable(String field, String title) {
     if ("title".equals(field)) {
-      return isTitleAvailable(value);
+      return nonNull(title) && questionnaireRepo.titleAvailable(title);
     } else {
       throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
     }

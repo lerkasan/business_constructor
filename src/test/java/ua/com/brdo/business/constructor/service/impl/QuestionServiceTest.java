@@ -1,24 +1,4 @@
-package ua.com.brdo.business.constructor.service;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.Set;
-
-import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.model.BusinessType;
-import ua.com.brdo.business.constructor.model.Option;
-import ua.com.brdo.business.constructor.model.Question;
-import ua.com.brdo.business.constructor.model.Questionnaire;
-import ua.com.brdo.business.constructor.repository.QuestionRepository;
-import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
-import ua.com.brdo.business.constructor.service.impl.QuestionServiceImpl;
+package ua.com.brdo.business.constructor.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,6 +7,26 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+import java.util.Set;
+import lombok.SneakyThrows;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.transaction.annotation.Transactional;
+import ua.com.brdo.business.constructor.model.BusinessType;
+import ua.com.brdo.business.constructor.model.Option;
+import ua.com.brdo.business.constructor.model.Question;
+import ua.com.brdo.business.constructor.model.Questionnaire;
+import ua.com.brdo.business.constructor.repository.QuestionRepository;
+import ua.com.brdo.business.constructor.repository.QuestionnaireRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.service.ProcedureService;
+import ua.com.brdo.business.constructor.service.QuestionService;
 
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
@@ -126,15 +126,6 @@ public class QuestionServiceTest {
         serviceUnderTest.update(null);
     }
 
-    @Test(expected = NotFoundException.class)
-    @SneakyThrows
-    public void shouldThrowNotFoundExceptionOnAttemptToUpdateNonExistentIdTest() {
-        Question question = new Question();
-        question.setId(2L);
-        question.setText(newQuestionText);
-        serviceUnderTest.update(question);
-    }
-
     @Test
     @SneakyThrows
     public void shouldUpdateExistentQuestionTest() {
@@ -142,12 +133,6 @@ public class QuestionServiceTest {
         serviceUnderTest.update(dummyQuestion);
 
         verify(questionRepo, times(1)).saveAndFlush(dummyQuestion);
-    }
-
-    @Test(expected = NotFoundException.class)
-    @SneakyThrows
-    public void shouldThrowNotFoundExceptionOnAttemptToDeleteNonExistentIdTest() {
-        serviceUnderTest.delete(2L);
     }
 
     @Test

@@ -1,13 +1,11 @@
 package ua.com.brdo.business.constructor.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.model.Question;
@@ -92,8 +90,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public Question update(final Question question) {
         Objects.requireNonNull(question);
-        Long id = question.getId();
-        findById(id);
         Question processedQuestion = preprocess(question);
         return questionRepo.saveAndFlush(processedQuestion);
     }
@@ -101,7 +97,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void delete(final long id) {
-        findById(id);
         questionRepo.delete(id);
     }
 

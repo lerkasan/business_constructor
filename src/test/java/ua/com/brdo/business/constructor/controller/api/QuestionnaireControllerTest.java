@@ -7,15 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Questionnaire;
@@ -24,7 +23,6 @@ import ua.com.brdo.business.constructor.service.QuestionnaireService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,13 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
+@AutoConfigureMockMvc
 public class QuestionnaireControllerTest {
-
-        @Autowired
-        private WebApplicationContext wac;
 
         @Autowired
         private BusinessTypeService businessTypeService;
@@ -51,6 +47,7 @@ public class QuestionnaireControllerTest {
         @Autowired
         ObjectMapper jsonMapper;
 
+        @Autowired
         private MockMvc mockMvc;
         private TestContextManager testContextManager;
 
@@ -72,9 +69,6 @@ public class QuestionnaireControllerTest {
         public void setUp() throws Exception {
                 this.testContextManager = new TestContextManager(getClass());
                 this.testContextManager.prepareTestInstance(this);
-                mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
-                        .apply(springSecurity())
-                        .build();
 
                 businessType = new BusinessType();
                 businessType.setTitle("Business title");

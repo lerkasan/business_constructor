@@ -111,7 +111,8 @@ CREATE TABLE IF NOT EXISTS option_ (
   FOREIGN KEY (next_question_id) REFERENCES question (id)
     ON DELETE SET NULL,
   FOREIGN KEY (procedure_id) REFERENCES procedure_ (id)
-    ON DELETE SET NULL
+    ON DELETE SET NULL,
+  UNIQUE (title(255), question_id)
 );
 
 CREATE TABLE IF NOT EXISTS procedure_document (

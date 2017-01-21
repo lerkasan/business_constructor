@@ -3,18 +3,16 @@ package ua.com.brdo.business.constructor.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.PermitType;
@@ -28,7 +26,6 @@ import ua.com.brdo.business.constructor.service.ProcedureService;
 import ua.com.brdo.business.constructor.service.ProcedureTypeService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -36,16 +33,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
+@AutoConfigureMockMvc
 public class ProcedureDocumentControllerTest {
 
     private static final String ADMIN = "ADMIN";
     private static final String EXPERT = "EXPERT";
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private ProcedureDocumentService procedureDocumentService;
@@ -62,6 +57,7 @@ public class ProcedureDocumentControllerTest {
     @Autowired
     private PermitTypeService permitTypeService;
 
+    @Autowired
     private MockMvc mvc;
 
     private ProcedureDocument returnProcedureDocument(){
@@ -104,11 +100,6 @@ public class ProcedureDocumentControllerTest {
         return procedureDocument;
     }
 
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(springSecurity()).build();
-    }
     @Test
     @Transactional
     @WithMockUser(roles = {EXPERT,ADMIN})

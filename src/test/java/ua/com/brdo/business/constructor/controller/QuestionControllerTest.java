@@ -95,7 +95,7 @@ public class QuestionControllerTest {
     private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
     private static final String OPTIONS_DIR = "/options/";
-    private static final String validOptionDataJson = "{\"title\":\"My option\"}";
+    private static final String validOptionDataJson = "{\"title\":\"My new option\"}";
     private static final int NON_EXISTENT_ID = 100000;
     private static final String EXPERT = "EXPERT";
     private static final String USER = "USER";
@@ -104,6 +104,7 @@ public class QuestionControllerTest {
     private static final String nextQuestionText = "How do you do?";
     private static final String updatedText = "What is your name?";
     private static final String optionTitle = "My option";
+    private static final String newOptionTitle = "My new option";
 
     private BusinessType businessType;
     private Questionnaire questionnaire;
@@ -162,7 +163,7 @@ public class QuestionControllerTest {
 
     private Option generateOptionWithNextQuestion(Question nextQuestion) {
         Option option = new Option();
-        option.setTitle(optionTitle);
+        option.setTitle(newOptionTitle);
         option.setQuestion(question);
         option.setNextQuestion(nextQuestion);
         return option;
@@ -202,7 +203,7 @@ public class QuestionControllerTest {
         procedure = procedureService.create(procedure);
 
         Option option = new Option();
-        option.setTitle(optionTitle);
+        option.setTitle(newOptionTitle);
         option.setQuestion(question);
         option.setProcedure(procedure);
         return option;
@@ -468,7 +469,7 @@ public class QuestionControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.title").value(optionTitle)));
+                .andExpect((jsonPath("$.title").value(newOptionTitle)));
     }
 
     @Test

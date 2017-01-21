@@ -12,10 +12,7 @@ export class ProcedureService {
   public getAllProcedure() {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
-
-    console.log('sel');
-    return this.http.get('http://localhost:8080/api/procedures', options)
+    return this.http.get('/api/procedures', options)
       .map(response => {
         return response.json() as Procedure[];
       })

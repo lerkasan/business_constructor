@@ -1,45 +1,43 @@
 package ua.com.brdo.business.constructor.controller;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-import ua.com.brdo.business.constructor.Application;
-import ua.com.brdo.business.constructor.model.User;
-import ua.com.brdo.business.constructor.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.UserRepository;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @Transactional
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@AutoConfigureMockMvc
 public class RegistrationTest {
 
     private static final String REGISTRATION_URL = "/api/users";
@@ -54,8 +52,6 @@ public class RegistrationTest {
     private UserRepository userRepo;
 
     @Autowired
-    private WebApplicationContext wac;
-
     private MockMvc mockMvc;
 
     private ObjectMapper jsonMapper = new ObjectMapper();
@@ -78,7 +74,6 @@ public class RegistrationTest {
     public void setup() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 
         invalidUserData.put("username", "test1@mail.com");
         invalidUserData.put("email", "test1@mail.com");

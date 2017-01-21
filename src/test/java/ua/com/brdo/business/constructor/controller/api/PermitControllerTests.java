@@ -3,18 +3,16 @@ package ua.com.brdo.business.constructor.controller.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.HashMap;
@@ -25,7 +23,6 @@ import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.service.PermitService;
 import ua.com.brdo.business.constructor.service.PermitTypeService;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,9 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest
+@AutoConfigureMockMvc
 public class PermitControllerTests {
 
     private ObjectMapper jsonMapper = new ObjectMapper();
@@ -47,22 +45,13 @@ public class PermitControllerTests {
     private static final String EXPERT = "EXPERT";
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
     private PermitTypeService permitTypeService;
 
     @Autowired
     private PermitService permitService;
 
+    @Autowired
     private MockMvc mvc;
-
-    @Before
-    public void setup() throws Throwable {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilter(CHARACTER_ENCODING_FILTER)
-                .apply(springSecurity()).build();
-    }
 
     @Test
     @WithMockUser(roles = {EXPERT})

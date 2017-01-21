@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'user-statistics',
+  selector: 'brdo-user-statistics',
   templateUrl: './user-statistics.component.html',
   styleUrls: ['./user-statistics.component.scss']
 
 })
 
-export class UserStatisticsComponent{
-	 constructor() {
-  
+export class UserStatisticsComponent {
+  constructor() {
   }
 }
 

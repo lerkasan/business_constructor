@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {User} from "../model/user";
-import {Router} from "@angular/router";
-import {RegistrationService} from "../service/registration.service";
+import {Component, OnInit} from '@angular/core';
+import {User} from '../model/user';
+import {Router} from '@angular/router';
+import {RegistrationService} from '../service/registration.service';
 
 @Component({
-  selector: 'my-register',
+  selector: 'brdo-my-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -21,23 +21,25 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  registrationAway(){
+  registrationAway() {
     this.router.navigate(['/']);
   }
 
-  registrationRequest(){
+  registrationRequest() {
 
     this.user.rawPassword = this.user.password;
     this.registrationService.registrationRequest(this.user)
       .subscribe((status) => {
-        if(status == 201){
-          this.message = 'Юзера створенно';
-          this.user.password = '';
-          this.user.rawPassword = '';
-        }
+          if (status === 201) {
+            this.message = 'Юзера створенно';
+            this.user.password = '';
+            this.user.rawPassword = '';
+          }
         },
-        (error) => { this.message = <any>error}
-    );
+        (error) => {
+          this.message = <any>error;
+        }
+      );
   }
 
 }
@@ -45,5 +47,6 @@ export class RegisterComponent implements OnInit {
 class DuplicatePassword {
   duplicatePassword: string;
 
-  constructor(){}
+  constructor() {
+  }
 }

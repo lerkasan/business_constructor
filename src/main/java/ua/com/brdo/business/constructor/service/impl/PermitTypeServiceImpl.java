@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.repository.PermitTypeRepository;
 import ua.com.brdo.business.constructor.service.PermitTypeService;

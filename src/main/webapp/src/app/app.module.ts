@@ -19,9 +19,10 @@ import { ApiService } from './shared';
 import { routing } from './app.routing';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-import {AuthService} from "./service/auth.service";
-import {RegistrationService} from "./service/registration.service";
-import {QuestionService} from "./service/questions.service";
+import {AuthService} from './service/auth.service';
+import {RegistrationService} from './service/registration.service';
+import {QuestionService} from './service/questions.service';
+import {ProcedureService} from './service/procedure.service';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import {QuestionService} from "./service/questions.service";
     ApiService,
     AuthService,
     RegistrationService,
-    QuestionService
+    QuestionService,
+    ProcedureService
   ],
   bootstrap: [AppComponent]
 })

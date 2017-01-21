@@ -1,5 +1,7 @@
 package ua.com.brdo.business.constructor.controller;
 
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,16 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import java.net.URI;
+import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class UserController {
@@ -36,12 +34,10 @@ public class UserController {
         return "You are loged in as:  " + user.getUsername();
     }
 
-    @PostMapping(path = "/register",
-            consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity createUser(@Valid @RequestBody User user) {
-        User registeredUser = userService.create(user);
-        URI location = ServletUriComponentsBuilder
+    @PostMapping("/api/users")
+    public ResponseEntity createUser(@Valid @RequestBody final User user) {
+        final User registeredUser = userService.create(user);
+        final URI location = ServletUriComponentsBuilder
                 .fromUriString("users")
                 .path("/{id}")
                 .buildAndExpand(user.getId())

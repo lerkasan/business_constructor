@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
-import {Response, Http, Headers, RequestOptions} from "@angular/http";
-import {User} from "../model/user";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Response, Http, Headers, RequestOptions} from '@angular/http';
+import {User} from '../model/user';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,7 @@ export class AuthService {
 
     return this.http.post('http://localhost:8080/login', body, options)
       .map((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           this.authenticatedUser = res.json() as User;
           localStorage.setItem('currentUser', JSON.stringify(this.authenticatedUser));
         }

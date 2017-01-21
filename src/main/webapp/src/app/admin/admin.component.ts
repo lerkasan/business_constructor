@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'adminPanel',
+  selector: 'admin-panel',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 
 })
 
-export class AdminComponent{
-	 constructor() {
-    	console.log('you');
+export class AdminComponent {
+  constructor() {
+    console.log('you');
   }
 
 }

@@ -16,7 +16,7 @@
          (click)="onSelectQuestion(question)">
       <label>Питання</label>
       <input class="form-control"
-             (ngModel)="selectedQuestion.text"
+             [(ngModel)]="question.text"
              placeholder="Редагування питання"
              (blur)="saveQuestion(question)"/>
       <input type="checkbox"
@@ -24,17 +24,40 @@
       <div class="option" *ngFor="let option of question.options" (click)="onSelectOption(option)">
         <label>Відповідь</label>
         <input class="form-control"
-               (ngModel)="selectedOption.title"
+               [(ngModel)]="option.title"
                placeholder="Редагування відповіді"
                (blur)="saveOption(question, option)"/>
         <div *ngIf="selectedOption == option && selectedQuestion == question">
-          <div>
-            <button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">Додати
-              зв'язок
-            </button>
-            <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">Приєднати
-              картку
-            </button>
+
+          <div class="btn-group">
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Приеднати питання
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let dropDownQuestion of questions"
+                    (click)="questionLinker(dropDownQuestion, option); onSelectQuestion(question);">
+                  <div *ngIf="dropDownQuestion != question">{{dropDownQuestion.text}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="btn-group">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle"
+                      type="button"
+                      data-toggle="dropdown"
+                      (click)="getProcedure()">
+                Приеднати картку
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let procedure of procedures"
+                    (click)="procedureLinker(procedure); onSelectQuestion(question); onSelectOption(option)">
+                  {{procedure.name}}
+                </li>
+
+              </ul>
+            </div>
           </div>
         </div>
       </div>

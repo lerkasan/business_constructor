@@ -5,5 +5,6 @@ export class Option {
   nextQuestion: any;
   procedure: any;
 
-  constructor() {}
+  constructor() {
+  }
 }

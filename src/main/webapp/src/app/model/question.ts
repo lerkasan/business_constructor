@@ -1,4 +1,4 @@
-import {Option} from "../model/option";
+import {Option} from '../model/option';
 
 export class Question {
   id: number;
@@ -6,6 +6,7 @@ export class Question {
   inputType: string;
   options: Option[];
 
-  constructor(){}
+  constructor() {
+  }
 }
 

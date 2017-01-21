@@ -25,8 +25,9 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-import ua.com.brdo.business.constructor.exception.NotFoundException;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 
+import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -35,87 +36,88 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @ControllerAdvice
 public class ControllerAdviceHandler {
 
+    private static final String ERROR_MESSAGE_PROPERTY = "message";
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        List<ObjectError> objectErrors = e.getBindingResult().getGlobalErrors();
+    public Map<String, String> handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        final List<ObjectError> objectErrors = e.getBindingResult().getGlobalErrors();
         final String fieldErrorsString = fieldErrors.stream()
                 .map(FieldError::getDefaultMessage)
-                .collect(Collectors.joining(" "));
+                .collect(joining(" "));
         final String objectErrorsString = objectErrors.stream()
                 .map(ObjectError::getDefaultMessage)
-                .collect(Collectors.joining(" "));
-        String error = String.join(" ", fieldErrorsString, objectErrorsString).trim();
-        return Collections.singletonMap("message", error);
+                .collect(joining(" "));
+        final String errorMessage = String.join(" ", fieldErrorsString, objectErrorsString).trim();
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, errorMessage);
     }
 
     @ExceptionHandler(value = {JsonParseException.class, JsonMappingException.class, HttpMessageNotReadableException.class})
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleJsonParseException(Exception e) {
-        return Collections.singletonMap("message", "Received malformed JSON.");
+    public Map<String, String> handleJsonParseException(final Exception e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, "Received malformed JSON.");
     }
 
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleIllegalArgumentException(Exception e) {
-
-        return Collections.singletonMap("message", e.getMessage());
+    public Map<String, String> handleIllegalArgumentException(final Exception e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, e.getMessage());
     }
 
-    @ExceptionHandler(value = ConstraintViolationException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleConstraintViolationExceptionException(ConstraintViolationException e) {
-        StringBuilder error = new StringBuilder();
-        for(ConstraintViolation c : e.getConstraintViolations()){
-            error.append(c.getMessageTemplate()).append(" ");
-        }
-        return Collections.singletonMap("message", error.toString());
+    public Map<String, String> handleConstraintViolationExceptionException(final ConstraintViolationException e) {
+        final String errorMessage = e.getConstraintViolations()
+            .stream()
+            .map(ConstraintViolation::getMessageTemplate)
+            .collect(joining(" "));
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, errorMessage);
     }
 
-    @ExceptionHandler(value = NestedRuntimeException.class)
-    @ResponseStatus(value = INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(NestedRuntimeException.class)
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public Map<String, String> handleRuntimeException(Exception e) {
-        return Collections.singletonMap("message", e.getMessage());
+    public Map<String, String> handleRuntimeException(final Exception e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, e.getMessage());
     }
 
-    @ExceptionHandler(value = NotFoundException.class)
-    @ResponseStatus(value = NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
     @ResponseBody
-    public Map<String, String> handleNotFoundException(Exception e) {
-        return Collections.singletonMap("message", e.getMessage());
+    public Map<String, String> handleNotFoundException(final Exception e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, e.getMessage());
     }
 
-    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-    @ResponseStatus(value = BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    public Map<String, String> handleMethodArgumentTypeMismatchException(Exception e) {
-        return Collections.singletonMap("message", "Received malformed URL.");
+    public Map<String, String> handleMethodArgumentTypeMismatchException(final Exception e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, "Received malformed URL.");
     }
 
     @ExceptionHandler(JpaObjectRetrievalFailureException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleJpaObjectRetrievalFailureException(JpaObjectRetrievalFailureException e) {
-        return Collections.singletonMap("message", e.getCause().getMessage().replace("ua.com.brdo.business.constructor.model.",""));
+    public Map<String, String> handleJpaObjectRetrievalFailureException(final JpaObjectRetrievalFailureException e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, e.getCause().getMessage().replace("ua.com.brdo.business.constructor.model.",""));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        return Collections.singletonMap("message", "Illegal id of related object.");
+    public Map<String, String> handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, "Illegal id of related object.");
     }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    @ResponseStatus(value = UNPROCESSABLE_ENTITY)
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Map<String, String> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
-        return Collections.singletonMap("message", e.getCause().getMessage());
+    public Map<String, String> handleInvalidDataAccessApiUsageException(final InvalidDataAccessApiUsageException e) {
+        return Collections.singletonMap(ERROR_MESSAGE_PROPERTY, e.getCause().getMessage());
     }
 }

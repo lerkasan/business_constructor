@@ -1,22 +1,23 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {User} from '../model/user';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Headers, RequestOptions} from '@angular/http';
+import {Procedure} from '../model/procedure';
 
 @Injectable()
-export class RegistrationService {
+export class ProcedureService {
 
   constructor(private http: Http) {
   }
 
-  public registrationRequest(user: User) {
+  public getAllProcedure() {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
+    options.withCredentials = true;
 
-    return this.http.post('/api/users', JSON.stringify(user), options)
-      .map((res) => {
-        return res.status;
+    console.log('sel');
+    return this.http.get('http://localhost:8080/api/procedures', options)
+      .map(response => {
+        return response.json() as Procedure[];
       })
       .catch(this.handleError);
   }
@@ -34,3 +35,5 @@ export class RegistrationService {
     return Observable.throw(errMsg);
   }
 }
+
+

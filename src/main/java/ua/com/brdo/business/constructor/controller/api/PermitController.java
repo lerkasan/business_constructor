@@ -18,7 +18,6 @@ import java.net.URI;
 import java.util.List;
 
 import springfox.documentation.annotations.ApiIgnore;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.service.PermitService;

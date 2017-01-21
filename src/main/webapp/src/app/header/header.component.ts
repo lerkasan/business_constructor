@@ -1,10 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import {AuthService} from "../service/auth.service";
-import {User} from "../model/user";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../service/auth.service';
+import {User} from '../model/user';
 
 
 @Component({
-  selector: 'my-header',
+  selector: 'brdo-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(localStorage.getItem('currentUser')){
+    if (localStorage.getItem('currentUser')) {
       this.loggedin = false;
       this.user = JSON.parse(localStorage.getItem('currentUser'));
       this.model = this.user;

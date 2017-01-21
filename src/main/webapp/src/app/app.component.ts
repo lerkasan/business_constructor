@@ -3,10 +3,9 @@ import { ApiService } from './shared';
 
 import '../style/app.scss';
 import './rxjs-operators';
-import {HomeComponent} from "./home/home.component";
 
 @Component({
-  selector: 'my-app', // <my-app></my-app>
+  selector: 'brdo-my-app', // <my-app></my-app>
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

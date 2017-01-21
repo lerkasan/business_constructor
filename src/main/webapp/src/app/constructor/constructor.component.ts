@@ -79,15 +79,12 @@ export class ConstructorComponent implements OnInit {
     } else {
       question.inputType = this.inputType[0].value;
     }
-    console.log('Start save inputType');
     for (let i = 0; i < question.options.length; i++) {
       if (question.options[i].title === undefined || question.options[i].title === '') {
-        console.log('the field option cant save inputType');
         return;
       }
     }
     if (question.text === undefined || question.text === '') {
-      console.log('the field question cant save inputType');
       return;
     }
 
@@ -102,7 +99,6 @@ export class ConstructorComponent implements OnInit {
           error => console.log(<any>error)
         );
     }
-    console.log('Dont save inputType');
   }
 
   addOption(options: Option[]): void {
@@ -115,11 +111,9 @@ export class ConstructorComponent implements OnInit {
 
   saveQuestion(question: Question): void {
     if (question.text === '' || question === undefined) {
-      console.log('The question enpty or undefined');
       return;
     }
     if (question.text === this.selectedText) {
-      console.log('The question is not changed');
       return;
     }
 
@@ -133,7 +127,6 @@ export class ConstructorComponent implements OnInit {
           },
           error => console.log(<any>error)
         );
-      console.log('Question saved');
       return;
     }
   }
@@ -151,7 +144,6 @@ export class ConstructorComponent implements OnInit {
       }
     }
     if (question.text === undefined || question.text === '') {
-      console.log('The question is undefined or is empty');
       return;
     }
     if (question.id === undefined) {
@@ -166,12 +158,10 @@ export class ConstructorComponent implements OnInit {
       return;
     }
     if (question.id !== undefined) {
-      console.log('send put question with this changed option');
       this.questionService.updateQuestion(question)
         .subscribe(
           (ques: Question) => {
             this.questions[elementNumber] = ques;
-            console.log('Sended put');
           },
           error => console.log(<any>error)
         );
@@ -179,7 +169,6 @@ export class ConstructorComponent implements OnInit {
   }
 
   questionLinker(dropDownQuestion: Question, option: Option): void {
-    console.log('Start save link to question');
     if (dropDownQuestion.id === undefined || option.id === undefined) {
       return;
     }
@@ -191,7 +180,6 @@ export class ConstructorComponent implements OnInit {
       .subscribe(
         (status) => {
           if (status === 200) {
-            console.log('Link to next question saved!');
           }
         },
         error => console.log(<any>error)
@@ -199,7 +187,6 @@ export class ConstructorComponent implements OnInit {
   }
 
   procedureLinker(procedure: Procedure) {
-    console.log('save link to procedure');
     if (this.selectedQuestion.id === undefined || this.selectedOption.id === undefined) {
       return;
     }
@@ -210,14 +197,12 @@ export class ConstructorComponent implements OnInit {
       .subscribe(
         (status) => {
           if (status === 200) {
-            console.log('link to procedure added');
           }
         }
       );
   }
 
   getProcedure() {
-    console.log('Start load procedure');
     this.prcedureService.getAllProcedure()
       .subscribe(
         (response: Procedure[]) => {

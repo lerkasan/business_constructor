@@ -7,17 +7,14 @@ import {Option} from '../model/option';
 @Injectable()
 export class QuestionService {
 
-  private url = 'http://localhost:8080';
-
   constructor(private http: Http) {
   }
 
   public createQuestion(question: Question) {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
-    return this.http.post('http://localhost:8080/api/questions', JSON.stringify(question), options)
+    return this.http.post('/api/questions', JSON.stringify(question), options)
       .map((response) => {
         return response.json() as Question;
       })
@@ -25,10 +22,9 @@ export class QuestionService {
   }
 
   public updateQuestion(question: Question) {
-    let path = 'http://localhost:8080/api/questions/' + question.id;
+    let path = '/api/questions/' + question.id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
     return this.http.put(path, JSON.stringify(question), options)
       .map((response) => {
@@ -41,10 +37,8 @@ export class QuestionService {
     let path = '/api/questions/' + questionId + '/options/' + option.id;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
-    console.log('Put this option');
-    return this.http.put(this.url + path, JSON.stringify(option), options)
+    return this.http.put(path, JSON.stringify(option), options)
       .map((response) => {
         console.log(response.status);
         return response.status as number;

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'admin-panel',
+  selector: 'brdo-admin-panel',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 

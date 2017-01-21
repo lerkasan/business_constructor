@@ -47,7 +47,7 @@ public class Questionnaire {
     @NotEmpty(message = "Title field of questionnaire is required.")
     @Size(max = 1000, message = "Maximum length of questionnaire title is 1000 characters.")
     @Column(unique = true, nullable = false, length = 1000)
-    @Unique(object = Questionnaire.class, field = "title", message = "Questionnaire with specified title already exists in database. Title should be unique.")
+    @Unique(object = Questionnaire.class, field = "title", message = "Questionnaire with specified title already exists. Title should be unique.")
     private String title;
 
     @ManyToOne

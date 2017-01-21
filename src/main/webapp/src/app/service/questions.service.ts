@@ -3,6 +3,8 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Question} from '../model/question';
 import {Option} from '../model/option';
+import {BusinessType} from '../model/business.type';
+import {Questionnare} from "../model/questionnaire";
 
 @Injectable()
 export class QuestionService {
@@ -40,11 +42,35 @@ export class QuestionService {
 
     return this.http.put(path, JSON.stringify(option), options)
       .map((response) => {
-        console.log(response.status);
         return response.status as number;
       })
       .catch(this.handleError);
 
+  }
+
+  public createBusinessType(businessType: BusinessType) {
+    let path = '/api/business-types';
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.post(path, JSON.stringify(businessType), options)
+      .map((response) => {
+        return response.json() as BusinessType;
+      })
+      .catch(this.handleError);
+  }
+
+  public createQuestionare(questionare: Questionnare) {
+    let path = '/api/questionnaires';
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.post(path, JSON.stringify(questionare), options)
+      .map((response) => {
+          return response.json() as Questionnare;
+        }
+      )
+      .catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

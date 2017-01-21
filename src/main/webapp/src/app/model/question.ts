@@ -5,6 +5,7 @@ export class Question {
   text: string;
   inputType: string;
   options: Option[];
+  questionnare: any;
 
   constructor() {
   }

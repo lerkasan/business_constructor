@@ -4,6 +4,8 @@ import {Option} from '../model/option';
 import {QuestionService} from '../service/questions.service';
 import {Procedure} from '../model/procedure';
 import {ProcedureService} from '../service/procedure.service';
+import {BusinessType} from '../model/business.type';
+import {Questionnare} from '../model/questionnaire';
 
 @Component({
   selector: 'brdo-constructor-panel',
@@ -14,13 +16,14 @@ import {ProcedureService} from '../service/procedure.service';
 
 export class ConstructorComponent implements OnInit {
 
-  businesType = '';
   selectedOption;
   selectedQuestion;
   selectedText;
   selectedTitle;
   questions: Question[];
   procedures: Procedure[];
+  businessType: BusinessType;
+  questionnaire: Questionnare;
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
@@ -32,7 +35,10 @@ export class ConstructorComponent implements OnInit {
 
   ngOnInit() {
     this.procedures = [];
-    // this.getProcedure();
+    this.businessType = new BusinessType();
+    this.businessType.title = '';
+    this.questionnaire = new Questionnare();
+    this.questionnaire.title = '';
   }
 
   onSelectQuestion(question: Question): void {
@@ -46,6 +52,9 @@ export class ConstructorComponent implements OnInit {
   }
 
   addQuestion(): void {
+    if (this.questionnaire.id === undefined || this.businessType.id === undefined) {
+      return;
+    }
     if (this.questions === undefined) {
       this.questions = [this.newQuestion()];
     } else {
@@ -62,6 +71,7 @@ export class ConstructorComponent implements OnInit {
     option.title = '';
     let question = new Question();
     question.text = '';
+    question.questionnare = new Id(this.questionnaire.id);
     question.options = [option];
     question.inputType = this.inputType[0].value;
     return question;
@@ -116,8 +126,6 @@ export class ConstructorComponent implements OnInit {
     if (question.text === this.selectedText) {
       return;
     }
-
-    console.log(JSON.stringify(question));
     let elementNumber = this.questions.indexOf(question);
     if (question.id !== undefined) {
       this.questionService.updateQuestion(question)
@@ -151,7 +159,6 @@ export class ConstructorComponent implements OnInit {
         .subscribe(
           (ques: Question) => {
             this.questions[elementNumber] = ques;
-            console.log(ques.id);
           },
           error => console.log(<any>error)
         );
@@ -206,8 +213,37 @@ export class ConstructorComponent implements OnInit {
     this.prcedureService.getAllProcedure()
       .subscribe(
         (response: Procedure[]) => {
-          console.log(response);
           this.procedures = response;
+        },
+        error => console.log(<any>error)
+      );
+  }
+
+  saveBusinessType() {
+    if (this.businessType.title === undefined || this.businessType.title === '') {
+      return;
+    }
+    this.questionService.createBusinessType(this.businessType)
+      .subscribe(
+        (response: BusinessType) => {
+          this.businessType = response;
+        },
+        error => console.log(<any>error)
+      );
+  }
+
+  saveQuestionnare() {
+    if (this.businessType.id === undefined) {
+      return;
+    }
+    if (this.questionnaire.title === undefined || this.questionnaire.title === '') {
+      return;
+    }
+    this.questionnaire.id = this.businessType.id;
+    this.questionService.createQuestionare(this.questionnaire)
+      .subscribe(
+        (response: Questionnare) => {
+          this.questionnaire = response;
         },
         error => console.log(<any>error)
       );

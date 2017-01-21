@@ -12,7 +12,7 @@ import ua.com.brdo.business.constructor.repository.OptionRepository;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.OptionService;
 
-@Service("OptionService")
+@Service
 public class OptionServiceImpl implements OptionService {
 
     private static final String OPTION_NOT_FOUND = "Option was not found.";
@@ -36,16 +36,13 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public Option update(final Option option) {
-        Long id = option.getId();
         Objects.requireNonNull(option);
-        findById(id);
         return optionRepo.saveAndFlush(option);
     }
 
     @Override
     @Transactional
     public void delete(final long id) {
-        findById(id);
         optionRepo.delete(id);
     }
 

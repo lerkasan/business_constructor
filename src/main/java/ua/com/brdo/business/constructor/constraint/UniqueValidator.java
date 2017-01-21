@@ -44,7 +44,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
                     Advised advisedService = (Advised) service;
                     Class<?> serviceCls = advisedService.getTargetSource().getTargetClass();
                     if (!UniqueValidatable.class.isAssignableFrom(serviceCls)) {
-                        new ReflectiveOperationException("Service " + serviceCls.getSimpleName()
+                        throw new IllegalArgumentException("Service " + serviceCls.getSimpleName()
                             + " should implement interface " + UniqueValidatable.class.getSimpleName()
                             + " in order to maintain correct processing of annotation Unique for entity fields.");
                     }

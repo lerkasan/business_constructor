@@ -1,30 +1,27 @@
 package ua.com.brdo.business.constructor.service;
 
 import java.util.List;
-
 import ua.com.brdo.business.constructor.model.Option;
 
 public interface OptionService {
 
-    Option create(Option Option);
+    Option create(final Option option);
 
-    Option update(Option Option);
+    Option update(final Option option);
 
-    void delete(long id);
+    void delete(final long id);
 
-    void delete(Option option);
+    void delete(final Option option);
 
-    Option findById(long id);
+    Option findById(final long id);
 
-    Option findByTitle(String title);
+    Option findByTitle(final String title);
 
-    List<Option> findByQuestionId(long id);
+    List<Option> findByQuestionId(final long id);
 
-    Option findByQuestionIdAndOptionId(long questionId, long optionId);
+    Option findByQuestionIdAndOptionId(final long questionId, final long optionId);
 
-    Long deleteByQuestionId(long id);
+    Long deleteByQuestionId(final long id);
 
     List<Option> findAll();
 }
-
-

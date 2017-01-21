@@ -43,8 +43,11 @@ public class ProcedureServiceImpl implements ProcedureService {
 
     @Override
     public Procedure findById(Long id){
-        return procedureRepository.findOne(id);
-
+        Procedure procedure = procedureRepository.findOne(id);
+        if (procedure == null) {
+            throw new NotFoundException("Procedure was not found.");
+        }
+        return procedure;
     }
 
     @Override

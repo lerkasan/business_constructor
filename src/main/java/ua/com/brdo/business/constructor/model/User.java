@@ -50,7 +50,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
-    @Unique(type = "username", message = "User with this username is already registered. Try another username.")
+    @Unique(object = User.class, field = "username", message = "User with this username is already registered. Try another username.")
     private String username;
     private String firstName;
     private String middleName;
@@ -58,7 +58,7 @@ public class User implements UserDetails {
 
     @NotEmpty(message = "E-mail field is required.")
     @Email(regexp = ".+@.+\\..+", message = "Incorrect format of e-mail.")
-    @Unique(type = "email", message = "User with this e-mail is already registered. Try another e-mail.")
+    @Unique(object = User.class, field = "email", message = "User with this e-mail is already registered. Try another e-mail.")
     @Column(unique = true, nullable = false)
     private String email;
 

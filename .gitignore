@@ -11,3 +11,5 @@ logs
 *jquery*.js
 .vagrant
 *.log*
+.directory
+.DS_Store

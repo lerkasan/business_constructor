@@ -1,13 +1,14 @@
 package ua.com.brdo.business.constructor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,7 +37,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "question")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"text", "questionnaire.title"})
 @Validated
 @JsonInclude(NON_NULL)
 public class Question {
@@ -53,12 +57,21 @@ public class Question {
 
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
-    private List<Option> options = new ArrayList<>();
+    @OrderBy(value = "id ASC")
+    private Set<Option> options = new HashSet<>();
+
+    @ManyToOne
+    @PrimaryKeyJoinColumn(name="questionnaire_id", referencedColumnName="id")
+    @JsonIgnoreProperties(value = {"questions"})
+    private Questionnaire questionnaire;
 
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         if (options == null) {
-            options = new ArrayList<>();
+            options = new HashSet<>();
+        }
+        if (options.contains(option)) {
+            throw new IllegalArgumentException("Option with the same title already exists in this question.");
         }
         return options.add(option);
     }

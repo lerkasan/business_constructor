@@ -61,7 +61,6 @@ INSERT INTO procedure_type (id, name) VALUES
 INSERT INTO procedure_type (id, name) VALUES
   (3, 'procedureType3');
 
-
 INSERT INTO procedure_ (id, name, reason, result, permit_id, procedure_type_id, cost, term, method, decision, deny, abuse)
 VALUES (2, 'procedure2', 'reason2', 'result2', 1, 2, 'coast2', 'term2', 'method2', 'decision2', 'deny2', 'abuse2');
 

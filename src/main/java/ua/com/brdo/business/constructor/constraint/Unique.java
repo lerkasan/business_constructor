@@ -14,9 +14,11 @@ import javax.validation.Payload;
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
 
-    String type() default "email";
+    Class object();
 
-    String message() default "";
+    String field();
+
+    String message();
 
     Class<?>[] groups() default {};
 

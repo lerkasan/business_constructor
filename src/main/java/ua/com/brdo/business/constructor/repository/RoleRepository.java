@@ -11,4 +11,6 @@ import ua.com.brdo.business.constructor.model.Role;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByTitle(String title);
+
+    int countByTitleIgnoreCase(final String title);
 }

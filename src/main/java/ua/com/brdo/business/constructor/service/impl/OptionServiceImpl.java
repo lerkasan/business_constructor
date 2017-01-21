@@ -7,12 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.repository.OptionRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.OptionService;
 
-@Service("OptionService")
+@Service
 public class OptionServiceImpl implements OptionService {
 
     private static final String OPTION_NOT_FOUND = "Option was not found.";
@@ -36,26 +36,19 @@ public class OptionServiceImpl implements OptionService {
     @Override
     @Transactional
     public Option update(final Option option) {
-        Long id = option.getId();
         Objects.requireNonNull(option);
-        if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException(OPTION_NOT_FOUND);
-        }
         return optionRepo.saveAndFlush(option);
     }
 
     @Override
     @Transactional
     public void delete(final long id) {
-        if (optionRepo.findOne(id) == null) {
-            throw new NotFoundException(OPTION_NOT_FOUND);
-        }
         optionRepo.delete(id);
     }
 
     @Override
     @Transactional
-    public void delete(Option option) {
+    public void delete(final Option option) {
         Objects.requireNonNull(option);
         optionRepo.delete(option);
     }
@@ -75,18 +68,18 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> findByQuestionId(long id) {
+    public List<Option> findByQuestionId(final long id) {
         return optionRepo.findByQuestionId(id);
     }
 
     @Override
-    public Option findByQuestionIdAndOptionId(long questionId, long optionId) {
+    public Option findByQuestionIdAndOptionId(final long questionId, final long optionId) {
         return optionRepo.findByIdAndQuestionId(optionId, questionId).orElseThrow(() -> new NotFoundException(NOT_FOUND));
     }
 
     @Override
     @Transactional
-    public Long deleteByQuestionId(long id) {
+    public Long deleteByQuestionId(final long id) {
         return optionRepo.deleteByQuestionId(id);
     }
 

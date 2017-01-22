@@ -6,6 +6,12 @@
            id="businesType"
            required [(ngModel)]="businessType.title"
            name="businesType" #name="ngModel">
+    <input class="form-control"
+           placeholder="Введіть назву КВЕД"
+           id="businesType"
+           required
+           [(ngModel)]="businessType.codeKved"
+           name="businesType" #name="ngModel">
     <div class="clear"></div>
     <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
     <a class="btn btn-primary">Завантажити існуючій</a>

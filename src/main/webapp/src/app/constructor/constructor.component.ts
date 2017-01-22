@@ -37,6 +37,7 @@ export class ConstructorComponent implements OnInit {
     this.procedures = [];
     this.businessType = new BusinessType();
     this.businessType.title = '';
+    this.businessType.codeKved = '';
     this.questionnaire = new Questionnare();
     this.questionnaire.title = '';
   }
@@ -221,6 +222,9 @@ export class ConstructorComponent implements OnInit {
 
   saveBusinessType() {
     if (this.businessType.title === undefined || this.businessType.title === '') {
+      return;
+    }
+    if (this.businessType.codeKved === undefined || this.businessType.codeKved === '') {
       return;
     }
     this.questionService.createBusinessType(this.businessType)

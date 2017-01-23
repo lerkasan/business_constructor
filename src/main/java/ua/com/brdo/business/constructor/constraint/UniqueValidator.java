@@ -2,69 +2,70 @@ package ua.com.brdo.business.constructor.constraint;
 
 import static java.util.Objects.isNull;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.constraintvalidation.SupportedValidationTarget;
+import javax.validation.constraintvalidation.ValidationTarget;
 import lombok.SneakyThrows;
-import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UniqueValidator implements ConstraintValidator<Unique, String> {
+//@SupportedValidationTarget({ValidationTarget.PARAMETERS, ValidationTarget.ANNOTATED_ELEMENT})
+public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     @Autowired
     private ApplicationContext applicationContext;
-
     private UniqueValidatable service;
-
-    private String field = "";
+    private String fieldName;
 
     public void initialize(Unique annotation) {
-        switch (annotation.field()) {
-            case "email":
-            case "username":
-            case "title":
-            case "codeKved":
-                field = annotation.field();
-                break;
-            default:
-                throw new IllegalArgumentException("Unexpected field was passed to Unique annotation.");
-        }
-
-        String annotatedObjectName = annotation.object().getSimpleName();
-        annotatedObjectName = annotatedObjectName.substring(0,1).toLowerCase() + annotatedObjectName.substring(1);
-        switch (annotatedObjectName) {
-            case "user":
-            case "businessType":
-            case "questionnaire":
-                if (applicationContext != null) {
-                    service = this.applicationContext.getBean(annotatedObjectName + "ServiceImpl", UniqueValidatable.class);
-                    Advised advisedService = (Advised) service;
-                    Class<?> serviceCls = advisedService.getTargetSource().getTargetClass();
-                    if (!UniqueValidatable.class.isAssignableFrom(serviceCls)) {
-                        throw new IllegalArgumentException("Service " + serviceCls.getSimpleName()
-                            + " should implement interface " + UniqueValidatable.class.getSimpleName()
-                            + " in order to maintain correct processing of annotation Unique for entity fields.");
-                    }
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Unexpected object class was passed to Unique annotation.");
-        }
-    }
-
-    @SneakyThrows
-    private boolean isValid(String param) {
-        String methodName = "isAvailable";
-        Method isAvailableMethod = service.getClass().getMethod(methodName, String.class, String.class);
-        return (boolean) isAvailableMethod.invoke(service, field, param);
+        fieldName = annotation.field();
     }
 
     @SneakyThrows
     @Override
-    public boolean isValid(String param, ConstraintValidatorContext context) {
-        return isNull(applicationContext) || isNull(service) || isNull(param) || isValid(param);
+    public boolean isValid(Object annotatedObject, ConstraintValidatorContext context) {
+        return isNull(applicationContext) || isNull(annotatedObject) || isValid(annotatedObject);
+    }
+
+    @SneakyThrows
+    private boolean isValid(Object annotatedObject) {
+        Objects.requireNonNull(annotatedObject);
+        Field fieldObj = annotatedObject.getClass().getDeclaredField(fieldName);
+        Field idObj = annotatedObject.getClass().getDeclaredField("id");
+        idObj.setAccessible(true);
+        fieldObj.setAccessible(true);
+        Long id = (Long) idObj.get(annotatedObject);
+        String fieldValue = (String) fieldObj.get(annotatedObject);
+        idObj.setAccessible(false);
+        fieldObj.setAccessible(false);
+        String methodName = "isAvailable";
+        service = acquireService(annotatedObject);
+        if (service == null) {
+            return true;
+        }
+        Method isAvailableMethod = service.getClass()
+            .getMethod(methodName, String.class, String.class, Long.class);
+        boolean validationResult = (boolean) isAvailableMethod.invoke(service, fieldName, fieldValue, id);
+        return validationResult;
+    }
+
+    private UniqueValidatable acquireService(Object annotatedObject) {
+        String annotatedObjectName = annotatedObject.getClass().getSimpleName();
+        // Name of service bean starts with lowercase letter by default for beans in Spring context.
+        // But method getSimpleName returns class name starting with capital letter.
+        // So it's necessary to convert the first letter of class name to lowercase.
+        annotatedObjectName = annotatedObjectName.substring(0, 1).toLowerCase()
+            + annotatedObjectName.substring(1);
+        if (applicationContext != null) {
+            service = this.applicationContext
+                .getBean(annotatedObjectName + "ServiceImpl", UniqueValidatable.class);
+        }
+        return service;
     }
 }

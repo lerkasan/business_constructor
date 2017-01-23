@@ -122,33 +122,33 @@ public class QuestionnaireServiceTest {
             assertEquals(dummyQuestionnaire, foundQuestionnaire);
         }
 
-        @Test
-        public void shouldReturnTrueIfTitleAvailableTest() {
-            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(true);
-            boolean result = serviceUnderTest.isAvailable("title", TITLE);
-
-            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
-            assertTrue(result);
-        }
-
-        @Test
-        public void shouldReturnFalseIfTitleUnavailableTest() {
-            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(false);
-            boolean result = serviceUnderTest.isAvailable("title", TITLE);
-
-            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
-            assertFalse(result);
-        }
-
-        @Test(expected = IllegalArgumentException.class)
-        public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
-            String wrongField = "text";
-            serviceUnderTest.isAvailable(wrongField, TITLE);
-        }
-
-        @Test
-        public void shouldReturnFalseOnNullTitleFieldTest() {
-            boolean result = serviceUnderTest.isAvailable("title", null);
-            assertFalse(result);
-        }
+//        @Test
+//        public void shouldReturnTrueIfTitleAvailableTest() {
+//            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(true);
+//            boolean result = serviceUnderTest.isAvailable("title", TITLE);
+//
+//            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
+//            assertTrue(result);
+//        }
+//
+//        @Test
+//        public void shouldReturnFalseIfTitleUnavailableTest() {
+//            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(false);
+//            boolean result = serviceUnderTest.isAvailable("title", TITLE);
+//
+//            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
+//            assertFalse(result);
+//        }
+//
+//        @Test(expected = IllegalArgumentException.class)
+//        public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
+//            String wrongField = "text";
+//            serviceUnderTest.isAvailable(wrongField, TITLE);
+//        }
+//
+//        @Test
+//        public void shouldReturnFalseOnNullTitleFieldTest() {
+//            boolean result = serviceUnderTest.isAvailable("title", null);
+//            assertFalse(result);
+//        }
 }

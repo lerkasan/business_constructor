@@ -1,20 +1,17 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,15 +24,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import ua.com.brdo.business.constructor.constraint.Ascii;
 import ua.com.brdo.business.constructor.constraint.Unique;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "user")
@@ -43,6 +39,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = {"username", "email", "creationDate"})
 @Validated
 @JsonInclude(NON_NULL)
+@Unique.List(value = {
+    @Unique(field = "username", message = "User with this username is already registered. Try another username."),
+    @Unique(field = "email", message = "User with this e-mail is already registered. Try another e-mail.")
+})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -50,7 +50,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
-    @Unique(object = User.class, field = "username", message = "User with this username is already registered. Try another username.")
+    //@Unique(object = User.class, field = "username", message = "User with this username is already registered. Try another username.")
     private String username;
     private String firstName;
     private String middleName;
@@ -58,7 +58,7 @@ public class User implements UserDetails {
 
     @NotEmpty(message = "E-mail field is required.")
     @Email(regexp = ".+@.+\\..+", message = "Incorrect format of e-mail.")
-    @Unique(object = User.class, field = "email", message = "User with this e-mail is already registered. Try another e-mail.")
+    //@Unique(object = User.class, field = "email", message = "User with this e-mail is already registered. Try another e-mail.")
     @Column(unique = true, nullable = false)
     private String email;
 

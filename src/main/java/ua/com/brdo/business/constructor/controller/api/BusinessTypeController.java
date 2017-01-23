@@ -1,5 +1,10 @@
 package ua.com.brdo.business.constructor.controller.api;
 
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+
+import java.net.URI;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,16 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.service.BusinessTypeService;
-
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/business-types", produces = APPLICATION_JSON_VALUE)
@@ -64,7 +61,7 @@ public class BusinessTypeController {
     }
 
     @PutMapping(path = "/{businessTypeId}")
-    public BusinessType updateBusinessType(@ModelAttribute BusinessType businessType, @Valid @RequestBody BusinessType updatedBusinessType) {
+    public BusinessType updateBusinessType(@ModelAttribute BusinessType businessType, /* @Valid */ @RequestBody BusinessType updatedBusinessType) {
         Long businessTypeId = businessType.getId();
         updatedBusinessType.setId(businessTypeId);
         return businessTypeService.update(updatedBusinessType);

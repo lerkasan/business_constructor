@@ -9,8 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import ua.com.brdo.business.constructor.constraint.Unique;
 import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.repository.BusinessTypeRepository;
@@ -18,7 +16,6 @@ import ua.com.brdo.business.constructor.service.BusinessTypeService;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 
 @Service
-@Validated
 public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValidatable {
 
     private BusinessTypeRepository businessTypeRepo;
@@ -37,16 +34,7 @@ public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValid
 
     @Transactional
     @Override
-//    @Unique.List(value = {
-//        @Unique(field = "title", message = "Business type with specified title already exists in database. Title should be unique."),
-//        @Unique(field = "codeKved", message = "Business type with specified KVED code already exists in database. KVED code should be unique.")
-//    })
-    public BusinessType update(
-//        @Unique.List(value = {
-//        @Unique(field = "title", message = "Business type with specified title already exists in database. Title should be unique."),
-//        @Unique(field = "codeKved", message = "Business type with specified KVED code already exists in database. KVED code should be unique.")
-//    })
-        @Valid final BusinessType businessType) {
+    public BusinessType update(@Valid final BusinessType businessType) {
         Objects.requireNonNull(businessType);
         return businessTypeRepo.saveAndFlush(businessType);
     }

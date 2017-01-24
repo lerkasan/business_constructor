@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'user-administration',
+  selector: 'brdo-user-administration',
   templateUrl: './user-administration.component.html',
   styleUrls: ['./user-administration.component.scss']
 
 })
 
-export class UserAdministrationComponent{
-	 constructor() {
-  
+export class UserAdministrationComponent {
+  constructor() {
   }
 }
 

@@ -1,7 +1,23 @@
 package ua.com.brdo.business.constructor.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.InputType;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Permit;
@@ -29,24 +40,15 @@ import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.model.ProcedureType;
 import ua.com.brdo.business.constructor.model.Question;
+import ua.com.brdo.business.constructor.model.Questionnaire;
+import ua.com.brdo.business.constructor.service.BusinessTypeService;
 import ua.com.brdo.business.constructor.service.OptionService;
 import ua.com.brdo.business.constructor.service.PermitService;
 import ua.com.brdo.business.constructor.service.PermitTypeService;
 import ua.com.brdo.business.constructor.service.ProcedureService;
 import ua.com.brdo.business.constructor.service.ProcedureTypeService;
 import ua.com.brdo.business.constructor.service.QuestionService;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import ua.com.brdo.business.constructor.service.QuestionnaireService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
@@ -55,6 +57,12 @@ public class QuestionControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private BusinessTypeService businessTypeService;
+
+    @Autowired
+    private QuestionnaireService questionnaireService;
 
     @Autowired
     private QuestionService questionService;
@@ -80,7 +88,6 @@ public class QuestionControllerTest {
     private MockMvc mockMvc;
     private TestContextManager testContextManager;
 
-    private static final String SINGLE_CHOICE = "SINGLE_CHOICE";
     private static final String MULTI_CHOICE = "MULTI_CHOICE";
     private static final String QUESTION_NOT_FOUND = "Question was not found.";
     private static final String MALFORMED_JSON = "Received malformed JSON.";
@@ -88,14 +95,19 @@ public class QuestionControllerTest {
     private static final String MALFORMED_URL_PARAM = "/api/questions/234@ds";
     private static final String QUESTIONS_URL = "/api/questions/";
     private static final String OPTIONS_DIR = "/options/";
-    private static final String validOptionDataJson = "{\"title\":\"My option\"}";
+    private static final String validOptionDataJson = "{\"title\":\"My new option\"}";
     private static final int NON_EXISTENT_ID = 100000;
     private static final String EXPERT = "EXPERT";
     private static final String USER = "USER";
     private static final String ADMIN = "ADMIN";
     private static final String questionText = "Who are you?";
+    private static final String nextQuestionText = "How do you do?";
     private static final String updatedText = "What is your name?";
     private static final String optionTitle = "My option";
+    private static final String newOptionTitle = "My new option";
+
+    private BusinessType businessType;
+    private Questionnaire questionnaire;
 
     private Question question;
     private Question nextQuestion;
@@ -108,13 +120,14 @@ public class QuestionControllerTest {
         Option option2 = new Option();
         option1.setTitle("option1");
         option2.setTitle("option2");
-        List<Option> options = new ArrayList<>();
+        Set<Option> options = new HashSet<>();
         options.add(option1);
         options.add(option2);
         Question questionWithOptions = new Question();
         questionWithOptions.setText(questionText);
         questionWithOptions.setInputType(InputType.MULTI_CHOICE);
         questionWithOptions.setOptions(options);
+        questionWithOptions.setQuestionnaire(questionnaire);
         return questionWithOptions;
     }
 
@@ -122,6 +135,7 @@ public class QuestionControllerTest {
         Question validQuestion = new Question();
         validQuestion.setText(questionText);
         validQuestion.setInputType(InputType.MULTI_CHOICE);
+        validQuestion.setQuestionnaire(questionnaire);
         return validQuestion;
     }
 
@@ -129,6 +143,7 @@ public class QuestionControllerTest {
         Question validQuestion = new Question();
         validQuestion.setText(text);
         validQuestion.setInputType(InputType.MULTI_CHOICE);
+        validQuestion.setQuestionnaire(questionnaire);
         return validQuestion;
     }
 
@@ -148,7 +163,7 @@ public class QuestionControllerTest {
 
     private Option generateOptionWithNextQuestion(Question nextQuestion) {
         Option option = new Option();
-        option.setTitle(optionTitle);
+        option.setTitle(newOptionTitle);
         option.setQuestion(question);
         option.setNextQuestion(nextQuestion);
         return option;
@@ -188,7 +203,7 @@ public class QuestionControllerTest {
         procedure = procedureService.create(procedure);
 
         Option option = new Option();
-        option.setTitle(optionTitle);
+        option.setTitle(newOptionTitle);
         option.setQuestion(question);
         option.setProcedure(procedure);
         return option;
@@ -202,14 +217,26 @@ public class QuestionControllerTest {
                 .apply(springSecurity())
                 .build();
 
+        businessType = new BusinessType();
+        businessType.setTitle("Business title");
+        businessType.setCodeKved("12.34");
+        businessTypeService.create(businessType);
+
+        questionnaire = new Questionnaire();
+        questionnaire.setTitle("Questionnaire title");
+        questionnaire.setBusinessType(businessType);
+        questionnaire = questionnaireService.create(questionnaire);
+
         question = new Question();
         question.setText(questionText);
         question.setInputType(InputType.SINGLE_CHOICE);
+        question.setQuestionnaire(questionnaire);
         question = questionService.create(question);
 
         nextQuestion = new Question();
-        nextQuestion.setText(questionText);
+        nextQuestion.setText(nextQuestionText);
         nextQuestion.setInputType(InputType.SINGLE_CHOICE);
+        nextQuestion.setQuestionnaire(questionnaire);
         nextQuestion = questionService.create(nextQuestion);
 
         option = new Option();
@@ -283,7 +310,7 @@ public class QuestionControllerTest {
 
         mockMvc.perform(
                 post(QUESTIONS_URL).contentType(APPLICATION_JSON).content(validQuestionJson))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -371,7 +398,7 @@ public class QuestionControllerTest {
 
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId()).contentType(APPLICATION_JSON).content(modifiedQuestion))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -390,7 +417,7 @@ public class QuestionControllerTest {
     public void shouldRejectDeleteQuestionByUnauthorizedTest() throws Exception {
          mockMvc.perform(
                 delete(QUESTIONS_URL + question.getId()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -442,7 +469,7 @@ public class QuestionControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
-                .andExpect((jsonPath("$.title").value(optionTitle)));
+                .andExpect((jsonPath("$.title").value(newOptionTitle)));
     }
 
     @Test
@@ -561,6 +588,7 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 post(QUESTIONS_URL + question.getId() + OPTIONS_DIR)
                 .contentType(APPLICATION_JSON).content(optionWithNextQuestionJson))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(header().string("Location", CoreMatchers.notNullValue()))
@@ -603,6 +631,7 @@ public class QuestionControllerTest {
         mockMvc.perform(
                 put(QUESTIONS_URL + question.getId() + OPTIONS_DIR + option.getId())
                 .contentType(APPLICATION_JSON).content(optionWithNextQuestionJson))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect((jsonPath("$.nextQuestion.id").value(nextQuestion.getId())));

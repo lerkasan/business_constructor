@@ -1,7 +1,8 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -18,13 +19,18 @@ import { ApiService } from './shared';
 import { routing } from './app.routing';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+import {AuthService} from './service/auth.service';
+import {RegistrationService} from './service/registration.service';
+import {QuestionService} from './service/questions.service';
+import {ProcedureService} from './service/procedure.service';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     FormsModule,
-    routing
+    routing,
+    JsonpModule
   ],
   declarations: [
     AppComponent,
@@ -39,7 +45,11 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     UserStatisticsComponent
   ],
   providers: [
-    ApiService
+    ApiService,
+    AuthService,
+    RegistrationService,
+    QuestionService,
+    ProcedureService
   ],
   bootstrap: [AppComponent]
 })

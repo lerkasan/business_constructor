@@ -8,30 +8,26 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import ua.com.brdo.business.constructor.Application;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.repository.UserRepository;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,8 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@AutoConfigureMockMvc
 public class RegistrationTest {
+
+    private static final String REGISTRATION_URL = "/api/users";
 
     @ClassRule
     public static final SpringClassRule SCR = new SpringClassRule();
@@ -54,8 +52,6 @@ public class RegistrationTest {
     private UserRepository userRepo;
 
     @Autowired
-    private WebApplicationContext wac;
-
     private MockMvc mockMvc;
 
     private ObjectMapper jsonMapper = new ObjectMapper();
@@ -78,7 +74,6 @@ public class RegistrationTest {
     public void setup() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 
         invalidUserData.put("username", "test1@mail.com");
         invalidUserData.put("email", "test1@mail.com");
@@ -94,7 +89,7 @@ public class RegistrationTest {
         String validUserDataJson = jsonMapper.writeValueAsString(validUserData);
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(validUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(validUserDataJson))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.password").doesNotExist())
@@ -108,7 +103,7 @@ public class RegistrationTest {
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string((containsString("Incorrect format of e-mail."))));
@@ -121,7 +116,7 @@ public class RegistrationTest {
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string((containsString("Password length must be between 8 and 32 characters."))));
@@ -134,7 +129,7 @@ public class RegistrationTest {
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.message").value("Password can include upper and lower case latin letters, numerals (0-9) and special symbols."));
@@ -147,7 +142,7 @@ public class RegistrationTest {
         String invalidUserDataJson = jsonMapper.writeValueAsString(invalidUserData);
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.message").value("User with this e-mail is already registered. Try another e-mail."));
@@ -158,7 +153,7 @@ public class RegistrationTest {
         String invalidUserDataJson = "{\"email\": \"email@mail.com\"}";
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string((containsString("Password field is required."))));
@@ -169,7 +164,7 @@ public class RegistrationTest {
         String invalidUserDataJson = "{\"password\": \"12345678901\"}";
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidUserDataJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidUserDataJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string((containsString("E-mail field is required."))));
@@ -180,7 +175,7 @@ public class RegistrationTest {
         String invalidEmplyJson = "{}";
 
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(invalidEmplyJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(invalidEmplyJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string((containsString("Password field is required."))))
@@ -191,7 +186,7 @@ public class RegistrationTest {
     @Parameters({"vbvsbb", "{vbvsbb}"})
     public void shouldRejectRegisterReceiveNotJsonTest(String notJson) throws Exception {
         mockMvc.perform(
-                post("/register").contentType(APPLICATION_JSON).content(notJson))
+                post(REGISTRATION_URL).contentType(APPLICATION_JSON).content(notJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.message").value("Received malformed JSON."));

@@ -25,7 +25,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "option_")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"title", "question"})
+@EqualsAndHashCode(of = {"title", "question.text", "question.questionnaire.title"})
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(value = {"question"})
 public class Option {
@@ -44,7 +44,7 @@ public class Option {
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
-    @JsonIgnoreProperties(value = {"options", "inputType", "text"})
+    @JsonIgnoreProperties(value = {"options", "inputType", "text", "questionnaire"})
     private Question nextQuestion;
 
     @ManyToOne
@@ -53,21 +53,38 @@ public class Option {
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
     private Procedure procedure;
 
+    public void setProcedure(Procedure procedure) {
+        if (procedure != null) {
+            if (procedure.getId() == null) {
+                throw new IllegalArgumentException("Illegal id in related procedure.");
+            } else {
+                this.procedure = procedure;
+            }
+        }
+    }
+
     public void setNextQuestion(Question nextQuestion) {
         if (nextQuestion != null) {
             if (nextQuestion.getId() == null) {
                 throw new IllegalArgumentException("Illegal id in related question.");
             }
             else {
+                checkLinkBetweenQuestionAndNextQuestion(nextQuestion);
                 this.nextQuestion = nextQuestion;
-                checkLinkBetweenQuestionAndNextQuestion();
             }
         }
     }
 
-    public void checkLinkBetweenQuestionAndNextQuestion() {
-        if ((nextQuestion != null) && (question != null) && (question.getId() != null) && (question.getId().equals(nextQuestion.getId()))) {
-            throw new IllegalArgumentException("Question can't be linked to itself.");
+    public void checkLinkBetweenQuestionAndNextQuestion(Question nextQuestion) {
+        if ((nextQuestion != null) && (question != null)) {
+            if ((question.getId() != null) && (question.getId().equals(nextQuestion.getId()))) {
+                throw new IllegalArgumentException("Question can't be linked to itself.");
+            }
+            Questionnaire questionnaire = question.getQuestionnaire();
+            Questionnaire nextQuestionnaire = nextQuestion.getQuestionnaire();
+            if ((nextQuestionnaire != null) && (!nextQuestionnaire.equals(questionnaire))) {
+                throw new IllegalArgumentException("Question can be linked only to the questions from the same questionnaire.");
+            }
         }
     }
 }

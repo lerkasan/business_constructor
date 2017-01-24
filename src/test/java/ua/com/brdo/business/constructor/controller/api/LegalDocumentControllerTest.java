@@ -3,34 +3,39 @@ package ua.com.brdo.business.constructor.controller.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.junit.Before;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
-import ua.com.brdo.business.constructor.model.LegalDocument;
-import ua.com.brdo.business.constructor.service.LegalDocumentService;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import ua.com.brdo.business.constructor.model.LegalDocument;
+import ua.com.brdo.business.constructor.service.LegalDocumentService;
+import ua.com.brdo.business.constructor.service.NotFoundException;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 @Transactional
 public class LegalDocumentControllerTest {
     private static final String ADMIN = "ADMIN";
@@ -38,11 +43,11 @@ public class LegalDocumentControllerTest {
     private static final String USER = "USER";
     private static final String LAWS_URL = "/api/laws/";
     private static final long UNEXIST_ID = 404;
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+
     @Autowired
     private LegalDocumentService legalDocumentService;
 
+    @Autowired
     private MockMvc mvc;
 
     private LegalDocument generateLegalDocument() {
@@ -77,12 +82,6 @@ public class LegalDocumentControllerTest {
     private String generateJSON(Object legalDocument) throws JsonProcessingException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return ow.writeValueAsString(legalDocument);
-    }
-
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(springSecurity()).build();
     }
 
     @Test

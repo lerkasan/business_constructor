@@ -7,7 +7,10 @@ import java.util.Optional;
 
 import ua.com.brdo.business.constructor.model.Role;
 
-@Repository("RoleRepository")
+@Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
+
     Optional<Role> findByTitle(String title);
+
+    int countByTitleIgnoreCase(final String title);
 }

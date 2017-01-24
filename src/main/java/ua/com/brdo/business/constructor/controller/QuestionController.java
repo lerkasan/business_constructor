@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -102,15 +103,14 @@ public class QuestionController {
     }
 
     @GetMapping(path = "/{questionId}/options")
-    public List<Option> listOptions(@ApiIgnore @ModelAttribute Question question) {
+    public Set<Option> listOptions(@ApiIgnore @ModelAttribute Question question) {
         return question.getOptions();
     }
 
     @GetMapping(path = "/{questionId}/options/{optionId}")
     public Option getOption(@ApiIgnore @ModelAttribute Question question, @PathVariable Long optionId) {
         long questionId = question.getId();
-        Option option = optionService.findByQuestionIdAndOptionId(questionId, optionId);
-        return option;
+        return optionService.findByQuestionIdAndOptionId(questionId, optionId);
     }
 
     @PutMapping(path = "/{questionId}/options/{optionId}", consumes = APPLICATION_JSON_VALUE)
@@ -121,7 +121,11 @@ public class QuestionController {
         Question modifiedNextQuestion = modifiedOption.getNextQuestion();
         Procedure modifiedProcedure = modifiedOption.getProcedure();
         option.setTitle(modifiedTitle);
-        option.setNextQuestion(modifiedNextQuestion);
+        if (modifiedNextQuestion != null) {
+            Long nextQuestionId = modifiedNextQuestion.getId();
+            Question persistedNextQuestion = questionService.findById(nextQuestionId);
+            option.setNextQuestion(persistedNextQuestion);
+        }
         option.setProcedure(modifiedProcedure);
         return optionService.update(option);
     }

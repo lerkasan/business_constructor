@@ -1,7 +1,7 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'my-carousel',
+  selector: 'brdo-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss']
 })
@@ -14,5 +14,4 @@ export class CarouselComponent implements OnInit {
   ngOnInit() {
     console.log('Hello header');
   }
-
 }

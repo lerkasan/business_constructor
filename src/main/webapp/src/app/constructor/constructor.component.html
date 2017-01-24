@@ -1,4 +1,99 @@
-<h2>Модуль конструктора питань (в розробці)</h2>
+<div class="constructor">
+  <form class="form-group businesType">
+    <label for="businesType">Виберіть тип бізнесу або створить новий</label>
+    <input class="form-control"
+           placeholder="Введіть назву бізнесу" type="text"
+           id="businesType"
+           required [(ngModel)]="businessType.title"
+           name="businesType" #name="ngModel">
+    <input class="form-control"
+           placeholder="Введіть назву КВЕД"
+           id="businesType"
+           required
+           [(ngModel)]="businessType.codeKved"
+           name="businesType" #name="ngModel">
+    <div class="clear"></div>
+    <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
+    <a class="btn btn-primary">Завантажити існуючій</a>
+  </form>
+  <form class="form-group businesType">
+    <label for="businesType">Ім'я опитувальника</label>
+    <input class="form-control"
+           placeholder="Введіть назву бізнесу" type="text"
+           id="businesType"
+           required [(ngModel)]="questionnaire.title"
+           name="businesType" #name="ngModel">
+    <div class="clear"></div>
+    <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
+    <a class="btn btn-primary">Завантажити існуючій</a>
+  </form>
+  <div class="questions">
+    <div *ngFor="let question of questions"
+         [class.selected]="question === selectedQuestion"
+         (click)="onSelectQuestion(question)">
+      <label>Питання</label>
+      <input class="form-control"
+             [(ngModel)]="question.text"
+             placeholder="Редагування питання"
+             (blur)="saveQuestion(question)"/>
+      <input type="checkbox"
+             (change)="changeInputType(question)">Декілька варіантів відповіді
+      <div class="option" *ngFor="let option of question.options" (click)="onSelectOption(option)">
+        <label>Відповідь</label>
+        <input class="form-control"
+               [(ngModel)]="option.title"
+               placeholder="Редагування відповіді"
+               (blur)="saveOption(question, option)"/>
+        <div *ngIf="selectedOption == option && selectedQuestion == question">
+
+          <div class="btn-group">
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                Приеднати питання
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let dropDownQuestion of questions"
+                    (click)="questionLinker(dropDownQuestion, option); onSelectQuestion(question);">
+                  <div *ngIf="dropDownQuestion != question">{{dropDownQuestion.text}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="btn-group">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle"
+                      type="button"
+                      data-toggle="dropdown"
+                      (click)="getProcedure()">
+                Приеднати картку
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let procedure of procedures"
+                    (click)="procedureLinker(procedure); onSelectQuestion(question); onSelectOption(option)">
+                  {{procedure.name}}
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btnAddOption" *ngIf="selectedQuestion == question">
+        <button class="btn btn-sm btn-success" (click)="addOption(question.options)">Додати
+          відповідь
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteLastOption(question.options)">Видалити
+          останюю відповідь
+        </button>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="addQuestion()">Додати питання</button>
+    <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
+  </div>
+</div>
+
+
+
 
 
 

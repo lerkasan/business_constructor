@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.exception;
+package ua.com.brdo.business.constructor.service;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException() {

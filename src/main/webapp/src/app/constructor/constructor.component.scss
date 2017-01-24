@@ -1,1 +1,66 @@
 
+.businesType, .questions {
+  margin-top: 10px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+
+}
+
+.businesType input {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.businesType label {
+  margin: 0;
+}
+
+.clear {
+  clear: both;
+}
+
+.businesName {
+  width: 100%;
+  height: 32px;
+  border: 2px solid gray;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.questions label {
+  margin: 5px;
+}
+
+.questions button {
+  margin: 10px 0;
+}
+
+.questions input {
+  border: 1 solid green;
+}
+
+.questionField {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 10px;
+  font-style: 18px;
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+.option {
+  padding-left: 20px;
+}
+
+.newOption {
+  width: 100%;
+  height: 32px;
+  border: 2px solid gray;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.btnAddOption {
+  padding-left: 20px;
+}

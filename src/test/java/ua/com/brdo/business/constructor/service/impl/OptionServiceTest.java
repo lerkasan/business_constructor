@@ -1,25 +1,21 @@
-package ua.com.brdo.business.constructor.service;
+package ua.com.brdo.business.constructor.service.impl;
 
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-
-import lombok.SneakyThrows;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
 import ua.com.brdo.business.constructor.model.Option;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.repository.OptionRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.OptionService;
-import ua.com.brdo.business.constructor.service.impl.OptionServiceImpl;
-
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Transactional

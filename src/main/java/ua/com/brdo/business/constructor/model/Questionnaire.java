@@ -1,14 +1,15 @@
 package ua.com.brdo.business.constructor.model;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.REMOVE;
-import static javax.persistence.GenerationType.IDENTITY;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,12 +22,16 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
 import ua.com.brdo.business.constructor.constraint.Unique;
+import ua.com.brdo.business.constructor.service.impl.QuestionnaireServiceImpl;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.REMOVE;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "questionnaire")
@@ -36,7 +41,7 @@ import ua.com.brdo.business.constructor.constraint.Unique;
 @Validated
 @JsonInclude(NON_NULL)
 @Unique.List(value = {
-    @Unique(field = "title", message = "Questionnaire with specified title already exists. Title should be unique.")
+    @Unique(field = "title", service = QuestionnaireServiceImpl.class, message = "Questionnaire with specified title already exists. Title should be unique.")
 })
 public class Questionnaire {
     @Id
@@ -46,7 +51,6 @@ public class Questionnaire {
     @NotEmpty(message = "Title field of questionnaire is required.")
     @Size(max = 1000, message = "Maximum length of questionnaire title is 1000 characters.")
     @Column(unique = true, nullable = false, length = 1000)
-   // @Unique(object = Questionnaire.class, field = "title", message = "Questionnaire with specified title already exists. Title should be unique.")
     private String title;
 
     @ManyToOne

@@ -107,6 +107,12 @@
             <version>2.6.1</version>
         </dependency>
 
+        <!-- Apache Commons Bean Utils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

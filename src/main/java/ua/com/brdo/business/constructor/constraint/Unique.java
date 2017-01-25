@@ -1,24 +1,23 @@
 package ua.com.brdo.business.constructor.constraint;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import javax.validation.Constraint;
-import javax.validation.ConstraintTarget;
-import javax.validation.Payload;
-
-@Target(value = {TYPE, ANNOTATION_TYPE /*, PARAMETER, METHOD */})
+@Target(value = {TYPE, ANNOTATION_TYPE})
 @Retention(value = RUNTIME)
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
 
     String field();
+
+    Class<? extends UniqueValidatable> service();
 
     String message();
 
@@ -26,12 +25,9 @@ public @interface Unique {
 
     Class<? extends Payload>[] payload() default {};
 
-    @Target({TYPE, ANNOTATION_TYPE /*, PARAMETER, METHOD */})
+    @Target({TYPE, ANNOTATION_TYPE})
     @Retention(RUNTIME)
     @interface List {
-
         Unique[] value();
-
-//        ConstraintTarget validationAppliesTo() default ConstraintTarget.IMPLICIT;
     }
 }

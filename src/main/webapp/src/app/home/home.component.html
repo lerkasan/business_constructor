@@ -1,217 +1,196 @@
-
 <brdo-header>
 </brdo-header>
 <div class="container">
-	<div class="row first_row">
-	<div class="col-md-4 carousel_list">
-	<brdo-carousel>
+  <div class="row first_row">
+    <div class="col-md-4 carousel_list">
+      <brdo-carousel>
 
-	</brdo-carousel>
+      </brdo-carousel>
+    </div>
+    <div class="col-md-8 questionnaire">
+      <h3>Ви бажаєте розпочати бізнес?</h3>
+      <p class="title"> Дайте відповіді для персоналізації етапів реєстрації</p>
+      <div>
+        <p>Який тип бізнесу вас цікавить?(найменування у КВЄД)</p>
+        <div class="form-group">
+          <select class="form-control" id="sel0"
+                  [(ngModel)]="selectedBusinessType"
+                  (change)="onSelectBusinessType">
+            <option hidden>Виберіть квєд бізнесу</option>
+            <option *ngFor="let businessType of businessTypes" [value]="businessType.value">
+              <span>{{businessType.codeKved}}:{{businessType.title}}</span>
+              <i class="fa fa-check"></i>
+            </option>
+          </select>
+        </div>
+        <p>Який конкретно бізнес?(найменування опитувальника)</p>
+        <div class="form-group">
+          <select class="form-control" id="sel1" #t (change)="onSelectQuestionnaire(t.value)">
+            <option hidden>Виберіть бізнес</option>
+            <option *ngFor="let questionnaire of questionnaires"
+                    [value]="questionnaire.id">
+              {{questionnaire.title}}
+              <i class="fa fa-check"></i>
+            </option>
+          </select>
+        </div>
+        <div *ngFor="let question of questions">
+          <p>{{question.text}}</p>
+          <div class="radio" *ngFor="let option of question.options">
+            <label>
+              <input type="radio" name="radioReg">{{option.title}}
+              <a href="#" data-toggle="tooltip" title="Тут повиненні бути додаткові відомості!"
+                 class="info-tooltip"><img src="/img/info.png"></a>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="question != undefined">
+          <p *ngFor="let question of questions">{{question.text}}</p>
+        </div>
+      </div>
 
-		</div>
-	<div class="col-md-8 questionnaire">
-			<h3>Ви бажаєте розпочати бізнес?</h3>
-			<p class="title"> Дайте відповіді для персоналізації етапів реєстрації</p>
-			<div>
-				<p>Який вид бізнесу цікавить?</p>
-				<div class="radio">
-				  <label>
-				  	<input type="radio" name="radioReg">ФОП
-				  	<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  </label>
-				</div>
-				<div class="radio">
-				  <label>
-				  <input type="radio" name="radioReg">Юридична особа
-					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  </label>
-				</div>
-			</div>
+    </div>
+  </div>
+  <div class="row second_row">
+    <div class="col-md-4 main_steps">
+      <ol class="steps">
+        <li>Реєстрація ФОП</li>
+        <li>Реєстрація за загальною сиситемою оподаткування</li>
+        <li>Реєстрація рестораторів розрахункових операцій</li>
+        <li>Реєстрація еквайрінгу</li>
+        <li>Отримання ліцензії на право роздрібної торгівлі алкогольними напоями</li>
+        <li>Отримання висновку Державно санітарно-епідеміологічної служби</li>
+        <li>Реєстрація відповідності пожежній безпеці</li>
+        <li>Oтримання дозволу на розміщення зовнішньої реклами</li>
+      </ol>
+    </div>
+    <div class="col-md-8 ">
 
-			<div>
-				<p>Дохід, що Ви плануєте отримувати?</p>
-				<div class="radio">
-				  <label>
-				  	<input type="radio" name="optradio">До 1 000 000 грн. на рік
-					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Куди звернутись
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Документи, що потрібні
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Скільки коштує обовязковий платіж
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Результат
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Результат можна отримати
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Чому можуть відмовити
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Як можна оскаржити відмову
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
+              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
+              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                  data-toggle="collapse">Нормативні акти
+          </button>
+        </div>
+        <div class="panel-collapse collapse out">
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque ullam cupiditate
+              repellat dolorem maxime suscipit labore officiis, commodi aliquam fugit in inventore,
+              eum velit. Ex officia placeat veritatis repellat hic.</p>
+          </div>
+        </div>
+      </div>
 
-				  </label>
-				</div>
-				<div class="radio">
-				  <label>
-				  	<input type="radio" name="optradio">Від 1 000 000 грн. на рік
-					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  </label>
-				</div>
-				<div class="radio">
-				  <label>
-					  <input type="radio" name="optradio">Від 1 000 000 грн. на рік
-					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  </label>
-				</div>
-			</div>
-			<div>
-				<p>В межах бізнесу планується?</p>
-				<div class="checkbox">
-				  <label>
-				  	<input type="checkbox" value="">Реалізовувати алкогольні напої
-				  	<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  	</label>
-				</div>
-				<div class="checkbox">
-				  <label>
-				  	<input type="checkbox" value="">Реалізовувати тютюнові вироби
-					<a href="#" data-toggle="tooltip" title="Привет!" class="info-tooltip"><img src="/img/info.png"></a>
-				  </label>
-				</div>
-			</div>
-			<div>
-				<p>Для ведення бізнесу Ви маєте у власності/орендіприміщення?</p>
-				<div class="radio">
-				  <label><input type="radio" name="rooms">ТАК</label>
-				</div>
-				<div class="radio">
-				  <label><input type="radio" name="rooms">НІ</label>
-			</div>
-			</div>
-			<div>
-				<p>Персоналізація етапів?</p>
-				<div class="form-group">
-					<select class="form-control" id="">
-					   <option hidden>Місце Вашої реєстрації?</option>
-					   <option>1</option>
-					   <option>1</option>
-					   <option>1</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<select class="form-control" id="">
-					   <option hidden>Місце Ведення бізнесу?</option>
-					   <option>1</option>
-					   <option>1</option>
-					   <option>1</option>
-					</select>
-				</div>
-			</div>
-				<div class="main-button text-center">
-					<button type="button" class="btn btn-xs btn-primary">Зберегти</button>
-					<button type="button" class="btn btn-xs btn-danger">Відміна</button>
-					<button type="button" class="btn btn-xs btn-warning">Відправити на почту</button>
-
-				</div>
-				<button type="button" class="btn btn-info  btn-block">Сформулювати персональні етапи реєстрації бізнесу</button>
-
-		</div>
-	</div>
-		<div class="row second_row">
-			<div class="col-md-4 main_steps">
-				<ol class="steps">
-					<li>Реєстрація ФОП</li>
-					<li>Реєстрація за загальною сиситемою оподаткування</li>
-					<li>Реєстрація рестораторів розрахункових операцій</li>
-					<li>Реєстрація еквайрінгу</li>
-					<li>Отримання ліцензії на право роздрібної торгівлі алкогольними напоями</li>
-					<li>Отримання висновку Державно санітарно-епідеміологічної служби</li>
-					<li>Реєстрація відповідності пожежній безпеці</li>
-					<li>Oтримання дозволу на розміщення зовнішньої реклами</li>
-				</ol>
-			</div>
-			<div class="col-md-8 ">
-
-				  <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Куди звернутись</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Документи, що потрібні </button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Скільки коштує обовязковий платіж</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Результат</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Результат можна отримати</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Чому можуть відмовити</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				        <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Як можна оскаржити відмову</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus. Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat. Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
-				          </div>
-				        </div>
-				      </div>
-				      <div class="panel panel-default">
-				        <div class="panel-heading">
-				          <button type="button" class="btn btn-default btn-block spoiler-trigger" data-toggle="collapse">Нормативні акти</button>
-				        </div>
-				        <div class="panel-collapse collapse out">
-				          <div class="panel-body">
-				            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque ullam cupiditate repellat dolorem maxime suscipit labore officiis, commodi aliquam fugit in inventore, eum velit. Ex officia placeat veritatis repellat hic.</p>
-				          </div>
-				        </div>
-				      </div>
-
-				   <div class="[ form-group ] text-center">
-			            <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary" autocomplete="off" />
-			            <div class="[ btn-group ]">
-			                <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
-			                    <span class="[ glyphicon glyphicon-ok ]"></span>
-			                    <span> </span>
-			                </label>
-			                <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
-			                    Завершити етап
-			                </label>
-			            </div>
-			        </div>
-				</div>
-		</div>
-
-
+      <div class="[ form-group ] text-center">
+        <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary"
+               autocomplete="off"/>
+        <div class="[ btn-group ]">
+          <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
+            <span class="[ glyphicon glyphicon-ok ]"></span>
+            <span> </span>
+          </label>
+          <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
+            Завершити етап
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>

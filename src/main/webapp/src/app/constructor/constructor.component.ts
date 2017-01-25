@@ -5,7 +5,8 @@ import {QuestionService} from '../service/questions.service';
 import {Procedure} from '../model/procedure';
 import {ProcedureService} from '../service/procedure.service';
 import {BusinessType} from '../model/business.type';
-import {Questionnare} from '../model/questionnaire';
+import {Questionnaire} from '../model/questionnaire';
+import {BusinessTypeService} from '../service/business.type.service';
 
 @Component({
   selector: 'brdo-constructor-panel',
@@ -23,14 +24,17 @@ export class ConstructorComponent implements OnInit {
   questions: Question[];
   procedures: Procedure[];
   businessType: BusinessType;
-  questionnaire: Questionnare;
+  questionnaire: Questionnaire;
+  wrongBusinessType = false;
+  wrongQuestionnaire = false;
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
     {value: 'MULTI_CHOICE'}
   ];
 
-  constructor(private questionService: QuestionService, private prcedureService: ProcedureService) {
+  constructor(private questionService: QuestionService, private procedureService: ProcedureService,
+              private businessTypeService: BusinessTypeService) {
   }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class ConstructorComponent implements OnInit {
     this.businessType = new BusinessType();
     this.businessType.title = '';
     this.businessType.codeKved = '';
-    this.questionnaire = new Questionnare();
+    this.questionnaire = new Questionnaire();
     this.questionnaire.title = '';
   }
 
@@ -54,6 +58,8 @@ export class ConstructorComponent implements OnInit {
 
   addQuestion(): void {
     if (this.questionnaire.id === undefined || this.businessType.id === undefined) {
+      this.wrongQuestionnaire = true;
+      this.wrongBusinessType = true;
       return;
     }
     if (this.questions === undefined) {
@@ -72,7 +78,7 @@ export class ConstructorComponent implements OnInit {
     option.title = '';
     let question = new Question();
     question.text = '';
-    question.questionnare = new Id(this.questionnaire.id);
+    question.questionnaire = new Id(this.questionnaire.id);
     question.options = [option];
     question.inputType = this.inputType[0].value;
     return question;
@@ -155,6 +161,8 @@ export class ConstructorComponent implements OnInit {
     if (question.text === undefined || question.text === '') {
       return;
     }
+    console.log(question);
+    console.log(JSON.stringify(question));
     if (question.id === undefined) {
       this.questionService.createQuestion(question)
         .subscribe(
@@ -211,7 +219,7 @@ export class ConstructorComponent implements OnInit {
   }
 
   getProcedure() {
-    this.prcedureService.getAllProcedure()
+    this.procedureService.getAllProcedure()
       .subscribe(
         (response: Procedure[]) => {
           this.procedures = response;
@@ -222,15 +230,23 @@ export class ConstructorComponent implements OnInit {
 
   saveBusinessType() {
     if (this.businessType.title === undefined || this.businessType.title === '') {
+      this.wrongBusinessType = true;
       return;
     }
     if (this.businessType.codeKved === undefined || this.businessType.codeKved === '') {
+      this.wrongBusinessType = true;
       return;
     }
-    this.questionService.createBusinessType(this.businessType)
+    this.businessTypeService.createBusinessType(this.businessType)
       .subscribe(
-        (response: BusinessType) => {
-          this.businessType = response;
+        (response) => {
+          if (response.status === 201) {
+            this.businessType = response.json() as BusinessType;
+            this.wrongBusinessType = false;
+          }
+          if (response.status !== 201) {
+            this.wrongBusinessType = true;
+          }
         },
         error => console.log(<any>error)
       );
@@ -238,16 +254,24 @@ export class ConstructorComponent implements OnInit {
 
   saveQuestionnare() {
     if (this.businessType.id === undefined) {
+      this.wrongQuestionnaire = true;
       return;
     }
     if (this.questionnaire.title === undefined || this.questionnaire.title === '') {
+      this.wrongQuestionnaire = true;
       return;
     }
-    this.questionnaire.id = this.businessType.id;
+    this.questionnaire.businessType = new Id(this.businessType.id);
     this.questionService.createQuestionare(this.questionnaire)
       .subscribe(
-        (response: Questionnare) => {
-          this.questionnaire = response;
+        (response) => {
+          if (response.status === 201) {
+            this.wrongQuestionnaire = false;
+            this.questionnaire = response.json() as Questionnaire;
+          }
+          if (response.status !== 201) {
+            this.wrongQuestionnaire = true;
+          }
         },
         error => console.log(<any>error)
       );

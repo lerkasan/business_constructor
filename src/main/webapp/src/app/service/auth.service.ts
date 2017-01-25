@@ -5,7 +5,7 @@ import {User} from '../model/user';
 
 @Injectable()
 export class AuthService {
-  host = 'http://localhost:8080';
+
   private authenticatedUser = new User;
 
   constructor(private http: Http) {
@@ -16,9 +16,8 @@ export class AuthService {
     let headers = new Headers({'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'});
     headers.append('cache-control', 'no-cache');
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
-    return this.http.post(this.host + '/login', body, options)
+    return this.http.post('/login', body, options)
       .map((res) => {
         if (res.status === 200) {
           this.authenticatedUser = res.json() as User;

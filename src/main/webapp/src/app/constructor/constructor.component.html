@@ -1,5 +1,10 @@
 <div class="constructor">
   <form class="form-group businesType">
+    <div [hidden]="!wrongBusinessType" class="alert alert-warning">
+      Неправильний формат заповнення. Або така форма вже існує.
+      Поле назва не повинно бути пустим.
+      Поле КВЄД пара з двох чисел розділенних точкою.
+    </div>
     <label for="businesType">Виберіть тип бізнесу або створить новий</label>
     <input class="form-control"
            placeholder="Введіть назву бізнесу" type="text"
@@ -16,6 +21,9 @@
     <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
     <a class="btn btn-primary">Завантажити існуючій</a>
   </form>
+  <div [hidden]="!wrongQuestionnaire" class="alert alert-warning">
+    Поле не повинно бути пустим або ви не зберегли тип бізнесу.
+  </div>
   <form class="form-group businesType">
     <label for="businesType">Ім'я опитувальника</label>
     <input class="form-control"
@@ -27,6 +35,9 @@
     <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
     <a class="btn btn-primary">Завантажити існуючій</a>
   </form>
+  <div [hidden]="!wrongQuestionnaire" class="alert alert-warning">
+    Спочатку треба зберегти поля що лежать вище.
+  </div>
   <div class="questions">
     <div *ngFor="let question of questions"
          [class.selected]="question === selectedQuestion"
@@ -54,7 +65,8 @@
               <ul class="dropdown-menu">
                 <li *ngFor="let dropDownQuestion of questions"
                     (click)="questionLinker(dropDownQuestion, option); onSelectQuestion(question);">
-                  <div *ngIf="dropDownQuestion != question">{{dropDownQuestion.text}}</div>
+                  <span *ngIf="dropDownQuestion != question">{{dropDownQuestion.text}}</span>
+                  <i class="fa fa-check"></i>
                 </li>
               </ul>
             </div>
@@ -70,9 +82,9 @@
               <ul class="dropdown-menu">
                 <li *ngFor="let procedure of procedures"
                     (click)="procedureLinker(procedure); onSelectQuestion(question); onSelectOption(option)">
-                  {{procedure.name}}
+                  <span>{{procedure.name}}</span>
+                  <i class="fa fa-check"></i>
                 </li>
-
               </ul>
             </div>
           </div>

@@ -3,8 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Question} from '../model/question';
 import {Option} from '../model/option';
-import {BusinessType} from '../model/business.type';
-import {Questionnare} from "../model/questionnaire";
+import {Questionnaire} from '../model/questionnaire';
 
 @Injectable()
 export class QuestionService {
@@ -48,26 +47,28 @@ export class QuestionService {
 
   }
 
-  public createBusinessType(businessType: BusinessType) {
-    let path = '/api/business-types';
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
-
-    return this.http.post(path, JSON.stringify(businessType), options)
-      .map((response) => {
-        return response.json() as BusinessType;
-      })
-      .catch(this.handleError);
-  }
-
-  public createQuestionare(questionare: Questionnare) {
+  public createQuestionare(questionare: Questionnaire) {
     let path = '/api/questionnaires';
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
 
     return this.http.post(path, JSON.stringify(questionare), options)
       .map((response) => {
-          return response.json() as Questionnare;
+          return response;
+        }
+      )
+      .catch(this.handleError);
+  }
+
+  public listQuestionnaires() {
+    let path = '/api/questionnaires';
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.get(path, options)
+      .map(
+        (response) => {
+          return response.json() as Questionnaire[];
         }
       )
       .catch(this.handleError);

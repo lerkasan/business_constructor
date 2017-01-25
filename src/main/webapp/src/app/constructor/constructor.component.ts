@@ -111,7 +111,6 @@ export class ConstructorComponent implements OnInit {
         .subscribe(
           (ques: Question) => {
             this.questions[elementNumber] = ques;
-            console.log(ques.id);
           },
           error => console.log(<any>error)
         );
@@ -148,7 +147,6 @@ export class ConstructorComponent implements OnInit {
 
   saveOption(question: Question, option: Option): void {
     let elementNumber = this.questions.indexOf(question);
-    console.log(JSON.stringify(question));
 
     if (this.selectedTitle === option.title) {
       return;
@@ -190,7 +188,6 @@ export class ConstructorComponent implements OnInit {
     }
 
     option.nextQuestion = new Id(dropDownQuestion.id);
-    console.log(JSON.stringify(option));
 
     this.questionService.createLinkFromOption(option, this.selectedQuestion.id)
       .subscribe(

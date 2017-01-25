@@ -45,44 +45,36 @@ export class HomeComponent implements OnInit {
           console.log(error);
         }
       );
-    console.log('Amasdfasd');
   }
 
   getListQuestionnair() {
-    console.log('Get all questionnaire');
     if (this.questionnaires === undefined) {
       let questionnaire = new Questionnaire();
       questionnaire.questions = [new Question];
       questionnaire.businessType = new BusinessType;
       this.questionnaires = [questionnaire];
     }
-    console.log(this.questionnaires);
     this.questionService.listQuestionnaires()
       .subscribe(
         (response) => {
-          console.log(response);
           this.questionnaires = response;
         },
         (error) => {
           console.log(error);
         }
       );
-    console.log(this.questionnaires);
   }
 
   onSelectQuestionnaire(id) {
-    console.log(id);
     for (let questionnaire of this.questionnaires) {
       if (questionnaire.id.toString() === id) {
         this.selectedQuestionnaire = questionnaire;
         this.questions = this.selectedQuestionnaire.questions;
       }
     }
-    console.log(this.selectedQuestionnaire);
   }
 
   onSelectBusinessType() {
-    console.log(this.selectedBusinessType);
   }
 
 }

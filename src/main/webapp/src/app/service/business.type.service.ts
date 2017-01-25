@@ -5,7 +5,6 @@ import {BusinessType} from '../model/business.type';
 
 @Injectable()
 export class BusinessTypeService {
-  host = 'http://localhost:8080';
 
   constructor(private http: Http) {
   }
@@ -14,9 +13,8 @@ export class BusinessTypeService {
     let url = '/api/business-types';
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
-    return this.http.get(this.host + url, options)
+    return this.http.get(url, options)
       .map(
         (response) => {
           return response.json() as BusinessType[];
@@ -29,9 +27,8 @@ export class BusinessTypeService {
     let path = '/api/business-types';
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
-    options.withCredentials = true;
 
-    return this.http.post(this.host + path, JSON.stringify(businessType), options)
+    return this.http.post(path, JSON.stringify(businessType), options)
       .map((response) => {
         return response;
       })

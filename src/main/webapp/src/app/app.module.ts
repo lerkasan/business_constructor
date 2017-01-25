@@ -23,6 +23,7 @@ import {AuthService} from './service/auth.service';
 import {RegistrationService} from './service/registration.service';
 import {QuestionService} from './service/questions.service';
 import {ProcedureService} from './service/procedure.service';
+import {BusinessTypeService} from './service/business.type.service';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import {ProcedureService} from './service/procedure.service';
     AuthService,
     RegistrationService,
     QuestionService,
-    ProcedureService
+    ProcedureService,
+    BusinessTypeService
   ],
   bootstrap: [AppComponent]
 })

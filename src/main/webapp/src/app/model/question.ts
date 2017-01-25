@@ -5,7 +5,7 @@ export class Question {
   text: string;
   inputType: string;
   options: Option[];
-  questionnare: any;
+  questionnaire: any;
 
   constructor() {
   }

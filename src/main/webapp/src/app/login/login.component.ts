@@ -19,7 +19,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log('Must be roted to the home');
   }
 
   authRequest() {

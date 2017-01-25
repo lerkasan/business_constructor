@@ -70,12 +70,12 @@ public class UserServiceImpl implements UserService, UserDetailsService, UniqueV
             .orElseThrow(() -> new UsernameNotFoundException("User with given user was not found."));
     }
 
-    public boolean isAvailable(String field, String value, Long id) {
-        switch (field) {
+    public boolean isAvailable(String fieldName, String fieldValue, Long id) {
+        switch (fieldName) {
             case "username":
-                return isUsernameAvailable(value, id);
+                return isUsernameAvailable(fieldValue, id);
             case "email":
-                return isEmailAvailable(value, id);
+                return isEmailAvailable(fieldValue, id);
             default:
                 throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
         }

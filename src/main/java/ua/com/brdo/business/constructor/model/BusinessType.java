@@ -1,10 +1,9 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,15 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 import ua.com.brdo.business.constructor.constraint.Unique;
 import ua.com.brdo.business.constructor.service.impl.BusinessTypeServiceImpl;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "business_type")

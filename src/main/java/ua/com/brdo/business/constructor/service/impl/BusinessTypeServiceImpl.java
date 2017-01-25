@@ -1,7 +1,6 @@
 package ua.com.brdo.business.constructor.service.impl;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -78,15 +77,15 @@ public class BusinessTypeServiceImpl implements BusinessTypeService, UniqueValid
         return businessTypeRepo.findAll();
     }
 
-    public boolean isAvailable(String field, String value, Long id) {
-        if (isNull(value)) {
+    public boolean isAvailable(String fieldName, String fieldValue, Long id) {
+        if (isNull(fieldValue)) {
             return false;
         }
-        switch (field) {
+        switch (fieldName) {
             case "title":
-                return nonNull(id) ? businessTypeRepo.titleAvailable(value, id) : businessTypeRepo.titleAvailable(value);
+                return businessTypeRepo.titleAvailable(fieldValue, id);
             case "codeKved":
-                return nonNull(id) ? businessTypeRepo.codeKvedAvailable(value, id) : businessTypeRepo.codeKvedAvailable(value);
+                return businessTypeRepo.codeKvedAvailable(fieldValue, id);
             default:
                 throw new IllegalArgumentException(
                     "Unexpected field was passed to isAvailable method.");

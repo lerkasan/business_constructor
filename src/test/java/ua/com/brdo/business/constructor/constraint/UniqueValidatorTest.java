@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ua.com.brdo.business.constructor.model.User;
+import ua.com.brdo.business.constructor.repository.UserRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UniqueValidatorTest {
@@ -22,37 +23,37 @@ public class UniqueValidatorTest {
     private static final String FIELD_EMAIL = "email";
     private static final String FIELD_USERNAME = "username";
     private static final String UNSUPPORTED_FIELD = "someUnsupportedField";
+    private static final Long DEFAULT_ID = 0L;
 
     @Mock private UniqueValidatable service;
     @Mock private Unique annotation;
     @Mock private ConstraintValidatorContext context;
-    @Mock private ApplicationContext applicationContext;
     @InjectMocks private UniqueValidator underTest = new UniqueValidator();
 
     @Test
     public void shouldInitializeIfFieldIsEmail() throws Exception {
         when(annotation.field()).thenReturn(FIELD_EMAIL);
-        when(annotation.object()).thenReturn(User.class);
 
         underTest.initialize(annotation);
 
-        verify(annotation, times(2)).field();
+        verify(annotation, times(1)).field();
+        verify(annotation, times(1)).service();
     }
 
     @Test
     public void shouldInitializeIfFieldIsUsername() throws Exception {
         when(annotation.field()).thenReturn(FIELD_USERNAME);
-        when(annotation.object()).thenReturn(User.class);
 
         underTest.initialize(annotation);
 
-        verify(annotation, times(2)).field();
+        verify(annotation, times(1)).field();
+        verify(annotation, times(1)).service();
     }
 
+    @Ignore("New implementation does not throw this exception. Switch check was removed to avoid necessity to add each new field type to switch case in validator.")
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnInitializationIfFieldIsNotAllowed() throws Exception {
         when(annotation.field()).thenReturn(UNSUPPORTED_FIELD);
-        when(annotation.object()).thenReturn(User.class);
 
         underTest.initialize(annotation);
     }
@@ -80,7 +81,7 @@ public class UniqueValidatorTest {
     public void shouldReturnTrueIfEmailIsAvailable() throws Exception {
         String param = "email";
         mockValidatorHasTypeOf(User.class, FIELD_EMAIL);
-        when(service.isAvailable(FIELD_EMAIL, param)).thenReturn(true);
+        when(service.isAvailable(FIELD_EMAIL, param, DEFAULT_ID)).thenReturn(true);
 
         boolean result = underTest.isValid(param, context);
 
@@ -92,7 +93,7 @@ public class UniqueValidatorTest {
     public void shouldReturnFalseIfEmailIsUnavailable() throws Exception {
         String param = "email";
         mockValidatorHasTypeOf(User.class, FIELD_EMAIL);
-        when(service.isAvailable(FIELD_EMAIL, param)).thenReturn(false);
+        when(service.isAvailable(FIELD_EMAIL, param, DEFAULT_ID)).thenReturn(false);
 
         boolean result = underTest.isValid(param, context);
 
@@ -104,7 +105,7 @@ public class UniqueValidatorTest {
     public void shouldReturnTrueIfUsernameIsAvailable() throws Exception {
         String param = "username";
         mockValidatorHasTypeOf(User.class, FIELD_USERNAME);
-        when(service.isAvailable(FIELD_USERNAME, param)).thenReturn(true);
+        when(service.isAvailable(FIELD_USERNAME, param, DEFAULT_ID)).thenReturn(true);
 
         boolean result = underTest.isValid(param, context);
 
@@ -116,7 +117,7 @@ public class UniqueValidatorTest {
     public void shouldReturnFalseIfUsernameIsUnavailable() throws Exception {
         mockValidatorHasTypeOf(User.class, FIELD_USERNAME);
         String param = "username";
-        when(service.isAvailable(FIELD_USERNAME, param)).thenReturn(false);
+        when(service.isAvailable(FIELD_USERNAME, param, DEFAULT_ID)).thenReturn(false);
 
         boolean result = underTest.isValid(param, context);
 
@@ -125,7 +126,7 @@ public class UniqueValidatorTest {
 
     private void mockValidatorHasTypeOf(Class object, String field) {
         when(annotation.field()).thenReturn(field);
-        when(annotation.object()).thenReturn(object);
+        when(annotation.service()).thenReturn(object);
         underTest.initialize(annotation);
     }
 }

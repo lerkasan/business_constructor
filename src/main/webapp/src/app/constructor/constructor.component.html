@@ -8,18 +8,29 @@
     <label for="businesType">Виберіть тип бізнесу або створить новий</label>
     <input class="form-control"
            placeholder="Введіть назву бізнесу" type="text"
-           id="businesType"
+           id="businesTypeTitle"
            required [(ngModel)]="businessType.title"
-           name="businesType" #name="ngModel">
+           name="businesTypeTitle" #name="ngModel">
     <input class="form-control"
            placeholder="Введіть назву КВЕД"
-           id="businesType"
+           id="businesTypeCodeKved"
            required
            [(ngModel)]="businessType.codeKved"
-           name="businesType" #name="ngModel">
+           name="businesTypeCodeKved" #name="ngModel">
     <div class="clear"></div>
-    <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
-    <a class="btn btn-primary">Завантажити існуючій</a>
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
+    </div>
+    <div class="btn-group">
+      <select class="form-control" #v (change)="onSelectBusinessType(v.value)">
+        <option hidden>Або виберіть існуючий</option>
+        <option *ngFor="let businessType of businessTypes"
+                [value]="businessType.id">
+          <span>{{businessType.codeKved}}:{{businessType.title}}</span>
+          <i class="fa fa-check"></i>
+        </option>
+      </select>
+    </div>
   </form>
   <div [hidden]="!wrongQuestionnaire" class="alert alert-warning">
     Поле не повинно бути пустим або ви не зберегли тип бізнесу.

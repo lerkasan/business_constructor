@@ -38,7 +38,7 @@ public class UserControllerTest {
 
     private static final String USERS_API_URL = "/api/users";
     private static final String NON_EXISTENT_EMAIL = "non.existent@mail.com";
-    private static final String EXISTENT_EMAIL = "user1@mail.com";
+    private static final String EXISTENT_EMAIL = "some_user1@mail.com";
 
     @Autowired
     private MockMvc mockMvc;
@@ -90,7 +90,7 @@ public class UserControllerTest {
         mockMvc.perform(get(USERS_API_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$", hasSize(7)));
+                .andExpect(jsonPath("$", hasSize(3)));
     }
 
     protected String json(Object o) throws IOException {

@@ -27,6 +27,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ua.com.brdo.business.constructor.constraint.Unique;
+import ua.com.brdo.business.constructor.service.impl.QuestionnaireServiceImpl;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static javax.persistence.CascadeType.REMOVE;
@@ -39,6 +40,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = {"title", "businessType.codeKved"})
 @Validated
 @JsonInclude(NON_NULL)
+@Unique.List(value = {
+    @Unique(field = "title", service = QuestionnaireServiceImpl.class, message = "Questionnaire with specified title already exists. Title should be unique.")
+})
 public class Questionnaire {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -47,7 +51,6 @@ public class Questionnaire {
     @NotEmpty(message = "Title field of questionnaire is required.")
     @Size(max = 1000, message = "Maximum length of questionnaire title is 1000 characters.")
     @Column(unique = true, nullable = false, length = 1000)
-    @Unique(object = Questionnaire.class, field = "title", message = "Questionnaire with specified title already exists. Title should be unique.")
     private String title;
 
     @ManyToOne

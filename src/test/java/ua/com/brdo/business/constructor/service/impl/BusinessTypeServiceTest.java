@@ -143,57 +143,57 @@ public class BusinessTypeServiceTest {
     assertEquals(dummyBusinessType, foundBusinessType);
   }
 
-  @Test
-  public void shouldReturnTrueIfCodekvedAvailableTest() {
-    when(businessTypeRepo.codeKvedAvailable(CODE_KVED)).thenReturn(true);
-    boolean result = serviceUnderTest.isAvailable("codeKved", CODE_KVED);
-
-    verify(businessTypeRepo, times(1)).codeKvedAvailable(CODE_KVED);
-    assertTrue(result);
-  }
-
-  @Test
-  public void shouldReturnFalseIfCodekvedUnavailableTest() {
-    when(businessTypeRepo.codeKvedAvailable(CODE_KVED)).thenReturn(false);
-    boolean result = serviceUnderTest.isAvailable("codeKved", CODE_KVED);
-
-    verify(businessTypeRepo, times(1)).codeKvedAvailable(CODE_KVED);
-    assertFalse(result);
-  }
-
-  @Test
-  public void shouldReturnTrueIfTitleAvailableTest() {
-    when(businessTypeRepo.titleAvailable(TITLE)).thenReturn(true);
-    boolean result = serviceUnderTest.isAvailable("title", TITLE);
-
-    verify(businessTypeRepo, times(1)).titleAvailable(TITLE);
-    assertTrue(result);
-  }
-
-  @Test
-  public void shouldReturnFalseIfTitleUnavailableTest() {
-    when(businessTypeRepo.titleAvailable(TITLE)).thenReturn(false);
-    boolean result = serviceUnderTest.isAvailable("title", TITLE);
-
-    verify(businessTypeRepo, times(1)).titleAvailable(TITLE);
-    assertFalse(result);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
-    String wrongField = "text";
-    serviceUnderTest.isAvailable(wrongField, TITLE);
-  }
-
-  @Test
-  public void shouldReturnFalseOnNullTitleFieldTest() {
-    boolean result = serviceUnderTest.isAvailable("title", null);
-    assertFalse(result);
-  }
-
-  @Test
-  public void shouldReturnFalseOnNullCodeKvedFieldTest() {
-    boolean result = serviceUnderTest.isAvailable("codeKved", null);
-    assertFalse(result);
-  }
+//  @Test
+//  public void shouldReturnTrueIfCodekvedAvailableTest() {
+//    when(businessTypeRepo.codeKvedAvailable(CODE_KVED)).thenReturn(true);
+//    boolean result = serviceUnderTest.isAvailable("codeKved", CODE_KVED);
+//
+//    verify(businessTypeRepo, times(1)).codeKvedAvailable(CODE_KVED);
+//    assertTrue(result);
+//  }
+//
+//  @Test
+//  public void shouldReturnFalseIfCodekvedUnavailableTest() {
+//    when(businessTypeRepo.codeKvedAvailable(CODE_KVED)).thenReturn(false);
+//    boolean result = serviceUnderTest.isAvailable("codeKved", CODE_KVED);
+//
+//    verify(businessTypeRepo, times(1)).codeKvedAvailable(CODE_KVED);
+//    assertFalse(result);
+//  }
+//
+//  @Test
+//  public void shouldReturnTrueIfTitleAvailableTest() {
+//    when(businessTypeRepo.titleAvailable(TITLE)).thenReturn(true);
+//    boolean result = serviceUnderTest.isAvailable("title", TITLE);
+//
+//    verify(businessTypeRepo, times(1)).titleAvailable(TITLE);
+//    assertTrue(result);
+//  }
+//
+//  @Test
+//  public void shouldReturnFalseIfTitleUnavailableTest() {
+//    when(businessTypeRepo.titleAvailable(TITLE)).thenReturn(false);
+//    boolean result = serviceUnderTest.isAvailable("title", TITLE);
+//
+//    verify(businessTypeRepo, times(1)).titleAvailable(TITLE);
+//    assertFalse(result);
+//  }
+//
+//  @Test(expected = IllegalArgumentException.class)
+//  public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
+//    String wrongField = "text";
+//    serviceUnderTest.isAvailable(wrongField, TITLE);
+//  }
+//
+//  @Test
+//  public void shouldReturnFalseOnNullTitleFieldTest() {
+//    boolean result = serviceUnderTest.isAvailable("title", null);
+//    assertFalse(result);
+//  }
+//
+//  @Test
+//  public void shouldReturnFalseOnNullCodeKvedFieldTest() {
+//    boolean result = serviceUnderTest.isAvailable("codeKved", null);
+//    assertFalse(result);
+//  }
 }

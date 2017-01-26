@@ -76,9 +76,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService, UniqueVal
     return questionnaireRepo.findByBusinessType(businessType);
   }
 
-  public boolean isAvailable(String field, String title) {
-    if ("title".equals(field)) {
-      return nonNull(title) && questionnaireRepo.titleAvailable(title);
+  public boolean isAvailable(String fieldName, String fieldValue, Long id) {
+    if ("title".equals(fieldName)) {
+      return nonNull(fieldValue) && questionnaireRepo.titleAvailable(fieldValue, id);
     } else {
       throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
     }

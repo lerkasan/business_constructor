@@ -1,5 +1,12 @@
 package ua.com.brdo.business.constructor.service.impl;
 
+import static java.util.Objects.nonNull;
+
+import java.nio.CharBuffer;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,13 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.nio.CharBuffer;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.Role;
 import ua.com.brdo.business.constructor.model.User;
@@ -22,13 +22,10 @@ import ua.com.brdo.business.constructor.repository.UserRepository;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.UserService;
 
-import static java.util.Objects.nonNull;
-
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService, UniqueValidatable {
 
     private static final String ROLE_USER = "ROLE_USER";
-
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
@@ -68,8 +65,30 @@ public class UserServiceImpl implements UserService, UserDetailsService, UniqueV
     }
 
     @Override
+    public UserDetails loadUserByUsername(String username) {
+        return userRepo.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User with given user was not found."));
+    }
+
+    public boolean isAvailable(String fieldName, String fieldValue, Long id) {
+        switch (fieldName) {
+            case "username":
+                return isUsernameAvailable(fieldValue, id);
+            case "email":
+                return isEmailAvailable(fieldValue, id);
+            default:
+                throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
+        }
+    }
+
+    @Override
     public boolean isEmailAvailable(String email) {
         return nonNull(email) && userRepo.emailAvailable(email);
+    }
+
+    @Override
+    public boolean isEmailAvailable(String email, Long id) {
+        return nonNull(email) && userRepo.emailAvailable(email, id);
     }
 
     @Override
@@ -78,19 +97,8 @@ public class UserServiceImpl implements UserService, UserDetailsService, UniqueV
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        return userRepo.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User with given user was not found."));
+    public boolean isUsernameAvailable(String username, Long id) {
+        return nonNull(username) && userRepo.usernameAvailable(username, id);
     }
 
-    public boolean isAvailable(String field, String value) {
-        switch (field) {
-            case "username":
-                return isUsernameAvailable(value);
-            case "email":
-                return isEmailAvailable(value);
-            default:
-                throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
-        }
-    }
 }

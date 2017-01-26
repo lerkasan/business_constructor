@@ -32,6 +32,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ua.com.brdo.business.constructor.constraint.Ascii;
 import ua.com.brdo.business.constructor.constraint.Unique;
+import ua.com.brdo.business.constructor.service.impl.UserServiceImpl;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -43,6 +44,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = {"username", "email", "creationDate"})
 @Validated
 @JsonInclude(NON_NULL)
+@Unique.List(value = {
+    @Unique(field = "username", service = UserServiceImpl.class, message = "User with this username is already registered. Try another username."),
+    @Unique(field = "email", service = UserServiceImpl.class, message = "User with this e-mail is already registered. Try another e-mail.")
+})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -50,7 +55,6 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
-    @Unique(object = User.class, field = "username", message = "User with this username is already registered. Try another username.")
     private String username;
     private String firstName;
     private String middleName;
@@ -58,7 +62,6 @@ public class User implements UserDetails {
 
     @NotEmpty(message = "E-mail field is required.")
     @Email(regexp = ".+@.+\\..+", message = "Incorrect format of e-mail.")
-    @Unique(object = User.class, field = "email", message = "User with this e-mail is already registered. Try another e-mail.")
     @Column(unique = true, nullable = false)
     private String email;
 

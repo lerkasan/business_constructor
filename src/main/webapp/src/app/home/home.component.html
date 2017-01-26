@@ -13,11 +13,9 @@
       <div>
         <p>Який тип бізнесу вас цікавить?(найменування у КВЄД)</p>
         <div class="form-group">
-          <select class="form-control" id="sel0"
-                  [(ngModel)]="selectedBusinessType"
-                  (change)="onSelectBusinessType">
+          <select class="form-control" id="sel0">
             <option hidden>Виберіть квєд бізнесу</option>
-            <option *ngFor="let businessType of businessTypes" [value]="businessType.value">
+            <option *ngFor="let businessType of businessTypes" [value]="businessType.id">
               <span>{{businessType.codeKved}}:{{businessType.title}}</span>
               <i class="fa fa-check"></i>
             </option>

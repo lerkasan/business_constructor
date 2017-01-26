@@ -250,7 +250,10 @@ export class ConstructorComponent implements OnInit {
             this.wrongBusinessType = true;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          this.wrongQuestionnaire = true;
+          console.log(<any>error);
+        }
       );
   }
 
@@ -275,7 +278,10 @@ export class ConstructorComponent implements OnInit {
             this.wrongQuestionnaire = true;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          this.wrongQuestionnaire = true;
+          console.log(<any>error);
+        }
       );
   }
 

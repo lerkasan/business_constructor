@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
       $(this).parent().next().collapse('toggle');
     });
     this.getBusinessTypes();
-    this.getListQuestionnair();
+    this.getQuestionnair();
   }
 
   getBusinessTypes() {
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
     console.log('Amasdfasd');
   }
 
-  getListQuestionnair() {
+  getQuestionnair() {
     console.log('Get all questionnaire');
     if (this.questionnaires === undefined) {
       let questionnaire = new Questionnaire();
@@ -81,8 +81,13 @@ export class HomeComponent implements OnInit {
     console.log(this.selectedQuestionnaire);
   }
 
-  onSelectBusinessType() {
-    console.log(this.selectedBusinessType);
+  onSelectBusinessType(id) {
+    console.log(id);
+    for (let businessType of this.businessTypes) {
+      if (businessType.id.toString() === id) {
+        this.selectedBusinessType = businessType;
+        console.log(businessType);
+      }
+    }
   }
-
 }

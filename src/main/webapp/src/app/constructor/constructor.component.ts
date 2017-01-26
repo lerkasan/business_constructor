@@ -17,16 +17,17 @@ import {BusinessTypeService} from '../service/business.type.service';
 
 export class ConstructorComponent implements OnInit {
 
-  selectedOption;
-  selectedQuestion;
-  selectedText;
-  selectedTitle;
+  selectedOption: Option;
+  selectedQuestion: Question;
+  selectedText: string;
+  selectedTitle: string;
   questions: Question[];
   procedures: Procedure[];
   businessType: BusinessType;
   questionnaire: Questionnaire;
   wrongBusinessType = false;
   wrongQuestionnaire = false;
+  businessTypes: BusinessType[];
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
@@ -44,6 +45,7 @@ export class ConstructorComponent implements OnInit {
     this.businessType.codeKved = '';
     this.questionnaire = new Questionnaire();
     this.questionnaire.title = '';
+    this.getBusinessTypes();
   }
 
   onSelectQuestion(question: Question): void {
@@ -275,6 +277,31 @@ export class ConstructorComponent implements OnInit {
         },
         error => console.log(<any>error)
       );
+  }
+
+  getBusinessTypes() {
+    if (this.businessTypes === undefined) {
+      this.businessTypes = [];
+    }
+    this.businessTypeService.getBusinessTypes()
+      .subscribe(
+        (response: BusinessType[]) => {
+          this.businessTypes = response;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  onSelectBusinessType(id) {
+    console.log(id);
+    for (let businessType of this.businessTypes) {
+      if (businessType.id.toString() === id) {
+        this.businessType = businessType;
+        console.log(businessType);
+      }
+    }
   }
 }
 

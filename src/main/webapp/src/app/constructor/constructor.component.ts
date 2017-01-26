@@ -17,16 +17,16 @@ import {BusinessTypeService} from '../service/business.type.service';
 
 export class ConstructorComponent implements OnInit {
 
-  selectedOption;
-  selectedQuestion;
-  selectedText;
-  selectedTitle;
+  selectedOption: Option;
+  selectedQuestion: Question;
+  selectedText: string;
+  selectedTitle: string;
   questions: Question[];
   procedures: Procedure[];
   businessType: BusinessType;
   questionnaire: Questionnaire;
-  wrongBusinessType = false;
-  wrongQuestionnaire = false;
+  wrongBusinessType: boolean;
+  wrongQuestionnaire: boolean;
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
@@ -38,6 +38,8 @@ export class ConstructorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.wrongBusinessType = false;
+    this.wrongQuestionnaire = false;
     this.procedures = [];
     this.businessType = new BusinessType();
     this.businessType.title = '';
@@ -245,7 +247,10 @@ export class ConstructorComponent implements OnInit {
             this.wrongBusinessType = true;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          console.log(<any>error);
+          this.wrongBusinessType = true;
+        }
       );
   }
 
@@ -270,7 +275,10 @@ export class ConstructorComponent implements OnInit {
             this.wrongQuestionnaire = true;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          console.log(<any>error);
+          this.wrongQuestionnaire = true;
+        }
       );
   }
 }

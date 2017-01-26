@@ -25,8 +25,9 @@ export class ConstructorComponent implements OnInit {
   procedures: Procedure[];
   businessType: BusinessType;
   questionnaire: Questionnaire;
-  wrongBusinessType: boolean;
-  wrongQuestionnaire: boolean;
+  wrongBusinessType = false;
+  wrongQuestionnaire = false;
+  businessTypes: BusinessType[];
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
@@ -38,14 +39,13 @@ export class ConstructorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wrongBusinessType = false;
-    this.wrongQuestionnaire = false;
     this.procedures = [];
     this.businessType = new BusinessType();
     this.businessType.title = '';
     this.businessType.codeKved = '';
     this.questionnaire = new Questionnaire();
     this.questionnaire.title = '';
+    this.getBusinessTypes();
   }
 
   onSelectQuestion(question: Question): void {
@@ -113,6 +113,7 @@ export class ConstructorComponent implements OnInit {
         .subscribe(
           (ques: Question) => {
             this.questions[elementNumber] = ques;
+            console.log(ques.id);
           },
           error => console.log(<any>error)
         );
@@ -149,6 +150,7 @@ export class ConstructorComponent implements OnInit {
 
   saveOption(question: Question, option: Option): void {
     let elementNumber = this.questions.indexOf(question);
+    console.log(JSON.stringify(question));
 
     if (this.selectedTitle === option.title) {
       return;
@@ -190,6 +192,7 @@ export class ConstructorComponent implements OnInit {
     }
 
     option.nextQuestion = new Id(dropDownQuestion.id);
+    console.log(JSON.stringify(option));
 
     this.questionService.createLinkFromOption(option, this.selectedQuestion.id)
       .subscribe(
@@ -247,10 +250,7 @@ export class ConstructorComponent implements OnInit {
             this.wrongBusinessType = true;
           }
         },
-        error => {
-          console.log(<any>error);
-          this.wrongBusinessType = true;
-        }
+        error => console.log(<any>error)
       );
   }
 
@@ -275,11 +275,32 @@ export class ConstructorComponent implements OnInit {
             this.wrongQuestionnaire = true;
           }
         },
-        error => {
-          console.log(<any>error);
-          this.wrongQuestionnaire = true;
+        error => console.log(<any>error)
+      );
+  }
+
+  getBusinessTypes() {
+    if (this.businessTypes === undefined) {
+      this.businessTypes = [];
+    }
+    this.businessTypeService.getBusinessTypes()
+      .subscribe(
+        (response: BusinessType[]) => {
+          this.businessTypes = response;
+        },
+        (error) => {
+          console.log(error);
         }
       );
+  }
+
+  onSelectBusinessType(id) {
+    console.log(id);
+    for (let businessType of this.businessTypes) {
+      if (businessType.id.toString() === id) {
+        this.businessType = businessType;
+      }
+    }
   }
 }
 

@@ -8,7 +8,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.model.Procedure;
 import ua.com.brdo.business.constructor.service.ProcedureService;
-
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;

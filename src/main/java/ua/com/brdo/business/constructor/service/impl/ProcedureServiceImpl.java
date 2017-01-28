@@ -4,15 +4,14 @@ package ua.com.brdo.business.constructor.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.com.brdo.business.constructor.exception.NotFoundException;
-import ua.com.brdo.business.constructor.model.Procedure;
-import ua.com.brdo.business.constructor.model.ProcedureType;
-import ua.com.brdo.business.constructor.repository.ProcedureRepository;
-import ua.com.brdo.business.constructor.service.ProcedureService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+
+import ua.com.brdo.business.constructor.model.Procedure;
+import ua.com.brdo.business.constructor.repository.ProcedureRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.service.ProcedureService;
 
 @Service("ProcedureService")
 public class ProcedureServiceImpl implements ProcedureService {

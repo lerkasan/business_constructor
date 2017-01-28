@@ -9,7 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var DashboardPlugin = require('webpack-dashboard/plugin');
-//var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 /**
  * Env
@@ -90,7 +90,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loaders: ['angular2-template-loader', '@angularclass/hmr-loader'],
+        loaders: ['awesome-typescript-loader?' + atlOptions, 'angular2-template-loader', '@angularclass/hmr-loader'],
         exclude: [isTest ? /\.(e2e)\.ts$/ : /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
       },
 
@@ -212,7 +212,7 @@ module.exports = function makeWebpackConfig() {
 
   if (!isTest && !isTestWatch) {
     config.plugins.push(
-      //new ForkCheckerPlugin(),
+      new ForkCheckerPlugin(),
 
       // Generate common chunks if necessary
       // Reference: https://webpack.github.io/docs/code-splitting.html

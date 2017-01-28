@@ -33,34 +33,34 @@ public class Procedure {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name", length = 1024, unique = true, nullable = false)
+    @Column(name = "name", length = 2048, unique = true, nullable = false)
     private String name;
 
-    @Column(name = "reason", nullable = false)
+    @Column(name = "reason", length = 2048, nullable = false)
     private String reason;
 
     @Column(name = "result", length = 2048, nullable = false)
     private String result;
 
-   /* @Column(name = "id_tool", nullable = false) // TODO: where the field?   create a Join
-    private Long id_tool;*/
+    @Column(name = "tool_id", nullable = false)
+    private Long toolId;
 
-    @Column(name = "cost", nullable = false)
+    @Column(name = "cost", length = 2048, nullable = false)
     private String cost;
 
-    @Column(name = "term", nullable = false)
+    @Column(name = "term", length = 4096, nullable = false)
     private String term;
 
     @Column(name = "method", length = 2048, nullable = false)
     private String method;
 
-    @Column(name = "decision", nullable = false)
+    @Column(name = "decision", length = 2048, nullable = false)
     private String decision;
 
-    @Column(name = "deny", nullable = false)
+    @Column(name = "deny", length = 3072, nullable = false)
     private String deny;
 
-    @Column(name = "abuse", nullable = false)
+    @Column(name = "abuse", length = 2048, nullable = false)
     private String abuse;
 
     @ManyToOne

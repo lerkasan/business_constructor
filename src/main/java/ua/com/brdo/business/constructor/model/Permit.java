@@ -16,14 +16,19 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import ua.com.brdo.business.constructor.constraint.Unique;
+import ua.com.brdo.business.constructor.service.impl.PermitServiceImpl;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity(name = "permit")
+@Entity
 @Table(name = "permit")
 @Data
 @EqualsAndHashCode(of = {"name"})
+@Unique.List(value = {
+        @Unique(field = "name", service = PermitServiceImpl.class, message = "Permit with specified name already exists. Name should be unique.")
+})
 public class Permit {
     @Id
     @GeneratedValue(strategy = IDENTITY)

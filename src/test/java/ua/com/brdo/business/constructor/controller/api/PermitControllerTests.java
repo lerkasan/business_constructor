@@ -56,7 +56,10 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldGetPermitTest() throws Throwable {
-        mvc.perform(get("/api/permits/1"))
+        Permit dummyPermit = createPermit();
+        Long id = dummyPermit.getId();
+
+        mvc.perform(get("/api/permits/" + id))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -65,7 +68,12 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldGetPermitTypeTest() throws Throwable {
-        mvc.perform(get("/api/permittypes/2"))
+        PermitType permitType = new PermitType();
+        permitType.setName("new permit type");
+        permitType = permitTypeService.create(permitType);
+        Long id =permitType.getId();
+
+        mvc.perform(get("/api/permittypes/" + id))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
@@ -74,7 +82,10 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldAddNewPermitTest() throws Throwable {
-        mvc.perform(post("/api/permittypes/1/permits").contentType(MediaType.APPLICATION_JSON)
+        Permit dummyPermit = createPermit();
+        Long permitTypeId = dummyPermit.getPermitType().getId();
+
+        mvc.perform(post("/api/permittypes/" + permitTypeId + "/permits").contentType(MediaType.APPLICATION_JSON)
                 .content(newProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -112,7 +123,10 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldUpdatePermitTest() throws Throwable {
-        mvc.perform(put("/api/permits/1").contentType(MediaType.APPLICATION_JSON)
+        Permit dummyPermit = createPermit();
+        Long id = dummyPermit.getId();
+
+        mvc.perform(put("/api/permits/" + id).contentType(MediaType.APPLICATION_JSON)
                 .content(updateProvisoryPermitData()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -135,7 +149,19 @@ public class PermitControllerTests {
     @Test
     @WithMockUser(roles = {EXPERT})
     public void shouldDeletePermit() throws Throwable {
-        PermitType permitType = permitTypeService.findById(1L);
+        createPermit();
+        Permit permit = permitService.findByName("should delete");
+        Long id = permit.getId();
+
+        mvc.perform(delete("/api/permits/" + id))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    private Permit createPermit() {
+        PermitType permitType = new PermitType();
+        permitType.setName("should delete");
+        permitTypeService.create(permitType);
         Permit permit = new Permit();
         permit.setName("should delete");
         permit.setLegalDocumentId(1L);
@@ -145,12 +171,7 @@ public class PermitControllerTests {
         permit.setTerm(" ");
         permit.setPropose(" ");
         permit.setStatus((byte) 1);
-        permitService.create(permit, permitType);
-        permit = permitService.findByName("should delete");
-        Long id = permit.getId();
-        mvc.perform(delete("/api/permits/" + id))
-                .andDo(print())
-                .andExpect(status().isNoContent());
+        return permitService.create(permit, permitType);
     }
 
     @Test
@@ -177,8 +198,9 @@ public class PermitControllerTests {
 
     private String updateProvisoryPermitData() throws JsonProcessingException {
         PermitType permitType = new PermitType();
-        permitType.setId(1L);
+        //permitType.setId(1L);
         permitType.setName("permitType1");
+        permitType = permitTypeService.create(permitType);
         byte unsignedByte = 1;
 
         Permit permitData = new Permit();

@@ -7,17 +7,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-import ua.com.brdo.business.constructor.service.NotFoundException;
+import ua.com.brdo.business.constructor.constraint.UniqueValidatable;
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.PermitType;
 import ua.com.brdo.business.constructor.repository.PermitRepository;
 import ua.com.brdo.business.constructor.repository.PermitTypeRepository;
+import ua.com.brdo.business.constructor.service.NotFoundException;
 import ua.com.brdo.business.constructor.service.PermitService;
 
 import static java.util.Objects.isNull;
 
 @Service
-public class PermitServiceImpl implements PermitService {
+public class PermitServiceImpl implements PermitService, UniqueValidatable {
 
     private PermitRepository permitRepository;
     private PermitTypeRepository permitTypeRepository;
@@ -40,9 +41,9 @@ public class PermitServiceImpl implements PermitService {
     @Transactional
     @Override
     public Permit update(Permit permit) {
-        if(isNull(permitRepository.getOne(permit.getId())))
+        if (isNull(permitRepository.getOne(permit.getId())))
             throw new NotFoundException(String.format("Permit with id=%s is not found", permit.getId()));
-        if(isNull(permitTypeRepository.getOne(permit.getPermitType().getId())))
+        if (isNull(permitTypeRepository.getOne(permit.getPermitType().getId())))
             throw new NotFoundException("Permit type with this id is not found");
         return permitRepository.saveAndFlush(permit);
     }
@@ -56,7 +57,8 @@ public class PermitServiceImpl implements PermitService {
     @Override
     public Permit findById(Long id) {
         Permit permit = permitRepository.findOne(id);
-        if(isNull(permit))  throw new NotFoundException(String.format("Permit with id=%s is not found", id));
+        if (isNull(permit))
+            throw new NotFoundException(String.format("Permit with id=%s is not found", id));
         return permit;
     }
 
@@ -71,4 +73,14 @@ public class PermitServiceImpl implements PermitService {
         return permitRepository.findAll();
     }
 
+    public boolean isAvailable(String fieldName, String fieldValue, Long id) {
+        if (isNull(fieldValue)) {
+            return false;
+        }
+        if ("name".equals(fieldName)) {
+            return permitRepository.nameAvailable(fieldValue, id);
+        } else {
+            throw new IllegalArgumentException("Unexpected field was passed to isAvailable method.");
+        }
+    }
 }

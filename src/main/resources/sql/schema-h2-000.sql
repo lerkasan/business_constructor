@@ -63,15 +63,15 @@ CREATE TABLE procedure_type (
 
 CREATE TABLE procedure_ (
   id                  IDENTITY          NOT NULL,
-  name                VARCHAR(1023)     NOT NULL,
+  name                VARCHAR(2048)     NOT NULL,
   reason              LONGVARCHAR       NOT NULL,
   result              VARCHAR(2048)     NOT NULL,
   permit_id           BIGINT            NOT NULL,
   procedure_type_id   BIGINT            NOT NULL,
- /* id_tool           TINYINT           NOT NULL, */
+  tool_id             BIGINT            NOT NULL,
   cost                LONGVARCHAR       NOT NULL,
   term                LONGVARCHAR       NOT NULL,
-  method              VARCHAR(2047)     NOT NULL,
+  method              VARCHAR(2048)     NOT NULL,
   decision            LONGVARCHAR       NOT NULL,
   deny                LONGVARCHAR       NOT NULL,
   abuse               LONGVARCHAR       NOT NULL,

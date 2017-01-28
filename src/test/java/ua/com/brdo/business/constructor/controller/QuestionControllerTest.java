@@ -198,6 +198,7 @@ public class QuestionControllerTest {
         procedure.setDecision("1");
         procedure.setDeny("1");
         procedure.setAbuse("1");
+        procedure.setToolId(1L);
         procedure.setProcedureType(procedureType);
         procedure.setPermit(permit);
         procedure = procedureService.create(procedure);

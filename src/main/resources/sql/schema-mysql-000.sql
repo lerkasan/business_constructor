@@ -61,8 +61,7 @@ CREATE TABLE IF NOT EXISTS permit (
   status             TINYINT         NOT NULL,
   CONSTRAINT permit_id PRIMARY KEY (id),
   FOREIGN KEY (permit_type_id) REFERENCES permit_type(id)
-    ON DELETE CASCADE,
-  UNIQUE (name(255))
+    ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS procedure_type (
@@ -78,13 +77,14 @@ CREATE TABLE IF NOT EXISTS procedure_ (
   name                VARCHAR(2048)   NOT NULL,
   reason              VARCHAR(2048)   NOT NULL,
   result              VARCHAR(2048)   NOT NULL,
+  tool_id             BIGINT          NOT NULL,
   permit_id           BIGINT          NOT NULL,
   procedure_type_id   BIGINT          NOT NULL,
   cost                VARCHAR(2048)   NOT NULL,
-  term                VARCHAR(2048)   NOT NULL,
+  term                VARCHAR(4096)   NOT NULL,
   method              VARCHAR(2048)   NOT NULL,
   decision            VARCHAR(2048)   NOT NULL,
-  deny                VARCHAR(2048)   NOT NULL,
+  deny                VARCHAR(3072)   NOT NULL,
   abuse               VARCHAR(2048)   NOT NULL,
   CONSTRAINT procedure_id PRIMARY KEY (id),
   FOREIGN KEY (permit_id) REFERENCES permit(id),

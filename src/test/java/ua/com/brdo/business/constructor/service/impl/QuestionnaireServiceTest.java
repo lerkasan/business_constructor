@@ -26,129 +26,131 @@ import static org.mockito.Mockito.when;
 @Transactional
 public class QuestionnaireServiceTest {
 
-        private Questionnaire dummyQuestionnaire;
+    private Questionnaire dummyQuestionnaire;
 
-        @Mock
-        private QuestionnaireRepository questionnaireRepo;
+    @Mock
+    private QuestionnaireRepository questionnaireRepo;
 
-        @InjectMocks
-        private QuestionnaireServiceImpl serviceUnderTest = new QuestionnaireServiceImpl(questionnaireRepo);
+    @InjectMocks
+    private QuestionnaireServiceImpl serviceUnderTest = new QuestionnaireServiceImpl(questionnaireRepo);
 
-        private static final String NOT_EXISTENT_TITLE = "No questionnaire";
+    private static final String NOT_EXISTENT_TITLE = "No questionnaire";
 
-        private static final String TITLE = "My questionnaire";
+    private static final String TITLE = "My questionnaire";
 
-        @Before
-        public void setUp() {
-            dummyQuestionnaire = new Questionnaire();
-            dummyQuestionnaire.setId(1L);
-            dummyQuestionnaire.setTitle("dummy Questionnaire");
-            dummyQuestionnaire.setBusinessType(new BusinessType());
+    private static final Long DEFAULT_ID = 0L;
 
-            when(questionnaireRepo.findOne(1L)).thenReturn(dummyQuestionnaire);
-            when(questionnaireRepo.findOne(2L)).thenReturn(null);
-        }
+    @Before
+    public void setUp() {
+        dummyQuestionnaire = new Questionnaire();
+        dummyQuestionnaire.setId(1L);
+        dummyQuestionnaire.setTitle("dummy Questionnaire");
+        dummyQuestionnaire.setBusinessType(new BusinessType());
 
-        @Test
-        public void shouldCreateQuestionnaireTest() {
-            serviceUnderTest.create(dummyQuestionnaire);
+        when(questionnaireRepo.findOne(1L)).thenReturn(dummyQuestionnaire);
+        when(questionnaireRepo.findOne(2L)).thenReturn(null);
+    }
 
-            verify(questionnaireRepo, times(1)).saveAndFlush(dummyQuestionnaire);
-        }
+    @Test
+    public void shouldCreateQuestionnaireTest() {
+        serviceUnderTest.create(dummyQuestionnaire);
 
-        @Test(expected = NullPointerException.class)
-        public void shouldThrowNullPointerExceptionOnAttemptToCreateNullTest() {
-            serviceUnderTest.create(null);
-        }
+        verify(questionnaireRepo, times(1)).saveAndFlush(dummyQuestionnaire);
+    }
 
-        @Test
-        public void shouldUpdateQuestionnaireTest() {
-            serviceUnderTest.update(dummyQuestionnaire);
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNullPointerExceptionOnAttemptToCreateNullTest() {
+        serviceUnderTest.create(null);
+    }
 
-            verify(questionnaireRepo, times(1)).saveAndFlush(dummyQuestionnaire);
-        }
+    @Test
+    public void shouldUpdateQuestionnaireTest() {
+        serviceUnderTest.update(dummyQuestionnaire);
 
-        @Test(expected = NullPointerException.class)
-        public void shouldThrowNullPointerExceptionOnAttemptToUpdateNullTest() {
-            serviceUnderTest.update(null);
-        }
+        verify(questionnaireRepo, times(1)).saveAndFlush(dummyQuestionnaire);
+    }
 
-        @Test
-        public void shouldDeleteQuestionnaireTest() {
-            serviceUnderTest.delete(dummyQuestionnaire);
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNullPointerExceptionOnAttemptToUpdateNullTest() {
+        serviceUnderTest.update(null);
+    }
 
-            verify(questionnaireRepo, times(1)).delete(dummyQuestionnaire);
-        }
+    @Test
+    public void shouldDeleteQuestionnaireTest() {
+        serviceUnderTest.delete(dummyQuestionnaire);
 
-        @Test
-        public void shouldDeleteQuestionnaireByIdTest() {
-            serviceUnderTest.delete(1L);
+        verify(questionnaireRepo, times(1)).delete(dummyQuestionnaire);
+    }
 
-            verify(questionnaireRepo, times(1)).delete(1L);
-        }
+    @Test
+    public void shouldDeleteQuestionnaireByIdTest() {
+        serviceUnderTest.delete(1L);
 
-        @Test
-        public void shouldFindAllQuestionnairesTest() {
-            serviceUnderTest.findAll();
+        verify(questionnaireRepo, times(1)).delete(1L);
+    }
 
-            verify(questionnaireRepo, times(1)).findAll();
-        }
+    @Test
+    public void shouldFindAllQuestionnairesTest() {
+        serviceUnderTest.findAll();
 
-        @Test(expected = NotFoundException.class)
-        public void shouldThrowNotFoundExceptionOnAttemptToFindNonExistentIdTest() {
-            serviceUnderTest.findById(2L);
-        }
+        verify(questionnaireRepo, times(1)).findAll();
+    }
 
-        @Test
-        public void shouldFindExistentIdTest() {
-            Questionnaire foundQuestionnaire = serviceUnderTest.findById(1L);
+    @Test(expected = NotFoundException.class)
+    public void shouldThrowNotFoundExceptionOnAttemptToFindNonExistentIdTest() {
+        serviceUnderTest.findById(2L);
+    }
 
-            verify(questionnaireRepo, times(1)).findOne(1L);
-            assertEquals(dummyQuestionnaire, foundQuestionnaire);
-        }
+    @Test
+    public void shouldFindExistentIdTest() {
+        Questionnaire foundQuestionnaire = serviceUnderTest.findById(1L);
 
-        @Test(expected = NotFoundException.class)
-        public void shouldThrowNotFoundExceptionOnAttemptToFindNonExistentTitleTest() {
-            when(questionnaireRepo.findByTitle(NOT_EXISTENT_TITLE)).thenReturn(Optional.empty());
-            serviceUnderTest.findByTitle(NOT_EXISTENT_TITLE);
-        }
+        verify(questionnaireRepo, times(1)).findOne(1L);
+        assertEquals(dummyQuestionnaire, foundQuestionnaire);
+    }
 
-        @Test
-        public void shouldFindByTitleTest() {
-            when(questionnaireRepo.findByTitle(TITLE)).thenReturn(Optional.of(dummyQuestionnaire));
-            Questionnaire foundQuestionnaire = serviceUnderTest.findByTitle(TITLE);
+    @Test(expected = NotFoundException.class)
+    public void shouldThrowNotFoundExceptionOnAttemptToFindNonExistentTitleTest() {
+        when(questionnaireRepo.findByTitle(NOT_EXISTENT_TITLE)).thenReturn(Optional.empty());
+        serviceUnderTest.findByTitle(NOT_EXISTENT_TITLE);
+    }
 
-            verify(questionnaireRepo, times(1)).findByTitle(TITLE);
-            assertEquals(dummyQuestionnaire, foundQuestionnaire);
-        }
+    @Test
+    public void shouldFindByTitleTest() {
+        when(questionnaireRepo.findByTitle(TITLE)).thenReturn(Optional.of(dummyQuestionnaire));
+        Questionnaire foundQuestionnaire = serviceUnderTest.findByTitle(TITLE);
 
-//        @Test
-//        public void shouldReturnTrueIfTitleAvailableTest() {
-//            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(true);
-//            boolean result = serviceUnderTest.isAvailable("title", TITLE);
-//
-//            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
-//            assertTrue(result);
-//        }
-//
-//        @Test
-//        public void shouldReturnFalseIfTitleUnavailableTest() {
-//            when(questionnaireRepo.titleAvailable(TITLE)).thenReturn(false);
-//            boolean result = serviceUnderTest.isAvailable("title", TITLE);
-//
-//            verify(questionnaireRepo, times(1)).titleAvailable(TITLE);
-//            assertFalse(result);
-//        }
-//
-//        @Test(expected = IllegalArgumentException.class)
-//        public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
-//            String wrongField = "text";
-//            serviceUnderTest.isAvailable(wrongField, TITLE);
-//        }
-//
-//        @Test
-//        public void shouldReturnFalseOnNullTitleFieldTest() {
-//            boolean result = serviceUnderTest.isAvailable("title", null);
-//            assertFalse(result);
-//        }
+        verify(questionnaireRepo, times(1)).findByTitle(TITLE);
+        assertEquals(dummyQuestionnaire, foundQuestionnaire);
+    }
+
+    @Test
+    public void shouldReturnTrueIfTitleAvailableTest() {
+        when(questionnaireRepo.titleAvailable(TITLE, DEFAULT_ID)).thenReturn(true);
+        boolean result = serviceUnderTest.isAvailable("title", TITLE, DEFAULT_ID);
+
+        verify(questionnaireRepo, times(1)).titleAvailable(TITLE, DEFAULT_ID);
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldReturnFalseIfTitleUnavailableTest() {
+        when(questionnaireRepo.titleAvailable(TITLE, DEFAULT_ID)).thenReturn(false);
+        boolean result = serviceUnderTest.isAvailable("title", TITLE, DEFAULT_ID);
+
+        verify(questionnaireRepo, times(1)).titleAvailable(TITLE, DEFAULT_ID);
+        assertFalse(result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegalArgumentExceptionOnWrongFieldTest() {
+        String wrongField = "text";
+        serviceUnderTest.isAvailable(wrongField, TITLE, DEFAULT_ID);
+    }
+
+    @Test
+    public void shouldReturnFalseOnNullTitleFieldTest() {
+        boolean result = serviceUnderTest.isAvailable("title", null, DEFAULT_ID);
+        assertFalse(result);
+    }
 }

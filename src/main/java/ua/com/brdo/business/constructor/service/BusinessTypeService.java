@@ -11,12 +11,7 @@ public interface BusinessTypeService {
 
     BusinessType create(final BusinessType businessType);
 
-    BusinessType update(
-//        @Unique.List(value = {
-//        @Unique(field = "title", message = "Business type with specified title already exists in database. Title should be unique."),
-//        @Unique(field = "codeKved", message = "Business type with specified KVED code already exists in database. KVED code should be unique.")
-//    })
-    @Valid final BusinessType businessType);
+    BusinessType update(@Valid final BusinessType businessType);
 
     void delete(final long id);
 

@@ -42,7 +42,7 @@ public class BusinessType {
     private String title;
 
     @NotEmpty(message = "KVED code field is required.")
-    @Pattern(regexp = "\\d{2}+\\.+\\d{2}", message = "Format of KVED code must be a pair of two-digit numbers separated by dot. Example: 62.21")
+    @Pattern(regexp = "\\d{1,2}+\\.+\\d{1,2}", message = "Format of KVED code must be a pair of one-digit or two-digit numbers separated by dot. Example: 6.21 or 06.21 or 62.2 or 62.21")
     @Column(unique = true, nullable = false, length = 5, name = "code_kved")
     private String codeKved;
 }

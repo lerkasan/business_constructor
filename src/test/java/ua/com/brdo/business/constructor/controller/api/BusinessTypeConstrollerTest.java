@@ -279,7 +279,7 @@ public class BusinessTypeConstrollerTest {
                 post(BUSINESS_TYPE_URL).contentType(APPLICATION_JSON).content(invalidBusinessTypeJson))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect((jsonPath("$.message").value("Format of KVED code must be a pair of two-digit numbers separated by dot. Example: 62.21")));
+                .andExpect((jsonPath("$.message").value("Format of KVED code must be a pair of one-digit or two-digit numbers separated by dot. Example: 6.21 or 06.21 or 62.2 or 62.21")));
     }
 
     private BusinessType generateBusinessType() {

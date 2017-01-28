@@ -1,15 +1,15 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.HashSet;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,14 +24,11 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.GenerationType.IDENTITY;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 
 @Entity
 @Table(name = "question")
@@ -58,7 +55,8 @@ public class Question {
     @Valid
     @OneToMany(mappedBy = "question", cascade = ALL)
     @OrderBy(value = "id ASC")
-    private Set<Option> options = new HashSet<>();
+    @JsonDeserialize(as = LinkedHashSet.class)
+    private Set<Option> options = new LinkedHashSet<>();
 
     @ManyToOne
     @PrimaryKeyJoinColumn(name="questionnaire_id", referencedColumnName="id")
@@ -68,7 +66,7 @@ public class Question {
     public boolean addOption(Option option) {
         Objects.requireNonNull(option);
         if (options == null) {
-            options = new HashSet<>();
+            options = new LinkedHashSet<>();
         }
         if (options.contains(option)) {
             throw new IllegalArgumentException("Option with the same title already exists in this question.");

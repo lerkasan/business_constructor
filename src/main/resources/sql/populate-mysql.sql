@@ -1,4 +1,1570 @@
-INSERT INTO `procedure_type` (`name`) VALUES
+insert into business_type(code_kved, title) values(01, 'Сільське господарство, мисливство та надання пов’язаних із ними послуг');
+insert into business_type(code_kved, title) values(01.1, 'Вирощування однорічних і дворічних культур');
+insert into business_type(code_kved, title) values(01.2, 'Вирощування багаторічних культур');
+insert into business_type(code_kved, title) values(01.4, 'Тваринництво');
+insert into business_type(code_kved, title) values(01.6, 'Допоміжна діяльність у сільському господарстві та післяурожайна діяльність');
+insert into business_type(code_kved, title) values(02, 'Лісове господарство та лісозаготівлі');
+insert into business_type(code_kved, title) values(02.1, 'Лісівництво та інша діяльність у лісовому господарстві');
+insert into business_type(code_kved, title) values(02.2, 'Лісозаготівлі');
+insert into business_type(code_kved, title) values(02.3, 'Збирання дикорослих недеревних продуктів');
+insert into business_type(code_kved, title) values(02.4, 'Надання допоміжних послуг у лісовому господарстві');
+insert into business_type(code_kved, title) values(03, 'Рибне господарство');
+insert into business_type(code_kved, title) values(03.1, 'Рибальство');
+insert into business_type(code_kved, title) values(03.2, 'Рибництво (аквакультура)');
+insert into business_type(code_kved, title) values(05, 'Добування кам’яного та бурого вугілля');
+insert into business_type(code_kved, title) values(05.1, 'Добування кам’яного вугілля');
+insert into business_type(code_kved, title) values(05.2, 'Добування бурого вугілля');
+insert into business_type(code_kved, title) values(06, 'Добування сирої нафти та природного газу');
+insert into business_type(code_kved, title) values(06.1, 'Добування сирої нафти');
+insert into business_type(code_kved, title) values(06.2, 'Добування природного газу');
+insert into business_type(code_kved, title) values(07, 'Добування металевих руд');
+insert into business_type(code_kved, title) values(07.1, 'Добування залізних руд');
+insert into business_type(code_kved, title) values(07.2, 'Добування руд кольорових металів');
+insert into business_type(code_kved, title) values(08, 'Добування інших корисних копалин і розроблення кар’єрів');
+insert into business_type(code_kved, title) values(08.1, 'Добування каменю, піску та глини');
+insert into business_type(code_kved, title) values(08.9, 'Добування корисних копалин і розроблення кар’єрів, н. в. і. у.');
+insert into business_type(code_kved, title) values(09, 'Надання допоміжних послуг у сфері добувної промисловості та розроблення кар’єрів');
+insert into business_type(code_kved, title) values(09.1, 'Надання допоміжних послуг у сфері добування нафти та природного газу');
+insert into business_type(code_kved, title) values(09.9, 'Надання допоміжних послуг у сфері добування інших корисних копалин і розроблення кар’єрів');
+insert into business_type(code_kved, title) values(01.11, 'Вирощування зернових культур (крім рису), бобових культур і насіння олійних культур');
+insert into business_type(code_kved, title) values(01.12, 'Вирощування рису');
+insert into business_type(code_kved, title) values(01.13, 'Вирощування овочів і баштанних культур, коренеплодів і бульбоплодів');
+insert into business_type(code_kved, title) values(01.14, 'Вирощування цукрової тростини');
+insert into business_type(code_kved, title) values(01.15, 'Вирощування тютюну');
+insert into business_type(code_kved, title) values(01.16, 'Вирощування прядивних культур');
+insert into business_type(code_kved, title) values(01.19, 'Вирощування інших однорічних і дворічних культур');
+insert into business_type(code_kved, title) values(01.21, 'Вирощування винограду');
+insert into business_type(code_kved, title) values(01.22, 'Вирощування тропічних і субтропічних фруктів');
+insert into business_type(code_kved, title) values(01.23, 'Вирощування цитрусових');
+insert into business_type(code_kved, title) values(01.24, 'Вирощування зерняткових і кісточкових фруктів');
+insert into business_type(code_kved, title) values(01.25, 'Вирощування ягід, горіхів, інших фруктів');
+insert into business_type(code_kved, title) values(01.26, 'Вирощування олійних плодів');
+insert into business_type(code_kved, title) values(01.27, 'Вирощування культур для виробництва напоїв');
+insert into business_type(code_kved, title) values(01.28, 'Вирощування пряних, ароматичних і лікарських культур');
+insert into business_type(code_kved, title) values(01.29, 'Вирощування інших багаторічних культур');
+insert into business_type(code_kved, title) values(01.3, 'Відтворення рослин');
+insert into business_type(code_kved, title) values(01.41, 'Розведення великої рогатої худоби молочних порід');
+insert into business_type(code_kved, title) values(01.42, 'Розведення іншої великої рогатої худоби та буйволів');
+insert into business_type(code_kved, title) values(01.43, 'Розведення коней та інших тварин родини конячих');
+insert into business_type(code_kved, title) values(01.44, 'Розведення верблюдів та інших тварин родини верблюдячих');
+insert into business_type(code_kved, title) values(01.45, 'Розведення овець і кіз');
+insert into business_type(code_kved, title) values(01.46, 'Розведення свиней');
+insert into business_type(code_kved, title) values(01.47, 'Розведення свійської птиці');
+insert into business_type(code_kved, title) values(01.49, 'Розведення інших тварин');
+insert into business_type(code_kved, title) values(01.5, 'Змішане сільське господарство');
+insert into business_type(code_kved, title) values(01.61, 'Допоміжна діяльність у рослинництві');
+insert into business_type(code_kved, title) values(01.62, 'Допоміжна діяльність у тваринництві');
+insert into business_type(code_kved, title) values(01.63, 'Післяурожайна діяльність');
+insert into business_type(code_kved, title) values(01.64, 'Оброблення насіння для відтворення');
+insert into business_type(code_kved, title) values(01.7, 'Мисливство, відловлювання тварин і надання пов’язаних із ними послуг');
+insert into business_type(code_kved, title) values(10, 'Виробництво харчових продуктів');
+insert into business_type(code_kved, title) values(10.1, 'Виробництво м’яса та м’ясних продуктів');
+insert into business_type(code_kved, title) values(10.11, 'Виробництво м’яса');
+insert into business_type(code_kved, title) values(10.12, 'Виробництво м’яса свійської птиці');
+insert into business_type(code_kved, title) values(10.13, 'Виробництво м’ясних продуктів');
+insert into business_type(code_kved, title) values(10.2, 'Перероблення та консервування риби, ракоподібних і молюсків');
+insert into business_type(code_kved, title) values(10.3, 'Перероблення та консервування фруктів і овочів');
+insert into business_type(code_kved, title) values(10.31, 'Перероблення та консервування картоплі');
+insert into business_type(code_kved, title) values(10.32, 'Виробництво фруктових і овочевих соків');
+insert into business_type(code_kved, title) values(10.39, 'Інші види перероблення та консервування фруктів і овочів');
+insert into business_type(code_kved, title) values(10.41, 'Виробництво олії та тваринних жирів');
+insert into business_type(code_kved, title) values(10.42, 'Виробництво маргарину і подібних харчових жирів');
+insert into business_type(code_kved, title) values(10.5, 'Виробництво молочних продуктів');
+insert into business_type(code_kved, title) values(10.51, 'Перероблення молока, виробництво масла та сиру');
+insert into business_type(code_kved, title) values(10.52, 'Виробництво морозива');
+insert into business_type(code_kved, title) values(10.6, 'Виробництво продуктів борошномельно-круп’яної промисловості, крохмалів і крохмальних продуктів');
+insert into business_type(code_kved, title) values(10.61, 'Виробництво продуктів борошномельно-круп’яної промисловості');
+insert into business_type(code_kved, title) values(10.62, 'Виробництво крохмалів і крохмальних продуктів');
+insert into business_type(code_kved, title) values(10.7, 'Виробництво хліба, хлібобулочних і борошняних виробів');
+insert into business_type(code_kved, title) values(10.71, 'Виробництво хліба та хлібобулочних виробів; виробництво борошняних кондитерських виробів, тортів і тістечок нетривалого зберігання');
+insert into business_type(code_kved, title) values(10.72, 'Виробництво сухарів і сухого печива; виробництво борошняних кондитерських виробів, тортів і тістечок тривалого зберігання');
+insert into business_type(code_kved, title) values(10.73, 'Виробництво макаронних виробів і подібних борошняних виробів');
+insert into business_type(code_kved, title) values(10.8, 'Виробництво інших харчових продуктів');
+insert into business_type(code_kved, title) values(10.81, 'Виробництво цукру');
+insert into business_type(code_kved, title) values(10.82, 'Виробництво какао, шоколаду та цукрових кондитерських виробів');
+insert into business_type(code_kved, title) values(10.83, 'Виробництво чаю та кави');
+insert into business_type(code_kved, title) values(10.84, 'Виробництво прянощів і приправ');
+insert into business_type(code_kved, title) values(10.85, 'Виробництво готової їжі та страв');
+insert into business_type(code_kved, title) values(10.86, 'Виробництво дитячого харчування та дієтичних харчових продуктів');
+insert into business_type(code_kved, title) values(10.89, 'Виробництво інших харчових продуктів, н. в. і. у.');
+insert into business_type(code_kved, title) values(10.9, 'Виробництво готових кормів для тварин');
+insert into business_type(code_kved, title) values(10.91, 'Виробництво готових кормів для тварин, що утримуються на фермах');
+insert into business_type(code_kved, title) values(10.92, 'Виробництво готових кормів для домашніх тварин');
+insert into business_type(code_kved, title) values(11.01, 'Дистиляція, ректифікація та змішування алкогольних напоїв');
+insert into business_type(code_kved, title) values(11.02, 'Виробництво виноградних вин');
+insert into business_type(code_kved, title) values(11.03, 'Виробництво сидру та інших плодово-ягідних вин');
+insert into business_type(code_kved, title) values(11.04, 'Виробництво інших недистильованих напоїв із зброджуваних продуктів');
+insert into business_type(code_kved, title) values(11.05, 'Виробництво пива');
+insert into business_type(code_kved, title) values(11.06, 'Виробництво солоду');
+insert into business_type(code_kved, title) values(11.07, 'Виробництво безалкогольних напоїв; виробництво мінеральних вод та інших вод, розлитих у пляшки');
+insert into business_type(code_kved, title) values(12.0, 'Виробництво тютюнових виробів');
+insert into business_type(code_kved, title) values(13, 'Текстильне виробництво');
+insert into business_type(code_kved, title) values(13.1, 'Підготування та прядіння текстильних волокон');
+insert into business_type(code_kved, title) values(13.2, 'Ткацьке виробництво');
+insert into business_type(code_kved, title) values(13.3, 'Оздоблення текстильних виробів');
+insert into business_type(code_kved, title) values(13.9, 'Виробництво інших текстильних виробів');
+insert into business_type(code_kved, title) values(13.91, 'Виробництво трикотажного полотна');
+insert into business_type(code_kved, title) values(13.92, 'Виробництво готових текстильних виробів, крім одягу');
+insert into business_type(code_kved, title) values(13.93, 'Виробництво килимів і килимових виробів');
+insert into business_type(code_kved, title) values(13.94, 'Виробництво канатів, мотузок, шпагату та сіток');
+insert into business_type(code_kved, title) values(13.95, 'Виробництво нетканих текстильних матеріалів і виробів із них, крім одягу');
+insert into business_type(code_kved, title) values(13.96, 'Виробництво інших текстильних виробів технічного та промислового призначення');
+insert into business_type(code_kved, title) values(13.99, 'Виробництво інших текстильних виробів, н. в. і. у.');
+insert into business_type(code_kved, title) values(14, 'Виробництво одягу');
+insert into business_type(code_kved, title) values(14.1, 'Виробництво одягу, крім хутряного');
+insert into business_type(code_kved, title) values(14.11, 'Виробництво одягу зі шкіри');
+insert into business_type(code_kved, title) values(14.12, 'Виробництво робочого одягу');
+insert into business_type(code_kved, title) values(14.13, 'Виробництво іншого верхнього одягу');
+insert into business_type(code_kved, title) values(14.14, 'Виробництво спіднього одягу');
+insert into business_type(code_kved, title) values(14.19, 'Виробництво іншого одягу й аксесуарів');
+insert into business_type(code_kved, title) values(14.2, 'Виготовлення виробів із хутра');
+insert into business_type(code_kved, title) values(14.3, 'Виробництво трикотажного та в’язаного одягу');
+insert into business_type(code_kved, title) values(14.31, 'Виробництво панчішно-шкарпеткових виробів');
+insert into business_type(code_kved, title) values(14.39, 'Виробництво іншого трикотажного та в’язаного одягу');
+insert into business_type(code_kved, title) values(15, 'Виробництво шкіри, виробів зі шкіри та інших матеріалів');
+insert into business_type(code_kved, title) values(15.1, 'Дублення шкур і оздоблення шкіри; виробництво дорожніх виробів, сумок, лимарно-сідельних виробів; вичинка та фарбування хутра');
+insert into business_type(code_kved, title) values(15.11, 'Дублення шкур і оздоблення шкіри; вичинка та фарбування хутра');
+insert into business_type(code_kved, title) values(15.12, 'Виробництво дорожніх виробів, сумок, лимарно-сідельних виробів зі шкіри та інших матеріалів');
+insert into business_type(code_kved, title) values(15.2, 'Виробництво взуття');
+insert into business_type(code_kved, title) values(16, 'Оброблення деревини та виготовлення виробів з деревини та корка, крім меблів; виготовлення виробів із соломки та рослинних матеріалів для плетіння');
+insert into business_type(code_kved, title) values(16.1, 'Лісопильне та стругальне виробництво');
+insert into business_type(code_kved, title) values(16.2, 'Виготовлення виробів з деревини, корка, соломки та рослинних матеріалів для плетіння');
+insert into business_type(code_kved, title) values(16.21, 'Виробництво фанери, дерев’яних плит і панелей, шпону');
+insert into business_type(code_kved, title) values(16.22, 'Виробництво щитового паркету');
+insert into business_type(code_kved, title) values(16.23, 'Виробництво інших дерев’яних будівельних конструкцій і столярних виробів');
+insert into business_type(code_kved, title) values(16.24, 'Виробництво дерев’яної тари');
+insert into business_type(code_kved, title) values(16.29, 'Виробництво інших виробів з деревини; виготовлення виробів з корка, соломки та рослинних матеріалів для плетіння');
+insert into business_type(code_kved, title) values(17, 'Виробництво паперу та паперових виробів');
+insert into business_type(code_kved, title) values(17.1, 'Виробництво паперової маси, паперу та картону');
+insert into business_type(code_kved, title) values(17.11, 'Виробництво паперової маси');
+insert into business_type(code_kved, title) values(17.12, 'Виробництво паперу та картону');
+insert into business_type(code_kved, title) values(17.2, 'Виготовлення виробів з паперу та картону');
+insert into business_type(code_kved, title) values(17.21, 'Виробництво гофрованого паперу та картону, паперової та картонної тари');
+insert into business_type(code_kved, title) values(17.22, 'Виробництво паперових виробів господарсько-побутового та санітарно-гігієнічного призначення');
+insert into business_type(code_kved, title) values(17.23, 'Виробництво паперових канцелярських виробів');
+insert into business_type(code_kved, title) values(17.24, 'Виробництво шпалер');
+insert into business_type(code_kved, title) values(17.29, 'Виробництво інших виробів з паперу та картону');
+insert into business_type(code_kved, title) values(18, 'Поліграфічна діяльність, тиражування записаної інформації');
+insert into business_type(code_kved, title) values(18.1, 'Поліграфічна діяльність і надання пов’язаних із нею послуг');
+insert into business_type(code_kved, title) values(18.11, 'Друкування газет');
+insert into business_type(code_kved, title) values(18.12, 'Друкування іншої продукції');
+insert into business_type(code_kved, title) values(18.13, 'Виготовлення друкарських форм і надання інших поліграфічних послуг');
+insert into business_type(code_kved, title) values(18.14, 'Брошурувально-палітурна діяльність і надання пов’язаних із нею послуг');
+insert into business_type(code_kved, title) values(18.2, 'Тиражування звуко-, відеозаписів і програмного забезпечення');
+insert into business_type(code_kved, title) values(19, 'Виробництво коксу та продуктів нафтоперероблення');
+insert into business_type(code_kved, title) values(19.1, 'Виробництво коксу та коксопродуктів');
+insert into business_type(code_kved, title) values(19.2, 'Виробництво продуктів нафтоперероблення');
+insert into business_type(code_kved, title) values(20, 'Виробництво хімічних речовин і хімічної продукції');
+insert into business_type(code_kved, title) values(20.1, 'Виробництво основної хімічної продукції, добрив і азотних сполук, пластмас і синтетичного каучуку в первинних формах');
+insert into business_type(code_kved, title) values(20.11, 'Виробництво промислових газів');
+insert into business_type(code_kved, title) values(20.12, 'Виробництво барвників і пігментів');
+insert into business_type(code_kved, title) values(20.13, 'Виробництво інших основних неорганічних хімічних речовин');
+insert into business_type(code_kved, title) values(20.14, 'Виробництво інших основних органічних хімічних речовин');
+insert into business_type(code_kved, title) values(20.15, 'Виробництво добрив і азотних сполук');
+insert into business_type(code_kved, title) values(20.16, 'Виробництво пластмас у первинних формах');
+insert into business_type(code_kved, title) values(20.17, 'Виробництво синтетичного каучуку в первинних формах');
+insert into business_type(code_kved, title) values(20.2, 'Виробництво пестицидів та іншої агрохімічної продукції');
+insert into business_type(code_kved, title) values(20.3, 'Виробництво фарб, лаків і подібної продукції, друкарської фарби та мастик');
+insert into business_type(code_kved, title) values(20.4, 'Виробництво мила та мийних засобів, засобів для чищення та полірування, парфумних і косметичних засобів');
+insert into business_type(code_kved, title) values(20.41, 'Виробництво мила та мийних засобів, засобів для чищення та полірування');
+insert into business_type(code_kved, title) values(20.42, 'Виробництво парфумних і косметичних засобів');
+insert into business_type(code_kved, title) values(20.5, 'Виробництво іншої хімічної продукції');
+insert into business_type(code_kved, title) values(20.51, 'Виробництво вибухових речовин');
+insert into business_type(code_kved, title) values(20.52, 'Виробництво клеїв');
+insert into business_type(code_kved, title) values(20.53, 'Виробництво ефірних олій');
+insert into business_type(code_kved, title) values(20.59, 'Виробництво іншої хімічної продукції, н. в. і. у.');
+insert into business_type(code_kved, title) values(20.6, 'Виробництво штучних і синтетичних волокон');
+insert into business_type(code_kved, title) values(21, 'Виробництво основних фармацевтичних продуктів і фармацевтичних препаратів');
+insert into business_type(code_kved, title) values(21.1, 'Виробництво основних фармацевтичних продуктів');
+insert into business_type(code_kved, title) values(21.2, 'Виробництво фармацевтичних препаратів і матеріалів');
+insert into business_type(code_kved, title) values(22, 'Виробництво гумових і пластмасових виробів');
+insert into business_type(code_kved, title) values(22.1, 'Виробництво гумових виробів');
+insert into business_type(code_kved, title) values(22.11, 'Виробництво гумових шин, покришок і камер; відновлення протектора гумових шин і покришок');
+insert into business_type(code_kved, title) values(22.19, 'Виробництво інших гумових виробів');
+insert into business_type(code_kved, title) values(22.2, 'Виробництво пластмасових виробів');
+insert into business_type(code_kved, title) values(22.21, 'Виробництво плит, листів, труб і профілів із пластмас');
+insert into business_type(code_kved, title) values(22.22, 'Виробництво тари з пластмас');
+insert into business_type(code_kved, title) values(22.23, 'Виробництво будівельних виробів із пластмас');
+insert into business_type(code_kved, title) values(22.29, 'Виробництво інших виробів із пластмас');
+insert into business_type(code_kved, title) values(23, 'Виробництво іншої неметалевої мінеральної продукції');
+insert into business_type(code_kved, title) values(23.1, 'Виробництво скла та виробів зі скла');
+insert into business_type(code_kved, title) values(23.11, 'Виробництво листового скла');
+insert into business_type(code_kved, title) values(23.12, 'Формування й оброблення листового скла');
+insert into business_type(code_kved, title) values(23.13, 'Виробництво порожнистого скла');
+insert into business_type(code_kved, title) values(23.14, 'Виробництво скловолокна');
+insert into business_type(code_kved, title) values(23.19, 'Виробництво й оброблення інших скляних виробів, у тому числі технічних');
+insert into business_type(code_kved, title) values(23.2, 'Виробництво вогнетривких виробів');
+insert into business_type(code_kved, title) values(23.3, 'Виробництво будівельних матеріалів із глини');
+insert into business_type(code_kved, title) values(23.31, 'Виробництво керамічних плиток і плит');
+insert into business_type(code_kved, title) values(23.32, 'Виробництво цегли, черепиці та інших будівельних виробів із випаленої глини');
+insert into business_type(code_kved, title) values(23.4, 'Виробництво іншої продукції з фарфору та кераміки');
+insert into business_type(code_kved, title) values(23.41, 'Виробництво господарських і декоративних керамічних виробів');
+insert into business_type(code_kved, title) values(23.42, 'Виробництво керамічних санітарно-технічних виробів');
+insert into business_type(code_kved, title) values(23.43, 'Виробництво керамічних електроізоляторів та ізоляційної арматури');
+insert into business_type(code_kved, title) values(23.44, 'Виробництво інших керамічних виробів технічного призначення');
+insert into business_type(code_kved, title) values(23.49, 'Виробництво інших керамічних виробів');
+insert into business_type(code_kved, title) values(23.5, 'Виробництво цементу, вапна та гіпсових сумішей');
+insert into business_type(code_kved, title) values(23.51, 'Виробництво цементу');
+insert into business_type(code_kved, title) values(23.52, 'Виробництво вапна та гіпсових сумішей');
+insert into business_type(code_kved, title) values(23.6, 'Виготовлення виробів із бетону, гіпсу та цементу');
+insert into business_type(code_kved, title) values(23.61, 'Виготовлення виробів із бетону для будівництва');
+insert into business_type(code_kved, title) values(23.62, 'Виготовлення виробів із гіпсу для будівництва');
+insert into business_type(code_kved, title) values(23.63, 'Виробництво бетонних розчинів, готових для використання');
+insert into business_type(code_kved, title) values(23.64, 'Виробництво сухих будівельних сумішей');
+insert into business_type(code_kved, title) values(23.65, 'Виготовлення виробів із волокнистого цементу');
+insert into business_type(code_kved, title) values(23.69, 'Виробництво інших виробів із бетону гіпсу та цементу');
+insert into business_type(code_kved, title) values(23.7, 'Різання, оброблення та оздоблення декоративного та будівельного каменю');
+insert into business_type(code_kved, title) values(23.9, 'Виробництво абразивних виробів і неметалевих мінеральних виробів, н. в. і. у.');
+insert into business_type(code_kved, title) values(23.91, 'Виробництво абразивних виробів');
+insert into business_type(code_kved, title) values(23.99, 'Виробництво неметалевих мінеральних виробів, н. в. і. у.');
+insert into business_type(code_kved, title) values(24, 'Металургійне виробництво');
+insert into business_type(code_kved, title) values(24.1, 'Виробництво чавуну, сталі та феросплавів');
+insert into business_type(code_kved, title) values(24.2, 'Виробництво труб, порожнистих профілів і фітингів зі сталі');
+insert into business_type(code_kved, title) values(24.3, 'Виробництво іншої продукції первинного оброблення сталі');
+insert into business_type(code_kved, title) values(24.31, 'Холодне волочіння прутків і профілів');
+insert into business_type(code_kved, title) values(24.32, 'Холодний прокат вузької штаби');
+insert into business_type(code_kved, title) values(24.33, 'Холодне штампування та гнуття');
+insert into business_type(code_kved, title) values(24.34, 'Холодне волочіння дроту');
+insert into business_type(code_kved, title) values(24.4, 'Виробництво дорогоцінних та інших кольорових металів');
+insert into business_type(code_kved, title) values(24.41, 'Виробництво дорогоцінних металів');
+insert into business_type(code_kved, title) values(24.42, 'Виробництво алюмінію');
+insert into business_type(code_kved, title) values(24.43, 'Виробництво свинцю, цинку й олова');
+insert into business_type(code_kved, title) values(24.44, 'Виробництво міді');
+insert into business_type(code_kved, title) values(24.45, 'Виробництво інших кольорових металів');
+insert into business_type(code_kved, title) values(24.46, 'Виробництво ядерних матеріалів');
+insert into business_type(code_kved, title) values(24.5, 'Лиття металів');
+insert into business_type(code_kved, title) values(24.51, 'Лиття чавуну');
+insert into business_type(code_kved, title) values(24.52, 'Лиття сталі');
+insert into business_type(code_kved, title) values(24.53, 'Лиття легких кольорових металів');
+insert into business_type(code_kved, title) values(24.54, 'Лиття інших кольорових металів');
+insert into business_type(code_kved, title) values(25, 'Виробництво готових металевих виробів, крім машин і устатковання');
+insert into business_type(code_kved, title) values(25.1, 'Виробництво будівельних металевих конструкцій і виробів');
+insert into business_type(code_kved, title) values(25.11, 'Виробництво будівельних металевих конструкцій і частин конструкцій');
+insert into business_type(code_kved, title) values(25.12, 'Виробництво металевих дверей і вікон');
+insert into business_type(code_kved, title) values(25.2, 'Виробництво металевих баків, резервуарів і контейнерів');
+insert into business_type(code_kved, title) values(25.21, 'Виробництво радіаторів і котлів центрального опалення');
+insert into business_type(code_kved, title) values(25.29, 'Виробництво інших металевих баків, резервуарів і контейнерів');
+insert into business_type(code_kved, title) values(25.3, 'Виробництво парових котлів, крім котлів центрального опалення');
+insert into business_type(code_kved, title) values(25.4, 'Виробництво зброї та боєприпасів');
+insert into business_type(code_kved, title) values(25.5, 'Кування, пресування, штампування, профілювання; порошкова металургія');
+insert into business_type(code_kved, title) values(25.6, 'Оброблення металів та нанесення покриття на метали; механічне оброблення металевих виробів');
+insert into business_type(code_kved, title) values(25.61, 'Оброблення металів та нанесення покриття на метали');
+insert into business_type(code_kved, title) values(25.62, 'Механічне оброблення металевих виробів');
+insert into business_type(code_kved, title) values(25.7, 'Виробництво столових приборів, інструментів і металевих виробів загального призначення');
+insert into business_type(code_kved, title) values(25.71, 'Виробництво столових приборів');
+insert into business_type(code_kved, title) values(25.72, 'Виробництво замків і дверних петель');
+insert into business_type(code_kved, title) values(25.73, 'Виробництво інструментів');
+insert into business_type(code_kved, title) values(25.9, 'Виробництво інших готових металевих виробів');
+insert into business_type(code_kved, title) values(25.91, 'Виробництво сталевих бочок і подібних контейнерів');
+insert into business_type(code_kved, title) values(25.92, 'Виробництво легких металевих паковань');
+insert into business_type(code_kved, title) values(25.93, 'Виробництво виробів із дроту, ланцюгів і пружин');
+insert into business_type(code_kved, title) values(25.94, 'Виробництво кріпильних і ґвинтонарізних виробів');
+insert into business_type(code_kved, title) values(25.99, 'Виробництво інших готових металевих виробів, н. в. і. у.');
+insert into business_type(code_kved, title) values(26, 'Виробництво комп’ютерів, електронної та оптичної продукції');
+insert into business_type(code_kved, title) values(26.1, 'Виробництво електронних компонентів і плат');
+insert into business_type(code_kved, title) values(26.11, 'Виробництво електронних компонентів');
+insert into business_type(code_kved, title) values(26.12, 'Виробництво змонтованих електронних плат');
+insert into business_type(code_kved, title) values(26.2, 'Виробництво комп’ютерів і периферійного устатковання');
+insert into business_type(code_kved, title) values(26.3, 'Виробництво обладнання зв’язку');
+insert into business_type(code_kved, title) values(26.4, 'Виробництво електронної апаратури побутового призначення для приймання, записування та відтворювання звуку й зображення');
+insert into business_type(code_kved, title) values(26.5, 'Виробництво інструментів і обладнання для вимірювання, дослідження та навігації; виробництво годинників');
+insert into business_type(code_kved, title) values(26.51, 'Виробництво інструментів і обладнання для вимірювання, дослідження та навігації');
+insert into business_type(code_kved, title) values(26.52, 'Виробництво годинників');
+insert into business_type(code_kved, title) values(26.6, 'Виробництво радіологічного, електромедичного й електротерапевтичного устатковання');
+insert into business_type(code_kved, title) values(26.7, 'Виробництво оптичних приладів і фотографічного устатковання');
+insert into business_type(code_kved, title) values(26.8, 'Виробництво магнітних і оптичних носіїв даних');
+insert into business_type(code_kved, title) values(27, 'Виробництво електричного устатковання');
+insert into business_type(code_kved, title) values(27.1, 'Виробництво електродвигунів, генераторів, трансформаторів, електророзподільчої та контрольної апаратури');
+insert into business_type(code_kved, title) values(27.11, 'Виробництво електродвигунів, генераторів і трансформаторів');
+insert into business_type(code_kved, title) values(27.12, 'Виробництво електророзподільчої та контрольної апаратури');
+insert into business_type(code_kved, title) values(27.2, 'Виробництво батарей і акумуляторів');
+insert into business_type(code_kved, title) values(27.3, 'Виробництво проводів, кабелів і електромонтажних пристроїв');
+insert into business_type(code_kved, title) values(27.31, 'Виробництво волоконно-оптичних кабелів');
+insert into business_type(code_kved, title) values(27.32, 'Виробництво інших видів електронних і електричних проводів і кабелів');
+insert into business_type(code_kved, title) values(27.33, 'Виробництво електромонтажних пристроїв');
+insert into business_type(code_kved, title) values(27.4, 'Виробництво електричного освітлювального устатковання');
+insert into business_type(code_kved, title) values(27.5, 'Виробництво побутових приладів');
+insert into business_type(code_kved, title) values(27.51, 'Виробництво електричних побутових приладів');
+insert into business_type(code_kved, title) values(27.52, 'Виробництво неелектричних побутових приладів');
+insert into business_type(code_kved, title) values(27.9, 'Виробництво іншого електричного устатковання');
+insert into business_type(code_kved, title) values(28, 'Виробництво машин і устатковання, н. в. і. у.');
+insert into business_type(code_kved, title) values(28.1, 'Виробництво машин і устатковання загального призначення');
+insert into business_type(code_kved, title) values(28.11, 'Виробництво двигунів і турбін, крім авіаційних, автотранспортних і мотоциклетних двигунів');
+insert into business_type(code_kved, title) values(28.12, 'Виробництво гідравлічного та пневматичного устатковання');
+insert into business_type(code_kved, title) values(28.13, 'Виробництво інших помп і компресорів');
+insert into business_type(code_kved, title) values(28.14, 'Виробництво інших кранів і клапанів');
+insert into business_type(code_kved, title) values(28.15, 'Виробництво підшипників, зубчастих передач, елементів механічних передач і приводів');
+insert into business_type(code_kved, title) values(28.2, 'Виробництво інших машин і устатковання загального призначення');
+insert into business_type(code_kved, title) values(28.21, 'Виробництво печей і пічних пальників');
+insert into business_type(code_kved, title) values(28.22, 'Виробництво підіймального та вантажно-розвантажувального устатковання');
+insert into business_type(code_kved, title) values(28.23, 'Виробництво офісних машин і устатковання, крім комп’ютерів і периферійного устатковання');
+insert into business_type(code_kved, title) values(28.24, 'Виробництво ручних електромеханічних і пневматичних інструментів');
+insert into business_type(code_kved, title) values(28.25, 'Виробництво промислового холодильного та вентиляційного устатковання');
+insert into business_type(code_kved, title) values(28.29, 'Виробництво інших машин і устатковання загального призначення, н. в. і. у.');
+insert into business_type(code_kved, title) values(28.3, 'Виробництво машин і устатковання для сільського та лісового господарства');
+insert into business_type(code_kved, title) values(28.4, 'Виробництво металообробних машин і верстатів');
+insert into business_type(code_kved, title) values(28.41, 'Виробництво металообробних машин');
+insert into business_type(code_kved, title) values(28.49, 'Виробництво інших верстатів');
+insert into business_type(code_kved, title) values(28.9, 'Виробництво інших машин і устатковання спеціального призначення');
+insert into business_type(code_kved, title) values(28.91, 'Виробництво машин і устатковання для металургії');
+insert into business_type(code_kved, title) values(28.92, 'Виробництво машин і устатковання для добувної промисловості та будівництва');
+insert into business_type(code_kved, title) values(28.93, 'Виробництво машин і устатковання для виготовлення харчових продуктів і напоїв, перероблення тютюну');
+insert into business_type(code_kved, title) values(28.94, 'Виробництво машин і устатковання для виготовлення текстильних, швейних, хутряних і шкіряних виробів');
+insert into business_type(code_kved, title) values(28.95, 'Виробництво машин і устатковання для виготовлення паперу та картону');
+insert into business_type(code_kved, title) values(28.96, 'Виробництво машин і устатковання для виготовлення пластмас і гуми');
+insert into business_type(code_kved, title) values(28.99, 'Виробництво інших машин і устатковання спеціального призначення, н. в. і. у.');
+insert into business_type(code_kved, title) values(29, 'Виробництво автотранспортних засобів, причепів і напівпричепів');
+insert into business_type(code_kved, title) values(29.1, 'Виробництво автотранспортних засобів');
+insert into business_type(code_kved, title) values(29.2, 'Виробництво кузовів для автотранспортних засобів, причепів і напівпричепів');
+insert into business_type(code_kved, title) values(29.3, 'Виробництво вузлів, деталей і приладдя для автотранспортних засобів');
+insert into business_type(code_kved, title) values(29.31, 'Виробництво електричного й електронного устатковання для автотранспортних засобів');
+insert into business_type(code_kved, title) values(29.32, 'Виробництво інших вузлів, деталей і приладдя для автотранспортних засобів');
+insert into business_type(code_kved, title) values(03.11, 'Морське рибальство');
+insert into business_type(code_kved, title) values(03.12, 'Прісноводне рибальство');
+insert into business_type(code_kved, title) values(03.21, 'Морське рибництво (аквакультура)');
+insert into business_type(code_kved, title) values(03.22, 'Прісноводне рибництво (аквакультура)');
+insert into business_type(code_kved, title) values(30, 'Виробництво інших транспортних засобів');
+insert into business_type(code_kved, title) values(30.1, 'Будування суден і човнів');
+insert into business_type(code_kved, title) values(30.11, 'Будування суден і плавучих конструкцій');
+insert into business_type(code_kved, title) values(30.12, 'Будування прогулянкових і спортивних човнів');
+insert into business_type(code_kved, title) values(30.2, 'Виробництво залізничних локомотивів і рухомого складу');
+insert into business_type(code_kved, title) values(30.3, 'Виробництво повітряних і космічних літальних апаратів, супутнього устатковання');
+insert into business_type(code_kved, title) values(30.4, 'Виробництво військових транспортних засобів');
+insert into business_type(code_kved, title) values(30.9, 'Виробництво транспортних засобів, н. в. і. у.');
+insert into business_type(code_kved, title) values(30.91, 'Виробництво мотоциклів');
+insert into business_type(code_kved, title) values(30.92, 'Виробництво велосипедів, дитячих та інвалідних колясок');
+insert into business_type(code_kved, title) values(30.99, 'Виробництво інших транспортних засобів і обладнання, н. в. і. у.');
+insert into business_type(code_kved, title) values(31.0, 'Виробництво меблів');
+insert into business_type(code_kved, title) values(31.01, 'Виробництво меблів для офісів і підприємств торгівлі');
+insert into business_type(code_kved, title) values(31.02, 'Виробництво кухонних меблів');
+insert into business_type(code_kved, title) values(31.03, 'Виробництво матраців');
+insert into business_type(code_kved, title) values(31.09, 'Виробництво інших меблів');
+insert into business_type(code_kved, title) values(32, 'Виробництво іншої продукції');
+insert into business_type(code_kved, title) values(32.1, 'Виробництво ювелірних виробів, біжутерії та подібних виробів');
+insert into business_type(code_kved, title) values(32.11, 'Карбування монет');
+insert into business_type(code_kved, title) values(32.12, 'Виробництво ювелірних і подібних виробів');
+insert into business_type(code_kved, title) values(32.13, 'Виробництво біжутерії та подібних виробів');
+insert into business_type(code_kved, title) values(32.2, 'Виробництво музичних інструментів');
+insert into business_type(code_kved, title) values(32.3, 'Виробництво спортивних товарів');
+insert into business_type(code_kved, title) values(32.4, 'Виробництво ігор та іграшок');
+insert into business_type(code_kved, title) values(32.5, 'Виробництво медичних і стоматологічних інструментів і матеріалів');
+insert into business_type(code_kved, title) values(32.9, 'Виробництво продукції, н. в. і. у.');
+insert into business_type(code_kved, title) values(32.91, 'Виробництво мітел і щіток');
+insert into business_type(code_kved, title) values(32.99, 'Виробництво іншої продукції, н. в. і. у.');
+insert into business_type(code_kved, title) values(33, 'Ремонт і монтаж машин і устатковання');
+insert into business_type(code_kved, title) values(33.1, 'Ремонт і технічне обслуговування готових металевих виробів, машин і устатковання');
+insert into business_type(code_kved, title) values(33.11, 'Ремонт і технічне обслуговування готових металевих виробів');
+insert into business_type(code_kved, title) values(33.12, 'Ремонт і технічне обслуговування машин і устатковання промислового призначення');
+insert into business_type(code_kved, title) values(33.13, 'Ремонт і технічне обслуговування електронного й оптичного устатковання');
+insert into business_type(code_kved, title) values(33.14, 'Ремонт і технічне обслуговування електричного устатковання');
+insert into business_type(code_kved, title) values(33.15, 'Ремонт і технічне обслуговування суден і човнів');
+insert into business_type(code_kved, title) values(33.16, 'Ремонт і технічне обслуговування повітряних і космічних літальних апаратів');
+insert into business_type(code_kved, title) values(33.17, 'Ремонт і технічне обслуговування інших транспортних засобів');
+insert into business_type(code_kved, title) values(33.19, 'Ремонт і технічне обслуговування інших машин і устатковання');
+insert into business_type(code_kved, title) values(33.2, 'Установлення та монтаж машин і устатковання');
+insert into business_type(code_kved, title) values(35, 'Постачання електроенергії, газу, пари та кондиційованого повітря');
+insert into business_type(code_kved, title) values(35.1, 'Виробництво, передача та розподілення електроенергії');
+insert into business_type(code_kved, title) values(35.11, 'Виробництво електроенергії');
+insert into business_type(code_kved, title) values(35.12, 'Передача електроенергії');
+insert into business_type(code_kved, title) values(35.13, 'Розподілення електроенергії');
+insert into business_type(code_kved, title) values(35.14, 'Торгівля електроенергією');
+insert into business_type(code_kved, title) values(35.2, 'Виробництво газу; розподілення газоподібного палива через місцеві (локальні) трубопроводи');
+insert into business_type(code_kved, title) values(35.21, 'Виробництво газу');
+insert into business_type(code_kved, title) values(35.22, 'Розподілення газоподібного палива через місцеві (локальні) трубопроводи');
+insert into business_type(code_kved, title) values(35.23, 'Торгівля газом через місцеві (локальні) трубопроводи');
+insert into business_type(code_kved, title) values(35.3, 'Постачання пари, гарячої води та кондиційованого повітря');
+insert into business_type(code_kved, title) values(36.0, 'Забір, очищення та постачання води');
+insert into business_type(code_kved, title) values(37.0, 'Каналізація, відведення й очищення стічних вод');
+insert into business_type(code_kved, title) values(38, 'Збирання, оброблення й видалення відходів; відновлення матеріалів');
+insert into business_type(code_kved, title) values(38.1, 'Збирання відходів');
+insert into business_type(code_kved, title) values(38.11, 'Збирання безпечних відходів');
+insert into business_type(code_kved, title) values(38.12, 'Збирання небезпечних відходів');
+insert into business_type(code_kved, title) values(38.2, 'Оброблення та видалення відходів');
+insert into business_type(code_kved, title) values(38.21, 'Оброблення та видалення безпечних відходів');
+insert into business_type(code_kved, title) values(38.22, 'Оброблення та видалення небезпечних відходів');
+insert into business_type(code_kved, title) values(38.3, 'Відновлення матеріалів');
+insert into business_type(code_kved, title) values(38.31, 'Демонтаж (розбирання) машин і устатковання');
+insert into business_type(code_kved, title) values(38.32, 'Відновлення відсортованих відходів');
+insert into business_type(code_kved, title) values(39.0, 'Інша діяльність щодо поводження з відходами');
+insert into business_type(code_kved, title) values(41, 'Будівництво будівель');
+insert into business_type(code_kved, title) values(41.1, 'Організація будівництва будівель');
+insert into business_type(code_kved, title) values(41.2, 'Будівництво житлових і нежитлових будівель');
+insert into business_type(code_kved, title) values(42, 'Будівництво споруд');
+insert into business_type(code_kved, title) values(42.1, 'Будівництво доріг і залізниць');
+insert into business_type(code_kved, title) values(42.11, 'Будівництво доріг і автострад');
+insert into business_type(code_kved, title) values(42.12, 'Будівництво залізниць і метрополітену');
+insert into business_type(code_kved, title) values(42.13, 'Будівництво мостів і тунелів');
+insert into business_type(code_kved, title) values(42.2, 'Будівництво комунікацій');
+insert into business_type(code_kved, title) values(42.21, 'Будівництво трубопроводів');
+insert into business_type(code_kved, title) values(42.22, 'Будівництво споруд електропостачання та телекомунікацій');
+insert into business_type(code_kved, title) values(42.9, 'Будівництво інших споруд');
+insert into business_type(code_kved, title) values(42.91, 'Будівництво водних споруд');
+insert into business_type(code_kved, title) values(42.99, 'Будівництво інших споруд, н. в. і. у.');
+insert into business_type(code_kved, title) values(43, 'Спеціалізовані будівельні роботи');
+insert into business_type(code_kved, title) values(43.1, 'Знесення та підготовчі роботи на будівельному майданчику');
+insert into business_type(code_kved, title) values(43.11, 'Знесення');
+insert into business_type(code_kved, title) values(43.12, 'Підготовчі роботи на будівельному майданчику');
+insert into business_type(code_kved, title) values(43.13, 'Розвідувальне буріння');
+insert into business_type(code_kved, title) values(43.2, 'Електромонтажні, водопровідні та інші будівельно-монтажні роботи');
+insert into business_type(code_kved, title) values(43.21, 'Електромонтажні роботи');
+insert into business_type(code_kved, title) values(43.22, 'Монтаж водопровідних мереж, систем опалення та кондиціонування');
+insert into business_type(code_kved, title) values(43.29, 'Інші будівельно-монтажні роботи');
+insert into business_type(code_kved, title) values(43.3, 'Роботи із завершення будівництва');
+insert into business_type(code_kved, title) values(43.31, 'Штукатурні роботи');
+insert into business_type(code_kved, title) values(43.32, 'Установлення столярних виробів');
+insert into business_type(code_kved, title) values(43.33, 'Покриття підлоги й облицювання стін');
+insert into business_type(code_kved, title) values(43.34, 'Малярні роботи та скління');
+insert into business_type(code_kved, title) values(43.39, 'Інші роботи із завершення будівництва');
+insert into business_type(code_kved, title) values(43.9, 'Інші спеціалізовані будівельні роботи');
+insert into business_type(code_kved, title) values(43.91, 'Покрівельні роботи');
+insert into business_type(code_kved, title) values(43.99, 'Інші спеціалізовані будівельні роботи, н. в. і. у.');
+insert into business_type(code_kved, title) values(45, 'Оптова та роздрібна торгівля автотранспортними засобами та мотоциклами, їх ремонт');
+insert into business_type(code_kved, title) values(45.1, 'Торгівля автотранспортними засобами');
+insert into business_type(code_kved, title) values(45.11, 'Торгівля автомобілями та легковими автотранспортними засобами');
+insert into business_type(code_kved, title) values(45.19, 'Торгівля іншими автотранспортними засобами');
+insert into business_type(code_kved, title) values(45.2, 'Технічне обслуговування та ремонт автотранспортних засобів');
+insert into business_type(code_kved, title) values(45.3, 'Торгівля деталями та приладдям для автотранспортних засобів');
+insert into business_type(code_kved, title) values(45.31, 'Оптова торгівля деталями та приладдям для автотранспортних засобів');
+insert into business_type(code_kved, title) values(45.32, 'Роздрібна торгівля деталями та приладдям для автотранспортних засобів');
+insert into business_type(code_kved, title) values(45.4, 'Торгівля мотоциклами, деталями та приладдям до них, технічне обслуговування і ремонт мотоциклів');
+insert into business_type(code_kved, title) values(46, 'Оптова торгівля, крім торгівлі автотранспортними засобами та мотоциклами');
+insert into business_type(code_kved, title) values(46.1, 'Оптова торгівля за винагороду чи на основі контракту');
+insert into business_type(code_kved, title) values(46.11, 'Діяльність посередників у торгівлі сільськогосподарською сировиною, живими тваринами, текстильною сировиною та напівфабрикатами');
+insert into business_type(code_kved, title) values(46.12, 'Діяльність посередників у торгівлі паливом, рудами, металами та промисловими хімічними речовинами');
+insert into business_type(code_kved, title) values(46.13, 'Діяльність посередників у торгівлі деревиною, будівельними матеріалами та санітарно-технічними виробами');
+insert into business_type(code_kved, title) values(46.14, 'Діяльність посередників у торгівлі машинами, промисловим устаткованням, суднами та літаками');
+insert into business_type(code_kved, title) values(46.15, 'Діяльність посередників у торгівлі меблями, господарськими товарами, залізними та іншими металевими виробами');
+insert into business_type(code_kved, title) values(46.16, 'Діяльність посередників у торгівлі текстильними виробами, одягом, хутром, взуттям і шкіряними виробами');
+insert into business_type(code_kved, title) values(46.17, 'Діяльність посередників у торгівлі продуктами харчування, напоями та тютюновими виробами');
+insert into business_type(code_kved, title) values(46.18, 'Діяльність посередників, що спеціалізуються в торгівлі іншими товарами');
+insert into business_type(code_kved, title) values(46.19, 'Діяльність посередників у торгівлі товарами широкого асортименту');
+insert into business_type(code_kved, title) values(46.2, 'Оптова торгівля сільськогосподарською сировиною та живими тваринами');
+insert into business_type(code_kved, title) values(46.21, 'Оптова торгівля зерном, необробленим тютюном, насінням і кормами для тварин');
+insert into business_type(code_kved, title) values(46.22, 'Оптова торгівля квітами та рослинами');
+insert into business_type(code_kved, title) values(46.23, 'Оптова торгівля живими тваринами');
+insert into business_type(code_kved, title) values(46.24, 'Оптова торгівля шкірсировиною, шкурами та шкірою');
+insert into business_type(code_kved, title) values(46.3, 'Оптова торгівля продуктами харчування, напоями та тютюновими виробами');
+insert into business_type(code_kved, title) values(46.31, 'Оптова торгівля фруктами й овочами');
+insert into business_type(code_kved, title) values(46.32, 'Оптова торгівля м’ясом і м’ясними продуктами');
+insert into business_type(code_kved, title) values(46.33, 'Оптова торгівля молочними продуктами, яйцями, харчовими оліями та жирами');
+insert into business_type(code_kved, title) values(46.34, 'Оптова торгівля напоями');
+insert into business_type(code_kved, title) values(46.35, 'Оптова торгівля тютюновими виробами');
+insert into business_type(code_kved, title) values(46.36, 'Оптова торгівля цукром, шоколадом і кондитерськими виробами');
+insert into business_type(code_kved, title) values(46.37, 'Оптова торгівля кавою, чаєм, какао та прянощами');
+insert into business_type(code_kved, title) values(46.38, 'Оптова торгівля іншими продуктами харчування, у тому числі рибою, ракоподібними та молюсками');
+insert into business_type(code_kved, title) values(46.39, 'Неспеціалізована оптова торгівля продуктами харчування, напоями та тютюновими виробами');
+insert into business_type(code_kved, title) values(46.4, 'Оптова торгівля товарами господарського призначення');
+insert into business_type(code_kved, title) values(46.41, 'Оптова торгівля текстильними товарами');
+insert into business_type(code_kved, title) values(46.42, 'Оптова торгівля одягом і взуттям');
+insert into business_type(code_kved, title) values(46.43, 'Оптова торгівля побутовими електротоварами й електронною апаратурою побутового призначення для приймання, записування, відтворювання звуку й зображення');
+insert into business_type(code_kved, title) values(46.44, 'Оптова торгівля фарфором, скляним посудом і засобами для чищення');
+insert into business_type(code_kved, title) values(46.45, 'Оптова торгівля парфумними та косметичними товарами');
+insert into business_type(code_kved, title) values(46.46, 'Оптова торгівля фармацевтичними товарами');
+insert into business_type(code_kved, title) values(46.47, 'Оптова торгівля меблями, килимами й освітлювальним приладдям');
+insert into business_type(code_kved, title) values(46.48, 'Оптова торгівля годинниками та ювелірними виробами');
+insert into business_type(code_kved, title) values(46.49, 'Оптова торгівля іншими товарами господарського призначення');
+insert into business_type(code_kved, title) values(46.5, 'Оптова торгівля інформаційним і комунікаційним устаткованням');
+insert into business_type(code_kved, title) values(46.51, 'Оптова торгівля комп’ютерами, периферійним устаткованням і програмним забезпеченням');
+insert into business_type(code_kved, title) values(46.52, 'Оптова торгівля електронним і телекомунікаційним устаткованням, деталями до нього');
+insert into business_type(code_kved, title) values(46.6, 'Оптова торгівля іншими машинами й устаткованням');
+insert into business_type(code_kved, title) values(46.61, 'Оптова торгівля сільськогосподарськими машинами й устаткованням');
+insert into business_type(code_kved, title) values(46.62, 'Оптова торгівля верстатами');
+insert into business_type(code_kved, title) values(46.63, 'Оптова торгівля машинами й устаткованням для добувної промисловості та будівництва');
+insert into business_type(code_kved, title) values(46.64, 'Оптова торгівля машинами й устаткованням для текстильного, швейного та трикотажного виробництва');
+insert into business_type(code_kved, title) values(46.65, 'Оптова торгівля офісними меблями');
+insert into business_type(code_kved, title) values(46.66, 'Оптова торгівля іншими офісними машинами й устаткованням');
+insert into business_type(code_kved, title) values(46.69, 'Оптова торгівля іншими машинами та устаткованням');
+insert into business_type(code_kved, title) values(46.7, 'Інші види спеціалізованої оптової торгівлі');
+insert into business_type(code_kved, title) values(46.71, 'Оптова торгівля твердим, рідким, газоподібним паливом і подібними продуктами');
+insert into business_type(code_kved, title) values(46.72, 'Оптова торгівля металами та металевими рудами');
+insert into business_type(code_kved, title) values(46.73, 'Оптова торгівля деревиною, будівельними матеріалами та санітарно-технічним обладнанням');
+insert into business_type(code_kved, title) values(46.74, 'Оптова торгівля залізними виробами, водопровідним і опалювальним устаткованням і приладдям до нього');
+insert into business_type(code_kved, title) values(46.75, 'Оптова торгівля хімічними продуктами');
+insert into business_type(code_kved, title) values(46.76, 'Оптова торгівля іншими проміжними продуктами');
+insert into business_type(code_kved, title) values(46.77, 'Оптова торгівля відходами та брухтом');
+insert into business_type(code_kved, title) values(46.9, 'Неспеціалізована оптова торгівля');
+insert into business_type(code_kved, title) values(47, 'Роздрібна торгівля, крім торгівлі автотранспортними засобами та мотоциклами');
+insert into business_type(code_kved, title) values(47.1, 'Роздрібна торгівля в неспеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.11, 'Роздрібна торгівля в неспеціалізованих магазинах переважно продуктами харчування, напоями та тютюновими виробами');
+insert into business_type(code_kved, title) values(47.19, 'Інші види роздрібної торгівлі в неспеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.2, 'Роздрібна торгівля продуктами харчування, напоями та тютюновими виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.21, 'Роздрібна торгівля фруктами й овочами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.22, 'Роздрібна торгівля м’ясом і м’ясними продуктами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.23, 'Роздрібна торгівля рибою, ракоподібними та молюсками в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.24, 'Роздрібна торгівля хлібобулочними виробами, борошняними та цукровими кондитерськими виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.25, 'Роздрібна торгівля напоями в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.26, 'Роздрібна торгівля тютюновими виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.29, 'Роздрібна торгівля іншими продуктами харчування в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.3, 'Роздрібна торгівля пальним');
+insert into business_type(code_kved, title) values(47.4, 'Роздрібна торгівля інформаційним і комунікаційним устаткованням у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.41, 'Роздрібна торгівля комп’ютерами, периферійним устаткованням і програмним забезпеченням у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.42, 'Роздрібна торгівля телекомунікаційним устаткованням у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.43, 'Роздрібна торгівля в спеціалізованих магазинах електронною апаратурою побутового призначення для приймання, записування, відтворення звуку й зображення');
+insert into business_type(code_kved, title) values(47.5, 'Роздрібна торгівля іншими товарами господарського призначення в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.51, 'Роздрібна торгівля текстильними товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.52, 'Роздрібна торгівля залізними виробами, будівельними матеріалами та санітарно-технічними виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.53, 'Роздрібна торгівля килимами, килимовими виробами, покриттям для стін і підлоги в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.54, 'Роздрібна торгівля побутовими електротоварами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.59, 'Роздрібна торгівля меблями, освітлювальним приладдям та іншими товарами для дому в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.6, 'Роздрібна торгівля товарами культурного призначення та товарами для відпочинку в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.61, 'Роздрібна торгівля книгами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.62, 'Роздрібна торгівля газетами та канцелярськими товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.63, 'Роздрібна торгівля аудіо- та відеозаписами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.64, 'Роздрібна торгівля спортивним інвентарем у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.65, 'Роздрібна торгівля іграми та іграшками в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.7, 'Роздрібна торгівля іншими товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.71, 'Роздрібна торгівля одягом у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.72, 'Роздрібна торгівля взуттям і шкіряними виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.73, 'Роздрібна торгівля фармацевтичними товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.74, 'Роздрібна торгівля медичними й ортопедичними товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.75, 'Роздрібна торгівля косметичними товарами та туалетними приналежностями в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.76, 'Роздрібна торгівля квітами, рослинами, насінням, добривами, домашніми тваринами та кормами для них у спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.77, 'Роздрібна торгівля годинниками та ювелірними виробами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.78, 'Роздрібна торгівля іншими невживаними товарами в спеціалізованих магазинах');
+insert into business_type(code_kved, title) values(47.79, 'Роздрібна торгівля уживаними товарами в магазинах');
+insert into business_type(code_kved, title) values(47.8, 'Роздрібна торгівля з лотків і на ринках');
+insert into business_type(code_kved, title) values(47.81, 'Роздрібна торгівля з лотків і на ринках харчовими продуктами, напоями та тютюновими виробами');
+insert into business_type(code_kved, title) values(47.82, 'Роздрібна торгівля з лотків і на ринках текстильними виробами, одягом і взуттям');
+insert into business_type(code_kved, title) values(47.89, 'Роздрібна торгівля з лотків і на ринках іншими товарами');
+insert into business_type(code_kved, title) values(47.9, 'Роздрібна торгівля поза магазинами');
+insert into business_type(code_kved, title) values(47.91, 'Роздрібна торгівля, що здійснюється фірмами поштового замовлення або через мережу Інтернет');
+insert into business_type(code_kved, title) values(47.99, 'Інші види роздрібної торгівлі поза магазинами');
+insert into business_type(code_kved, title) values(49, 'Наземний і трубопровідний транспорт');
+insert into business_type(code_kved, title) values(49.1, 'Пасажирський залізничний транспорт міжміського сполучення');
+insert into business_type(code_kved, title) values(49.2, 'Вантажний залізничний транспорт');
+insert into business_type(code_kved, title) values(49.3, 'Інший пасажирський наземний транспорт');
+insert into business_type(code_kved, title) values(49.31, 'Пасажирський наземний транспорт міського та приміського сполучення');
+insert into business_type(code_kved, title) values(49.32, 'Надання послуг таксі');
+insert into business_type(code_kved, title) values(49.39, 'Інший пасажирський наземний транспорт, н. в. і. у.');
+insert into business_type(code_kved, title) values(49.4, 'Вантажний автомобільний транспорт, надання послуг перевезення речей');
+insert into business_type(code_kved, title) values(49.41, 'Вантажний автомобільний транспорт');
+insert into business_type(code_kved, title) values(49.42, 'Надання послуг перевезення речей (переїзду)');
+insert into business_type(code_kved, title) values(49.5, 'Трубопровідний транспорт');
+insert into business_type(code_kved, title) values(50, 'Водний транспорт');
+insert into business_type(code_kved, title) values(50.1, 'Пасажирський морський транспорт');
+insert into business_type(code_kved, title) values(50.2, 'Вантажний морський транспорт');
+insert into business_type(code_kved, title) values(50.3, 'Пасажирський річковий транспорт');
+insert into business_type(code_kved, title) values(50.4, 'Вантажний річковий транспорт');
+insert into business_type(code_kved, title) values(51, 'Авіаційний транспорт');
+insert into business_type(code_kved, title) values(51.1, 'Пасажирський авіаційний транспорт');
+insert into business_type(code_kved, title) values(51.2, 'Вантажний авіаційний транспорт і космічний транспорт');
+insert into business_type(code_kved, title) values(51.21, 'Вантажний авіаційний транспорт');
+insert into business_type(code_kved, title) values(51.22, 'Космічний транспорт');
+insert into business_type(code_kved, title) values(52, 'Складське господарство та допоміжна діяльність у сфері транспорту');
+insert into business_type(code_kved, title) values(52.1, 'Складське господарство');
+insert into business_type(code_kved, title) values(52.2, 'Допоміжна діяльність у сфері транспорту');
+insert into business_type(code_kved, title) values(52.21, 'Допоміжне обслуговування наземного транспорту');
+insert into business_type(code_kved, title) values(52.22, 'Допоміжне обслуговування водного транспорту');
+insert into business_type(code_kved, title) values(52.23, 'Допоміжне обслуговування авіаційного транспорту');
+insert into business_type(code_kved, title) values(52.24, 'Транспортне оброблення вантажів');
+insert into business_type(code_kved, title) values(52.29, 'Інша допоміжна діяльність у сфері транспорту');
+insert into business_type(code_kved, title) values(53, 'Поштова та кур’єрська діяльність');
+insert into business_type(code_kved, title) values(53.1, 'Діяльність національної пошти');
+insert into business_type(code_kved, title) values(53.2, 'Інша поштова та кур’єрська діяльність');
+insert into business_type(code_kved, title) values(55, 'Тимчасове розміщування');
+insert into business_type(code_kved, title) values(55.1, 'Діяльність готелів і подібних засобів тимчасового розміщування');
+insert into business_type(code_kved, title) values(55.2, 'Діяльність засобів розміщування на період відпустки та іншого тимчасового проживання');
+insert into business_type(code_kved, title) values(55.3, 'Надання місць кемпінгами та стоянками для житлових автофургонів і причепів');
+insert into business_type(code_kved, title) values(55.9, 'Діяльність інших засобів тимчасового розміщування');
+insert into business_type(code_kved, title) values(56, 'Діяльність із забезпечення стравами та напоями');
+insert into business_type(code_kved, title) values(56.1, 'Діяльність ресторанів, надання послуг мобільного харчування');
+insert into business_type(code_kved, title) values(56.2, 'Постачання готових страв');
+insert into business_type(code_kved, title) values(56.21, 'Постачання готових страв для подій');
+insert into business_type(code_kved, title) values(56.29, 'Постачання інших готових страв');
+insert into business_type(code_kved, title) values(56.3, 'Обслуговування напоями');
+insert into business_type(code_kved, title) values(58, 'Видавнича діяльність');
+insert into business_type(code_kved, title) values(58.1, 'Видання книг, періодичних видань та інша видавнича діяльність');
+insert into business_type(code_kved, title) values(58.11, 'Видання книг');
+insert into business_type(code_kved, title) values(58.12, 'Видання довідників і каталогів');
+insert into business_type(code_kved, title) values(58.13, 'Видання газет');
+insert into business_type(code_kved, title) values(58.14, 'Видання журналів і періодичних видань');
+insert into business_type(code_kved, title) values(58.19, 'Інші види видавничої діяльності');
+insert into business_type(code_kved, title) values(58.2, 'Видання програмного забезпечення');
+insert into business_type(code_kved, title) values(58.21, 'Видання комп’ютерних ігор');
+insert into business_type(code_kved, title) values(58.29, 'Видання іншого програмного забезпечення');
+insert into business_type(code_kved, title) values(59, 'Виробництво кіно-та відеофільмів, телевізійних програм, видання звукозаписів');
+insert into business_type(code_kved, title) values(59.11, 'Виробництво кіно- та відеофільмів, телевізійних програм');
+insert into business_type(code_kved, title) values(59.12, 'Компонування кіно- та відеофільмів, телевізійних програм');
+insert into business_type(code_kved, title) values(59.13, 'Розповсюдження кіно- та відеофільмів, телевізійних програм');
+insert into business_type(code_kved, title) values(59.14, 'Демонстрація кінофільмів');
+insert into business_type(code_kved, title) values(59.2, 'Видання звукозаписів');
+insert into business_type(code_kved, title) values(60, 'Діяльність у сфері радіомовлення та телевізійного мовлення');
+insert into business_type(code_kved, title) values(60.1, 'Діяльність у сфері радіомовлення');
+insert into business_type(code_kved, title) values(60.2, 'Діяльність у сфері телевізійного мовлення');
+insert into business_type(code_kved, title) values(61, 'Телекомунікації (електрозв’язок)');
+insert into business_type(code_kved, title) values(61.1, 'Діяльність у сфері проводового електрозв’язку');
+insert into business_type(code_kved, title) values(61.2, 'Діяльність у сфері безпроводового електрозв’язку');
+insert into business_type(code_kved, title) values(61.3, 'Діяльність у сфері супутникового електрозв’язку');
+insert into business_type(code_kved, title) values(61.9, 'Інша діяльність у сфері електрозв’язку');
+insert into business_type(code_kved, title) values(62.0, 'Комп’ютерне програмування, консультування та пов’язана з ними діяльність');
+insert into business_type(code_kved, title) values(62.01, 'Комп’ютерне програмування');
+insert into business_type(code_kved, title) values(62.02, 'Консультування з питань інформатизації');
+insert into business_type(code_kved, title) values(62.03, 'Діяльність із керування комп’ютерним устаткованням');
+insert into business_type(code_kved, title) values(62.09, 'Інша діяльність у сфері інформаційних технологій і комп’ютерних систем');
+insert into business_type(code_kved, title) values(63, 'Надання інформаційних послуг');
+insert into business_type(code_kved, title) values(63.1, 'Оброблення даних, розміщення інформації на веб-вузлах і пов’язана з ними діяльність; веб-портали');
+insert into business_type(code_kved, title) values(63.11, 'Оброблення даних, розміщення інформації на веб-вузлах і пов’язана з ними діяльність');
+insert into business_type(code_kved, title) values(63.12, 'Веб-портали');
+insert into business_type(code_kved, title) values(63.9, 'Надання інших інформаційних послуг');
+insert into business_type(code_kved, title) values(63.91, 'Діяльність інформаційних агентств');
+insert into business_type(code_kved, title) values(63.99, 'Надання інших інформаційних послуг, н. в. і. у.');
+insert into business_type(code_kved, title) values(64, 'Надання фінансових послуг, крім страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(64.1, 'Грошове посередництво');
+insert into business_type(code_kved, title) values(64.11, 'Діяльність центрального банку');
+insert into business_type(code_kved, title) values(64.19, 'Інші види грошового посередництва');
+insert into business_type(code_kved, title) values(64.2, 'Діяльність холдингових компаній');
+insert into business_type(code_kved, title) values(64.3, 'Трасти, фонди та подібні фінансові суб’єкти');
+insert into business_type(code_kved, title) values(64.9, 'Надання інших фінансових послуг, крім страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(64.91, 'Фінансовий лізинг');
+insert into business_type(code_kved, title) values(64.92, 'Інші види кредитування');
+insert into business_type(code_kved, title) values(64.99, 'Надання інших фінансових послуг (крім страхування та пенсійного забезпечення), н. в. і. у.');
+insert into business_type(code_kved, title) values(65, 'Страхування, перестрахування та недержавне пенсійне забезпечення, крім обов’язкового соціального страхування');
+insert into business_type(code_kved, title) values(65.1, 'Страхування');
+insert into business_type(code_kved, title) values(65.11, 'Страхування життя');
+insert into business_type(code_kved, title) values(65.12, 'Інші види страхування, крім страхування життя');
+insert into business_type(code_kved, title) values(65.2, 'Перестрахування');
+insert into business_type(code_kved, title) values(65.3, 'Недержавне пенсійне забезпечення');
+insert into business_type(code_kved, title) values(66, 'Допоміжна діяльність у сферах фінансових послуг і страхування');
+insert into business_type(code_kved, title) values(66.1, 'Допоміжна діяльність у сфері фінансових послуг, крім страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(66.11, 'Управління фінансовими ринками');
+insert into business_type(code_kved, title) values(66.12, 'Посередництво за договорами по цінних паперах або товарах');
+insert into business_type(code_kved, title) values(66.19, 'Інша допоміжна діяльність у сфері фінансових послуг, крім страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(66.2, 'Допоміжна діяльність у сфері страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(66.21, 'Оцінювання ризиків та завданої шкоди');
+insert into business_type(code_kved, title) values(66.22, 'Діяльність страхових агентів і брокерів');
+insert into business_type(code_kved, title) values(66.29, 'Інша допоміжна діяльність у сфері страхування та пенсійного забезпечення');
+insert into business_type(code_kved, title) values(66.3, 'Управління фондами');
+insert into business_type(code_kved, title) values(68, 'Операції з нерухомим майном');
+insert into business_type(code_kved, title) values(68.1, 'Купівля та продаж власного нерухомого майна');
+insert into business_type(code_kved, title) values(68.2, 'Надання в оренду й експлуатацію власного чи орендованого нерухомого майна');
+insert into business_type(code_kved, title) values(68.3, 'Операції з нерухомим майном за винагороду або на основі контракту');
+insert into business_type(code_kved, title) values(68.31, 'Агентства нерухомості');
+insert into business_type(code_kved, title) values(68.32, 'Управління нерухомим майном за винагороду або на основі контракту');
+insert into business_type(code_kved, title) values(69, 'Діяльність у сферах права та бухгалтерського обліку');
+insert into business_type(code_kved, title) values(69.1, 'Діяльність у сфері права');
+insert into business_type(code_kved, title) values(69.2, 'Діяльність у сфері бухгалтерського обліку й аудиту; консультування з питань оподаткування');
+insert into business_type(code_kved, title) values(07.21, 'Добування уранових і торієвих руд');
+insert into business_type(code_kved, title) values(07.29, 'Добування руд інших кольорових металів');
+insert into business_type(code_kved, title) values(70, 'Діяльність головних управлінь (хед-офісів); консультування з питань керування');
+insert into business_type(code_kved, title) values(70.1, 'Діяльність головних управлінь (хед-офісів)');
+insert into business_type(code_kved, title) values(70.2, 'Консультування з питань керування');
+insert into business_type(code_kved, title) values(70.21, 'Діяльність у сфері зв’язків із громадськістю');
+insert into business_type(code_kved, title) values(70.22, 'Консультування з питань комерційної діяльності й керування');
+insert into business_type(code_kved, title) values(71, 'Діяльність у сферах архітектури та інжинірингу; технічні випробування та дослідження');
+insert into business_type(code_kved, title) values(71.1, 'Діяльність у сферах архітектури та інжинірингу, надання послуг технічного консультування');
+insert into business_type(code_kved, title) values(71.11, 'Діяльність у сфері архітектури');
+insert into business_type(code_kved, title) values(71.12, 'Діяльність у сфері інжинірингу, геології та геодезії, надання послуг технічного консультування в цих сферах');
+insert into business_type(code_kved, title) values(71.2, 'Технічні випробування та дослідження');
+insert into business_type(code_kved, title) values(72, 'Наукові дослідження та розробки');
+insert into business_type(code_kved, title) values(72.1, 'Дослідження й експериментальні розробки у сфері природничих і технічних наук');
+insert into business_type(code_kved, title) values(72.11, 'Дослідження й експериментальні розробки у сфері біотехнологій');
+insert into business_type(code_kved, title) values(72.19, 'Дослідження й експериментальні розробки у сфері інших природничих і технічних наук');
+insert into business_type(code_kved, title) values(72.2, 'Дослідження й експериментальні розробки у сфері суспільних і гуманітарних наук');
+insert into business_type(code_kved, title) values(73, 'Рекламна діяльність і дослідження кон’юнктури ринку');
+insert into business_type(code_kved, title) values(73.1, 'Рекламна діяльність');
+insert into business_type(code_kved, title) values(73.11, 'Рекламні агентства');
+insert into business_type(code_kved, title) values(73.12, 'Посередництво в розміщенні реклами в засобах масової інформації');
+insert into business_type(code_kved, title) values(73.2, 'Дослідження кон’юнктури ринку та виявлення громадської думки');
+insert into business_type(code_kved, title) values(74, 'Інша професійна, наукова та технічна діяльність');
+insert into business_type(code_kved, title) values(74.1, 'Спеціалізована діяльність із дизайну');
+insert into business_type(code_kved, title) values(74.2, 'Діяльність у сфері фотографії');
+insert into business_type(code_kved, title) values(74.3, 'Надання послуг перекладу');
+insert into business_type(code_kved, title) values(74.9, 'Інша професійна, наукова та технічна діяльність, н. в. і. у.');
+insert into business_type(code_kved, title) values(75.0, 'Ветеринарна діяльність');
+insert into business_type(code_kved, title) values(77, 'Оренда, прокат і лізинг');
+insert into business_type(code_kved, title) values(77.1, 'Надання в оренду автотранспортних засобів');
+insert into business_type(code_kved, title) values(77.11, 'Надання в оренду автомобілів і легкових автотранспортних засобів');
+insert into business_type(code_kved, title) values(77.12, 'Надання в оренду вантажних автомобілів');
+insert into business_type(code_kved, title) values(77.2, 'Прокат побутових виробів і предметів особистого вжитку');
+insert into business_type(code_kved, title) values(77.21, 'Прокат товарів для спорту та відпочинку');
+insert into business_type(code_kved, title) values(77.22, 'Прокат відеозаписів і дисків');
+insert into business_type(code_kved, title) values(77.29, 'Прокат інших побутових виробів і предметів особистого вжитку');
+insert into business_type(code_kved, title) values(77.3, 'Надання в оренду інших машин, устатковання та товарів');
+insert into business_type(code_kved, title) values(77.31, 'Надання в оренду сільськогосподарських машин і устатковання');
+insert into business_type(code_kved, title) values(77.32, 'Надання в оренду будівельних машин і устатковання');
+insert into business_type(code_kved, title) values(77.33, 'Надання в оренду офісних машин і устатковання, у тому числі комп’ютерів');
+insert into business_type(code_kved, title) values(77.34, 'Надання в оренду водних транспортних засобів');
+insert into business_type(code_kved, title) values(77.35, 'Надання в оренду повітряних транспортних засобів');
+insert into business_type(code_kved, title) values(77.39, 'Надання в оренду інших машин, устатковання та товарів. н. в. і. у.');
+insert into business_type(code_kved, title) values(77.4, 'Лізинг інтелектуальної власності та подібних продуктів, крім творів, захищених авторськими правами');
+insert into business_type(code_kved, title) values(78, 'Діяльність із працевлаштування');
+insert into business_type(code_kved, title) values(78.1, 'Діяльність агентств працевлаштування');
+insert into business_type(code_kved, title) values(78.2, 'Діяльність агентств тимчасового працевлаштування');
+insert into business_type(code_kved, title) values(78.3, 'Інша діяльність із забезпечення трудовими ресурсами');
+insert into business_type(code_kved, title) values(79, 'Діяльність туристичних агентств, туристичних операторів, надання інших послуг бронювання та пов’язана з цим діяльність');
+insert into business_type(code_kved, title) values(79.1, 'Діяльність туристичних агентств і туристичних операторів');
+insert into business_type(code_kved, title) values(79.11, 'Діяльність туристичних агентств');
+insert into business_type(code_kved, title) values(79.12, 'Діяльність туристичних операторів');
+insert into business_type(code_kved, title) values(79.9, 'Надання інших послуг бронювання та пов’язана з цим діяльність');
+insert into business_type(code_kved, title) values(08.11, 'Добування декоративного та будівельного каменю, вапняку, гіпсу, крейди та глинистого сланцю');
+insert into business_type(code_kved, title) values(08.12, 'Добування піску, гравію, глин і каоліну');
+insert into business_type(code_kved, title) values(08.91, 'Добування мінеральної сировини для хімічної промисловості та виробництва мінеральних добрив');
+insert into business_type(code_kved, title) values(08.92, 'Добування торфу');
+insert into business_type(code_kved, title) values(08.93, 'Добування солі');
+insert into business_type(code_kved, title) values(08.99, 'Добування інших корисних копалин і розроблення кар’єрів, н. в. і. у.');
+insert into business_type(code_kved, title) values(80, 'Діяльність охоронних служб та проведення розслідувань');
+insert into business_type(code_kved, title) values(80.1, 'Діяльність приватних охоронних служб');
+insert into business_type(code_kved, title) values(80.2, 'Обслуговування систем безпеки');
+insert into business_type(code_kved, title) values(80.3, 'Проведення розслідувань');
+insert into business_type(code_kved, title) values(81, 'Обслуговування будинків і територій');
+insert into business_type(code_kved, title) values(81.1, 'Комплексне обслуговування об’єктів');
+insert into business_type(code_kved, title) values(81.2, 'Діяльність із прибирання');
+insert into business_type(code_kved, title) values(81.21, 'Загальне прибирання будинків');
+insert into business_type(code_kved, title) values(81.22, 'Інша діяльність із прибирання будинків і промислових об’єктів');
+insert into business_type(code_kved, title) values(81.3, 'Надання ландшафтних послуг');
+insert into business_type(code_kved, title) values(82, 'Адміністративна та допоміжна офісна діяльність, інші допоміжні комерційні послуги');
+insert into business_type(code_kved, title) values(82.1, 'Адміністративна та допоміжна офісна діяльність');
+insert into business_type(code_kved, title) values(82.11, 'Надання комбінованих офісних адміністративних послуг');
+insert into business_type(code_kved, title) values(82.19, 'Фотокопіювання, підготування документів та інша спеціалізована допоміжна офісна діяльність');
+insert into business_type(code_kved, title) values(82.2, 'Діяльність телефонних центрів');
+insert into business_type(code_kved, title) values(82.3, 'Організування конгресів і торговельних виставок');
+insert into business_type(code_kved, title) values(82.9, 'Надання допоміжних комерційних послуг, н. в. і. у.');
+insert into business_type(code_kved, title) values(82.91, 'Діяльність агентств зі стягування платежів і бюро кредитних історій');
+insert into business_type(code_kved, title) values(82.92, 'Пакування');
+insert into business_type(code_kved, title) values(82.99, 'Надання інших допоміжних комерційних послуг, н. в. і. у.');
+insert into business_type(code_kved, title) values(84, 'Державне управління й оборона; обов’язкове соціальне страхування');
+insert into business_type(code_kved, title) values(84.1, 'Державне управління загального характеру; соціально-економічне управління');
+insert into business_type(code_kved, title) values(84.11, 'Державне управління загального характеру');
+insert into business_type(code_kved, title) values(84.12, 'Регулювання у сферах охорони здоров’я, освіти, культури та інших соціальних сферах, крім обов’язкового соціального страхування');
+insert into business_type(code_kved, title) values(84.13, 'Регулювання та сприяння ефективному веденню економічної діяльності');
+insert into business_type(code_kved, title) values(84.2, 'Надання державних послуг суспільству в цілому');
+insert into business_type(code_kved, title) values(84.21, 'Міжнародна діяльність');
+insert into business_type(code_kved, title) values(84.22, 'Діяльність у сфері оборони');
+insert into business_type(code_kved, title) values(84.23, 'Діяльність у сфері юстиції та правосуддя');
+insert into business_type(code_kved, title) values(84.24, 'Діяльність у сфері охорони громадського порядку та безпеки');
+insert into business_type(code_kved, title) values(84.25, 'Діяльність пожежних служб');
+insert into business_type(code_kved, title) values(84.3, 'Діяльність у сфері обов’язкового соціального страхування');
+insert into business_type(code_kved, title) values(85, 'Освіта');
+insert into business_type(code_kved, title) values(85.1, 'Дошкільна освіта');
+insert into business_type(code_kved, title) values(85.2, 'Початкова освіта');
+insert into business_type(code_kved, title) values(85.3, 'Середня освіта');
+insert into business_type(code_kved, title) values(85.31, 'Загальна середня освіта');
+insert into business_type(code_kved, title) values(85.32, 'Професійно-технічна освіта');
+insert into business_type(code_kved, title) values(85.41, 'Професійно-технічна освіта на рівні вищого професійно-технічного навчального закладу');
+insert into business_type(code_kved, title) values(85.42, 'Вища освіта');
+insert into business_type(code_kved, title) values(85.5, 'Інші види освіти');
+insert into business_type(code_kved, title) values(85.51, 'Освіта у сфері спорту та відпочинку');
+insert into business_type(code_kved, title) values(85.52, 'Освіта у сфері культури');
+insert into business_type(code_kved, title) values(85.53, 'Діяльність шкіл підготовлення водіїв транспортних засобів');
+insert into business_type(code_kved, title) values(85.59, 'Інші види освіти, н. в. і. у.');
+insert into business_type(code_kved, title) values(85.60, 'Допоміжна діяльність у сфері освіти');
+insert into business_type(code_kved, title) values(86, 'Охорона здоров’я');
+insert into business_type(code_kved, title) values(86.1, 'Діяльність лікарняних закладів');
+insert into business_type(code_kved, title) values(86.2, 'Медична та стоматологічна практика');
+insert into business_type(code_kved, title) values(86.21, 'Загальна медична практика');
+insert into business_type(code_kved, title) values(86.22, 'Спеціалізована медична практика');
+insert into business_type(code_kved, title) values(86.23, 'Стоматологічна практика');
+insert into business_type(code_kved, title) values(86.9, 'Інша діяльність у сфері охорони здоров’я');
+insert into business_type(code_kved, title) values(87, 'Надання послуг догляду із забезпеченням проживання');
+insert into business_type(code_kved, title) values(87.1, 'Діяльність із догляду за хворими із забезпеченням проживання');
+insert into business_type(code_kved, title) values(87.2, 'Надання послуг догляду із забезпеченням проживання для осіб з розумовими вадами та хворих на наркоманію');
+insert into business_type(code_kved, title) values(87.3, 'Надання послуг догляду із забезпеченням проживання для осіб похилого віку та інвалідів');
+insert into business_type(code_kved, title) values(87.9, 'Надання інших послуг догляду із забезпеченням проживання');
+insert into business_type(code_kved, title) values(88, 'Надання соціальної допомоги без забезпечення проживання');
+insert into business_type(code_kved, title) values(88.1, 'Надання соціальної допомоги без забезпечення проживання для осіб похилого віку та інвалідів');
+insert into business_type(code_kved, title) values(88.9, 'Надання іншої соціальної допомоги без забезпечення проживання');
+insert into business_type(code_kved, title) values(88.91, 'Денний догляд за дітьми');
+insert into business_type(code_kved, title) values(88.99, 'Надання іншої соціальної допомоги без забезпечення проживання, н. в. і. у.');
+insert into business_type(code_kved, title) values(90.0, 'Діяльність у сфері творчості, мистецтва та розваг');
+insert into business_type(code_kved, title) values(90.01, 'Театральна та концертна діяльність');
+insert into business_type(code_kved, title) values(90.02, 'Діяльність щодо підтримання театральних і концертних заходів');
+insert into business_type(code_kved, title) values(90.03, 'Індивідуальна мистецька діяльність');
+insert into business_type(code_kved, title) values(90.04, 'Функціювання театральних і концертних залів');
+insert into business_type(code_kved, title) values(91.0, 'Функціювання бібліотек, архівів, музеїв та інших закладів культури');
+insert into business_type(code_kved, title) values(91.01, 'Функціювання бібліотек і архівів');
+insert into business_type(code_kved, title) values(91.02, 'Функціювання музеїв');
+insert into business_type(code_kved, title) values(91.03, 'Діяльність із охорони та використання пам’яток історії, будівель та інших пам’яток культури');
+insert into business_type(code_kved, title) values(91.04, 'Функціювання ботанічних садів, зоопарків і природних заповідників');
+insert into business_type(code_kved, title) values(92.0, 'Організування азартних ігор');
+insert into business_type(code_kved, title) values(93, 'Діяльність у сфері спорту, організування відпочинку та розваг');
+insert into business_type(code_kved, title) values(93.1, 'Діяльність у сфері спорту');
+insert into business_type(code_kved, title) values(93.11, 'Функціювання спортивних споруд');
+insert into business_type(code_kved, title) values(93.12, 'Діяльність спортивних клубів');
+insert into business_type(code_kved, title) values(93.13, 'Діяльність фітнес-центрів');
+insert into business_type(code_kved, title) values(93.19, 'Інша діяльність у сфері спорту');
+insert into business_type(code_kved, title) values(93.2, 'Організування відпочинку та розваг');
+insert into business_type(code_kved, title) values(93.21, 'Функціювання атракціонів і тематичних парків');
+insert into business_type(code_kved, title) values(93.29, 'Організування інших видів відпочинку та розваг');
+insert into business_type(code_kved, title) values(94, 'Діяльність громадських організацій');
+insert into business_type(code_kved, title) values(94.1, 'Діяльність організацій промисловців і підприємців, професійних організацій');
+insert into business_type(code_kved, title) values(94.11, 'Діяльність організацій промисловців і підприємців');
+insert into business_type(code_kved, title) values(94.12, 'Діяльність професійних громадських організацій');
+insert into business_type(code_kved, title) values(94.2, 'Діяльність професійних спілок');
+insert into business_type(code_kved, title) values(94.9, 'Діяльність інших громадських організацій');
+insert into business_type(code_kved, title) values(94.91, 'Діяльність релігійних організацій');
+insert into business_type(code_kved, title) values(94.92, 'Діяльність політичних організацій');
+insert into business_type(code_kved, title) values(94.99, 'Діяльність інших громадських організацій, н. в. і. у.');
+insert into business_type(code_kved, title) values(95, 'Ремонт комп’ютерів, побутових виробів і предметів особистого вжитку');
+insert into business_type(code_kved, title) values(95.1, 'Ремонт комп’ютерів і обладнання зв’язку');
+insert into business_type(code_kved, title) values(95.11, 'Ремонт комп’ютерів і периферійного устатковання');
+insert into business_type(code_kved, title) values(95.12, 'Ремонт обладнання зв’язку');
+insert into business_type(code_kved, title) values(95.2, 'Ремонт побутових виробів і предметів особистого вжитку');
+insert into business_type(code_kved, title) values(95.21, 'Ремонт електронної апаратури побутового призначення для приймання, записування, відтворення звуку й зображення');
+insert into business_type(code_kved, title) values(95.22, 'Ремонт побутових приладів, домашнього та садового обладнання');
+insert into business_type(code_kved, title) values(95.23, 'Ремонт взуття та шкіряних виробів');
+insert into business_type(code_kved, title) values(95.24, 'Ремонт меблів і домашнього начиння');
+insert into business_type(code_kved, title) values(95.25, 'Ремонт годинників і ювелірних виробів');
+insert into business_type(code_kved, title) values(95.29, 'Ремонт інших побутових виробів і предметів особистого вжитку');
+insert into business_type(code_kved, title) values(96.0, 'Надання інших індивідуальних послуг');
+insert into business_type(code_kved, title) values(96.01, 'Прання та хімічне чищення текстильних і хутряних виробів');
+insert into business_type(code_kved, title) values(96.02, 'Надання послуг перукарнями та салонами краси');
+insert into business_type(code_kved, title) values(96.03, 'Організування поховань і надання суміжних послуг');
+insert into business_type(code_kved, title) values(96.04, 'Діяльність із забезпечення фізичного комфорту');
+insert into business_type(code_kved, title) values(96.09, 'Надання інших індивідуальних послуг, н. в. і. у.');
+insert into business_type(code_kved, title) values(97.0, 'Діяльність домашніх господарств як роботодавців для домашньої прислуги');
+insert into business_type(code_kved, title) values(98, 'Діяльність домашніх господарств як виробників товарів та послуг для власного споживання');
+insert into business_type(code_kved, title) values(98.1, 'Діяльність домашніх господарств як виробників товарів для власного споживання');
+insert into business_type(code_kved, title) values(98.2, 'Діяльність домашніх господарств як виробників послуг для власного споживання');
+insert into business_type(code_kved, title) values(99.0, 'Діяльність екстериторіальних організацій і органів');
+
+INSERT INTO `permit_type` (`name`) VALUES
+  ('Висновок'),
+  ('Витяг'),
+  ('Відкритий висновок'),
+  ('Генеральний висновок'),
+  ('Довідка'),
+  ('Дозвіл'),
+  ('Наказ '),
+  ('Облікова картка'),
+  ('Картка реєстрації обліку зовнішньоекономічного договору (контракту)'),
+  ('Кваліфікаційний сертифікат'),
+  ('Ліцензія'),
+  ('Погодження'),
+  ('Рішення'),
+  ('Посвідчення'),
+  ('Експертний висновок'),
+  ('Разовий висновок'),
+  ('Реєстраційна картка проекту'),
+  ('Зареєстрована розрахункова книжка'),
+  ('Розпорядження'),
+  ('Свідоцтво'),
+  ('Спеціальний дозвіл'),
+  ('Затвердженні технологічні інструкції'),
+  ('Затверджена проектно-кошторисна документація'),
+  ('Книга обліку розрахункових операцій'),
+  ('Сертифікат'),
+  ('Ветеринарна довідка'),
+  ('Ветеринарне свідоцтво'),
+  ('Виписка'),
+  ('Акт'),
+  ('Зареєстрована декларація'),
+  ('Експлуатаційний дозвіл'),
+  ('Контрольна марка'),
+  ('Лист'),
+  ('Додаток до ліцензії'),
+  ('Міжнародний ветеринарний сертифікат'),
+  ('Міжнародний імпортний сертифікат'),
+  ('Патент'),
+  ('Підтвердження'),
+  ('Повідомлення'),
+  ('Реєстраційне посвідчення'),
+  ('Кваліфікаційне свідоцтво'),
+  ('Зареєстрований регламент'),
+  ('Сертифікат відповідності'),
+  ('Сертифікат компетентності'),
+  ('Судновий білет'),
+  ('Фітосанітарний сертифікат'),
+  ('Форма реєстрації '),
+  ('Контрольна картка обліку'),
+  ('Штамп'),
+  ('Погоджена науково проектна-документація'),
+  ('Зареєстрована інвестиційна декларація'),
+  ('Зареєстровані правила'),
+  ('Страховий поліс'),
+  ('Тариф'),
+  ('Граничний рівень'),
+  ('Вимога'),
+  ('Типова форма'),
+  ('Заявка'),
+  ('Нотаріальне посвідчення');
+
+INSERT INTO `permit` (`name`, `form_id`, `legal_document_id`, `number`, `permit_type_id`, `file_example`, `term`, `propose`, `status`) VALUES
+  ('Ветеринарні документи: міжнародні ветеринарні сертифікати (для країн СНД - ветеринарні свідоцтва форми № 1, № 2 та № 3) - при переміщенні за межі України', 0, 0, '1', 35, '', '', '', 1),
+  ('Ветеринарні документи: ветеринарні довідки - при переміщенні в межах району (крім харчових продуктів тваринного та рослинного походження для споживання людиною)', 0, 0, '2', 26, '', '', '', 1),
+  ('Ветеринарні документи: ветеринарні свідоцтва (для України - форми № 1, № 2) - при переміщенні за межі території Автономної Республіки Крим, областей, міст Києва та Севастополя, районів, міст (крім харчових продуктів тваринного та рослинного походження для споживання людиною)', 0, 0, '3', 27, '', '', '', 1),
+  ('Висновок державної екологічної експертизи', 211499, 0, '4', 1, '', '', '', 1),
+  ('Висновок державної експертизи землевпорядної документації щодо об’єктів, які підлягають обов’язковій державній експертизі', 0, 211499, '5', 1, '', '', '', 1),
+  ('Висновок державної санітарноепідеміологічної експертизи діючих об’єктів, у тому числі військового та оборонного призначення', 211499, 0, '6', 1, '', '', '', 1),
+  ('Висновок державної санітарноепідеміологічної експертизи документації на розроблювані техніку, технології, устаткування, інструменти тощо', 211499, 0, '7', 1, '', '', '', 1),
+  ('Висновок державної санітарноепідеміологічної експертизи щодо ввезення, реалізації та використання сировини, продукції (вироби, обладнання, технологічні лінії тощо) іноземного виробництва за умови відсутності даних щодо їх безпечності для здоров’я населення', 211499, 0, '8', 1, '', '', '', 1),
+  ('Висновок державної санітарноепідеміологічної експертизи щодо продукції, напівфабрикатів, речовин, матеріалів та небезпечних факторів, використання, передача або збут яких може завдати шкоди здоров’ю людей', 211499, 0, '9', 1, '', '', '', 1),
+  ('Висновок щодо електромагнітної сумісності', 211499, 0, '13', 1, '', '', '', 1),
+  ('Дозвіл на виготовлення документів страхового фонду, виробництво технічних засобів оброблення інформації і технологічного оснащення, що має відповідати вимогам технічного захисту інформації з обмеженим доступом', 211499, 0, '14', 6, '', '', '', 1),
+  ('Дозвіл на днопоглиблювальні роботи, прокладання кабелів, трубопроводів та інших комунікацій на землях водного фонду', 211499, 0, '16', 6, '', '', '', 1),
+  ('Дозвіл або сертифікат на ввезення в Україну і вивезення за її межі об’єктів рослинного світу', 211499, 0, '20', 46, '', '', '', 1),
+  ('Дозвіл або сертифікат на ввезення в Україну і вивезення за її межі об’єктів тваринного світу', 211499, 0, '21', 6, '', '', '', 1),
+  ('Дозвіл на ввезення з-за кордону радіоелектронних засобів та випромінювальних пристроїв спеціального призначення', 211499, 0, '24', 6, '', '', '', 1),
+  ('Дозвіл на ввезення на митну територію України незареєстрованих пестицидів і агрохімікатів, що використовуються для державних випробувань та наукових досліджень, а також обробленого ними насіннєвого (посадкового) матеріалу', 0, 0, '25', 6, '', '', '', 1),
+  ('Дозвіл на вивільнення генетично модифікованих організмів у відкритій системі', 0, 0, '28', 6, '', '', '', 1),
+  ('Дозвіл на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами', 211499, 0, '30', 6, '', '', '', 1),
+  ('Дозвіл на виконання будівельних робіт', 0, 0, '32', 6, '', '', '', 1),
+  ('Дозвіл на використання номерного ресурсу', 0, 0, '34', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне використання природних ресурсів у межах територій та об’єктів природно-заповідного фонду', 211499, 0, '36', 6, '', '', '', 1),
+  ('Дозвіл на добування мисливських тварин (ліцензія, відстрільна картка)', 211499, 0, '38', 6, '', '', '', 1),
+  ('Дозвіл на експлуатацію радіоелектронного засобу або випромінювального пристрою', 0, 0, '39', 6, '', '', '', 1),
+  ('Дозвіл на здійснення операцій у сфері поводження з відходами', 211499, 0, '40', 6, '', '', '', 1),
+  ('Дозвіл на зняття та перенесення ґрунтового покриву земельних ділянок', 0, 0, '41', 6, '', '', '', 1),
+  ('Дозвіл на імпорт в Україну товарів, щодо яких застосовуються заходи нагляду або регіонального нагляду', 0, 0, '42', 6, '', '', '', 1),
+  ('Дозвіл на переведення земельних лісових ділянок до нелісових земель у цілях, пов’язаних з веденням лісового господарства, без їх вилучення у постійного лісокористувача', 211499, 0, '45', 6, '', '', '', 1),
+  ('Дозвіл на переміщення (перенесення) пам’ятки національного значення', 211499, 0, '46', 6, '', '', '', 1),
+  ('Дозвіл на переміщення (перенесення) пам’яток місцевого значення', 211499, 211499, '47', 6, '', '', '', 1),
+  ('Дозвіл на початок виконання робіт підвищеної небезпеки та початок експлуатації (застосування) машин, механізмів, устаткування підвищеної небезпеки', 0, 0, '48', 6, '', '', '', 1),
+  ('Дозвіл на право ввезення (вивезення) чи на право транзиту наркотичних засобів, психотропних речовин або прекурсорів наркотичних засобів і психотропних речовин', 0, 0, '49', 6, '', '', '', 1),
+  ('Дозвіл на право ведення робіт, пов’язаних з діяльністю щодо охорони і вивчення археологічної спадщини', 211499, 0, '50', 6, '', '', '', 1),
+  ('Дозвіл на право займатися розведенням у напіввільних умовах чи в неволі видів тварин, занесених до Червоної книги України', 211499, 211499, '51', 6, '', '', '', 1),
+  ('Дозвіл на переселення тварин у нові місця перебування, акліматизацію нових для фауни України видів диких тварин, а також на здійснення заходів щодо схрещування диких тварин', 211499, 211499, '52', 6, '', '', '', 1),
+  ('Дозвіл на проведення будь-яких діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах, організаціях, діяльність яких пов’язана з використанням біологічних агентів, хімічної сировини, продукції та речовин з джерелами іонізуючого та неіонізуючого випромінювання і радіоактивних речовин', 211499, 0, '53', 6, '', '', '', 1),
+  ('Дозвіл на проведення заходів із залученням тварин', 0, 0, '54', 6, '', '', '', 1),
+  ('Дозвіл на проведення наукових експериментів над тваринами', 211499, 0, '55', 6, '', '', '', 1),
+  ('Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони, реєстрація дозволів на проведення археологічних розвідок, розкопок', 211499, 0, '57', 6, '', '', '', 1),
+  ('Дозвіл на проведення робіт на пам’ятках національного значення, їхніх територіях та в зонах охорони, на охоронюваних археологічних територіях, в історичних ареалах населених пунктів', 211499, 211499, '58', 6, '', '', '', 1),
+  ('Дозвіл на розміщення зовнішньої реклами', 0, 0, '63', 6, '', '', '', 1),
+  ('Дозвіл на розміщення, будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладання інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг', 0, 0, '64', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне використання об’єктів тваринного світу', 211499, 0, '67', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне використання природних рослинних ресурсів', 211499, 211499, '68', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне водокористування', 211499, 0, '70', 6, '', '', '', 1),
+  ('Дозвіл на транзитне переміщення незареєстрованих в Україні генетично модифікованих організмів', 0, 0, '74', 6, '', '', '', 1),
+  ('Письмова згода (повідомлення) на транскордонне перевезення небезпечних відходів', 211499, 0, '75', 6, '', '', '', 1),
+  ('Дозвіл на участь у дорожньому русі транспортних засобів, вагові або габаритні параметри яких перевищують нормативні', 211499, 0, '76', 6, '', '', '', 1),
+  ('Експлуатаційний дозвіл', 211499, 0, '80', 31, '', '', '', 1),
+  ('Експлуатаційні дозволи для потужностей (об’єктів): з переробки неїстівних продуктів тваринного походження; з виробництва, змішування та приготування кормових добавок, преміксів і кормів', 211499, 0, '81', 31, '', '', '', 1),
+  ('Карантинний сертифікат', 0, 211499, '83', 25, '', '', '', 1),
+  ('Погодження відведення землі та водного простору для торговельного мореплавства, здійснення будівельних та інших робіт у зоні дії навігаційного обладнання і морських шляхів', 211499, 0, '91', 12, '', '', '', 1),
+  ('Погодження відчуження або передачі пам’яток місцевого значення їхніми власниками чи уповноваженими ними органами іншим особам у володіння, користування або управління', 211499, 0, '92', 12, '', '', '', 1),
+  ('Погодження відчуження або передачі пам’яток національного значення їхніми власниками чи уповноваженими ними органами іншим особам у володіння, користування або управління', 211499, 211499, '93', 12, '', '', '', 1),
+  ('Погодження маршрутів руху транспортних засобів під час дорожнього перевезення небезпечних вантажів', 211499, 211499, '97', 12, '', '', '', 1),
+  ('Погодження програм та проектів містобудівних, архітектурних і ландшафтних перетворень, будівельних, меліоративних, шляхових, земельних робіт, реалізація яких може позначитися на стані пам’яток місцевого значення, їх територій і зон охорони', 211499, 0, '106', 12, '', '', '', 1),
+  ('Погодження проектів щодо будівництва, реконструкції і ремонту автомобільних доріг, залізничних переїздів, комплексів дорожнього сервісу та інших споруд у межах смуги відведення автомобільних доріг або червоних ліній міських вулиць і доріг', 211499, 0, '108', 12, '', '', '', 1),
+  ('Рішення про виділення у встановленому порядку лісових ділянок для довгострокового тимчасового користування лісами', 211499, 0, '113', 13, '', '', '', 1),
+  ('Рішення про передачу у власність, надання у постійне користування та оренду земельних ділянок, що перебувають у державній або комунальній власності', 211499, 0, '114', 13, '', '', '', 1),
+  ('Рішення про продаж земельних ділянок державної та комунальної власності', 211499, 211499, '115', 13, '', '', '', 1),
+  ('Свідоцтво на право вивезення (тимчасового вивезення) культурних цінностей', 0, 0, '116', 20, '', '', '', 1),
+  ('Свідоцтво про уповноваження на проведення повірки засобів вимірювальної техніки, що перебувають в експлуатації та застосовуються у сфері законодавчо регульованої метрології', 211499, 0, '120', 20, '', '', '', 1),
+  ('Рішення про призначення органу з оцінки відповідності на здійснення оцінки відповідності вимогам відповідного технічного регламенту', 211499, 0, '120-1', 13, '', '', '', 1),
+  ('Рішення про призначення органу з сертифікації в державній системі сертифікації', 211499, 0, '120-3', 13, '', '', '', 1),
+  ('Сертифікат про прийняття в експлуатацію закінчених будівництвом об’єктів, що належать до IV і V категорій складності', 211499, 0, '121', 25, '', '', '', 1),
+  ('Сертифікат суб’єкта оціночної діяльності', 0, 0, '124', 25, '', '', '', 1),
+  ('Підтвердження на ввезення в Україну насіння і садивного матеріалу сортів рослин, не внесених до Реєстру сортів рослин України та/або до Реєстру сортів рослин Організації економічного співробітництва та розвитку для селекційних, дослідних робіт і експонування', 211499, 0, '127', 38, '', '', '', 1),
+  ('Спеціальний дозвіл на зайняття народною медициною (цілительством)', 0, 0, '128', 21, '', '', '', 1),
+  ('Спеціальний дозвіл на користування нафтогазоносними надрами', 211499, 0, '130', 21, '', '', '', 1),
+  ('Спеціальний дозвіл на спеціальне використання лісових ресурсів (лісорубний квиток, ордер, лісовий квиток)', 211499, 0, '132', 21, '', '', '', 1),
+  ('Спеціальні дозволи на користування надрами у межах конкретних ділянок', 211499, 0, '133', 21, '', '', '', 1),
+  ('Фітосанітарний сертифікат', 211499, 0, '134', 46, '', '', '', 1),
+  ('Фітосанітарний сертифікат на реекспорт', 211499, 211499, '135', 46, '', '', '', 1),
+  ('Дозвіл на спеціальне використання водних біоресурсів у рибогосподарських водних об’єктах (їх частинах)', 211499, 211499, '138', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне використання водних біоресурсів за межами юрисдикції України', 211499, 0, '139', 6, '', '', '', 1),
+  ('Форма реєстрації уловів (реекспорту) антарктичного та патагонського іклачів', 211499, 211499, '140', 47, '', '', '', 1),
+  ('Дозвіл на імпорт та експорт зразків видів дикої фауни і флори, сертифікат на пересувні виставки, реекспорт та інтродукцію з моря зазначених зразків, які є об’єктами регулювання Конвенції про міжнародну торгівлю видами дикої фауни і флори, що перебувають під загрозою зникнення, в частині осетрових риб і виробленої з них продукції', 0, 211499, '141', 6, '', '', '', 1),
+  ('Підтвердження законності вилучення водних біоресурсів із середовища їх існування та переробки продуктів лову (у разі необхідності суб’єкту господарювання для здійснення зовнішньоторговельних операцій)', 211499, 211499, '142', 38, '', '', '', 1),
+  ('Дозвіл на порушення об’єктів благоустрою', 211499, 0, '144', 6, '', '', '', 1),
+  ('Дозвіл на провадження діяльності, спрямованої на штучні зміни стану атмосфери та атмосферних явищ у господарських цілях', 211499, 0, '144', 6, '', '', '', 1),
+  ('Дозвіл на спеціальне використання (добування, збирання) об’єктів Червоної книги України', 211499, 211499, '145', 6, '', '', '', 1),
+  ('Дозвіл на проведення державної апробації (випробовувань) генетично модифікованих організмів у відкритій системі', 211499, 0, '146', 6, '', '', '', 1),
+  ('Дозвіл на ввезення продукції, отриманої з використанням генетично модифікованих організмів для науково-дослідних цілей', 211499, 211499, '148', 6, '', '', '', 1),
+  ('Дозвіл на утримання диких тварин у неволі', 211499, 0, '149', 6, '', '', '', 1),
+  ('Ліцензія на надання освітніх послуг у сфері позашкільної освіти', 122123, 6727, '', 11, '', '', '', 1),
+  ('фіксована ціна', 0, 0, '', 55, '', '', '', 1),
+  ('гранична ціна', 0, 0, '', 55, '', '', '', 1),
+  ('граничний рівень торговельної надбавки (націнки) та постачальницько-збутової надбавки (постачальницької винагороди)', 0, 0, '', 55, '', '', '', 1),
+  ('граничний норматив рентабельності', 0, 0, '', 55, '', '', '', 1),
+  ('обмеження розміру постачальницької винагороди', 0, 0, '', 55, '', '', '', 1),
+  ('обмеження розміру доплат, знижок (знижувальних коефіцієнтів)', 0, 0, '', 55, '', '', '', 1),
+  ('декларування зміни ціни та/або реєстрації ціни.', 0, 0, '', 55, '', '', '', 1),
+  ('тариф на транспортування нафти й нафтопродуктів трубопроводами', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на транспортування природного й нафтового газу трубопроводами та його розподіл', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на транспортування інших речовин трубопровідним транспортом', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на передачі та розподілу електричної енергії', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на користування залізничними коліями, диспетчерськими службами, вокзалами та іншими об’єктами інфраструктури, що забезпечують рух залізничного транспорту загального користування', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на послуги з управління повітряним рухом', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на послуги зв’язку загального користування', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на послуги з централізованого водопостачання та водовідведення', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на послуги з централізованого постачання теплової енергії', 0, 0, '', 54, '', '', '', 1),
+  ('тариф на спеціалізовані послуг транспортних терміналів, портів, аеропортів за переліком, який визначається Кабінетом Міністрів України', 0, 0, '', 54, '', '', '', 1),
+  ('медичне страхування', 0, 0, '', 53, '', '', '', 1),
+  ('особисте страхування медичних і фармацевтичних працівників (крім тих, які працюють в установах і організаціях, що фінансуються з Державного бюджету України) на випадок інфікування вірусом імунодефіциту людини при виконанні ними службових обов’язків', 0, 0, '', 53, '', '', '', 1),
+  ('особисте страхування працівників відомчої (крім тих, які працюють в установах і організаціях, що фінансуються з Державного бюджету України) та сільської пожежної охорони і членів добровільних пожежних дружин (команд)', 0, 0, '', 53, '', '', '', 1),
+  ('страхування спортсменів вищих категорій', 0, 0, '', 53, '', '', '', 1),
+  ('страхування життя і здоров’я спеціалістів ветеринарної медицини', 0, 0, '', 53, '', '', '', 1),
+  ('особисте страхування від нещасних випадків на транспорті', 0, 0, '', 53, '', '', '', 1),
+  ('авіаційне страхування цивільної авіації', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності морського перевізника та виконавця робіт, пов’язаних із обслуговуванням морського транспорту, щодо відшкодування збитків, завданих пасажирам, багажу, пошті, вантажу, іншим користувачам морського транспорту та третім особам', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільно-правової відповідальності власників наземних транспортних засобів', 0, 0, '', 53, '', '', '', 1),
+  ('страхування засобів водного транспорту', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності оператора ядерної установки за ядерну шкоду, яка може бути заподіяна внаслідок ядерного інциденту', 0, 0, '', 53, '', '', '', 1),
+  ('страхування працівників (крім тих, які працюють в установах і організаціях, що фінансуються з Державного бюджету України), які беруть участь у наданні психіатричної допомоги, в тому числі здійснюють догляд за особами, які страждають на психічні розлади', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності суб’єктів господарювання за шкоду, яку може бути заподіяно пожежами та аваріями на об’єктах підвищеної небезпеки, включаючи пожежовибухонебезпечні об’єкти та об’єкти, господарська діяльність на яких може призвести до аварій екологічного та санітарно-епідеміологічного характеру', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності інвестора, в тому числі за шкоду, заподіяну довкіллю, здоров’ю людей, за угодою про розподіл продукції, якщо інше не передбачено такою угодою', 0, 0, '', 53, '', '', '', 1),
+  ('страхування майнових ризиків за угодою про розподіл продукції у випадках, передбачених Законом України "Про угоди про розподіл продукції" ( 1039-14 )', 0, 0, '', 53, '', '', '', 1),
+  ('страхування фінансової відповідальності, життя і здоров’я тимчасового адміністратора, ліквідатора фінансової установи та працівників центрального органу виконавчої влади, що реалізує державну фінансову політику, які визначені ним для вирішення питань щодо участі держави у капіталізації банку', 0, 0, '', 53, '', '', '', 1),
+  ('страхування майнових ризиків при промисловій розробці родовищ нафти і газу у випадках, передбачених Законом України "Про нафту і газ" ( 2665-14 )', 0, 0, '', 53, '', '', '', 1),
+  ('страхування медичних та інших працівників державних і комунальних закладів охорони здоров’я та державних наукових установ (крім тих, які працюють в установах і організаціях, що фінансуються з Державного бюджету України) на випадок захворювання на інфекційні хвороби, пов’язаного з виконанням ними професійних обов’язків в умовах підвищеного ризику зараження збудниками інфекційних хвороб', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності експортера та особи, яка відповідає за утилізацію (видалення) небезпечних відходів, щодо відшкодування шкоди, яку може бути заподіяно здоров’ю людини,', 0, 0, '', 53, '', '', '', 1),
+  ('страхування власності та навколишньому природному середовищу під час транскордонного перевезення та утилізації (видалення) небезпечних відходів', 0, 0, '', 53, '', '', '', 1),
+  ('страхування об’єктів космічної діяльності (наземна інфраструктура), перелік яких затверджується Кабінетом Міністрів України за поданням центрального органу виконавчої влади, що забезпечує формування державної політики у сфері космічної діяльності', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності суб’єктів космічної діяльності', 0, 0, '', 53, '', '', '', 1),
+  ('страхування об’єктів космічної діяльності (космічна інфраструктура), які є власністю України, щодо ризиків, пов’язаних з підготовкою до запуску космічної техніки на космодромі, запуском та експлуатацією її у космічному просторі', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності щодо ризиків, пов’язаних з підготовкою до запуску космічної техніки на космодромі, запуском та експлуатацією її у космічному просторі', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності суб’єктів перевезення небезпечних вантажів на випадок настання негативних наслідків при перевезенні небезпечних вантажів', 0, 0, '', 53, '', '', '', 1),
+  ('страхування професійної відповідальності осіб, діяльність яких може заподіяти шкоду третім особам, за переліком, встановленим Кабінетом Міністрів України', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності власників собак (за переліком порід, визначених Кабінетом Міністрів України) щодо шкоди, яка може бути заподіяна третім особам', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності громадян України, що мають у власності чи іншому законному володінні зброю, за шкоду, яка може бути заподіяна третій особі або її майну внаслідок володіння, зберігання чи використання цієї зброї', 0, 0, '', 53, '', '', '', 1),
+  ('страхування тварин (крім тих, що використовуються у цілях сільськогосподарського виробництва) на випадок загибелі, знищення, вимушеного забою, від хвороб, стихійних лих та нещасних випадків у випадках та згідно з переліком тварин, встановленими Кабінетом Міністрів України', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності суб’єктів туристичної діяльності за шкоду, заподіяну життю чи здоров’ю туриста або його майну', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності морського судновласника', 0, 0, '', 53, '', '', '', 1),
+  ('страхування ліній електропередач та перетворюючого обладнання передавачів електроенергії від пошкодження внаслідок впливу стихійних лих або техногенних катастроф та від протиправних дій третіх осіб', 0, 0, '', 53, '', '', '', 1),
+  ('страхування відповідальності виробників (постачальників) продукції тваринного походження, ветеринарних препаратів, субстанцій за шкоду, заподіяну третім особам', 0, 0, '', 53, '', '', '', 1),
+  ('страхування предмета іпотеки від ризиків випадкового знищення, випадкового пошкодження або псування.', 0, 0, '', 53, '', '', '', 1),
+  ('страхування майна, переданого у концесію', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності суб’єктів господарювання за шкоду, яку може бути заподіяно довкіллю або здоров’ю людей під час зберігання та застосування пестицидів і агрохімікатів', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільної відповідальності суб’єкта господарювання за шкоду, яку може бути заподіяно третім особам унаслідок проведення вибухових робіт.', 0, 0, '', 53, '', '', '', 1),
+  ('страхування майнових ризиків користувача надр під час дослідно-промислового і промислового видобування та використання газу (метану) вугільних родовищ', 0, 0, '', 53, '', '', '', 1),
+  ('страхування цивільно-правової відповідальності приватного нотаріуса', 0, 0, '', 53, '', '', '', 1),
+  ('страхування ризику невиплати гравцям призів у разі неплатоспроможності та/або банкрутства оператора державних лотерей', 0, 0, '', 53, '', '', '', 1),
+  ('страхування професійної відповідальності призначених органів з оцінки відповідності та визнаних незалежних організацій за шкоду, яку може бути заподіяно третім особам.', 0, 0, '', 53, '', '', '', 1),
+  ('перепис виноградників', 0, 0, '', 40, '', '', '', 1),
+  ('агрохімічна паспортизація земель сільськогосподарського призначення', 0, 0, '', 40, '', '', '', 1),
+  ('реєстрація насадження технічних і столових сортів винограду у господарствах усіх форм власності', 0, 0, '', 47, '', '', '', 1),
+  ('державна реєстрацію суб’єктів племінної справи у тваринництві, племінних і підконтрольних тварин', 0, 0, '', 47, '', '', '', 1),
+  ('реєстр складських документів на зерно', 0, 0, '', 40, '', '', '', 1),
+  ('нотаріальне посвідчення (обов’язкове)', 0, 0, '', 59, '', '', '', 1),
+  ('типова форма правочину', 0, 0, '', 57, '', '', '', 1),
+  ('спеціальні вимоги до змісту правочину', 0, 0, '', 56, '', '', '', 1),
+  ('державна реєстрація селекційних досягнень у тваринництві', 0, 0, '', 47, '', '', '', 1),
+  ('заявка на сорт рослин', 0, 0, '', 58, '', '', '', 1),
+  ('патент на сорти рослин', 0, 0, '', 37, '', '', '', 1),
+  ('свідоцтво про авторство на сорт рослин', 0, 0, '', 20, '', '', '', 1),
+  ('реєстрація створених на основі генетично модифікованих організмів сортів сільськогосподарських рослин', 0, 0, '', 47, '', '', '', 1),
+  ('реєстрація створених на основі генетично модифікованих організмів порід тварин', 0, 0, '', 47, '', '', '', 1),
+  ('реєстрація створених на основі генетично модифікованих організмів мікробіологічних сільськогосподарських препаратів', 0, 0, '', 47, '', '', '', 1),
+  ('визначення обсягів вирощування цукрових буряків для виробництва цукру в межах квоти “А”', 0, 0, '', 55, '', '', '', 1),
+  ('розподіл на конкурсних умовах між цукровими заводами обсягів виробництва цукру в межах квоти “А”', 0, 0, '', 56, '', '', '', 1),
+  ('виділення у натурі зони виробництва винограду', 0, 0, '', 55, '', '', '', 1),
+  ('реєстр сортів рослин, придатних для поширення в Україні ', 0, 0, '', 40, '', '', '', 1),
+  ('типові вимоги до узгоджених дій', 0, 0, '', 56, '', '', '', 1),
+  ('дозвіл на узгоджені дії', 0, 0, '', 6, '', '', '', 1),
+  ('висновки у формі рекомендаційних роз’яснень щодо відповідності дій суб’єктів господарювання положенням антимонопольного законодавства', 0, 0, '', 1, '', '', '', 1),
+  ('дозвіл на концентрацію', 0, 0, '', 6, '', '', '', 1),
+  ('обовязковий продаж валютної виручки', 0, 0, '', 56, '', '', '', 1),
+  ('індивідуальна ліцензія на здійснення валютних операцій', 0, 0, '', 11, '', '', '', 1),
+  ('генеральніа ліцензія на здійснення валютних операцій', 0, 0, '', 11, '', '', '', 1),
+  ('декларування валютних цінностей та іншого майна', 0, 0, '', 30, '', '', '', 1),
+  ('реєстрація договорів, які передбачають виконання резидентами боргових зобов’язань перед нерезидентами за запозиченими у них кредитами, позиками в іноземній валюті', 0, 0, '', 47, '', '', '', 1),
+  ('ліміт заборгованості в іноземній валюті уповноважених банків нерезидентам', 0, 0, '', 55, '', '', '', 1),
+  ('Висновок на заміну номерного агрегату транспортного засобу, а також на переобладнання транспортного засобу без заміни номерних агрегатів', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок про погодження документації із землеустрою', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок щодо меж географічного місця, з яким пов’язані особливі властивості, певні якості та інші характеристики товару', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок щодо можливості дублювання (нанесення) ідентифікаційних номерів транспортних засобів', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок щодо підтвердження відповідності умов виробництва лікарського засобу вимогам належної виробничої практики', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок щодо продовження строку розрахунків за зовнішньоекономічними операціями', 0, 0, '', 1, '', '', '', 1),
+  ('Витяг з Державного реєстру інвестиційних проектів та проектних (інвестиційних) пропозицій', 0, 0, '', 2, '', '', '', 1),
+  ('Відкритий висновок на здійснення тимчасового ввезення/вивезення товарів', 0, 0, '', 3, '', '', '', 1),
+  ('Відкритий висновок на проведення переговорів', 0, 0, '', 1, '', '', '', 1),
+  ('Генеральний висновок на здійснення тимчасового ввезення/вивезення товарів', 0, 0, '', 4, '', '', '', 1),
+  ('Генеральний висновок на проведення переговорів', 0, 0, '', 4, '', '', '', 1),
+  ('Довідка про резервування фіскального номера реєстратора розрахункових операцій', 0, 0, '', 5, '', '', '', 1),
+  ('Дозвіл на відкриття та експлуатацію вільної митної зони комерційного або сервісного типу', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відкриття та експлуатацію магазину безмитної торгівлі', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на здійснення експорту/імпорту товарів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на імпорт та експорт зразків видів дикої фауни і флори, сертифікатів на пересувні виставки, реекспорт та інтродукцію з моря зазначених зразків, які є об’єктами регулювання Конвенції про міжнародну торгівлю видами дикої фауни і флори, що перебувають під загрозою зникнення (за винятком осетрових видів риб і виробленої з них продукції)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на імпорт товарів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення через митний кордон України вибухових матеріалів для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення через митний кордон України вогнепальної зброї, бойових припасів до неї, основних частин зброї, пневматичної, холодної і охолощеної зброї, а також пристроїв та патронів до них для юридичних осіб та фізичних осіб підприємців', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на поїздку територією іноземних держав під час виконання нерегулярних перевезень пасажирів автомобільним транспортом у міжнародному сполученні', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на реекспорт товарів іноземного походження', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на реекспорт товарів українського походження', 0, 0, '', 6, '', '', '', 1),
+  ('Експертний висновок', 0, 0, '', 15, '', '', '', 1),
+  ('Згода (дозвіл) на відчуження державного майна', 0, 0, '', 7, '', '', '', 1),
+  ('Картка реєстрації-обліку зовнішньоекономічного контракту (договору).', 0, 0, '', 9, '', '', '', 1),
+  ('Кваліфікаційний сертифікат інженера-землевпорядника або інженера-геодезиста за заявою суб’єкта звернення', 0, 0, '', 10, '', '', '', 1),
+  ('Кваліфікаційний сертифікат сертифікованого інженера-землевпорядника', 0, 0, '', 10, '', '', '', 1),
+  ('Ліцензія на здійснення резидентами майнових інвестицій за межами України', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на імпорт товарів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право імпорту, експорту спирту етилового, коньячного і плодового, спирту етилового ректифікованого виноградного, спирту етилового ректифікованого плодового, алкогольних напоїв та тютюнових виробів', 0, 0, '', 11, '', '', '', 1),
+  ('Наказ Міністерства агарної політики та продовольства України, яким надається погодження на списання насаджень', 0, 0, '', 7, '', '', '', 1),
+  ('Наказ Міністерства енергетики та вугільної промисловості щодо введення родовища або окремого покладу нафти і газу: в дослідно-промислову розробку', 0, 0, '', 7, '', '', '', 1),
+  ('Наказ Міністерства енергетики та вугільної промисловості щодо введення родовища або окремого покладу нафти і газу: у промислову розробку', 0, 0, '', 7, '', '', '', 1);
+INSERT INTO `permit` (`name`, `form_id`, `legal_document_id`, `number`, `permit_type_id`, `file_example`, `term`, `propose`, `status`) VALUES
+  ('Наказ МОЗ України про задекларовану оптово-відпускну ціну на лікарський засіб або виріб медичного призначення', 0, 0, '', 7, '', '', '', 1),
+  ('Погодження на заміну номерного агрегату транспортного засобу, а також на переобладнання транспортного засобу без заміни номерних агрегатів', 0, 0, '', 12, '', '', '', 1),
+  ('Погодження набуття (збільшення) юридичною чи фізичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної та розрахунково-клірингової діяльності) (Фізична особа (іноземець))', 0, 0, '', 13, '', '', '', 1),
+  ('Погодження набуття (збільшення) юридичною чи фізичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо компаній з управління активами) (Фізичні особи - резиденти)', 0, 0, '', 13, '', '', '', 1),
+  ('Погодження статуту недержавного пенсійного фонду', 0, 0, '', 12, '', '', '', 1),
+  ('Посвідчення про реєстрацію суб’єкта здійснення міжнародних передач товарів', 0, 0, '', 14, '', '', '', 1),
+  ('Разовий висновок на здійснення тимчасового ввезення/вивезення товарів', 0, 0, '', 16, '', '', '', 1),
+  ('Разовий висновок на проведення переговорів', 0, 0, '', 16, '', '', '', 1),
+  ('Реєстраційна картка проекту (програми) міжнародної технічної допомоги', 0, 0, '', 17, '', '', '', 1),
+  ('Реєстрація розрахункових книжок', 0, 0, '', 18, '', '', '', 1),
+  ('Рішення Комісії про реєстрацію Правил Центрального депозитарію та надання статусу Центрального депозитарію', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про допуск цінних паперів іноземних емітентів до обігу на території України', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про дострокове припинення виконання (відмови від виконання) делегованих повноважень саморегулівній організації професійних учасників фондового ринку', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - нерезидентом істотної участі у професійному учаснику фондового ринку (для торговців цінними паперами та фондових бірж)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - резидентом істотної участі у професійному учаснику фондового ринку (для торговців цінними паперами та фондових бірж)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою - нерезидентом істотної участі у професійному учаснику фондового ринку (для торговців цінними паперами та фондових бірж)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою - резидентом істотної участі у професійному учаснику фондового ринку (для торговців цінними паперами та фондових бірж)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) іноземною юридичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - громадянином України істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - іноземцем істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) іноземною юридичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної та розрахунково-клірингової діяльності)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - громадянином України істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної та розрахунково-клірингової діяльності)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо депозитарної та розрахунково-клірингової діяльності)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) фізичною особою - нерезидентом істотної участі у професійному учаснику фондового ринку (крім банку) (щодо компаній з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою - нерезидентом істотної участі у професійному учаснику фондового ринку (крім банку) (щодо компаній з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття (збільшення) юридичною особою істотної участі у професійному учаснику фондового ринку (крім банку) (щодо компаній з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття/збільшення істотної участі у фінансовій установі іноземної юридичної особи', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття/збільшення істотної участі у фінансовій установі фізичної особи - іноземця', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття/збільшення істотної участі у фінансовій установі фізичної особи – громадянина України', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття/збільшення істотної участі у фінансовій установі юридичної особи, яка зареєстрована за законодавством України', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження набуття істотної участі або її збільшення у статутному (складеному) капіталі професійного учасника фондового ринку', 0, 0, '', 7, '', '', '', 1),
+  ('Рішення НКЦПФР про реєстрацію правил (змін до правил) фондової біржі', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про погодження розпорядження майном', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про призначення Визнаної незалежної організації із внесеними змінами, що пов’язані з обмеженням сфери призначення, разом з письмовим запитом про надання інформації щодо комплектів документації, пов’язаної з оцінкою відповідності, яка проводилася такою Визнаною незалежною організацією стосовно окремих видів продукції та/або процедур оцінки відповідності, щодо яких було прийнято наказ про обмеження сфери призначення', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про призначення Органу з оцінки відповідності із внесеними змінами, що пов’язані з обмеженням сфери призначення, разом з письмовим запитом про надання інформації щодо комплектів документації, пов’язаної з оцінкою відповідності, яка проводилася таким призначеним органом стосовно окремих видів продукції та/або процедур оцінки відповідності, щодо яких було прийнято наказ про обмеження сфери призначення', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про реєстрацію договору концесії державного майна', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про реструктуризацію підприємства', 0, 0, '', 13, '', '', '', 1),
+  ('Розпорядження НКЦПФР про зупинення обігу цінних паперів', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про скасування реєстрації випуску цінних паперів', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про скасування реєстрації випуску цінних паперів інститутів спільного інвестування, інвестиційних фондів, взаємних фондів інвестиційних компаній (для скасування реєстрації випуску (випусків) акцій корпоративного інвестиційного фонду, проспекту (проспектів) емісії акцій корпоративного фонду та анулювання свідоцтва (свідоцтв) про реєстрацію випуску (випусків) акцій корпоративного фонду у разі ліквідації корпоративного фонду)', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про скасування реєстрації випуску цінних паперів інститутів спільного інвестування, інвестиційних фондів, взаємних фондів інвестиційних компаній (для скасування реєстрації випуску (випусків) інвестиційних сертифікатів інвестиційного фонду (інвестиційної компанії) у разі ліквідації інвестиційного фонду (взаємного фонду або всіх взаємних фондів інвестиційної компанії (за кожним фондом окремо))', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про скасування реєстрації випуску цінних паперів інститутів спільного інвестування, інвестиційних фондів, взаємних фондів інвестиційних компаній (для скасування реєстрації випуску (випусків) інвестиційних сертифікатів пайового інвестиційного фонду, проспекту (проспектів) емісії інвестиційних сертифікатів пайового фонду та анулювання свідоцтва (свідоцтв) про реєстрацію випуску (випусків) інвестиційних сертифікатів пайового фонду у разі ліквідації пайового фонду)', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про скасування реєстрації випуску цінних паперів інститутів спільного інвестування, інвестиційних фондів, взаємних фондів інвестиційних компаній (для скасування реєстрації випуску (випусків) інвестиційних сертифікатів пайового фонду, проспекту (проспектів) емісії інвестиційних сертифікатів пайового фонду та анулювання свідоцтва (свідоцтв) про реєстрацію випуску (випусків) інвестиційних сертифікатів пайового фонду, у разі якщо після реєстрації випуску та проспекту емісії інвестиційних сертифікатів пайового фонду жоден з інвестиційних сертифікатів не розміщено та НКЦПФР визнано випуск інвестиційних сертифікатів таким, що не відбувся)', 0, 0, '', 19, '', '', '', 1),
+  ('Свідоцтво про внесення відомостей про інститут спільного інвестування до Реєстру', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про внесення до реєстру аудиторських фірм, які можуть проводити аудиторські перевірки професійних учасників ринку цінних паперів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про кваліфікацію когенераційної установки', 0, 0, '', 19, '', '', '', 1),
+  ('Свідоцтво про належність палива до альтернативного', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про облік організації колективного управління', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про погодження конструкції', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право власності на судно', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право власності на судно та', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право плавання під Державним прапором України', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право плавання під Державним прапором України (Судновий патент)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію колісних транспортних засобів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію транспортного засобу', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про страхування або інше фінансове забезпечення цивільної відповідальності за шкоду від забруднення нафтою', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво/тимчасове свідоцтво про реєстрацію випуску акцій', 0, 0, '', 20, '', '', '', 1),
+  ('Спеціальний дозвіл без проведення аукціону на користування надрами з метою видобування корисних копалин', 0, 0, '', 21, '', '', '', 1),
+  ('Спеціальний дозвіл без проведення аукціону на користування надрами з метою геологічного вивчення; геологічного вивчення, у тому числі дослідно-промислової розробки; геологічного вивчення нафтогазоносних надр, у тому числі дослідно-промислової розробки родовищ вуглеводнів, з подальшим видобуванням нафти і газу (промислова розробка родовищ)', 0, 0, '', 21, '', '', '', 1),
+  ('Спеціальний дозвіл на користування надрами з метою будівництва та експлуатації підземних споруд, не пов’язаних з видобуванням корисних копалин, у тому числі споруд для підземного зберігання нафти, газу та інших речовин і матеріалів, захоронення шкідливих речовин і відходів виробництва, скидання стічних вод', 0, 0, '', 21, '', '', '', 1),
+  ('Спеціальний дозвіл на користування надрами з метою створення геологічних територій та об’єктів, що мають важливе наукове, культурне, санітарно- оздоровче значення (наукові полігони, геологічні заповідники, заказники, пам’ятки природи, лікувальні, оздоровчі заклади тощо)', 0, 0, '', 21, '', '', '', 1),
+  ('Спеціальний дозвіл на користування надрами за результатами продажу на аукціоні', 0, 0, '', 21, '', '', '', 1),
+  ('Cвідоцтво (тимчасове свідоцтво), зареєстрований проспект емісії (інформація про випуск)', 0, 0, '', 20, '', '', '', 1),
+  ('Видача спеціальної ліцензії', 0, 0, '', 11, '', '', '', 1),
+  ('Затвердження вин контрольованих найменувань за походженням', 0, 0, '', 22, '', '', '', 1),
+  ('Затвердження нових марок виноробної продукції', 0, 0, '', 22, '', '', '', 1),
+  ('Затвердження проекту для садіння виноградників для виноробства', 0, 0, '', 23, '', '', '', 1),
+  ('Затвердження технологічних інструкцій та змін до них', 0, 0, '', 22, '', '', '', 1),
+  ('Реєстрація книг обліку розрахункових операцій', 0, 0, '', 24, '', '', '', 1),
+  ('Акредитаційний сертифікат закладу охорони здоров’я', 0, 0, '', 25, '', '', '', 1),
+  ('Свідоцтво про виключення судна з Суднової книги України', 0, 0, '', 20, '', '', '', 1),
+  ('Виписка з Єдиного державного реєстру про державну реєстрацію (акредитацію) відокремлених підрозділів іноземних неурядових організацій, представництв, філій іноземних благодійних організацій', 0, 0, '', 28, '', '', '', 1),
+  ('Виписка з Єдиного державного реєстру про державну реєстрацію (легалізацію) змін до відомостей про всеукраїнські професійні спілки, їх об’єднання, що містяться в Єдиному державному реєстрі юридичних осіб, фізичних осіб-підприємців та громадських формувань', 0, 0, '', 28, '', '', '', 1),
+  ('Виписка з Єдиного державного реєстру про державну реєстрацію (легалізацію) створення всеукраїнських професійних спілок, їх об’єднань', 0, 0, '', 28, '', '', '', 1),
+  ('Виписка з Єдиного державного реєстру про державну реєстрацію харчових продуктів для спеціального дієтичного споживання, функціональних харчових продуктів та дієтичних добавок', 0, 0, '', 28, '', '', '', 1),
+  ('Виписка з Єдиного державного реєстру юридичних осіб та фізичних осіб - підприємців', 0, 0, '', 28, '', '', '', 1),
+  ('Висновок Міністерства культури України про погодження проекту землеустрою щодо відведення земельної ділянки', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок на транзит товарів територією України', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок на транскордонне перевезення відходів, у разі коли вони містять матеріали, в кількості достатній для виявлення ними небезпечних властивостей', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок про відповідність медичного імунобіологічного препарату вимогам державних і міжнародних стандартів', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок про те, що товари, які використовуються для розвитку виробництва i забезпечення споживання бiологiчних видів палива, не виробляються та не мають аналогів в Україні', 0, 0, '', 1, '', '', '', 1),
+  ('Висновок про якість ввезених лікарських засобів', 0, 0, '', 1, '', '', '', 1),
+  ('Витяг з Державного земельного кадастру на підтвердження державної реєстрації земельної ділянки', 0, 0, '', 2, '', '', '', 1),
+  ('Витяг із рішення про включення моделі реєстратора розрахункових операцій до Державного реєстру реєстраторів розрахункових операцій', 0, 0, '', 2, '', '', '', 1),
+  ('Гірничий відвід для розробки родовищ корисних копалин загальнодержавного значення, будівництва і експлуатації підземних споруд та інших цілей, не пов‘язаних з видобуванням корисних копалин', 0, 0, '', 29, '', '', '', 1),
+  ('Декларація відповідності матеріально-технічної бази вимогам законодавства з охорони праці', 0, 0, '', 30, '', '', '', 1),
+  ('Державне посвідчення на право розповсюдження і демонстрування фільмів', 0, 0, '', 13, '', '', '', 1),
+  ('Довідка про внесення інформації про відокремлений підрозділ кредитної спілки до Реєстру', 0, 0, '', 5, '', '', '', 1),
+  ('Довідка про внесення інформації про відокремлений підрозділ кредитної установи до Реєстру', 0, 0, '', 5, '', '', '', 1),
+  ('Довідка про внесення інформації про відокремлений підрозділ фінансової компанії до Реєстру', 0, 0, '', 5, '', '', '', 1),
+  ('Довідка про внесення інформації про юридичну особу до Реєстру осіб, які не є фінансовими установами, але мають право надавати окремі фінансові послуги, за заявою юридичної особи', 0, 0, '', 5, '', '', '', 1),
+  ('Дозвіл (санітарний паспорт) на роботи з радіоактивними речовинами та іншими джерелами іонізуючого випромінювання', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на ввезення та застосування незареєстрованих пестицидів і агрохімікатів для державних випробувань та наукових досліджень, а також обробленого ними насіннєвого (посадкового) матеріалу', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на видачу документів, номерних знаків для разових поїздок, пов’язаних з придбанням або реалізацією транспортних засобів та кузовів (рам)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на викиди забруднюючих речовин стаціонарними джерелами для об’єктів першої групи', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на виконання певних видів робіт чи операцій в рамках заходів щодо перетворення об’єкта "Укриття" на екологічно безпечну систему', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на виконання певних видів робіт чи операцій на етапі експлуатації та закриття сховища для захоронення радіоактивних відходів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на виконання певних видів робіт чи операцій на етапі зняття з експлуатації ядерної установки', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на виконання певних видів робіт чи операцій на окремих етапах життєвого циклу ядерної установки (крім окремого дозволу на експлуатацію ядерної установки після виникнення радіаційних аварійних ситуацій або реалізації проектних вихідних подій з радіаційними наслідками, або перевищення проектних експлуатаційних меж пошкодження ядерного палива, окремого дозволу на пуск ядерної установки після планово-попереджувального ремонту з перевантаженням активної зони та окремого дозволу на етапі зняття з експлуатації ядерної установки)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на виконання робіт підвищеної небезпеки та на експлуатацію (застосування) машин, механізмів, устатковання підвищеної небезпеки', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на використання земель і водойм, розташованих у санітарно-захисній зоні ядерної установки, об’єкта, призначеного для поводження з радіоактивними відходами, уранового об’єкта', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на використання об’єктів і приміщень, призначених для провадження діяльності з обігу наркотичних засобів, психотропних речовин і прекурсорів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відкриття та експлуатацію вантажного митного комплексу', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відкриття та експлуатацію митного складу', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відкриття та експлуатацію складу тимчасового зберігання', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відкриття та функціонування об’єктів дозвільної системи, що працюють з вибуховими матеріалами, піротехнічних майстерень та інших об’єктів, визначених законодавством', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на відновлення земляних робіт', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на встановлення і використання на транспортних засобах реагування суб’єкта охоронної діяльності спеціальних світловиз сигнальних пристроїв автожовтого (оранжевого) кольору', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на встановлення і використання на транспортних засобах спеціальних звукових та світлових сигнальних пристроїв синього кольору', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на днопоглиблювальні роботи, прокладання кабелів, трубопроводів та інших комунікацій на землях водного фонду (крім робіт на землях водного фонду в межах прибережних захисних смуг уздовж морів, морських заток і лиманів, у внутрішніх морських водах, лиманах і територіальному морі)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на днопоглиблювальні роботи, прокладання кабелів, трубопроводів та інших комунікацій на землях водного фонду (крім робіт на землях водного фонду в межах прибережних захисних смуг уздовж морів, морських заток і лиманів, у внутрішніх морських водах, лиманах і територіальному морі) - у разі проведення робіт, пов’язаних з експлуатаційним днопоглибленням на внутрішніх підхідних, судноплавних каналах та портових акваторіях, з метою підтримання заданих навігаційних габаритів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на добування тварин, занесених до Червоної книги України та дозволу на збирання рослин, занесених до Червоної книги України', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на експлуатацію ядерної установки після виникнення радіаційних аварійних ситуацій або реалізації проектних вихідних подій з радіаційними наслідками, або перевищення проектних експлуатаційних меж пошкодження ядерного палива', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на зберігання вогнепальної зброї, боєприпасів, основних частин зброї, пневматичної, холодної і охолощеної зброї, а також пристроїв та патронів до них для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на зберігання і носіння (реєстрація, перереєстрація) мисливської, холодної, пневматичної зброї, інших предметів, на які поширюється дозвільна система - для фізичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на зберігання і носіння (реєстрація, перереєстрація) мисливської, холодної, пневматичної зброї, інших предметів, на які поширюється дозвільна система - для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на зберігання і носіння (реєстрація, перереєстрація) нагородної зброї', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на збирання рослин, занесених до Червоної книги України', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на міжнародні регулярні перевезення пасажирів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на міжнародні спеціальні регулярні перевезення пасажирів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення вантажів автомобільним транспортом у міжнародному сполученні', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення вибухових матеріалів для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення вогнепальної зброї, боєприпасів, основних частин зброї, пристроїв та патронів до них для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення пасажирів на міжобласних автобусних маршрутах загального користування', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на перевезення радіоактивних матеріалів та внесення до них змін', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на початок виконання будівельних робіт (щодо IV, V категорії складності, розташованих за межами населених пунктів і на території кількох адміністративно-територіальних одиниць, щодо всіх об’єктів V категорії складності - в межах населених пунктів, а також щодо об’єктів IV категорії складності, розташованих в межах сіл та селищ, та об’єктів усіх категорій складності - в межах населених пунктів у разі, коли сільські, селищні, міські ради не утворили виконавчі органи з питань державного архітектурно-будівельного контролю)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на право здійснення емісії іпотечних сертифікатів небанківській фінансовій установі за заявою небанківської фінансової установи', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на право здійснення емісії сертифікатів фонду операцій з нерухомістю', 0, 0, '', 13, '', '', '', 1),
+  ('Дозвіл на право прийняття на себе комерційних ризиків при створенні фонду фінансування будівництва виду Б', 0, 0, '', 13, '', '', '', 1),
+  ('Дозвіл на право проведення вибухових робіт і виготовлення засобів їх механізації', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на придбання вибухових матеріалів для юридичних осіб', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на придбання і перевезення вогнепальної зброї, боєприпасів, інших предметів, на які поширюється дозвільна система (фізичним особам)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на придбання і перевезення вогнепальної зброї, боєприпасів, інших предметів, на які поширюється дозвільна система замість втраченого (викраденого) (фізичним особам)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на провадження митної брокерської діяльності', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення археологічних розвідок, розкопок', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення діагностичних, експериментальних, випробувальних, вимірювальних робіт на підприємствах, в установах та організаціях, діяльність яких пов’язана з використанням джерел неіонізуючого випромінювання', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення земляних робіт на території пам’ятки, охоронюваних археологічних територіях, в зонах охорони, в історичних ареалах населених місць', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення пошукових робіт з дослідження решток, життєдіяльності людини, що міститься під земною поверхнею, під водою', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення робіт (крім будівельних) на землях водного фонду (в частині проведення робіт на землях водного фонду у межах прибережних захисних смуг уздовж морів, морських заток і лиманів, у внутрішніх морських водах, лиманах і територіальному морі)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на проведення робіт (крім будівельних) на землях водного фонду (в частині проведення робіт на землях водного фонду у межах прибережних захисних смуг уздовж морів, морських заток і лиманів, у внутрішніх морських водах, лиманах і територіальному морі) - у разі проведення на землях водного фонду робіт, пов’язаних з експлуатаційним днопоглибленням на внутрішніх підхідних, судноплавних каналах та портових акваторіях, з метою підтримання заданих навігаційних габаритів', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на пуск ядерної установки після планово-попереджувального ремонту з перевантаженням активної зони', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл на розміщення та/або обіг цінних паперів українських емітентів за межами України (для отримання дозволу на обіг цінних паперів українських емітентів за межами України)', 0, 0, '', 6, '', '', '', 1),
+  ('Дозвіл суб’єктам космічної діяльності України на проведення переговорів з іноземними суб’єктами господарської діяльності з питань дослідження і використання космічного простору, виробництва та експлуатації космічної техніки, здійснення експорту, імпорту і реекспорту космічної техніки та космічних технологій, їх тимчасового вивезення за межі України або тимчасового ввезення на її територію, транзиту територією України', 0, 0, '', 6, '', '', '', 1),
+  ('Експлуатаційний дозвіл для операторів ринку харчових продуктів (далі - оператор ринку) з виробництва та/або зберігання харчових продуктів тваринного походження', 0, 0, '', 31, '', '', '', 1),
+  ('Експлуатаційний дозвіл для потужностей (об’єктів) з переробки неїстівних продуктів тваринного походження; з виробництва, змішування та приготування кормових добавок, преміксів і кормів', 0, 0, '', 31, '', '', '', 1),
+  ('Зареєстрована декларація про готовність об’єкта до експлуатації', 0, 0, '', 30, '', '', '', 1),
+  ('Зареєстрована декларація про початок виконання підготовчих робіт', 0, 0, '', 30, '', '', '', 1),
+  ('Кваліфікаційний сертифікат відповідального виконавця робіт (послуг), пов’язаних із створенням об’єктів архітектури', 0, 0, '', 10, '', '', '', 1),
+  ('Контрольні марки на розповсюдження примірників аудіовізуальних творів, фонограм, відеограм, комп’ютерних програм, баз даних', 0, 0, '', 32, '', '', '', 1),
+  ('Лист Мінкультури, підпис уповноваженою посадовою особою Міністерства у погоджувальній частині дозволу на розміщення зовнішньої реклами, скріплений печаткою Мінкультури', 0, 0, '', 33, '', '', '', 1),
+  ('Ліцензія з надання послуг з охорони власності та громадян', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія з надання послуг і виконання робіт протипожежного призначення', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія з передачі електричної енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія з розподілу природного газу, газу (метану) вугільних родовищ', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на використання джерел іонізуючого випромінювання', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво алкогольних напоїв', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво вибухових матеріалів промислового призначення', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво електричної енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту етилового', 0, 0, '', 11, '', '', '', 1);
+INSERT INTO `permit` (`name`, `form_id`, `legal_document_id`, `number`, `permit_type_id`, `file_example`, `term`, `propose`, `status`) VALUES
+  ('Ліцензія на виробництво спирту етилового ректифікованого виноградного', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту етилового ректифікованого плодового', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту коньячного', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту плодового', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту-сирцю виноградного', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво спирту-сирцю плодового', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво теплової енергії на теплоелектроцентралях, когенераційних установках та установках з використанням нетрадиційних або поновлюваних джерел енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на виробництво тютюнових виробів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на експорт товарів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на зберігання природного газу, газу (метану) вугільних родовищ', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення діяльності кредитної по залученню внесків (вкладів) членів кредитної спілки на депозитні рахунки, за заявою ліцензіата', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на здійснення діяльності кредитної спілки з надання фінансових кредитів за рахунок залучених коштів, крім внесків (вкладів) членів кредитної спілки на депозитні рахунки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення діяльності кредитної спілки по залученню внесків (вкладів) членів кредитної спілки на депозитні рахунки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення діяльності кредитної установи з надання фінансових кредитів за рахунок залучених коштів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення діяльності у сфері телекомунікацій (за винятком видачі ліцензії за результатами конкурсу)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення зовнішньоекономічної операції', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на здійснення обов’язкового страхування цивільно-правової відповідальності власників наземних транспортних засобів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на комбіноване виробництво теплової та електричної енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на користування радіочастотним ресурсом України (за виключенням видачі ліцензії за результатами конкурсу або тендеру)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на користування радіочастотним ресурсом України (після сплати)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на користування радіочастотним ресурсом України на додаткову смугу радіочастот (за виключенням видачі ліцензії за результатами конкурсу або тендеру)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на надання освітніх послуг у сфері вищої освіти', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на надання освітніх послуг у сфері професійно-технічної освіти', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на оптове постачання електричної енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на перевезення радіоактивних матеріалів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на переробку, зберігання радіоактивних відходів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на підготовку, перепідготовку та підвищення кваліфікації спеціалістів з фізичного захисту ядерних установок, ядерних матеріалів, радіоактивних відходів, інших джерел іонізуючого випромінювання', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на постачання електричної енергії за регульованим тарифом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на постачання природного газу, газу (метану) вугільних родовищ за регульованим тарифом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право оптової торгівлі алкогольними напоями, крім сидру та перрі (без додання спирту)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право оптової торгівлі сидром та перрі (без додання спирту)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право оптової торгівлі спиртом етиловим, спиртом етиловим ректифікованим виноградним, спиртом етиловим ректифікованим плодовим', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право оптової торгівлі тютюновими виробами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження господарської діяльності з виробництва лікарських засобів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження господарської діяльності з виробництва лікарських засобів (в умовах аптеки), оптової, роздрібної торгівлі лікарськими засобами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження господарської діяльності з імпорту лікарських засобів (крім активних фармацевтичних інгредієнтів)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності з виробництва джерел іонізуючого випромінювання', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності з переробки і зберігання радіоактивних відходів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності з переробки уранових руд', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності з підготовки персоналу для експлуатації ядерної установки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності на окремому етапі життєвого циклу ядерної установки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження діяльності, пов’язаної із здійсненням персоналом безпосереднього управління реакторною установкою', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадження туроператорської діяльності', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право провадити господарську діяльність з перевезень пасажирів, небезпечних вантажів та небезпечних відходів, автомобільним, залізничним транспортом, міжнародних перевезень пасажирів та вантажів автомобільним транспортом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право роздрібної торгівлі алкогольними напоями', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право роздрібної торгівлі сидром та перрі (без додавання спирту)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на право роздрібної торгівлі тютюновими виробами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності банків пуповинної крові, інших тканин і клітин людини згідно з переліком,затвердженим Міністерством охорони здоров’я України', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з будівництва об’єктів IV і V категорій складності', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з виробництва та ремонту вогнепальної зброї невійськового призначення і боєприпасів до неї, холодної зброї, пневматичної зброї калібру понад 4,5 міліметра і швидкістю польоту кулі понад 100 метрів на секунду, торгівлі вогнепальною зброєю невійськового призначення та боєприпасами до неї, холодною зброєю, пневматичною зброєю калібру понад 4,5 міліметра і швидкістю польоту кулі понад 100 метрів на секунду, з виробництва спеціальних засобів, заряджених речовинами сльозоточивої та дратівної дії, індивідуального захисту, активної оборони та їх продажу', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з виробництва теплової енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з культивування рослин, включених до таблиці І Переліку наркотичних засобів, психотропних речовин і прекурсорів, затвердженого Кабінетом Міністрів України, розроблення, виробництва, виготовлення, зберігання, перевезення, придбання, реалізації (відпуску), ввезення на територію України, вивезення з території України, використання, знищення наркотичних засобів, психотропних речовин і прекурсорів, включених до зазначеного Переліку', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з медичної практики', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з надання послуг і виконання робіт протипожежного призначення', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з надання послуг у галузі криптографічного захисту інформації (крім послуг електронного цифрового підпису) та технічного захисту інформації, за переліком, що визначається Кабінетом Міністрів України', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з перевезення пасажирів, небезпечних вантажів та небезпечних відходів морським та річковим транспортом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з перевезення пасажирів, небезпечних вантажів та небезпечних відходів повітряним транспортом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з посередництва у працевлаштуванні за кордоном', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з постачання теплової енергії', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з промислового вилову водних біоресурсів за межами юрисдикції України', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з транспортування теплової енергії магістральними та місцевими (розподільчими) тепловими мережами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності з централізованого водопостачання та водовідведення', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження господарської діяльності, пов’язаної з розробленням, виготовленням, постачанням спеціальних технічних засобів для зняття інформації з каналів зв’язку та інших технічних засобів негласного отримання інформації', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності експлуатуючої організації на окремому етапі життєвого циклу ядерної установки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності з адміністрування недержавних пенсійних фондів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності з адміністрування фінансових активів для придбання товарів у групах', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності з надання фінансових кредитів за рахунок залучених коштів кредитними установами за заявою ліцензіата громадяни', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження діяльності із залучення коштів - установників управління майном для фінансування об’єктів будівництва та/або здійснення операцій з нерухомістю', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності на окремому етапі життєвого циклу сховища для захоронення радіоактивних відходів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності посадових осіб експлуатуючої організації, до службових обов’язків яких належить здійснення організаційно-розпорядчих функцій, пов’язаних із забезпеченням ядерної та радіаційної безпеки', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності, пов’язаної з виробництвом, торгівлею піротехнічними засобами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження діяльності, пов’язаної з наданням послуг стрільбищами невійськового призначення та функціонуванням мисливських стендів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження охоронної діяльності', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на ринку цінних паперів – діяльності з управління іпотечним покриттям (Для банків, які не отримували ліцензій на провадження професійної діяльності на фондовому ринку, та для небанківських фінансових установ, які не є професійними учасниками фондового ринку)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на ринку цінних паперів – діяльності з управління іпотечним покриттям (У разі отримання заявником (ліцензіатом) ліцензії на провадження професійної діяльності на фондовому ринку)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - депозитарна діяльність (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингова діяльність', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - депозитарної діяльності, а саме депозитарної діяльності депозитарної установи, або на декілька видів депозитарної діяльності', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - депозитарної діяльності, а саме діяльності із зберігання активів інститутів спільного інвестування', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - депозитарної діяльності, а саме діяльності із зберігання активів пенсійних фондів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з організації торгівлі на фондовому ринку', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з торгівлі цінними паперами', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління активами інституційних інвесторів (діяльність з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління активами інституційних інвесторів (діяльність з управління активами) (У разі припинення відокремленого підрозділу ліцензіата або в разі припинення провадження ним діяльності з управління активами інституційних інвесторів (діяльності з управління активами))', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління активами інституційних інвесторів (діяльності з управління активами) (Для банку)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління активами інституційних інвесторів (діяльності з управління активами) (Для компанії з управління активами)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління активами інституційних інвесторів (діяльності з управління активами) (Для професійного адміністратора недержавного пенсійного фонду)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - діяльності з управління іпотечним покриттям', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - клірингової діяльності (на провадження клірингової діяльності кліринговою установою або Розрахунковим центром)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - клірингової діяльності (на провадження клірингової діяльності Центральним депозитарієм)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку - клірингової діяльності, а саме на провадження клірингової діяльності кліринговою установою або Розрахунковим центром', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку (ринку цінних паперів) - депозитарна діяльність (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингова діяльність (для депозитарної установи, яка подала заяву на Ліцензія на провадження професійної діяльності на фондовому ринку (ринку цінних паперів) - депозитарної діяльності депозитарної установи)', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку (ринку цінних паперів) - депозитарна діяльність (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингова діяльність (Для депозитарної установи, яка подала заяву на Ліцензія на провадження професійної діяльності на фондовому ринку (ринку цінних паперів) - депозитарної діяльності, а саме діяльності із зберігання активів інститутів спільного інвестування та/або зберігання активів пенсійних фондів)', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження професійної діяльності на фондовому ринку (ринку цінних паперів) - депозитарна діяльність (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингова діяльність (Для ліцензіата, який здійснює професійну діяльність на фондовому ринку (ринку цінних паперів) - клірингову діяльність)', 0, 0, '', 13, '', '', '', 1),
+  ('Ліцензія на провадження страхової діяльності філіями страховиків-нерезидентів', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на проведення конкретного виду страхування (крім обов’язкового страхування цивільно-правової відповідальності власників наземних транспортних засобів)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на розподіл електричної енергії (передачу електричної енергії місцевими (локальними) електричними мережами)', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на транспортування нафти магістральним трубопроводом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на транспортування нафтопродуктів магістральним трубопроводом', 0, 0, '', 11, '', '', '', 1),
+  ('Ліцензія на транспортування природного, нафтового газу і газу (метану) вугільних родовищ', 0, 0, '', 11, '', '', '', 1),
+  ('Міжнародний імпортний сертифікат або інші документи про державні гарантії (зобов’язання) щодо використання у заявлених цілях товарів', 0, 0, '', 36, '', '', '', 1),
+  ('Наказ ДФС щодо виключення обладнання з Єдиного державного реєстру обладнання для промислового виробництва сигарет та цигарок', 0, 0, '', 7, '', '', '', 1),
+  ('Наказ про надання статусу спеціалізованого навчального закладу спортивного профілю.', 0, 0, '', 7, '', '', '', 1),
+  ('Наказ про надання статусу центра олімпійської підготовки', 0, 0, '', 7, '', '', '', 1),
+  ('Облікова картка', 0, 0, '', 8, '', '', '', 1),
+  ('Патент на винахід і патенту на корисну модель', 0, 0, '', 37, '', '', '', 1),
+  ('Патент на промисловий зразок', 0, 0, '', 37, '', '', '', 1),
+  ('Підтвердження для активних фармацевтичних інгредієнтів, що експортуються до Європейського Союзу (для лікарських засобів, призначених для споживання людиною', 0, 0, '', 38, '', '', '', 1),
+  ('Підтвердження належності палива до альтернативного з видачею документа про ідентифікацію палива', 0, 0, '', 38, '', '', '', 1),
+  ('Підтвердження про державну реєстрацію медичної техніки та виробів медичного призначення', 0, 0, '', 38, '', '', '', 1),
+  ('Підтвердження про реєстрацію лінії закордонного плавання', 0, 0, '', 38, '', '', '', 1),
+  ('Повідомлення на ввезення на територію України незареєстрованих медичної техніки та виробів медичного призначення', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення на транскордонне перевезення небезпечних відходів або висновку на транскордонне перевезення відходів, у разі коли вони містять матеріали, в кількості достатній для виявлення ними небезпечних властивостей (при експорті небезпечних відходів)', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення на транскордонне перевезення небезпечних відходів або висновку на транскордонне перевезення відходів, у разі коли вони містять матеріали, в кількості достатній для виявлення ними небезпечних властивостей (при імпорті небезпечних відходів)', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення на транскордонне перевезення небезпечних відходів або висновку на транскордонне перевезення відходів, у разі коли вони містять матеріали, в кількості достатній для виявлення ними небезпечних властивостей (при транзиті небезпечних відходів)', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення про внесення інформації про відокремлений підрозділ ломбарду до Реєстру', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення про внесення інформації про відокремлений підрозділ фінансової установи до Реєстру.', 0, 0, '', 39, '', '', '', 1),
+  ('Повідомлення про початок виконання будівельних робіт (щодо об’єктів I, II, III, IV, V категорії складності, розташованих за межами населених пунктів і на території кількох адміністративно-територіальних одиниць, щодо всіх об’єктів V категорії складності - в межах населених пунктів, а також щодо об’єктів IV категорії складності, розташованих в межах сіл та селищ, та об’єктів усіх категорій складності - в межах населених пунктів у разі, коли сільські, селищні, міські ради не утворили виконавчі органи з питань державного архітектурно-будівельного контролю)', 0, 0, '', 39, '', '', '', 1),
+  ('Погодження виконання робіт в охоронних зонах геодезичних пунктів та робіт із знесення і перезакладення геодезичних пунктів', 0, 0, '', 12, '', '', '', 1),
+  ('Погодження використання зарубіжної технологічної документації', 0, 0, '', 33, '', '', '', 1),
+  ('Погодження режиму рибогосподарської експлуатації водних об’єктів', 0, 0, '', 12, '', '', '', 1),
+  ('Погодження рекламних матеріалів щодо послуг з недержавного пенсійного забезпечення', 0, 0, '', 12, '', '', '', 1),
+  ('Погодження розповсюдження реклами (змін до реклами) цінних паперів та фондового ринку', 0, 0, '', 13, '', '', '', 1),
+  ('Погодження членів ради недержавного пенсійного фонду', 0, 0, '', 12, '', '', '', 1),
+  ('Посвідчення затвердженого зразка', 0, 0, '', 14, '', '', '', 1),
+  ('Посвідчення мисливця', 0, 0, '', 14, '', '', '', 1),
+  ('Посвідчення про державну реєстрацію препарату', 0, 0, '', 14, '', '', '', 1),
+  ('Посвідчення судноводія малого/маломірного судна', 0, 0, '', 14, '', '', '', 1),
+  ('Посвідчення судноводія торговельного судна, яке допущено до плавання судноплавними річковими внутрішніми водними шляхами', 0, 0, '', 14, '', '', '', 1),
+  ('Реєстраційне посвідчення', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстраційне посвідчення на лікарський засіб', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстраційне посвідчення на на медичний імунобіологічний препарат', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація декларації про початок виконання підготовчих робіт', 0, 0, '', 30, '', '', '', 1),
+  ('Рішення Комісії про погодження відповідальної особи небанківської фінансової групи', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення Комісії про погодження кандидатури керівника депозитарію', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР (розпорядження уповноваженої посадової особи НКЦПФР) про виключення аудиторської фірми з реєстру аудиторських фірм, які можуть проводити аудиторські перевірки професійних учасників ринку цінних паперів', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про делегування повноважень саморегулівній організації професійних учасників фондового ринку', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження відповідної кандидатури на посаду керівника фондової біржі', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження внутрішніх документів СРО (змін до них);', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження правил і стандартів професійної діяльності на фондовому ринку (змін до них), затверджених об’єднанням професійних учасників фондового ринку', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження проекту статуту корпоративного інвестиційного фонду та реєстрації випуску акцій з метою формування початкового статутного капіталу корпоративного інвестиційного фонду з видачею тимчасового свідоцтва про реєстрацію випуску акцій', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (для інститутів спільного інвестування та компаній з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (для компаній з управління активами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (для торговців цінними паперами)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (для уповноважених рейтингових агентств та емітентів цінних паперів крім цінних паперів інституту спільного інвестування)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (для фондових бірж)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження реклами (змін до реклами) цінних паперів та фондового ринку (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингової діяльності', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження розповсюдження реклами (змін до реклами) цінних паперів та фондового ринку (для уповноважених рейтингових агентств та емітентів цінних паперів крім цінних паперів інституту спільного інвестування)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження розповсюдження реклами (змін до реклами) цінних паперів та фондового ринку (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингової діяльності)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження розповсюдження реклами (змін до реклами) цінних паперів та фондового ринку (щодо товарів та/або послуг, що пропонуються саморегулівною організацією професійних учасників фондового ринку)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження статуту (змін до статуту) фондової біржі', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження статуту (змін до статуту) Центрального депозитарію цінних паперів', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження створення ліцензіатом відокремленого підрозділу за межами України (діяльності з організації торгівлі на фондовому ринку, діяльності з торгівлі цінними паперами, діяльності з управління іпотечним покриттям (для банків))', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення НКЦПФР про погодження створення професійним учасником фондового ринку відокремленого підрозділу за межами України (щодо депозитарної діяльності (депозитарна діяльність депозитарної установи, діяльність із зберігання активів інститутів спільного інвестування, діяльність із зберігання активів пенсійних фондів), клірингової діяльності)', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про визначення можливості або неможливості застосування заявленого типу РЕЗ або ВП на території України', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про віднесення харчових продуктів до категорії спеціальних', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про внесення продукції до Реєстру косметичних засобів, які містять генетично модифіковані організми або отримані з їх використанням', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про внесення установи (організації) до Реєстру неприбуткових установ та організацій або присвоєння установі (організації) іншої ознаки неприбутковості', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про внесення, повторне внесення, виключення, відмову у внесенні установи (організації) до/з Реєстру неприбуткових установ та організацій або присвоєння установі (організації) іншої ознаки неприбутковості', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про допуск перевізників-резидентів до перевезень на умовах Конвенції МДП', 0, 0, '', 13, '', '', '', 1),
+  ('Рішення про реєстрацію договору, який стосуються прав автора на твір', 0, 0, '', 13, '', '', '', 1),
+  ('Розпорядження Нацкомфінпослуг про виключення аудиторської фірми або аудитора з Реєстру аудиторів, які можуть проводити аудиторські перевірки фінансових установ', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про визнання інституту спільного інвестування таким, що відповідає / не відповідає вимогам щодо мінімального обсягу активів інституту спільного інвестування', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про виключення відомостей про інститути спільного інвестування з Єдиного державного реєстру інститутів спільного інвестування (для виключення відомостей про корпоративний інвестиційний фонд)', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про виключення відомостей про інститути спільного інвестування з Єдиного державного реєстру інститутів спільного інвестування (для виключення відомостей про пайовий інвестиційний фонд)', 0, 0, '', 19, '', '', '', 1),
+  ('Розпорядження НКЦПФР про відновлення обігу цінних паперів (крім цінних паперів інститутів спільного інвестування)', 0, 0, '', 19, '', '', '', 1),
+  ('Свідоцтво державної реєстрації небезпечного фактора', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво на придбання і зберігання вибухових матеріалів промислового призначення', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво представника у справах інтелектуальної власності (патентного повіреного)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про акредитацію виконавця (юридичної особи - нерезидента) проекту (програми) міжнародної технічної допомоги', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про атестацію аварійно-рятувальної служби', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про атестацію автостанцій', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про атестацію лабораторій з контролю якості та безпеки лікарських засобів', 0, 0, '', 20, '', '', '', 1);
+INSERT INTO `permit` (`name`, `form_id`, `legal_document_id`, `number`, `permit_type_id`, `file_example`, `term`, `propose`, `status`) VALUES
+  ('Свідоцтво про атестацію системи внутрішньофірмового експортного контролю, створеної суб’єктом здійснення міжнародних передач товарів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про визначення організації колективного управління уповноваженою організацією', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про виключення судна з Державного суднового реєстру України', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про відповідність кваліфікаційним вимогам до осіб, які можуть займатися актуарними розрахунками', 0, 0, '', 41, '', '', '', 1),
+  ('Свідоцтво про відповідність кваліфікаційним вимогам до осіб, які можуть займатися актуарними розрахунками, за заявою', 0, 0, '', 41, '', '', '', 1),
+  ('Свідоцтво про включення до державного реєстру фінансових установ, які надають фінансові послуги на ринку цінних паперів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про включення до реєстру аудиторських фірм та аудиторів, які можуть проводити аудиторські перевірки фінансових установ', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про включення інформації про оцінювача до Державного реєстру оцінювачів та суб’єктів оціночної діяльності', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про внесення відомостей до Реєстру виробників та розповсюджувачів програмного забезпечення', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про внесення відомостей про інститут спільного інвестування до Реєстру.', 0, 0, '', 42, '', '', '', 1),
+  ('Свідоцтво про внесення до державного реєстру страхових та перестрахових брокерів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про внесення інформації про аудиторську фірму або аудитора до Реєстру аудиторів, які можуть проводити аудиторські перевірки фінансових установ', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про внесення суб’єкта господарювання до Державного реєстру видавців, виготовлювачів і розповсюджувачів видавничої продукції', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про державну реєстрацію (перереєстрацію) дезінфекційного засобу', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про державну реєстрацію авторського права на твір', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про допущення дорожнього транспортного засобу до перевезення товарів під митними печатками та пломбами', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про допущення контейнера до перевезення вантажів під митними печатками та пломбами за типом конструкції', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про допущення контейнера до перевезення вантажів під митними печатками та пломбами на будь-якому етапі після виготовлення контейнера', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про мінімальний склад екіпажу (риболовецькі судна)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про мінімальний склад екіпажу судна (окрім риболовецьких суден)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про одержання категорії встановленої форми, затвердженої наказом Міністерства молоді та спорту України від 10 грудня 2013 р № 1216 "Про затвердження Положення про надання категорії спортивним школам", зареєстровано Міністерством юстиції України від 25 грудня 2013 р № 2201/24733.', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про отримання повноважень на здійснення діяльності щодо попередньої ідентифікації товарів у галузі державного експортного контролю', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про постійне нанесення маркування розпізнавального номера на судно (ІМО)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право на зайняття нотаріальною діяльністю', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про право на здійснення діяльності арбітражного керуючого (розпорядника майна, керуючого санацією, ліквідатора)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про присвоєння кваліфікації судового експерта', 0, 0, '', 41, '', '', '', 1),
+  ('Свідоцтво про реєстрацію бази для стоянки маломірних/малих суден', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію випуску цінних паперів (розпорядження про скасування реєстрації випуску цінних паперів)', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію випуску цінних паперів (розпорядження про скасування реєстрації випуску цінних паперів).', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію випуску. Зареєстрований проспект емісії.', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію недержавного пенсійного фонду', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію об’єднання професійних учасників фондового ринку', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію об’єднання як саморегулівної організації професійних учасників фондового ринку', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію об’єднання професійних учасників фондового ринк', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію об’єднання як саморегулівної організації професійних учасників фондового ринк', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію права на використання зареєстрованого кваліфікованого зазначення походження товарів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію філії страховика – нерезидента', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію фінансової компанії', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію фінансової установи', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєстрацію фінансової установи – юридичної особи публічного права', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про реєтрацію представництва', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про рєстрацію великотоннажних та інших технологічних транспортних засобів', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про тимчасове виключення судна з Державного суднового реєстру України', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво про тимчасове право плавання під Державним прапором України', 0, 0, '', 20, '', '', '', 1),
+  ('Свідоцтво України на знак для товарів і послуг', 0, 0, '', 20, '', '', '', 1),
+  ('Сертифікат відповідності виробництва вимогам належної виробничої практики', 0, 0, '', 43, '', '', '', 1),
+  ('Сертифікат відповідності дистриб’ютора вимогам належної практики дистрибуції', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат відповідності умов виробництва лікарських засобів вимогам GMP', 0, 0, '', 43, '', '', '', 1),
+  ('Сертифікат державної реєстрації небезпечного фактора', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат екологічного аудитора', 0, 0, '', 25, '', '', '', 1),
+  ('Загальний сертифікат компетентності оператора ГМЗЛБ', 0, 0, '', 44, '', '', '', 1),
+  ('Обмежений сертифікат компетентності оператора ГМЗЛБ', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності боцмана риболовних суден', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності вахтового механіка риболовних суден з головною руховою установкою потужністю 750 кВт і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Ссертифікат компетентності вахтового механіка риболовних суден з головною руховою установкою потужністю до 750 кВт', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності вахтового помічника капітана риболовних суден довжиною 24 м і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності вахтового помічника капітана риболовних суден довжиною до 24 м', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності другого механіка риболовних суден з головною руховою установкою потужністю 750 кВт і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності другого механіка риболовних суден з головною руховою установкою потужністю до 750 кВт', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності електромеханіка 1 розряду', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності електромеханіка 2 розряду', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності електромеханіка 3 розряду', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності капітана риболовних суден довжиною 24 м і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності капітана риболовних суден довжиною до 24 м', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності персоналу риболовного судна з підтвердженням до нього (сертифікат компетентності кваліфікованого матроса (особи рядового складу), що несе ходову навігаційну вахту на риболовних суднах довжиною 24 м і більше)', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності кваліфікованого моториста (особи рядового складу), що несе вахту в машинному відділенні на риболовних суднах довжиною 24 м і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності механіка 1-го класу', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності радіоелектроніка другого класу ГМЗЛБ', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності радіоелектроніка першого класу ГМЗЛБ', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності рефрижераторного механіка 2-го класу', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності рефрижераторного механіка 3-го класу', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності рядового складу з кваліфікацією 1-го класу палубної команди, технологічної команди, обслуговуючого персоналу, служби добичі, машинної команди', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності рядового складу з кваліфікацією 2-го класу палубної команди, технологічної команди, обслуговуючого персоналу, служби добичі, машинної команди', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності старшого механіка риболовних суден з головною руховою установкою потужністю 750 кВт і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності старшого механіка риболовних суден з головною руховою установкою потужністю до 750 кВт', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності старшого помічника капітана риболовних суден довжиною 24 м і більше', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності старшого помічника капітана риболовних суден довжиною до 24 м', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності суднового лікаря риболовних суден', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат компетентності судноводія риболовних суден довжиною до 12 м', 0, 0, '', 44, '', '', '', 1),
+  ('Сертифікат лікарського засобу', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат лікарського засобу для міжнародної торгівлі', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат на право здійснення дій, пов’язаних з безпосереднім провадженням професійної діяльності на фондовому ринку', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат на право здійснення тимчасової адміністрації відповідного виду фінансових установ', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат на право здійснення тимчасової адміністрації відповідного виду фінансових установ за заявою', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат підтвердження доставки, яким засвідчується факт надходження в Україну товарів, визначених у зазначеному сертифікаті', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат племінних (генетичних) ресурсів', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат про затвердження у разі перевезення радіоактивних матеріалів', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат про прийняття в експлуатацію закінченого будівництвом об’єкту (щодо об’єктів IV, V категорії складності, розташованих за межами населених пунктів і на території кількох адміністративно-територіальних одиниць, щодо всіх об’єктів V категорії складності - в межах населених пунктів, а також щодо об’єктів IV категорії складності, розташованих в межах сіл та селищ, та об’єктів усіх категорій складності - в межах населених пунктів у разі, коли сільські, селищні, міські ради не утворили виконавчі органи з питань державного архітектурно-будівельного контролю)', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат про реєстрацію сільскогосподарчої дорадчої служби', 0, 0, '', 25, '', '', '', 1),
+  ('Сертифікат серії лікарського засобу', 0, 0, '', 25, '', '', '', 1),
+  ('Судновий білет', 0, 0, '', 45, '', '', '', 1),
+  ('Щорічна контрольна картка обліку добутої дичини та порушень правил полювання', 0, 0, '', 48, '', '', '', 1),
+  ('Виключення інформації про відокремлений підрозділ ломбарду з Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Виключення інформації про відокремлений підрозділ фінансової установи з Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Виключення інформації про недержавний пенсійний фонд з Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Виключення інформації про страхових та перестрахових брокерів з державного реєстру страхових та перестрахових брокерів за заявою', 0, 0, '', 47, '', '', '', 1),
+  ('Виключення інформації про юридичну особу з Реєстру осіб, які не є фінансовими установами, але мають право надавати окремі фінансові послуги, за заявою юридичної особи', 0, 0, '', 47, '', '', '', 1),
+  ('Включення аудиторської фірми або аудитора до реєстру аудиторських фірм та аудиторів, які можуть проводити аудиторські перевірки фінансових установ (для аудитора)', 0, 0, '', 47, '', '', '', 1),
+  ('Включення аудиторської фірми або аудитора до реєстру аудиторських фірм та аудиторів, які можуть проводити аудиторські перевірки фінансових установ (для аудиторської фірми)', 0, 0, '', 47, '', '', '', 1),
+  ('Включення до Реєстру операторів, провайдерів телекомунікацій', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації до Реєстру саморегулівних організацій фінансових установ з видачею документа про внесення інформації про об’єднання фінансових установ до Реєстру саморегулівних організацій фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про відокремлений підрозділ страхової компанії до Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про кредитні спілки до Державного реєстру фінансових установ та видачу свідоцтва про реєстрацію фінансової установи', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про ліквідацію відокремленого підрозділу кредитної спілки до Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про ліквідацію відокремленого підрозділу кредитної установи до Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про ліквідацію відокремленого підрозділу страхової компанії до Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про ліквідацію відокремленого підрозділу фінансової компанії до Державного реєстру фінансових установ', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення інформації про юридичну особу до Реєстру осіб, які не є фінансовими установами, але мають право надавати окремі фінансові послуги', 0, 0, '', 47, '', '', '', 1),
+  ('Внесення організації до Переліку установ, організацій та закладів, яким надається право на розробку документів, що обґрунтовують обсяги викидів для підприємств, установ, організацій та громадян - суб’єктів підприємницької діяльності', 0, 0, '', 47, '', '', '', 1),
+  ('Державна реєстрації створення юридичної особи (у тому числі в результаті виділу, злиття, перетворення, поділу)', 0, 0, '', 40, '', '', '', 1),
+  ('Державна реєстрація друкованих засобів масової інформації', 0, 0, '', 13, '', '', '', 1),
+  ('Державна реєстрація обмежень у використанні земель, з видачею витягу', 0, 0, '', 2, '', '', '', 1),
+  ('Державна реєстрація переходу юридичної особи з модельного статуту на діяльність на підставі власного установчого документа', 0, 0, '', 13, '', '', '', 1),
+  ('Державна реєстрація переходу юридичної особи на діяльність на підставі модельного статуту', 0, 0, '', 40, '', '', '', 1),
+  ('Державна реєстрація переходу юридичної особи на діяльність на підставі модельного статут', 0, 0, '', 40, '', '', '', 1),
+  ('Затвердження ліміту на використання природних ресурсів у межах територій та об’єктів природно-заповідного фонду загальнодержавного значення', 0, 0, '', 13, '', '', '', 1),
+  ('Надання статусу гаранта', 0, 0, '', 13, '', '', '', 1),
+  ('Погодження змін до статуту недержавного пенсійного фонду', 0, 0, '', 49, '', '', '', 1),
+  ('Погодження науково-проектної документації на виконання робіт з консервації, реставрації, реабілітації, музеєфікації, ремонту та пристосування пам’яток національного значення', 0, 0, '', 50, '', '', '', 1),
+  ('Погодження програм та проектів містобудівних, архітектурних і ландшафтних перетворень, меліоративних, шляхових, земляних робіт: на пам’ятках національного значення, їх територіях, в історико-культурних заповідниках, на історико-культурних заповідних територіях, у зонах охорони, на охоронюваних археологічних територіях, в історичних ареалах населених місць, а також програм і проектів, реалізація яких може позначитися на об’єктах культурної спадщини', 0, 0, '', 12, '', '', '', 1),
+  ('Реєстрація апаратури супутникових радіонавігаційних систем', 0, 0, '', 14, '', '', '', 1),
+  ('Реєстрація декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства з питань пожежної безпеки', 0, 0, '', 30, '', '', '', 1),
+  ('Реєстрація договорів перестрахування', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація інвестиційної декларації недержавного пенсійного фонду', 0, 0, '', 51, '', '', '', 1),
+  ('Реєстрація пенсійної схеми (пенсійних схем) недержавного пенсійного фонду', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація платника єдиного податку', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація Правил (змін до Правил) провадження клірингової діяльності та інших внутрішніх документів (змін до них) особи, яка провадить клірингову діяльність', 0, 0, '', 47, '', '', '', 1),
+  ('Реєстрація правил страхування, змін та (або) доповнень до них', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація регламенту інституту спільного інвестування та внесення відомостей про інститут спільного інвестування до Єдиного державного реєстру інститутів спільного інвестування з видачею свідоцтва про внесення відомостей про інститут спільного інвестування до Єдиного державного реєстру інститутів спільного інвестування: корпоративний інвестиційний фонд', 0, 0, '', 42, '', '', '', 1),
+  ('Реєстрація регламенту інституту спільного інвестування і внесення відомостей про інститут спільного інвестування до Єдиного державного реєстру інститутів спільного інвестування з видачею свідоцтва про внесення відомостей про інститут спільного інвестування до Єдиного державного реєстру інститутів спільного інвестування: пайовий інвестиційний фонд', 0, 0, '', 42, '', '', '', 1),
+  ('Реєстрація філіям страховиків-нерезидентів правил страхування, змін та (або) доповнень до них', 0, 0, '', 52, '', '', '', 1),
+  ('Скасування реєстрації пенсійної схеми (пенсійних схем) недержавного пенсійного фонду за заявою фонду', 0, 0, '', 13, '', '', '', 1),
+  ('Державна реєстрація юридичної особи', 0, 0, '', 47, '', '', '', 1),
+  ('Державна реєстрація фізичної особи-підприємця', 0, 128060, '', 47, '', '', '', 1),
+  ('Рішення про призначення визнаної незалежної організації на проведення оцінки відповідності технології виконання нерознімних з’єднань, персоналу, який виконує нерознімні з’єднання, та/або персоналу, який здійснює неруйнівний контроль, згідно з технічним регламентом щодо обладнання, яке працює під тиском', 0, 0, '', 13, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації інформації про випуск іпотечних сертифікатів та випуску іпотечних сертифікатів)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску іпотечних облігацій та проспекту їх емісії)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску та проспекту емісії сертифікатів фонду операцій з нерухомістю - небанківська фінансова установа)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску та проспекту емісії сертифікатів фонду операцій з нерухомістю - банк)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску опціонних сертифікатів та проспекту їх емісії)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску облігацій підприємств та проспекту їх емісії)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску додаткових акцій та проспекту їх емісії - при публічному розміщенні акцій)', 0, 0, '', 40, '', '', '', 1),
+  ('Реєстрація випуску та проспекту емісії (інформації про випуск) цінних паперів (крім інститутів спільного інвестування) (для реєстрації випуску додаткових акцій та проспекту їх емісії - при приватному розміщенні акцій)', 0, 0, '', 40, '', '', '', 1),
+  ('Декларування оптово-відпускних цін на лікарські засоби та вироби медичного призначення', 0, 0, '', 55, '', '', '', 1),
+  ('Узгодження відкриття закладу (підприємства) ресторанного господарства ', 0, 0, '', 12, '', '', '', 1);
+
+  INSERT INTO `procedure_type` (`name`) VALUES
 ('Видача'),
 ('Внесення інформації до Реєстру'),
 ('Анулювання'),

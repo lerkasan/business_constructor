@@ -2,21 +2,15 @@ package ua.com.brdo.business.constructor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+import ua.com.brdo.business.constructor.constraint.NoCycle;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -28,6 +22,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = {"title", "question.text", "question.questionnaire.title"})
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(value = {"question"})
+@Validated
 public class Option {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -45,6 +40,7 @@ public class Option {
     @ManyToOne
     @PrimaryKeyJoinColumn(name="next_question_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"options", "inputType", "text", "questionnaire"})
+    @NoCycle(message = "This next question leads to formation of a closed circle! Cannot create such option!")
     private Question nextQuestion;
 
     @ManyToOne

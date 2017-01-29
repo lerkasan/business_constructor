@@ -3,7 +3,6 @@ package ua.com.brdo.business.constructor.controller.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +13,17 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import ua.com.brdo.business.constructor.model.LegalDocument;
 import ua.com.brdo.business.constructor.service.LegalDocumentService;
 import ua.com.brdo.business.constructor.service.NotFoundException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @RunWith(SpringRunner.class)
@@ -100,7 +93,7 @@ public class LegalDocumentControllerTest {
 
     @Test
     @WithMockUser(roles = {USER})
-    public void shouldAccessIsDeniedCreateByUserLegalDocumentTest() throws Throwable {
+    public void shouldAccessIsDeniedWhenLegalDocumentCreatingByUserTest() throws Throwable {
         mvc.perform(post(LAWS_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(generateJSON(generateLegalDocument())))
                 .andDo(print())
@@ -117,7 +110,7 @@ public class LegalDocumentControllerTest {
     }
 
     @Test
-    public void shouldReturnAllListLegalDocumentTest() throws Exception {
+    public void shouldReturnAllLegalDocumentsListTest() throws Exception {
         mvc.perform(get(LAWS_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -125,7 +118,7 @@ public class LegalDocumentControllerTest {
     }
 
     @Test
-    public void shouldGetLegalDocumentTest() throws Exception {
+    public void shouldReturnLegalDocumentByIdTest() throws Exception {
         LegalDocument legalDocument = generateLegalDocument();
         legalDocumentService.create(legalDocument);
 
@@ -136,7 +129,7 @@ public class LegalDocumentControllerTest {
     }
 
     @Test
-    public void shouldNotFoundGetLegalDocumentTest() throws Exception {
+    public void shouldNotFoundLegalDocumentByNotExistingIdTest() throws Exception {
         try {
             legalDocumentService.findById(UNEXIST_ID);
             legalDocumentService.delete(UNEXIST_ID);
@@ -164,7 +157,7 @@ public class LegalDocumentControllerTest {
 
     @Test
     @WithMockUser(roles = {USER})
-    public void shouldAccessIsDeniedUpdateLegalDocumentTest() throws Throwable {
+    public void shouldAccessIsDeniedWhenUpdateLegalDocumentAsUserTest() throws Throwable {
         LegalDocument legalDocumentToSave = generateLegalDocument();
         legalDocumentService.create(legalDocumentToSave);
         LegalDocument updatedLegalDocument = generateLegalDocument();
@@ -189,7 +182,7 @@ public class LegalDocumentControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT, ADMIN})
-    public void shouldNotFoundToUpdateLegalDocumentTest() throws Throwable {
+    public void shouldNotFoundWhenUpdateNotExistingLegalDocumentIdTest() throws Throwable {
         try {
             legalDocumentService.findById(UNEXIST_ID);
             legalDocumentService.delete(UNEXIST_ID);
@@ -213,7 +206,7 @@ public class LegalDocumentControllerTest {
 
     @Test
     @WithMockUser(roles = {USER})
-    public void shouldAccessIsDeniedDeleteLegalDocumentTest() throws Throwable {
+    public void shouldAccessIsDeniedWhenDeleteLegalDocumentAsUserTest() throws Throwable {
         LegalDocument savedLegalDocument = generateLegalDocument();
         legalDocumentService.create(savedLegalDocument);
 
@@ -223,7 +216,7 @@ public class LegalDocumentControllerTest {
 
     @Test
     @WithMockUser(roles = {EXPERT, ADMIN})
-    public void shouldNotFoundDeleteLegalDocumentTest() throws Throwable {
+    public void shouldNotFoundWhenDeleteNotExistingLegalDocumentIdTest() throws Throwable {
         try {
             legalDocumentService.findById(UNEXIST_ID);
             legalDocumentService.delete(UNEXIST_ID);

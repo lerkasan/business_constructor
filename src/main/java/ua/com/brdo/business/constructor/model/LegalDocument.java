@@ -21,7 +21,7 @@ public class LegalDocument {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
     @NotNull(message = "Legal Document idRada must not be null!")
     @Size(max=50, message = "Legal Document idRada must be shorter than 50 symbols!")
     @Column(name = "idRada", length = 50, nullable = false)
@@ -31,11 +31,11 @@ public class LegalDocument {
     @Column(name = "idLiga", length = 24, nullable = false)
     private String idLiga;
     @Column(name = "idState", nullable = false)
-    private int idState;
+    private Integer idState;
     @Column(name = "datePub", nullable = false)
-    private int datePub;
+    private Integer datePub;
     @Column(name = "dateAdd", nullable = false)
-    private int dateAdd;
+    private Integer dateAdd;
     @NotNull(message = "Legal Document numberPub must not be null!")
     @Size(max=255, message = "Legal Document numberPub must be shorter than 50 symbols!")
     @Column(name = "numberPub", nullable = false)
@@ -53,21 +53,21 @@ public class LegalDocument {
     @Column(name = "numberMj", nullable = false)
     private String numberMj;
     @Column(name = "inRada", nullable = false)
-    private byte inRada;
+    private Byte inRada;
     @Column(name = "inLiga", nullable = false)
-    private byte inLiga;
+    private Byte inLiga;
     @Column(name = "inBrdo", nullable = false)
-    private byte inBrdo;
+    private Byte inBrdo;
     @Column(name = "autoLiga", nullable = false)
-    private byte autoLiga;
+    private Byte autoLiga;
     @Column(name = "autoBrdo", nullable = false)
-    private byte autoBrdo;
+    private Byte autoBrdo;
     @Column(name = "regulation", nullable = false)
-    private int regulation;
+    private Integer regulation;
     @NotNull(message = "Legal Document manualSector must not be null!")
     @Size(max=96, message = "Legal Document manualSector must be shorter than 96 symbols!")
     @Column(name = "manualSector", length = 96, nullable = false)
     private String manualSector;
     @Column(name = "techRegulation", nullable = false)
-    private int techRegulation;
+    private Integer techRegulation;
 }

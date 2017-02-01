@@ -1,104 +1,151 @@
 <div class="constructor">
   <form class="form-group businesType">
-    <div [hidden]="!wrongBusinessType" class="alert alert-warning">
-      Неправильний формат заповнення. Або така форма вже існує.
-      Поле назва не повинно бути пустим.
-      Поле КВЄД - пара з двозначних чисел розділенних крапкою.
+    <div *ngIf="wrongBusinessType" class="alert alert-warning">
+      {{errorMessage}}
     </div>
-    <label for="businesType">Виберіть тип бізнесу або створить новий</label>
-    <input class="form-control"
-           placeholder="Введіть назву бізнесу" type="text"
-           id="businesTypeTitle"
-           required [(ngModel)]="businessType.title"
-           name="businesTypeTitle" #name="ngModel">
-    <input class="form-control"
-           placeholder="Введіть назву КВЕД"
-           id="businesTypeCodeKved"
-           required
-           [(ngModel)]="businessType.codeKved"
-           name="businesTypeCodeKved" #name="ngModel">
-    <div class="clear"></div>
-    <div class="btn-group">
-      <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
-    </div>
-    <div class="btn-group">
-      <select class="form-control" #v (change)="onSelectBusinessType(v.value)">
-        <option hidden>Або виберіть існуючий</option>
-        <option *ngFor="let businessType of businessTypes"
-                [value]="businessType.id">
-          <span>{{businessType.codeKved}}:{{businessType.title}}</span>
-          <i class="fa fa-check"></i>
-        </option>
-      </select>
-    </div>
-  </form>
-  <div [hidden]="!wrongQuestionnaire" class="alert alert-warning">
-    Поле не повинно бути пустим або ви не зберегли тип бізнесу.
-  </div>
-  <form class="form-group businesType">
-    <label for="businesType">Ім'я опитувальника</label>
-    <input class="form-control"
-           placeholder="Введіть назву бізнесу" type="text"
-           id="businesType"
-           required [(ngModel)]="questionnaire.title"
-           name="businesType" #name="ngModel">
-    <div class="clear"></div>
-    <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
-    <a class="btn btn-primary">Завантажити існуючій</a>
-  </form>
-  <div [hidden]="!wrongQuestionnaire" class="alert alert-warning">
-    Спочатку треба зберегти поля що лежать вище.
-  </div>
-  <div class="questions">
-    <div *ngFor="let question of questions"
-         [class.selected]="question === selectedQuestion"
-         (click)="onSelectQuestion(question)">
-      <label>Питання</label>
+    <label for="businesType">Виберіть тип бізнесу або створіть новий</label>
+    <div class="inner-addon right-addon">
+      <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
-             [(ngModel)]="question.text"
-             placeholder="Редагування питання"
-             (blur)="saveQuestion(question)"/>
-      <input type="checkbox"
-             (change)="changeInputType(question)">Декілька варіантів відповіді
-      <div class="option" *ngFor="let option of question.options" (click)="onSelectOption(option)">
-        <label>Відповідь</label>
+             [ngClass]="businessTypeTitleClass"
+             placeholder="Введіть назву бізнесу" type="text"
+             id="businesType"
+             required [(ngModel)]="businessType.title"
+             name="businesTypeTitle" #name="ngModel">
+    </div>
+    <div class="inner-addon right-addon">
+      <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+      <input class="form-control"
+             [ngClass]="businessTypeKvedClass"
+             placeholder="Введіть назву КВЕД"
+             id="businesType"
+             required
+             [(ngModel)]="businessType.codeKved"
+             name="businesTypeCodeKved" #name="ngModel">
+    </div>
+    <div class="clear"></div>
+    <div class="row">
+      <div class="col-xs-2">
+        <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
+      </div>
+      <div class="col-xs-10">
+        <select class="form-control"
+                #v (change)="chooseTypeBusinessFromServer(v.value)">
+          <option hidden>Або виберіть існуючий</option>
+          <option *ngFor="let businessType of businessTypes"
+                  [value]="businessType.id">
+            {{businessType.codeKved}} : {{'\n' + businessType.title}}
+            <i class="fa fa-check"></i>
+          </option>
+        </select>
+      </div>
+    </div>
+  </form>
+  <form class="form-group businesType">
+    <div *ngIf="wrongQuestionnaire" class="alert alert-warning">
+      {{errorMessage}}
+    </div>
+    <label for="questionnaire">Назва опитувальника</label>
+    <div class="inner-addon right-addon">
+      <i *ngIf="successQuestionnaire" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+      <input class="form-control"
+             [ngClass]="questionnaireClass"
+             placeholder="Введіть назву опитувальника" type="text"
+             id="questionnaire"
+             required [(ngModel)]="questionnaire.title"
+             name="questionnaire" #name="ngModel">
+    </div>
+    <div class="clear"></div>
+    <div class="row">
+      <div class="col-xs-2">
+        <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
+      </div>
+      <div class="col-xs-10">
+        <select class="form-control">
+          <option hidden>Або виберіть існуючий</option>
+          <option>
+            <i class="fa fa-check"></i>
+          </option>
+        </select>
+      </div>
+    </div>
+  </form>
+  <div class="questions">
+    <div *ngFor="let question of questions; let questionIndex = index;"
+         (click)="onSelectQuestion(question)">
+      <div *ngIf="selectedQuestion == question && wrongQuestion" class="alert alert-warning">
+        {{errorMessage}}
+      </div>
+      <label>Питання</label>
+      <div class="inner-addon right-addon">
+        <i *ngIf="questionIndex == questionFieldIndexWithChange"
+           class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
         <input class="form-control"
-               [(ngModel)]="option.title"
-               placeholder="Редагування відповіді"
-               (blur)="saveOption(question, option)"/>
+               [ngClass]="{successSubmission: questionIndex == questionFieldIndexWithChange}"
+               [(ngModel)]="question.text"
+               placeholder="Редагування питання"
+               (blur)="saveQuestion(question)"/>
+      </div>
+      <input type="checkbox" (change)="changeInputType(question)">Декілька варіантів відповіді
+      <i *ngIf="inputTypeFieldIndexWithChange == questionIndex"
+         class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+      <div class="option" *ngFor="let option of question.options; let optionIndex = index;"
+           (click)="onSelectOption(option)">
+        <label>Відповідь</label>
+        <div class="inner-addon right-addon">
+          <i
+            *ngIf="questionOptionFieldIndexWithChange == questionIndex && optionIndex == optionFieldIndexWithChange"
+            class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+          <input class="form-control"
+                 [ngClass]="{successSubmission: questionOptionFieldIndexWithChange == questionIndex && optionIndex == optionFieldIndexWithChange}"
+                 [(ngModel)]="option.title"
+                 placeholder="Редагування відповіді"
+                 (blur)="saveOption(question, option)"/>
+        </div>
         <div *ngIf="selectedOption == option && selectedQuestion == question">
 
-          <div class="btn-group">
-            <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                Приеднати питання
-                <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li *ngFor="let dropDownQuestion of questions"
-                    (click)="questionLinker(dropDownQuestion, option); onSelectQuestion(question);">
-                  <span *ngIf="dropDownQuestion != question">{{dropDownQuestion.text}}</span>
+          <div class="col-xs-12">
+            <select class="form-control"
+                    [ngClass]="{successSubmission: false}"
+                    #questionText
+                    (change)="questionLinker(questionText.value, option); onSelectQuestion(question)">
+              <option hidden>{{attachedQuestion}}</option>
+              <ng-container *ngFor="let dropDownQuestion of questions; let ddqIndex = index;">
+                <option
+                  *ngIf="dropDownQuestion != question && dropDownQuestion.text != attachedQuestion"
+                  [value]="dropDownQuestion.text">
+                  <span>
+                    {{dropDownQuestion.text}}
+                  </span>
                   <i class="fa fa-check"></i>
-                </li>
-              </ul>
-            </div>
+                </option>
+              </ng-container>
+            </select>
+            <span *ngIf="false"
+                  class="glyphicon form-control-feedback glyphicon-ok"
+                  style="color:#bfff83"></span>
           </div>
-          <div class="btn-group">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle"
-                      type="button"
-                      data-toggle="dropdown"
-                      (click)="getProcedure()">
-                Приеднати картку
-                <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li *ngFor="let procedure of procedures"
-                    (click)="procedureLinker(procedure); onSelectQuestion(question); onSelectOption(option)">
-                  <span>{{procedure.name}}</span>
+          <div class="col-xs-12">
+            <select class="form-control"
+                    [ngClass]="{successSubmission: false}"
+                    #procedureId
+                    (change)="procedureLinker(procedureId.value, option); onSelectQuestion(question)">
+              <option hidden>{{attachedProcedure}}</option>
+              <ng-container *ngFor="let procedure of procedures">
+                <option  *ngIf="procedure.name != attachedProcedure"
+                         [value]="procedure.id">
+                  <span>
+                    {{procedure.name}}
+                  </span>
                   <i class="fa fa-check"></i>
-                </li>
-              </ul>
-            </div>
+                </option>
+              </ng-container>
+            </select>
+            <span *ngIf="false"
+                  class="glyphicon form-control-feedback glyphicon-ok"
+                  style="color:#bfff83"></span>
           </div>
+
         </div>
       </div>
       <div class="btnAddOption" *ngIf="selectedQuestion == question">
@@ -114,11 +161,3 @@
     <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
   </div>
 </div>
-
-
-
-
-
-
-
-

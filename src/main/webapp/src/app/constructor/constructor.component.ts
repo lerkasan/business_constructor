@@ -7,6 +7,7 @@ import {ProcedureService} from '../service/procedure.service';
 import {BusinessType} from '../model/business.type';
 import {Questionnaire} from '../model/questionnaire';
 import {BusinessTypeService} from '../service/business.type.service';
+import {Response} from '@angular/http';
 
 @Component({
   selector: 'brdo-constructor-panel',
@@ -17,24 +18,48 @@ import {BusinessTypeService} from '../service/business.type.service';
 
 export class ConstructorComponent implements OnInit {
 
+  ERROR_MSG_FIRST_SAVE_FIELD: string = 'Поле повинно бути заповнене і збережено!';
+  ERROR_MSG_EMPTY_FIELD: string = 'Поле не повинно бути пустим!';
+  STYLE_WRONG_SUBMISSION: string = 'wrongSubmission';
+  STYLE_SUCCESS_SUBMISSION: string = 'successSubmission';
+  ATTACHED_QUESTION: string = 'Приеднати питання';
+  ATTACHED_PROCEDURE: string = 'Приэднати картку';
+
+  attachedProcedure: string;
+  attachedQuestion: string;
+  errorMessage: string;
   selectedOption: Option;
   selectedQuestion: Question;
-  selectedText: string;
-  selectedTitle: string;
+  selectedQuestionText: string;
+  selectedOptionTitle: string;
   questions: Question[];
   procedures: Procedure[];
   businessType: BusinessType;
   questionnaire: Questionnaire;
-  wrongBusinessType = false;
-  wrongQuestionnaire = false;
+  wrongBusinessType: boolean = false;
+  wrongQuestionnaire: boolean = false;
+  wrongQuestion: boolean = false;
+  successQuestionnaire: boolean = false;
+  successBusinessType: boolean = false;
+  successQuestionLink: boolean = false;
+  successProcedureLink: boolean = false;
   businessTypes: BusinessType[];
+  businessTypeTitleClass: string = '';
+  businessTypeKvedClass: string = '';
+  questionnaireClass: string = '';
+  questionFieldIndexWithChange: number;
+  optionFieldIndexWithChange: number;
+  questionOptionFieldIndexWithChange: number;
+  inputTypeFieldIndexWithChange: number;
+  quesIndex: number;
 
   inputType = [
     {value: 'SINGLE_CHOICE'},
     {value: 'MULTI_CHOICE'}
   ];
 
-  constructor(private questionService: QuestionService, private procedureService: ProcedureService,
+  constructor(private questionService: QuestionService,
+              private procedureService: ProcedureService,
               private businessTypeService: BusinessTypeService) {
   }
 
@@ -46,23 +71,50 @@ export class ConstructorComponent implements OnInit {
     this.questionnaire = new Questionnaire();
     this.questionnaire.title = '';
     this.getBusinessTypes();
+    this.getProcedure();
   }
 
   onSelectQuestion(question: Question): void {
     this.selectedQuestion = question;
-    this.selectedText = question.text;
+    this.selectedQuestionText = question.text;
   }
 
   onSelectOption(option: Option): void {
     this.selectedOption = option;
-    this.selectedTitle = option.title;
+    this.selectedOptionTitle = option.title;
+    if (option.nextQuestion !== undefined) {
+      for (let question of this.questions) {
+        if (question.id === option.nextQuestion.id) {
+          this.attachedQuestion = question.text;
+        }
+      }
+    } else {
+      this.attachedQuestion = this.ATTACHED_QUESTION;
+    }
+    if (option.procedure !== undefined) {
+      for (let procedure of this.procedures) {
+        if (procedure.id === option.procedure.id) {
+          this.attachedProcedure = procedure.name;
+        }
+      }
+    } else {
+      this.attachedProcedure = this.ATTACHED_PROCEDURE;
+    }
   }
 
   addQuestion(): void {
-    if (this.questionnaire.id === undefined || this.businessType.id === undefined) {
+    this.resetErrorStatus();
+    if (this.questionnaire.id === undefined) {
+      this.errorMessage = this.ERROR_MSG_FIRST_SAVE_FIELD;
+      this.questionnaireClass = this.STYLE_WRONG_SUBMISSION;
       this.wrongQuestionnaire = true;
-      this.wrongBusinessType = true;
       return;
+    }
+    if (this.businessType.id === undefined) {
+      this.errorMessage = this.ERROR_MSG_FIRST_SAVE_FIELD;
+      this.businessTypeTitleClass = this.STYLE_WRONG_SUBMISSION;
+      this.businessTypeKvedClass = this.STYLE_WRONG_SUBMISSION;
+      this.wrongBusinessType = true;
     }
     if (this.questions === undefined) {
       this.questions = [this.newQuestion()];
@@ -111,9 +163,11 @@ export class ConstructorComponent implements OnInit {
     if (question.id !== undefined) {
       this.questionService.updateQuestion(question)
         .subscribe(
-          (ques: Question) => {
-            this.questions[elementNumber] = ques;
-            console.log(ques.id);
+          (response: Response) => {
+            if (response.status === 200) {
+              this.inputTypeFieldIndexWithChange = elementNumber;
+              this.resetStatusSubmissionWithDelay();
+            }
           },
           error => console.log(<any>error)
         );
@@ -129,18 +183,26 @@ export class ConstructorComponent implements OnInit {
   }
 
   saveQuestion(question: Question): void {
+    for (let option of question.options) {
+      if (option.title === '' || option.title === undefined) {
+        return;
+      }
+    }
     if (question.text === '' || question === undefined) {
       return;
     }
-    if (question.text === this.selectedText) {
+    if (question.text === this.selectedQuestionText) {
       return;
     }
-    let elementNumber = this.questions.indexOf(question);
     if (question.id !== undefined) {
       this.questionService.updateQuestion(question)
         .subscribe(
-          (ques: Question) => {
-            this.questions[elementNumber] = ques;
+          (response: Response) => {
+            if (response.status === 200) {
+              let questionNumber = this.questions.indexOf(question);
+              this.questionFieldIndexWithChange = questionNumber;
+              this.resetStatusSubmissionWithDelay();
+            }
           },
           error => console.log(<any>error)
         );
@@ -150,26 +212,40 @@ export class ConstructorComponent implements OnInit {
 
   saveOption(question: Question, option: Option): void {
     let elementNumber = this.questions.indexOf(question);
-    console.log(JSON.stringify(question));
 
-    if (this.selectedTitle === option.title) {
+    if (this.selectedOptionTitle === option.title) {
       return;
     }
-    for (let i = 0; i < elementNumber; i++) {
-      if (question.options[i].title === undefined || question.options[i].title === '') {
+    for (let optione of question.options) {
+      if (optione.title === undefined || optione.title === '') {
         return;
       }
     }
     if (question.text === undefined || question.text === '') {
       return;
     }
-    console.log(question);
-    console.log(JSON.stringify(question));
     if (question.id === undefined) {
       this.questionService.createQuestion(question)
         .subscribe(
-          (ques: Question) => {
-            this.questions[elementNumber] = ques;
+          (response: Response) => {
+            if (response.status === 201) {
+              let optionNumber = question.options.indexOf(option);
+              let questionNumber = this.questions.indexOf(question);
+              this.questionFieldIndexWithChange = questionNumber;
+              this.optionFieldIndexWithChange = optionNumber;
+              this.questionOptionFieldIndexWithChange = questionNumber;
+              this.inputTypeFieldIndexWithChange = questionNumber;
+              this.resetStatusSubmissionWithDelay();
+              let resQuestion = response.json() as Question;
+              this.questions[elementNumber].id = resQuestion.id;
+              for (let locOption of this.questions[elementNumber].options) {
+                for (let resOption of resQuestion.options) {
+                  if (locOption.title === resOption.title) {
+                    locOption.id = resOption.id;
+                  }
+                }
+              }
+            }
           },
           error => console.log(<any>error)
         );
@@ -178,109 +254,159 @@ export class ConstructorComponent implements OnInit {
     if (question.id !== undefined) {
       this.questionService.updateQuestion(question)
         .subscribe(
-          (ques: Question) => {
-            this.questions[elementNumber] = ques;
+          (response: Response) => {
+            if (response.status === 200) {
+              let questionNumber = this.questions.indexOf(question);
+              let optionNumber = question.options.indexOf(option);
+              this.optionFieldIndexWithChange = optionNumber;
+              this.questionOptionFieldIndexWithChange = questionNumber;
+              this.resetStatusSubmissionWithDelay();
+              let resQuestion = response.json() as Question;
+              for (let locOption of this.questions[elementNumber].options) {
+                for (let resOption of resQuestion.options) {
+                  if (locOption.title === resOption.title) {
+                    locOption.id = resOption.id;
+                  }
+                }
+              }
+            }
           },
           error => console.log(<any>error)
         );
     }
   }
 
-  questionLinker(dropDownQuestion: Question, option: Option): void {
-    if (dropDownQuestion.id === undefined || option.id === undefined) {
+  questionLinker(questionText: string, option: Option): void {
+    let id: number;
+    for (let question of this.questions) {
+      if (question.text === questionText) {
+        id = question.id;
+      }
+    }
+    if (id === undefined) {
+      return;
+    }
+    let question = new Question();
+    question.id = id;
+    option.nextQuestion = question;
+    this.resetStatusSubmissionWithDelay();
+
+    if (option.id === undefined) {
       return;
     }
 
-    option.nextQuestion = new Id(dropDownQuestion.id);
-    console.log(JSON.stringify(option));
-
     this.questionService.createLinkFromOption(option, this.selectedQuestion.id)
       .subscribe(
-        (status) => {
-          if (status === 200) {
+        (resonse: Response) => {
+          if (resonse.status === 200) {
           }
         },
         error => console.log(<any>error)
       );
   }
 
-  procedureLinker(procedure: Procedure) {
-    if (this.selectedQuestion.id === undefined || this.selectedOption.id === undefined) {
+  procedureLinker(id, option) {
+    let procedure = new Procedure();
+    procedure.id = +id;
+    option.procedure = procedure;
+    this.resetStatusSubmissionWithDelay();
+    if (option.id === undefined) {
       return;
     }
 
-    this.selectedOption.procedure = new Id(procedure.id);
-
-    this.questionService.createLinkFromOption(this.selectedOption, this.selectedQuestion.id)
+    this.questionService.createLinkFromOption(option, this.selectedQuestion.id)
       .subscribe(
-        (status) => {
-          if (status === 200) {
+        (response) => {
+          if (response === 200) {
           }
-        }
+        },
+        error => console.log(<any>error)
       );
   }
 
   getProcedure() {
     this.procedureService.getAllProcedure()
       .subscribe(
-        (response: Procedure[]) => {
-          this.procedures = response;
+        (response: Response) => {
+          if (response.status === 200) {
+            this.procedures = response.json() as Procedure[];
+          }
         },
         error => console.log(<any>error)
       );
   }
 
   saveBusinessType() {
+    this.resetErrorStatus();
     if (this.businessType.title === undefined || this.businessType.title === '') {
+      this.errorMessage = this.ERROR_MSG_EMPTY_FIELD;
       this.wrongBusinessType = true;
+      this.businessTypeTitleClass = this.STYLE_WRONG_SUBMISSION;
       return;
     }
     if (this.businessType.codeKved === undefined || this.businessType.codeKved === '') {
+      this.errorMessage = this.ERROR_MSG_EMPTY_FIELD;
       this.wrongBusinessType = true;
+      this.businessTypeKvedClass = this.STYLE_WRONG_SUBMISSION;
       return;
     }
     this.businessTypeService.createBusinessType(this.businessType)
       .subscribe(
-        (response) => {
+        (response: Response) => {
           if (response.status === 201) {
             this.businessType = response.json() as BusinessType;
             this.wrongBusinessType = false;
-          }
-          if (response.status !== 201) {
-            this.wrongBusinessType = true;
+            this.businessTypeTitleClass = this.STYLE_SUCCESS_SUBMISSION;
+            this.businessTypeKvedClass = this.STYLE_SUCCESS_SUBMISSION;
+            this.successBusinessType = true;
+            this.resetStatusSubmissionWithDelay();
           }
         },
-        error => {
-          this.wrongQuestionnaire = true;
-          console.log(<any>error);
+        (failResponse) => {
+          if (failResponse !== 201) {
+            this.wrongBusinessType = true;
+            this.errorMessage = 'Поле КВЄД пара чисел розділених крапкою, або такі поля вже існують!';
+            this.businessTypeKvedClass = this.STYLE_WRONG_SUBMISSION;
+            this.businessTypeTitleClass = this.STYLE_WRONG_SUBMISSION;
+          }
         }
       );
   }
 
   saveQuestionnare() {
+    this.resetErrorStatus();
     if (this.businessType.id === undefined) {
+      this.errorMessage = this.ERROR_MSG_FIRST_SAVE_FIELD;
+      this.businessTypeKvedClass = this.STYLE_WRONG_SUBMISSION;
+      this.businessTypeTitleClass = this.STYLE_WRONG_SUBMISSION;
       this.wrongQuestionnaire = true;
       return;
     }
     if (this.questionnaire.title === undefined || this.questionnaire.title === '') {
+      this.errorMessage = this.ERROR_MSG_EMPTY_FIELD;
+      this.questionnaireClass = this.STYLE_WRONG_SUBMISSION;
       this.wrongQuestionnaire = true;
       return;
     }
     this.questionnaire.businessType = new Id(this.businessType.id);
     this.questionService.createQuestionare(this.questionnaire)
       .subscribe(
-        (response) => {
+        (response: Response) => {
           if (response.status === 201) {
+            let questionnaire = response.json() as Questionnaire;
+            this.questionnaire.id = questionnaire.id;
             this.wrongQuestionnaire = false;
-            this.questionnaire = response.json() as Questionnaire;
-          }
-          if (response.status !== 201) {
-            this.wrongQuestionnaire = true;
+            this.questionnaireClass = this.STYLE_SUCCESS_SUBMISSION;
+            this.successQuestionnaire = true;
+            this.resetStatusSubmissionWithDelay();
           }
         },
-        error => {
-          this.wrongQuestionnaire = true;
-          console.log(<any>error);
+        (failResponse: Response) => {
+          if (failResponse.status !== 201) {
+            this.errorMessage = 'Назва опитувальника вже існує!';
+            this.wrongQuestionnaire = true;
+            this.questionnaireClass = this.STYLE_WRONG_SUBMISSION;
+          }
         }
       );
   }
@@ -300,13 +426,46 @@ export class ConstructorComponent implements OnInit {
       );
   }
 
-  onSelectBusinessType(id) {
-    console.log(id);
+  chooseTypeBusinessFromServer(id) {
+    this.resetErrorStatus();
     for (let businessType of this.businessTypes) {
       if (businessType.id.toString() === id) {
         this.businessType = businessType;
       }
     }
+  }
+
+  resetErrorStatus() {
+    if (this.businessTypeKvedClass !== this.STYLE_SUCCESS_SUBMISSION) {
+      this.businessTypeKvedClass = '';
+    }
+    if (this.businessTypeTitleClass !== this.STYLE_SUCCESS_SUBMISSION) {
+      this.businessTypeTitleClass = '';
+    }
+    if (this.questionnaireClass !== this.STYLE_SUCCESS_SUBMISSION) {
+      this.questionnaireClass = '';
+    }
+    this.errorMessage = '';
+    this.wrongBusinessType = false;
+    this.wrongQuestionnaire = false;
+    this.wrongQuestion = false;
+  }
+
+  resetStatusSubmissionWithDelay() {
+    setTimeout(() => {
+        this.businessTypeKvedClass = '';
+        this.businessTypeTitleClass = '';
+        this.questionnaireClass = '';
+        this.successBusinessType = false;
+        this.successQuestionnaire = false;
+        this.successQuestionLink = false;
+        this.successProcedureLink = false;
+        this.questionFieldIndexWithChange = undefined;
+        this.optionFieldIndexWithChange = undefined;
+        this.questionOptionFieldIndexWithChange = undefined;
+        this.inputTypeFieldIndexWithChange = undefined;
+      }, 5000
+    );
   }
 }
 

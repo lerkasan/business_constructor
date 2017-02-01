@@ -12,6 +12,15 @@
   width: 100%;
 }
 
+select {
+  font-size: 16px;
+  width: 100%;
+}
+
+option {
+  width: 100%;
+}
+
 .businesType label {
   margin: 0;
 }
@@ -63,4 +72,42 @@
 
 .btnAddOption {
   padding-left: 20px;
+}
+
+.inner-addon {
+  position: relative;
+}
+
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.left-addon .glyphicon {
+  left: 0px;
+}
+
+.right-addon .glyphicon {
+  right: 0px;
+}
+
+.left-addon input {
+  padding-left: 30px;
+}
+
+.right-addon input {
+  padding-right: 30px;
+}
+
+.wrongSubmission {
+  border: 2px solid #ff7b26;
+}
+
+.successSubmission {
+  border: 2px solid #bfff83;
+}
+
+.form-control + .form-control-feedback {
+  right: 30px;
 }

@@ -32,7 +32,9 @@ export class BusinessTypeService {
       .map((response) => {
         return response;
       })
-      .catch(this.handleError);
+      .catch((response) => {
+        return response;
+      });
   }
 
   private handleError(error: Response | any) {
@@ -48,3 +50,4 @@ export class BusinessTypeService {
     return Observable.throw(errMsg);
   }
 }
+

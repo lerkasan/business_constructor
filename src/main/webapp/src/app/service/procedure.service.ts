@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Procedure} from '../model/procedure';
 
 @Injectable()
 export class ProcedureService {
@@ -12,9 +11,10 @@ export class ProcedureService {
   public getAllProcedure() {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
+
     return this.http.get('/api/procedures', options)
       .map(response => {
-        return response.json() as Procedure[];
+        return response;
       })
       .catch(this.handleError);
   }

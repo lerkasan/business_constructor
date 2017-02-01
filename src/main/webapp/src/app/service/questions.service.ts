@@ -17,7 +17,7 @@ export class QuestionService {
 
     return this.http.post('/api/questions', JSON.stringify(question), options)
       .map((response) => {
-        return response.json() as Question;
+        return response;
       })
       .catch(this.handleError);
   }
@@ -29,7 +29,7 @@ export class QuestionService {
 
     return this.http.put(path, JSON.stringify(question), options)
       .map((response) => {
-        return response.json() as Question;
+        return response;
       })
       .catch(this.handleError);
   }
@@ -41,7 +41,7 @@ export class QuestionService {
 
     return this.http.put(path, JSON.stringify(option), options)
       .map((response) => {
-        return response.status as number;
+        return response;
       })
       .catch(this.handleError);
 
@@ -57,7 +57,9 @@ export class QuestionService {
           return response;
         }
       )
-      .catch(this.handleError);
+      .catch((response) => {
+        return response;
+      });
   }
 
   public listQuestionnaires() {

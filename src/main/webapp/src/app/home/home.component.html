@@ -37,8 +37,12 @@
           <p>{{question.text}}</p>
           <div class="radio" *ngFor="let option of question.options">
             <label>
-              <input type="radio" name="radioReg">{{option.title}}
-              <a href="#" data-toggle="tooltip" title="Тут повиненні бути додаткові відомості!"
+              <input type="radio"
+                     name="option"
+                     (click)="nextQuestion(option.nextQuestion.id, question)"
+                     [disabled]="option.nextQuestion == undefined">
+              {{option.title}}
+              <a href="#" data-toggle="tooltip" title="Тут повинні бути додаткові відомості!"
                  class="info-tooltip"><img src="/img/info.png"></a>
             </label>
           </div>

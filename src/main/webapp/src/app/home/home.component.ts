@@ -66,10 +66,19 @@ export class HomeComponent implements OnInit {
   }
 
   onSelectQuestionnaire(id) {
+    if (this.questions === undefined) {
+      this.questions = [];
+    }
+
     for (let questionnaire of this.questionnaires) {
       if (questionnaire.id.toString() === id) {
         this.selectedQuestionnaire = questionnaire;
-        this.questions = this.selectedQuestionnaire.questions;
+        this.selectedQuestionnaire.questions.sort(
+          function (a, b) {
+            return a.id - b.id;
+          }
+        );
+        this.questions.push(this.selectedQuestionnaire.questions[0]);
       }
     }
   }
@@ -78,6 +87,26 @@ export class HomeComponent implements OnInit {
     for (let businessType of this.businessTypes) {
       if (businessType.id.toString() === id) {
         this.selectedBusinessType = businessType;
+      }
+    }
+  }
+
+  nextQuestion(id, question) {
+    let questionLength = this.questions.length;
+    if (question.id !== this.questions[questionLength-1].id) {
+      return;
+    }
+    if (id === undefined) {
+      return;
+    }
+    let question = this.findQuestionById(+id);
+    this.questions.push(question);
+  }
+
+  findQuestionById(id: number) {
+    for (let question of this.selectedQuestionnaire.questions) {
+      if (question.id === id) {
+        return question;
       }
     }
   }

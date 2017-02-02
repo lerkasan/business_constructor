@@ -99,8 +99,8 @@ export class HomeComponent implements OnInit {
     if (id === undefined) {
       return;
     }
-    let question = this.findQuestionById(+id);
-    this.questions.push(question);
+    let nextQuestion = this.findQuestionById(+id);
+    this.questions.push(nextQuestion);
   }
 
   findQuestionById(id: number) {

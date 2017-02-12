@@ -19,6 +19,17 @@ export class ProcedureService {
       .catch(this.handleError);
   }
 
+  public getProcedure(id: number) {
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.get('/api/procedures/' + id, options)
+      .map(response => {
+        return response;
+      })
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {

@@ -3,35 +3,33 @@
     <div *ngIf="wrongBusinessType" class="alert alert-warning">
       {{errorMessage}}
     </div>
-    <label for="businesType">Виберіть тип бізнесу або створіть новий</label>
+    <label for="businesType">Виберіть тип бізнесу</label>
     <div class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeTitleClass"
-             placeholder="Введіть назву бізнесу" type="text"
+             placeholder="Назву бізнесу не вибрано" type="text"
              id="businesType"
-             required [(ngModel)]="businessType.title"
+             readonly
+             [(ngModel)]="businessType.title"
              name="businesTypeTitle" #name="ngModel">
     </div>
     <div class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeKvedClass"
-             placeholder="Введіть назву КВЕД"
+             placeholder="Номер КВЕД не вибрано"
              id="businesType"
-             required
+             readonly
              [(ngModel)]="businessType.codeKved"
              name="businesTypeCodeKved" #name="ngModel">
     </div>
     <div class="clear"></div>
     <div class="row">
-      <div class="col-xs-2">
-        <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
-      </div>
-      <div class="col-xs-10">
+      <div class="col-xs-12">
         <select class="form-control"
                 #v (change)="chooseTypeBusinessFromServer(v.value)">
-          <option hidden>Або виберіть існуючий</option>
+          <option hidden>Виберіть існуючий</option>
           <option *ngFor="let businessType of businessTypes"
                   [value]="businessType.id">
             {{businessType.codeKved}} : {{'\n' + businessType.title}}
@@ -60,14 +58,6 @@
       <div class="col-xs-2">
         <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
       </div>
-      <div class="col-xs-10">
-        <select class="form-control">
-          <option hidden>Або виберіть існуючий</option>
-          <option>
-            <i class="fa fa-check"></i>
-          </option>
-        </select>
-      </div>
     </div>
   </form>
   <div class="questions">
@@ -83,7 +73,7 @@
         <input class="form-control"
                [ngClass]="{successSubmission: questionIndex == questionFieldIndexWithChange}"
                [(ngModel)]="question.text"
-               placeholder="Редагування питання"
+               placeholder="Введіть питання"
                (blur)="saveQuestion(question)"/>
       </div>
       <input type="checkbox" (change)="changeInputType(question)">Декілька варіантів відповіді
@@ -99,7 +89,7 @@
           <input class="form-control"
                  [ngClass]="{successSubmission: questionOptionFieldIndexWithChange == questionIndex && optionIndex == optionFieldIndexWithChange}"
                  [(ngModel)]="option.title"
-                 placeholder="Редагування відповіді"
+                 placeholder="Введіть відповідь"
                  (blur)="saveOption(question, option)"/>
         </div>
         <div *ngIf="selectedOption == option && selectedQuestion == question">

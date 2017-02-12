@@ -1,163 +1,22 @@
-<div class="constructor">
-  <form class="form-group businesType">
-    <div *ngIf="wrongBusinessType" class="alert alert-warning">
-      {{errorMessage}}
-    </div>
-    <label for="businesType">Виберіть тип бізнесу або створіть новий</label>
-    <div class="inner-addon right-addon">
-      <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-      <input class="form-control"
-             [ngClass]="businessTypeTitleClass"
-             placeholder="Введіть назву бізнесу" type="text"
-             id="businesType"
-             required [(ngModel)]="businessType.title"
-             name="businesTypeTitle" #name="ngModel">
-    </div>
-    <div class="inner-addon right-addon">
-      <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-      <input class="form-control"
-             [ngClass]="businessTypeKvedClass"
-             placeholder="Введіть назву КВЕД"
-             id="businesType"
-             required
-             [(ngModel)]="businessType.codeKved"
-             name="businesTypeCodeKved" #name="ngModel">
-    </div>
-    <div class="clear"></div>
-    <div class="row">
-      <div class="col-xs-2">
-        <button type="submit" class="btn btn-primary" (click)="saveBusinessType()">Зберегти</button>
-      </div>
-      <div class="col-xs-10">
-        <select class="form-control"
-                #v (change)="chooseTypeBusinessFromServer(v.value)">
-          <option hidden>Або виберіть існуючий</option>
-          <option *ngFor="let businessType of businessTypes"
-                  [value]="businessType.id">
-            {{businessType.codeKved}} : {{'\n' + businessType.title}}
-            <i class="fa fa-check"></i>
-          </option>
-        </select>
-      </div>
-    </div>
-  </form>
-  <form class="form-group businesType">
-    <div *ngIf="wrongQuestionnaire" class="alert alert-warning">
-      {{errorMessage}}
-    </div>
-    <label for="questionnaire">Назва опитувальника</label>
-    <div class="inner-addon right-addon">
-      <i *ngIf="successQuestionnaire" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-      <input class="form-control"
-             [ngClass]="questionnaireClass"
-             placeholder="Введіть назву опитувальника" type="text"
-             id="questionnaire"
-             required [(ngModel)]="questionnaire.title"
-             name="questionnaire" #name="ngModel">
-    </div>
-    <div class="clear"></div>
-    <div class="row">
-      <div class="col-xs-2">
-        <button type="submit" class="btn btn-primary" (click)="saveQuestionnare()">Зберегти</button>
-      </div>
-      <div class="col-xs-10">
-        <select class="form-control">
-          <option hidden>Або виберіть існуючий</option>
-          <option>
-            <i class="fa fa-check"></i>
-          </option>
-        </select>
-      </div>
-    </div>
-  </form>
-  <div class="questions">
-    <div *ngFor="let question of questions; let questionIndex = index;"
-         (click)="onSelectQuestion(question)">
-      <div *ngIf="selectedQuestion == question && wrongQuestion" class="alert alert-warning">
-        {{errorMessage}}
-      </div>
-      <label>Питання</label>
-      <div class="inner-addon right-addon">
-        <i *ngIf="questionIndex == questionFieldIndexWithChange"
-           class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-        <input class="form-control"
-               [ngClass]="{successSubmission: questionIndex == questionFieldIndexWithChange}"
-               [(ngModel)]="question.text"
-               placeholder="Редагування питання"
-               (blur)="saveQuestion(question)"/>
-      </div>
-      <input type="checkbox" (change)="changeInputType(question)">Декілька варіантів відповіді
-      <i *ngIf="inputTypeFieldIndexWithChange == questionIndex"
-         class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-      <div class="option" *ngFor="let option of question.options; let optionIndex = index;"
-           (click)="onSelectOption(option)">
-        <label>Відповідь</label>
-        <div class="inner-addon right-addon">
-          <i
-            *ngIf="questionOptionFieldIndexWithChange == questionIndex && optionIndex == optionFieldIndexWithChange"
-            class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
-          <input class="form-control"
-                 [ngClass]="{successSubmission: questionOptionFieldIndexWithChange == questionIndex && optionIndex == optionFieldIndexWithChange}"
-                 [(ngModel)]="option.title"
-                 placeholder="Редагування відповіді"
-                 (blur)="saveOption(question, option)"/>
-        </div>
-        <div *ngIf="selectedOption == option && selectedQuestion == question">
-
-          <div class="col-xs-12">
-            <select class="form-control"
-                    [ngClass]="{successSubmission: false}"
-                    #questionText
-                    (change)="questionLinker(questionText.value, option); onSelectQuestion(question)">
-              <option hidden>{{attachedQuestion}}</option>
-              <ng-container *ngFor="let dropDownQuestion of questions; let ddqIndex = index;">
-                <option
-                  *ngIf="dropDownQuestion != question && dropDownQuestion.text != attachedQuestion"
-                  [value]="dropDownQuestion.text">
-                  <span>
-                    {{dropDownQuestion.text}}
-                  </span>
-                  <i class="fa fa-check"></i>
-                </option>
-              </ng-container>
-            </select>
-            <span *ngIf="false"
-                  class="glyphicon form-control-feedback glyphicon-ok"
-                  style="color:#bfff83"></span>
-          </div>
-          <div class="col-xs-12">
-            <select class="form-control"
-                    [ngClass]="{successSubmission: false}"
-                    #procedureId
-                    (change)="procedureLinker(procedureId.value, option); onSelectQuestion(question)">
-              <option hidden>{{attachedProcedure}}</option>
-              <ng-container *ngFor="let procedure of procedures">
-                <option  *ngIf="procedure.name != attachedProcedure"
-                         [value]="procedure.id">
-                  <span>
-                    {{procedure.name}}
-                  </span>
-                  <i class="fa fa-check"></i>
-                </option>
-              </ng-container>
-            </select>
-            <span *ngIf="false"
-                  class="glyphicon form-control-feedback glyphicon-ok"
-                  style="color:#bfff83"></span>
-          </div>
-
-        </div>
-      </div>
-      <div class="btnAddOption" *ngIf="selectedQuestion == question">
-        <button class="btn btn-sm btn-success" (click)="addOption(question.options)">Додати
-          відповідь
-        </button>
-        <button class="btn btn-sm btn-danger" (click)="deleteLastOption(question.options)">Видалити
-          останюю відповідь
-        </button>
-      </div>
-    </div>
-    <button class="btn btn-success" (click)="addQuestion()">Додати питання</button>
-    <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
-  </div>
+<label for="businesType">Виберіть тип бізнесу</label>
+<div class="inner-addon right-addon">
+  <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+  <input class="form-control"
+         [ngClass]="businessTypeTitleClass"
+         placeholder="Назву бізнесу не вибрано" type="text"
+         id="businesType"
+         readonly
+         [(ngModel)]="businessType.title"
+         name="businesTypeTitle" #name="ngModel">
 </div>
+<div class="inner-addon right-addon">
+  <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
+  <input class="form-control"
+         [ngClass]="businessTypeKvedClass"
+         placeholder="Номер КВЕД не вибрано"
+         id="businesType"
+         readonly
+         [(ngModel)]="businessType.codeKved"
+         name="businesTypeCodeKved" #name="ngModel">
+</div>
+<div class="clear"></div>

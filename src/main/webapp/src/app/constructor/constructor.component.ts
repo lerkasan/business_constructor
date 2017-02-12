@@ -167,6 +167,14 @@ export class ConstructorComponent implements OnInit {
             if (response.status === 200) {
               this.inputTypeFieldIndexWithChange = elementNumber;
               this.resetStatusSubmissionWithDelay();
+              let resQuestion = response.json() as Question;
+              for (let locOption of this.questions[elementNumber].options) {
+                for (let resOption of resQuestion.options) {
+                  if (locOption.title === resOption.title) {
+                    locOption.id = resOption.id;
+                  }
+                }
+              }
             }
           },
           error => console.log(<any>error)
@@ -199,9 +207,17 @@ export class ConstructorComponent implements OnInit {
         .subscribe(
           (response: Response) => {
             if (response.status === 200) {
-              let questionNumber = this.questions.indexOf(question);
-              this.questionFieldIndexWithChange = questionNumber;
+              let elementNumber = this.questions.indexOf(question);
+              this.questionFieldIndexWithChange = elementNumber;
               this.resetStatusSubmissionWithDelay();
+              let resQuestion = response.json() as Question;
+              for (let locOption of this.questions[elementNumber].options) {
+                for (let resOption of resQuestion.options) {
+                  if (locOption.title === resOption.title) {
+                    locOption.id = resOption.id;
+                  }
+                }
+              }
             }
           },
           error => console.log(<any>error)
@@ -297,8 +313,10 @@ export class ConstructorComponent implements OnInit {
 
     this.questionService.createLinkFromOption(option, this.selectedQuestion.id)
       .subscribe(
-        (resonse: Response) => {
-          if (resonse.status === 200) {
+        (response: Response) => {
+          if (response.status === 200) {
+            let resOption = response.json() as Option;
+            option.id = resOption.id;
           }
         },
         error => console.log(<any>error)
@@ -318,6 +336,8 @@ export class ConstructorComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response === 200) {
+            let resOption = response.json() as Option;
+            option.id = resOption.id;
           }
         },
         error => console.log(<any>error)

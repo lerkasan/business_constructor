@@ -9,24 +9,34 @@
     </div>
     <div class="col-md-8 questionnaire">
       <h3>Ви бажаєте розпочати бізнес?</h3>
-      <p class="title"> Дайте відповіді для персоналізації етапів реєстрації</p>
+      <p class="title"> Дайте відповіді для персоналізації етапів реєстрації.</p>
       <div>
-        <p>Який тип бізнесу вас цікавить?(найменування у КВЄД)</p>
+        <p>Для відображення найменувань КВЕД виберіть опитувальник.</p>
         <div class="form-group">
-          <select class="form-control" id="sel0" #v (change)="onSelectBusinessType(v.value)">
-            <option hidden>Виберіть квєд бізнесу</option>
-            <option *ngFor="let businessType of businessTypes"
-                    [value]="businessType.id">
-              <span>{{businessType.codeKved}}:{{businessType.title}}</span>
-              <i class="fa fa-check"></i>
-            </option>
-          </select>
+          <div class="inner-addon right-addon">
+            <input class="form-control"
+                   placeholder="Для відображення назви КВЕД виберіть опитувальник" type="text"
+                   id="businesType"
+                   readonly
+                   [(ngModel)]="businessType.title"
+                   name="businesTypeTitle" #name="ngModel">
+          </div>
+          <div class="inner-addon right-addon">
+            <input class="form-control"
+                   placeholder="Для відображення номеру КВЕД виберіть опитувальник"
+                   id="businesType"
+                   readonly
+                   [(ngModel)]="businessType.codeKved"
+                   name="businesTypeCodeKved"
+                   #name="ngModel">
+          </div>
+          <div class="clear"></div>
         </div>
-        <p>Який конкретно бізнес?(найменування опитувальника)</p>
+        <p>Який конкретно бізнес? Виберіть найменування опитувальника.</p>
         <div class="form-group">
           <select class="form-control" id="sel1" #t (change)="onSelectQuestionnaire(t.value)">
             <option hidden>Виберіть бізнес</option>
-            <option *ngFor="let questionnaire of questionnaires"
+            <option *ngFor="let questionnaire of questionnaires;"
                     [value]="questionnaire.id">
               {{questionnaire.title}}
               <i class="fa fa-check"></i>
@@ -35,14 +45,14 @@
         </div>
         <div *ngFor="let question of questions">
           <p>{{question.text}}</p>
-          <div class="radio" *ngFor="let option of question.options">
+          <div class="radio checkbox" *ngFor="let option of question.options;">
             <label>
-              <input type="radio"
-                     name="option"
-                     (click)="nextQuestion(option.nextQuestion.id, question)"
-                     [disabled]="option.nextQuestion == undefined">
+              <input type="{{(question.inputType === 'SINGLE_CHOICE') ? 'radio' : 'checkbox'}}"
+                     class="checkAndRadio"
+                     attr.name="{{question.id}}"
+                     (click)="nextQuestion(option, question); nextProcedure(option)">
               {{option.title}}
-              <a href="#" data-toggle="tooltip" title="Тут повинні бути додаткові відомості!"
+              <a href="#" data-toggle="tooltip" title="Додаткові відомотсі відсутні!"
                  class="info-tooltip"><img src="/img/info.png"></a>
             </label>
           </div>
@@ -57,14 +67,8 @@
   <div class="row second_row">
     <div class="col-md-4 main_steps">
       <ol class="steps">
-        <li>Реєстрація ФОП</li>
-        <li>Реєстрація за загальною сиситемою оподаткування</li>
-        <li>Реєстрація рестораторів розрахункових операцій</li>
-        <li>Реєстрація еквайрінгу</li>
-        <li>Отримання ліцензії на право роздрібної торгівлі алкогольними напоями</li>
-        <li>Отримання висновку Державно санітарно-епідеміологічної служби</li>
-        <li>Реєстрація відповідності пожежній безпеці</li>
-        <li>Oтримання дозволу на розміщення зовнішньої реклами</li>
+        <li *ngFor="let procedure of procedures"
+            (click)="onSelectProcedure(procedure)">{{procedure.name}}</li>
       </ol>
     </div>
     <div class="col-md-8 ">
@@ -77,9 +81,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>Немає відомостей</p>
           </div>
         </div>
       </div>
@@ -91,9 +93,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>Немає відомостей</p>
           </div>
         </div>
       </div>
@@ -105,9 +105,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>{{procedure.cost}}</p>
           </div>
         </div>
       </div>
@@ -119,23 +117,19 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>{{procedure.result}}</p>
           </div>
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
           <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                  data-toggle="collapse">Результат можна отримати
+                  data-toggle="collapse">Результат можна отримати в такі строки
           </button>
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>{{procedure.term}}</p>
           </div>
         </div>
       </div>
@@ -147,9 +141,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>{{procedure.deny}}</p>
           </div>
         </div>
       </div>
@@ -161,9 +153,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, quos, accusamus.
-              Quidem, molestiae. Ipsam consequatur impedit voluptatem, quod qui perferendis fugiat.
-              Eos adipisci dolorem doloremque quos debitis excepturi ex itaque!</p>
+            <p>{{procedure.abuse}}</p>
           </div>
         </div>
       </div>
@@ -175,9 +165,7 @@
         </div>
         <div class="panel-collapse collapse out">
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque ullam cupiditate
-              repellat dolorem maxime suscipit labore officiis, commodi aliquam fugit in inventore,
-              eum velit. Ex officia placeat veritatis repellat hic.</p>
+            <p>Немає відомостей</p>
           </div>
         </div>
       </div>

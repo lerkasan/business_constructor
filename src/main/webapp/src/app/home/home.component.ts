@@ -4,6 +4,10 @@ import {BusinessType} from '../model/business.type';
 import {Questionnaire} from '../model/questionnaire';
 import {QuestionService} from '../service/questions.service';
 import {Question} from '../model/question';
+import {Procedure} from "../model/procedure";
+import {ProcedureService} from "../service/procedure.service";
+import {Option} from '../model/option';
+import {Response} from '@angular/http';
 
 declare var $: any;
 
@@ -13,6 +17,11 @@ declare var $: any;
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  PROCEDURE_IS_NOT_SELCTED = 'Виберіть будь ласка процедуру у лівому списку!';
+
+  businessType: BusinessType;
+  procedure: Procedure;
+  procedures: Procedure[];
   businessTypes: BusinessType[];
   questionnaires: Questionnaire[];
   questions: Question[];
@@ -20,16 +29,21 @@ export class HomeComponent implements OnInit {
   selectedBusinessType: BusinessType;
 
   constructor(private _elmRef: ElementRef, private businessTypeService: BusinessTypeService,
-              private questionService: QuestionService) {
+              private questionService: QuestionService, private procedureService: ProcedureService) {
   }
 
   ngOnInit() {
     $(this._elmRef.nativeElement).find('[data-toggle="tooltip"]').tooltip();
-    $(this._elmRef.nativeElement).find(".spoiler-trigger").click(function () {
+    $(this._elmRef.nativeElement).find('.spoiler-trigger').click(function () {
       $(this).parent().next().collapse('toggle');
     });
+    this.procedures = [];
     this.getBusinessTypes();
     this.getQuestionnair();
+    this.procedureInit();
+    this.businessType = new BusinessType();
+    this.businessType.codeKved = '';
+    this.businessType.title = '';
   }
 
   getBusinessTypes() {
@@ -66,12 +80,11 @@ export class HomeComponent implements OnInit {
   }
 
   onSelectQuestionnaire(id) {
-    if (this.questions === undefined) {
-      this.questions = [];
-    }
-
+    this.questions = [];
+    this.procedures = [];
     for (let questionnaire of this.questionnaires) {
       if (questionnaire.id.toString() === id) {
+        this.businessType = questionnaire.businessType;
         this.selectedQuestionnaire = questionnaire;
         this.selectedQuestionnaire.questions.sort(
           function (a, b) {
@@ -91,16 +104,47 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  nextQuestion(id, question) {
-    let questionLength = this.questions.length;
-    if (question.id !== this.questions[questionLength-1].id) {
+  nextQuestion(option, question) {
+    if (question.inputType === 'MULTI_CHOICE') {
+      if (this.ifQuestionIsPresent(this.findQuestionById(option.nextQuestion.id))) {
+        return;
+      }
+      this.questions.push(this.findQuestionById(option.nextQuestion.id));
       return;
     }
-    if (id === undefined) {
+    if (question.inputType === 'SINGLE_CHOICE') {
+      if (option.nextQuestion === undefined) {
+        return;
+      }
+      if (this.ifQuestionIsPresent(this.findQuestionById(option.nextQuestion.id))) {
+        return;
+      }
+      let questionLength = this.questions.length;
+      if (question.id !== this.questions[questionLength - 1].id) {
+        return;
+      }
+      this.questions.push(this.findQuestionById(option.nextQuestion.id));
+    }
+  }
+
+  nextProcedure(option: Option) {
+    if (option.procedure === undefined) {
       return;
     }
-    let nextQuestion = this.findQuestionById(+id);
-    this.questions.push(nextQuestion);
+    if (this.ifProcedureIsPresent(option.procedure.id)) {
+      return;
+    }
+    this.procedureService.getProcedure(option.procedure.id)
+      .subscribe(
+        (response: Response) => {
+          let procedure = response.json() as Procedure;
+          this.procedures.push(procedure);
+        },
+      )
+  }
+
+  onSelectProcedure(procedure: Procedure) {
+    this.procedure = procedure;
   }
 
   findQuestionById(id: number) {
@@ -109,5 +153,35 @@ export class HomeComponent implements OnInit {
         return question;
       }
     }
+  }
+
+  ifQuestionIsPresent(question): boolean {
+    for (let q of this.questions) {
+      if (q === question) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  ifProcedureIsPresent(id: number): boolean {
+    for (let p of this.procedures) {
+      if (id === p.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  procedureInit() {
+    this.procedure = new Procedure();
+    this.procedure.reason = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.result = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.cost = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.term = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.method = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.decision = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.deny = this.PROCEDURE_IS_NOT_SELCTED;
+    this.procedure.abuse = this.PROCEDURE_IS_NOT_SELCTED;
   }
 }

@@ -54,8 +54,7 @@ import {BoardAuthGuard} from './guard/board.auth.guard';
     QuestionService,
     ProcedureService,
     BusinessTypeService,
-    BoardAuthGuard,
-    GenralAuthGuard,
+    BoardAuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../service/auth.service';
 import {User} from '../model/user';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -8,27 +9,41 @@ import {User} from '../model/user';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
+
 export class HeaderComponent implements OnInit {
 
   loggedin = true;
   user = new User;
   model = this.user;
+  adminBoard: boolean = true;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     // Do stuff
   }
 
   ngOnInit() {
-    if (localStorage.getItem('currentUser')) {
+    if (sessionStorage.getItem('currentUser')) {
       this.loggedin = false;
-      this.user = JSON.parse(localStorage.getItem('currentUser'));
+      this.user = JSON.parse(sessionStorage.getItem('currentUser'));
       this.model = this.user;
+      this.adminBoard = this.showAdminPanel();
     }
   }
 
   logout() {
     this.loggedin = true;
+    this.adminBoard = true;
     this.authService.logout();
+    this.router.navigate(['/']);
   }
 
+  showAdminPanel() {
+    if (this.authService.isLoggedAsExpert()) {
+      return false;
+    }
+    if (this.authService.isLoggedAsAdmin()) {
+      return false;
+    }
+    return true;
+  }
 }

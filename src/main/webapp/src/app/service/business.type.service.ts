@@ -10,11 +10,11 @@ export class BusinessTypeService {
   }
 
   public getBusinessTypes() {
-    let url = '/api/business-types';
+    let path = '/api/business-types';
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
 
-    return this.http.get(url, options)
+    return this.http.get(path, options)
       .map(
         (response) => {
           return response.json() as BusinessType[];

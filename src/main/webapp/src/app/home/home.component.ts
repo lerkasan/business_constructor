@@ -4,8 +4,8 @@ import {BusinessType} from '../model/business.type';
 import {Questionnaire} from '../model/questionnaire';
 import {QuestionService} from '../service/questions.service';
 import {Question} from '../model/question';
-import {Procedure} from "../model/procedure";
-import {ProcedureService} from "../service/procedure.service";
+import {Procedure} from '../model/procedure';
+import {ProcedureService} from '../service/procedure.service';
 import {Option} from '../model/option';
 import {Response} from '@angular/http';
 
@@ -140,7 +140,7 @@ export class HomeComponent implements OnInit {
           let procedure = response.json() as Procedure;
           this.procedures.push(procedure);
         },
-      )
+      );
   }
 
   onSelectProcedure(procedure: Procedure) {

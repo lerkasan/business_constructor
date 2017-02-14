@@ -8,6 +8,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ConstructorComponent } from './constructor/constructor.component';
 import { UserAdministrationComponent } from './user-administration/user-administration.component';
 import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
+import {BoardAuthGuard} from './guard/board.auth.guard';
 
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},
   { path: 'carousel', component: CarouselComponent},
-  { path: 'admin', component: AdminComponent},
+  { path: 'admin', component: AdminComponent, canActivate: [BoardAuthGuard]},
   { path: 'constructor', component: ConstructorComponent},
   { path: 'user-administration', component: UserAdministrationComponent},
   { path: 'user-statistics', component: UserStatisticsComponent},

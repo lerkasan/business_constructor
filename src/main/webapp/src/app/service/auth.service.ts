@@ -21,7 +21,7 @@ export class AuthService {
       .map((res) => {
         if (res.status === 200) {
           this.authenticatedUser = res.json() as User;
-          localStorage.setItem('currentUser', JSON.stringify(this.authenticatedUser));
+          sessionStorage.setItem('currentUser', JSON.stringify(this.authenticatedUser));
         }
         return res.status;
       })
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   public logout() {
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     return this.http.get('/logout')
       .subscribe();
   }
@@ -56,8 +56,43 @@ export class AuthService {
     return body;
   }
 
-  public getAuthUser() {
-    return this.authenticatedUser;
+  public getUser(): any {
+    return JSON.parse(sessionStorage.getItem('currentUser'));
   }
 
+  public isLoggedAsExpert(): boolean {
+    if (this.getUser() === null) {
+      return false;
+    }
+    for (let role of this.getUser().roles) {
+      if (role.title === 'ROLE_EXPERT') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public isLoggedAsAdmin(): boolean {
+    if (this.getUser() === null) {
+      return false;
+    }
+    for (let role of this.getUser().roles) {
+      if (role.title === 'ROLE_ADMIN') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public isLoggedAsUser(): boolean {
+    if (this.getUser() === null) {
+      return false;
+    }
+    for (let role of this.getUser().roles) {
+      if (role.title === 'ROLE_USER') {
+        return true;
+      }
+    }
+    return false;
+  }
 }

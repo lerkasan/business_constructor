@@ -15,7 +15,6 @@ import { ConstructorComponent } from './constructor/constructor.component';
 import { UserAdministrationComponent } from './user-administration/user-administration.component';
 import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
 
-import { ApiService } from './shared';
 import { routing } from './app.routing';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -24,6 +23,9 @@ import {RegistrationService} from './service/registration.service';
 import {QuestionService} from './service/questions.service';
 import {ProcedureService} from './service/procedure.service';
 import {BusinessTypeService} from './service/business.type.service';
+import {ApiService} from './shared/api.service';
+import {GenralAuthGuard} from './guard/general.auth.guard';
+import {BoardAuthGuard} from './guard/board.auth.guard';
 
 @NgModule({
   imports: [
@@ -51,7 +53,9 @@ import {BusinessTypeService} from './service/business.type.service';
     RegistrationService,
     QuestionService,
     ProcedureService,
-    BusinessTypeService
+    BusinessTypeService,
+    BoardAuthGuard,
+    GenralAuthGuard,
   ],
   bootstrap: [AppComponent]
 })

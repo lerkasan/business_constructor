@@ -8,7 +8,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ConstructorComponent } from './constructor/constructor.component';
 import { UserAdministrationComponent } from './user-administration/user-administration.component';
 import { UserStatisticsComponent } from './user-statistics/user-statistics.component';
-import {BoardAuthGuard} from './guard/board.auth.guard';
+import {BoardAuthGuard} from './guards/board.auth.guard';
 
 
 const routes: Routes = [

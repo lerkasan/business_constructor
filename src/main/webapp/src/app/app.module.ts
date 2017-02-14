@@ -24,8 +24,7 @@ import {QuestionService} from './service/questions.service';
 import {ProcedureService} from './service/procedure.service';
 import {BusinessTypeService} from './service/business.type.service';
 import {ApiService} from './shared/api.service';
-import {GenralAuthGuard} from './guard/general.auth.guard';
-import {BoardAuthGuard} from './guard/board.auth.guard';
+import {BoardAuthGuard} from './guards/board.auth.guard';
 
 @NgModule({
   imports: [

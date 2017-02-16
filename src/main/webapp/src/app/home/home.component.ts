@@ -105,6 +105,9 @@ export class HomeComponent implements OnInit {
   }
 
   nextQuestion(option, question) {
+    if (option.nextQuestion === undefined) {
+      return;
+    }
     if (question.inputType === 'MULTI_CHOICE') {
       if (this.ifQuestionIsPresent(this.findQuestionById(option.nextQuestion.id))) {
         return;
@@ -129,6 +132,9 @@ export class HomeComponent implements OnInit {
 
   nextProcedure(option: Option) {
     if (option.procedure === undefined) {
+      return;
+    }
+    if (option.procedure.id === undefined) {
       return;
     }
     if (this.ifProcedureIsPresent(option.procedure.id)) {

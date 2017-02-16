@@ -4,7 +4,21 @@
       {{errorMessage}}
     </div>
     <label for="businesType">Виберіть тип бізнесу</label>
-    <div class="inner-addon right-addon">
+    <div class="clear"></div>
+    <div class="row">
+      <div class="col-xs-12">
+        <select class="form-control"
+                #v (change)="chooseTypeBusinessFromServer(v.value)">
+          <option hidden>Виберіть існуючий КВЕД</option>
+          <option *ngFor="let businessType of businessTypes"
+                  [value]="businessType.id">
+            {{businessType.codeKved}} : {{'\n' + businessType.title}}
+            <i class="fa fa-check"></i>
+          </option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="businessType.title != '' || businessType.codeKved != ''" class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeTitleClass"
@@ -14,7 +28,7 @@
              [(ngModel)]="businessType.title"
              name="businesTypeTitle" #name="ngModel">
     </div>
-    <div class="inner-addon right-addon">
+    <div  *ngIf="businessType.title != '' || businessType.codeKved != ''" class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeKvedClass"
@@ -23,20 +37,6 @@
              readonly
              [(ngModel)]="businessType.codeKved"
              name="businesTypeCodeKved" #name="ngModel">
-    </div>
-    <div class="clear"></div>
-    <div class="row">
-      <div class="col-xs-12">
-        <select class="form-control"
-                #v (change)="chooseTypeBusinessFromServer(v.value)">
-          <option hidden>Виберіть існуючий</option>
-          <option *ngFor="let businessType of businessTypes"
-                  [value]="businessType.id">
-            {{businessType.codeKved}} : {{'\n' + businessType.title}}
-            <i class="fa fa-check"></i>
-          </option>
-        </select>
-      </div>
     </div>
   </form>
   <form class="form-group businesType">

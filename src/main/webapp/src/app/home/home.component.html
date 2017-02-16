@@ -11,8 +11,19 @@
       <h3>Ви бажаєте розпочати бізнес?</h3>
       <p class="title"> Дайте відповіді для персоналізації етапів реєстрації.</p>
       <div>
-        <p>Для відображення найменувань КВЕД виберіть опитувальник.</p>
+        <p>Який конкретно бізнес? Виберіть найменування опитувальника.</p>
         <div class="form-group">
+          <select class="form-control" id="sel1" #t (change)="onSelectQuestionnaire(t.value)">
+            <option hidden>Виберіть бізнес</option>
+            <option *ngFor="let questionnaire of questionnaires;"
+                    [value]="questionnaire.id">
+              {{questionnaire.title}}
+              <i class="fa fa-check"></i>
+            </option>
+          </select>
+        </div>
+        <div *ngIf="businessType.codeKved != '' || businessType.title != ''" class="form-group">
+          <p>Найменування КВЕД</p>
           <div class="inner-addon right-addon">
             <input class="form-control"
                    placeholder="Для відображення назви КВЕД виберіть опитувальник" type="text"
@@ -31,17 +42,6 @@
                    #name="ngModel">
           </div>
           <div class="clear"></div>
-        </div>
-        <p>Який конкретно бізнес? Виберіть найменування опитувальника.</p>
-        <div class="form-group">
-          <select class="form-control" id="sel1" #t (change)="onSelectQuestionnaire(t.value)">
-            <option hidden>Виберіть бізнес</option>
-            <option *ngFor="let questionnaire of questionnaires;"
-                    [value]="questionnaire.id">
-              {{questionnaire.title}}
-              <i class="fa fa-check"></i>
-            </option>
-          </select>
         </div>
         <div *ngFor="let question of questions">
           <p>{{question.text}}</p>

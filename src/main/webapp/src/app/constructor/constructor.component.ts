@@ -23,7 +23,7 @@ export class ConstructorComponent implements OnInit {
   STYLE_WRONG_SUBMISSION: string = 'wrongSubmission';
   STYLE_SUCCESS_SUBMISSION: string = 'successSubmission';
   ATTACHED_QUESTION: string = 'Приеднати питання';
-  ATTACHED_PROCEDURE: string = 'Приэднати картку';
+  ATTACHED_PROCEDURE: string = 'Приеднати картку';
 
   attachedProcedure: string;
   attachedQuestion: string;

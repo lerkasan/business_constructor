@@ -20,7 +20,6 @@
               <input type="text"
                      class="form-control"
                      id="email"
-                     required
                      [(ngModel)]="model.username"
                      name="email"
                      #name="ngModel"/>
@@ -32,18 +31,17 @@
                      class="form-control"
                      id="pwd"
                      name="password"
-                     required
                      [(ngModel)]="model.password"
                      name="password"/>
             </div>
 
             <div class="checkbox">
-              <label><input type="checkbox"> Remember me</label>
+              <label><input type="checkbox">Запам'ятати мене</label>
             </div>
             <button type="submit"
                     class="btn btn-default"
                     (click)="authRequest()"
-                    [disabled]="!login.valid">Submit
+                    [disabled]="model.username == undefined || model.password == undefined">Submit
             </button>
           </form>
         </div>

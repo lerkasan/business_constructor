@@ -150,4 +150,7 @@
     <button class="btn btn-success" (click)="addQuestion()">Додати питання</button>
     <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
   </div>
+  <div class="save-btn">
+    <button *ngIf="questions != undefined" class="btn btn-success" [routerLink]="['']">Зберегти опитувальник і перейти на головну</button>
+  </div>
 </div>

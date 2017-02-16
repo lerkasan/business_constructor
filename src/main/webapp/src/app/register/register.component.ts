@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
   user = new User();
   duplicatePassword = new DuplicatePassword();
   message = '';
+  succes: boolean = false;
 
 
   constructor(private registrationService: RegistrationService, private router: Router) {
@@ -31,9 +32,10 @@ export class RegisterComponent implements OnInit {
     this.registrationService.registrationRequest(this.user)
       .subscribe((status) => {
           if (status === 201) {
-            this.message = 'Юзера створенно';
             this.user.password = '';
             this.user.rawPassword = '';
+            this.message = this.user.username;
+            this.succes = true;
           }
         },
         (error) => {

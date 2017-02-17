@@ -396,7 +396,7 @@ export class ConstructorComponent implements OnInit {
   saveQuestionnare() {
     this.resetErrorStatus();
     if (this.businessType.id === undefined) {
-      this.errorMessage = this.ERROR_MSG_FIRST_SAVE_FIELD;
+      this.errorMessage = 'Спочатку виберіть тип бізнесу!';
       this.businessTypeKvedClass = this.STYLE_WRONG_SUBMISSION;
       this.businessTypeTitleClass = this.STYLE_WRONG_SUBMISSION;
       this.wrongQuestionnaire = true;

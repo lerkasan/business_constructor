@@ -18,7 +18,8 @@
         </select>
       </div>
     </div>
-    <div *ngIf="businessType.title != '' || businessType.codeKved != ''" class="inner-addon right-addon">
+    <div *ngIf="businessType.title != '' || businessType.codeKved != ''"
+         class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeTitleClass"
@@ -28,7 +29,8 @@
              [(ngModel)]="businessType.title"
              name="businesTypeTitle" #name="ngModel">
     </div>
-    <div  *ngIf="businessType.title != '' || businessType.codeKved != ''" class="inner-addon right-addon">
+    <div *ngIf="businessType.title != '' || businessType.codeKved != ''"
+         class="inner-addon right-addon">
       <i *ngIf="successBusinessType" class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <input class="form-control"
              [ngClass]="businessTypeKvedClass"
@@ -81,6 +83,9 @@
          class="glyphicon glyphicon-ok" style="color:#bfff83"></i>
       <div class="option" *ngFor="let option of question.options; let optionIndex = index;"
            (click)="onSelectOption(option)">
+        <div *ngIf="option.id == optionIndexError" class="alert alert-warning">
+          {{errorOptionMessage}}
+        </div>
         <label>Відповідь</label>
         <div class="inner-addon right-addon">
           <i
@@ -122,8 +127,8 @@
                     (change)="procedureLinker(procedureId.value, option); onSelectQuestion(question)">
               <option hidden>{{attachedProcedure}}</option>
               <ng-container *ngFor="let procedure of procedures">
-                <option  *ngIf="procedure.name != attachedProcedure"
-                         [value]="procedure.id">
+                <option *ngIf="procedure.name != attachedProcedure"
+                        [value]="procedure.id">
                   <span>
                     {{procedure.name}}
                   </span>
@@ -151,6 +156,10 @@
     <button class="btn btn-danger" (click)="deleteLastQuestion()">Видалити останнє питання</button>
   </div>
   <div class="save-btn">
-    <button *ngIf="questions != undefined" class="btn btn-success" [routerLink]="['']">Зберегти опитувальник і перейти на головну</button>
+    <button *ngIf="questions != undefined" class="btn btn-success"
+            [routerLink]="['/']"
+            [disabled]="!canSubmit">Зберегти
+      опитувальник і перейти на головну
+    </button>
   </div>
 </div>

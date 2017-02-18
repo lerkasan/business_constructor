@@ -25,9 +25,12 @@ export class ConstructorComponent implements OnInit {
   ATTACHED_QUESTION: string = 'Приеднати питання';
   ATTACHED_PROCEDURE: string = 'Приеднати картку';
 
+  canSubmit: boolean;
+  optionIndexError: number;
   attachedProcedure: string;
   attachedQuestion: string;
   errorMessage: string;
+  errorOptionMessage: string;
   selectedOption: Option;
   selectedQuestion: Question;
   selectedQuestionText: string;
@@ -72,6 +75,9 @@ export class ConstructorComponent implements OnInit {
     this.questionnaire.title = '';
     this.getBusinessTypes();
     this.getProcedure();
+    this.errorOptionMessage = '';
+    this.optionIndexError = 0.1;
+    this.canSubmit = false;
   }
 
   onSelectQuestion(question: Question): void {
@@ -104,6 +110,7 @@ export class ConstructorComponent implements OnInit {
 
   addQuestion(): void {
     this.resetErrorStatus();
+    this.canSubmit = false;
     if (this.questionnaire.id === undefined) {
       this.errorMessage = this.ERROR_MSG_FIRST_SAVE_FIELD;
       this.questionnaireClass = this.STYLE_WRONG_SUBMISSION;
@@ -184,6 +191,7 @@ export class ConstructorComponent implements OnInit {
 
   addOption(options: Option[]): void {
     options.push(this.newOption());
+    this.canSubmit = false;
   }
 
   deleteLastOption(options: Option[]): void {
@@ -210,6 +218,7 @@ export class ConstructorComponent implements OnInit {
               let elementNumber = this.questions.indexOf(question);
               this.questionFieldIndexWithChange = elementNumber;
               this.resetStatusSubmissionWithDelay();
+              this.resetErrorStatus();
               let resQuestion = response.json() as Question;
               for (let locOption of this.questions[elementNumber].options) {
                 for (let resOption of resQuestion.options) {
@@ -228,14 +237,16 @@ export class ConstructorComponent implements OnInit {
 
   saveOption(question: Question, option: Option): void {
     let elementNumber = this.questions.indexOf(question);
-
-    if (this.selectedOptionTitle === option.title) {
-      return;
-    }
     for (let optione of question.options) {
       if (optione.title === undefined || optione.title === '') {
+        this.optionIndexError = optione.id;
+        this.errorOptionMessage = 'Поле не повинно бути пустим!';
+        this.resetStatusSubmissionWithDelay();
         return;
       }
+    }
+    if (this.selectedOptionTitle === option.title) {
+      return;
     }
     if (question.text === undefined || question.text === '') {
       return;
@@ -252,6 +263,7 @@ export class ConstructorComponent implements OnInit {
               this.questionOptionFieldIndexWithChange = questionNumber;
               this.inputTypeFieldIndexWithChange = questionNumber;
               this.resetStatusSubmissionWithDelay();
+              this.resetErrorStatus();
               let resQuestion = response.json() as Question;
               this.questions[elementNumber].id = resQuestion.id;
               for (let locOption of this.questions[elementNumber].options) {
@@ -277,6 +289,7 @@ export class ConstructorComponent implements OnInit {
               this.optionFieldIndexWithChange = optionNumber;
               this.questionOptionFieldIndexWithChange = questionNumber;
               this.resetStatusSubmissionWithDelay();
+              this.resetErrorStatus();
               let resQuestion = response.json() as Question;
               for (let locOption of this.questions[elementNumber].options) {
                 for (let resOption of resQuestion.options) {
@@ -319,7 +332,13 @@ export class ConstructorComponent implements OnInit {
             option.id = resOption.id;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          option.nextQuestion = undefined;
+          this.optionIndexError = option.id;
+          this.errorOptionMessage = 'Це питання приєднати неможливо, воно призведе до зациклювання в опитувальнику!';
+          this.attachedQuestion = this.ATTACHED_QUESTION;
+          console.log(<any>error);
+        }
       );
   }
 
@@ -340,7 +359,13 @@ export class ConstructorComponent implements OnInit {
             option.id = resOption.id;
           }
         },
-        error => console.log(<any>error)
+        error => {
+          option.procedure = undefined;
+          this.optionIndexError = option.id;
+          this.errorOptionMessage = 'Не можу приеднати цю картку, зверніться до адміністратора';
+          this.attachedProcedure = this.ATTACHED_PROCEDURE;
+          console.log(<any>error);
+        }
       );
   }
 
@@ -469,6 +494,9 @@ export class ConstructorComponent implements OnInit {
     this.wrongBusinessType = false;
     this.wrongQuestionnaire = false;
     this.wrongQuestion = false;
+    this.errorOptionMessage = '';
+    this.optionIndexError = 0.1;
+    this.canSubmit = true;
   }
 
   resetStatusSubmissionWithDelay() {

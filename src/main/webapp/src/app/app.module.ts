@@ -25,6 +25,7 @@ import {ProcedureService} from './service/procedure.service';
 import {BusinessTypeService} from './service/business.type.service';
 import {ApiService} from './shared/api.service';
 import {BoardAuthGuard} from './guards/board.auth.guard';
+import {UserService} from './service/user.service';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import {BoardAuthGuard} from './guards/board.auth.guard';
     RegistrationService,
     QuestionService,
     ProcedureService,
+    UserService,
     BusinessTypeService,
     BoardAuthGuard
   ],

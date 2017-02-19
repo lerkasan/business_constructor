@@ -9,6 +9,8 @@ public interface UserService {
 
     List<User> findAll();
 
+    User update(User user);
+
     boolean isEmailAvailable(String email);
 
     boolean isUsernameAvailable(String username);

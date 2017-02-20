@@ -3,7 +3,9 @@ package ua.com.brdo.business.constructor.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.UserService;
 
@@ -47,4 +50,11 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsers() { return userService.findAll();}
+
+    @PutMapping(path = "/{userId}")
+    public ResponseEntity updateUser(@PathVariable long userId, @RequestBody User user) {
+        user.setId(userId);
+        User updatedUser = userService.update(user);
+        return ResponseEntity.ok().body(updatedUser);
+    }
 }

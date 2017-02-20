@@ -1,4 +1,44 @@
-<h2>Модуль панелі адмістрування користувачів (в розробці)</h2>
+<div class="administration">
+  <br>
+  <table class="users">
+    <thead>
+    <tr>
+      <th>Id юзера</th>
+      <th>Дата реєстрації</th>
+      <th>Електронна пошта</th>
+      <th>Логін</th>
+      <th>Роль у системі</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of usersList">
+      <td>&nbsp;{{user.id}}</td>
+      <td>&nbsp;{{user.creationDate}}</td>
+      <td>&nbsp;{{user.email}}</td>
+      <td>&nbsp;{{user.username}}</td>
+      <td>
+        <span>&nbsp;
+          <input type="checkbox"
+                 [checked]="isRoleChecked(user.roles, roles[0].value)"
+                 (change)="changeRole(user, 0)">
+            {{roles[0].display}}&nbsp;
+          <input type="checkbox"
+                 [checked]="isRoleChecked(user.roles, roles[1].value)"
+                 (change)="changeRole(user, 1)">
+            {{roles[1].display}}&nbsp;
+          <input type="checkbox"
+                 [checked]="isRoleChecked(user.roles, roles[2].value)"
+                 (change)="changeRole(user, 2)">
+            {{roles[2].display}}&nbsp;
+          <button type="button"
+                  class="btn btn-primary btn-xs"
+                  (click)="saveChangedRoles(user)">Зберегти зміни у ролях</button>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
 
 

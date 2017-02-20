@@ -58,6 +58,8 @@ public class Questionnaire {
     @NotNull(message = "Business type field is required.")
     private BusinessType businessType;
 
+    private boolean draft;
+
     @Valid
     @OneToMany(mappedBy = "questionnaire", cascade = REMOVE)
     @JsonIgnoreProperties(value = {"questionnaire"})

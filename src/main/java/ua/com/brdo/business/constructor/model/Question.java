@@ -1,15 +1,17 @@
 package ua.com.brdo.business.constructor.model;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.GenerationType.IDENTITY;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,11 +26,14 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.validation.annotation.Validated;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "question")
@@ -56,6 +61,7 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = ALL)
     @OrderBy(value = "id ASC")
     @JsonDeserialize(as = LinkedHashSet.class)
+    @JsonIgnoreProperties(value = "question")
     private Set<Option> options = new LinkedHashSet<>();
 
     @ManyToOne
@@ -77,5 +83,10 @@ public class Question {
     public boolean deleteOption(Option option) {
         Objects.requireNonNull(option);
         return options == null || options.remove(option);
+    }
+
+    @JsonIgnore
+    public boolean isSingleChoice() {
+        return InputType.SINGLE_CHOICE.equals(inputType);
     }
 }

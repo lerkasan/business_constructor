@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.controller;
+package ua.com.brdo.business.constructor.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

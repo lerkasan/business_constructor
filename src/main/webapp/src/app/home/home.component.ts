@@ -145,7 +145,7 @@ export class HomeComponent implements OnInit {
         (response: Response) => {
           let procedure = response.json() as Procedure;
           this.procedures.push(procedure);
-        },
+        }
       );
   }
 

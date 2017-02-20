@@ -118,8 +118,11 @@ public class QuestionControllerTest {
     private Question generateValidQuestionWithOptions() {
         Option option1 = new Option();
         Option option2 = new Option();
+        Procedure procedure = generateProcedure();
         option1.setTitle("option1");
         option2.setTitle("option2");
+        option1.setProcedure(procedure);
+        option2.setProcedure(procedure);
         Set<Option> options = new HashSet<>();
         options.add(option1);
         options.add(option2);
@@ -129,6 +132,42 @@ public class QuestionControllerTest {
         questionWithOptions.setOptions(options);
         questionWithOptions.setQuestionnaire(questionnaire);
         return questionWithOptions;
+    }
+
+    private Procedure generateProcedure() {
+        ProcedureType procedureType = new ProcedureType();
+        procedureType.setName("procType");
+        procedureType = procedureTypeService.create(procedureType);
+
+        PermitType permitType = new PermitType();
+        permitType.setName("test");
+        permitType = permitTypeService.create(permitType);
+
+        Permit permit = new Permit();
+        permit.setName("should delete");
+        permit.setLegalDocumentId(1L);
+        permit.setFormId(1L);
+        permit.setNumber(" ");
+        permit.setTerm(" ");
+        permit.setPropose(" ");
+        permit.setStatus((byte) 1);
+        permit = permitService.create(permit, permitType);
+
+        Procedure procedure = new Procedure();
+        procedure.setName("1");
+        procedure.setReason("1");
+        procedure.setResult("1");
+        procedure.setCost("1");
+        procedure.setTerm("1");
+        procedure.setMethod("1");
+        procedure.setDecision("1");
+        procedure.setDeny("1");
+        procedure.setAbuse("1");
+        procedure.setToolId(1L);
+        procedure.setProcedureType(procedureType);
+        procedure.setPermit(permit);
+        procedure = procedureService.create(procedure);
+        return procedure;
     }
 
     private Question generateValidQuestion() {
@@ -163,46 +202,16 @@ public class QuestionControllerTest {
 
     private Option generateOptionWithNextQuestion(Question nextQuestion) {
         Option option = new Option();
+        Procedure procedure = generateProcedure();
         option.setTitle(newOptionTitle);
         option.setQuestion(question);
+        option.setProcedure(procedure);
         option.setNextQuestion(nextQuestion);
         return option;
     }
 
     private Option generateOptionWithProcedure() {
-        ProcedureType procedureType = new ProcedureType();
-        procedureType.setName("procType");
-        procedureType = procedureTypeService.create(procedureType);
-
-        PermitType permitType = new PermitType();
-        permitType.setName("test");
-        permitType = permitTypeService.create(permitType);
-
-        Permit permit = new Permit();
-        permit.setName("should delete");
-        permit.setLegalDocumentId(1L);
-        permit.setFormId(1L);
-        permit.setNumber(" ");
-        permit.setTerm(" ");
-        permit.setPropose(" ");
-        permit.setStatus((byte) 1);
-        permit = permitService.create(permit, permitType);
-
-        Procedure procedure = new Procedure();
-        procedure.setName("1");
-        procedure.setReason("1");
-        procedure.setResult("1");
-        procedure.setCost("1");
-        procedure.setTerm("1");
-        procedure.setMethod("1");
-        procedure.setDecision("1");
-        procedure.setDeny("1");
-        procedure.setAbuse("1");
-        procedure.setToolId(1L);
-        procedure.setProcedureType(procedureType);
-        procedure.setPermit(permit);
-        procedure = procedureService.create(procedure);
-
+        Procedure procedure = generateProcedure();
         Option option = new Option();
         option.setTitle(newOptionTitle);
         option.setQuestion(question);

@@ -1,19 +1,24 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 import ua.com.brdo.business.constructor.constraint.NoCycle;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "option_")
@@ -47,6 +52,7 @@ public class Option {
     @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"decision", "reason", "result", "cost", "term", "method",
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
+//    @NotNull(message = "Procedure field must not be null.") TODO: Change QuestionControllerTest and uncomment this annotation
     private Procedure procedure;
 
     public void setProcedure(Procedure procedure) {

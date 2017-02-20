@@ -1,13 +1,11 @@
 package ua.com.brdo.business.constructor.repository;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-
 import ua.com.brdo.business.constructor.model.Answer;
 import ua.com.brdo.business.constructor.model.Business;
 import ua.com.brdo.business.constructor.model.Question;

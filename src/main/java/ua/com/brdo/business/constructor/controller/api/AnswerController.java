@@ -1,5 +1,10 @@
 package ua.com.brdo.business.constructor.controller.api;
 
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+
+import java.net.URI;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,24 +18,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
-
-import javax.validation.Valid;
-
 import springfox.documentation.annotations.ApiIgnore;
 import ua.com.brdo.business.constructor.model.Answer;
 import ua.com.brdo.business.constructor.model.Business;
 import ua.com.brdo.business.constructor.model.BusinessType;
-import ua.com.brdo.business.constructor.model.Flow;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
+import ua.com.brdo.business.constructor.model.Stage;
 import ua.com.brdo.business.constructor.service.impl.AnswerService;
 import ua.com.brdo.business.constructor.service.impl.BusinessService;
-import ua.com.brdo.business.constructor.service.impl.FlowService;
-
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import ua.com.brdo.business.constructor.service.impl.StageService;
 
 @RestController
 @RequestMapping(value = "/api/business", produces = APPLICATION_JSON_VALUE)
@@ -38,13 +35,13 @@ public class AnswerController {
 
     private AnswerService answerService;
     private BusinessService businessService;
-    private FlowService flowService;
+    private StageService stageService;
 
     @Autowired
-    public AnswerController(AnswerService answerService, BusinessService businessService, FlowService flowService) {
+    public AnswerController(AnswerService answerService, BusinessService businessService, StageService stageService) {
         this.answerService = answerService;
         this.businessService = businessService;
-        this.flowService = flowService;
+        this.stageService = stageService;
     }
 
     @ApiIgnore
@@ -67,6 +64,7 @@ public class AnswerController {
             answerService.checkUniqueAnswer(question, business);
         }
         Answer createdAnswer = answerService.create(answer);
+
         URI location = ServletUriComponentsBuilder
                 .fromUriString("/api/business/{businessId}/answers").path("/{id}")
                 .buildAndExpand(business.getId(), answer.getId())
@@ -118,13 +116,12 @@ public class AnswerController {
     }
 
     @GetMapping(path = "/{businessId}/flow")
-    public List<Flow> listFlows(@ApiIgnore @ModelAttribute Business business) {
-        return flowService.findByBusiness(business);
+    public List<Stage> listFlow(@ApiIgnore @ModelAttribute Business business) {
+        return stageService.findByBusiness(business);
     }
 
-    @GetMapping(path = "/{businessId}/flow/{flowId}")
-    public Flow getFlow(@ApiIgnore @ModelAttribute Business business, @PathVariable Long flowId) {
-        Long businessId = business.getId();
-        return flowService.findByIdAndBusinessId(flowId, businessId);
+    @GetMapping(path = "/{businessId}/flow/{stageId}")
+    public Stage getFlowStage(@ApiIgnore @ModelAttribute Business business, @PathVariable Long stageId) {
+        return stageService.findByIdAndBusiness(stageId, business);
     }
 }

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS flow;
 DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS stage;
 DROP TABLE IF EXISTS business;
 DROP TABLE IF EXISTS legal_document;
 DROP TABLE IF EXISTS procedure_document;

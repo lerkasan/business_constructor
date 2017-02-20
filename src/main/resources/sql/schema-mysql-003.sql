@@ -11,28 +11,25 @@ CREATE TABLE business (
                   ON DELETE CASCADE
 );
 
+CREATE TABLE stage (
+                id                  BIGINT          NOT NULL  AUTO_INCREMENT,
+                priority            INT             NOT NULL,
+                finished            BOOLEAN         NOT NULL,
+                PRIMARY KEY (id)
+);
+
 CREATE TABLE answer (
                 id                  BIGINT          NOT NULL  AUTO_INCREMENT,
                 business_id         BIGINT          NOT NULL,
                 option_id           BIGINT          NOT NULL,
+                stage_id            BIGINT          NOT NULL,
                 PRIMARY KEY (id),
                 UNIQUE (business_id, option_id),
                 FOREIGN KEY (business_id) REFERENCES business(id)
                   ON DELETE CASCADE,
                 FOREIGN KEY (option_id) REFERENCES option_(id)
-                  ON DELETE CASCADE
-);
-
-CREATE TABLE flow (
-                id                  BIGINT          NOT NULL  AUTO_INCREMENT,
-                business_id         BIGINT          NOT NULL,
-                procedure_id        BIGINT          NOT NULL,
-                priority            INT             NOT NULL,
-                finished            BOOLEAN         NOT NULL,
-                PRIMARY KEY (id),
-                FOREIGN KEY (business_id) REFERENCES business(id)
                   ON DELETE CASCADE,
-                FOREIGN KEY (procedure_id) REFERENCES procedure_(id)
+                FOREIGN KEY (stage_id) REFERENCES stage(id)
                   ON DELETE CASCADE
 );
 

@@ -1,23 +1,24 @@
 package ua.com.brdo.business.constructor.model;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static javax.persistence.CascadeType.PERSIST;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Entity
 @Table(name = "answer")
@@ -43,8 +44,18 @@ public class Answer {
     @JsonIgnoreProperties(value = {"title", "nextQuestion", "procedure", "question"})
     private Option option;
 
+    @OneToOne(cascade = PERSIST)
+    @JoinColumn(name = "stage_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Stage stage = new Stage();
+
     @JsonIgnore
     public Question getQuestion() {
         return option.getQuestion();
+    }
+
+    @JsonIgnore
+    public Procedure getProcedure() {
+        return option.getProcedure();
     }
 }

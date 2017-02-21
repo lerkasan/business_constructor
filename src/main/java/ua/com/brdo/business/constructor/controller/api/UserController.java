@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import ua.com.brdo.business.constructor.model.Permit;
 import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.UserService;
+import ua.com.brdo.business.constructor.utils.Mail;
 
 @RestController
 @RequestMapping("/api/users")
@@ -40,6 +41,8 @@ public class UserController {
                 .path("/{id}")
                 .buildAndExpand(user.getId())
                 .toUri();
+        String userEmail = user.getEmail();
+        new Mail().send(userEmail, "test subject", "some text");
         return ResponseEntity.created(location).body(registeredUser);
     }
 

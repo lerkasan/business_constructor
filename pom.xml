@@ -113,6 +113,12 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
 
+        <!-- Java Mail API -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

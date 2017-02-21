@@ -1,4 +1,4 @@
-package ua.com.brdo.business.constructor.utils.restsecurity;
+package ua.com.brdo.business.constructor.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

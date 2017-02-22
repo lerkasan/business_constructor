@@ -25,9 +25,12 @@ import ua.com.brdo.business.constructor.model.BusinessType;
 import ua.com.brdo.business.constructor.model.Question;
 import ua.com.brdo.business.constructor.model.Questionnaire;
 import ua.com.brdo.business.constructor.model.Stage;
+import ua.com.brdo.business.constructor.model.User;
 import ua.com.brdo.business.constructor.service.impl.AnswerService;
 import ua.com.brdo.business.constructor.service.impl.BusinessService;
 import ua.com.brdo.business.constructor.service.impl.StageService;
+import ua.com.brdo.business.constructor.utils.HtmlRender;
+import ua.com.brdo.business.constructor.utils.Mailer;
 
 @RestController
 @RequestMapping(value = "/api/business", produces = APPLICATION_JSON_VALUE)
@@ -36,12 +39,14 @@ public class AnswerController {
     private AnswerService answerService;
     private BusinessService businessService;
     private StageService stageService;
+    private HtmlRender htmlRender;
 
     @Autowired
-    public AnswerController(AnswerService answerService, BusinessService businessService, StageService stageService) {
+    public AnswerController(AnswerService answerService, BusinessService businessService, StageService stageService, HtmlRender htmlRender) {
         this.answerService = answerService;
         this.businessService = businessService;
         this.stageService = stageService;
+        this.htmlRender = htmlRender;
     }
 
     @ApiIgnore
@@ -123,5 +128,15 @@ public class AnswerController {
     @GetMapping(path = "/{businessId}/flow/{stageId}")
     public Stage getFlowStage(@ApiIgnore @ModelAttribute Business business, @PathVariable Long stageId) {
         return stageService.findByIdAndBusiness(stageId, business);
+    }
+
+    @GetMapping(path = "/{businessId}/send")
+    public void sendFlowToEmail(@ApiIgnore @ModelAttribute Business business) {
+        List<Stage> flow = stageService.findByBusiness(business);
+        User user =business.getUser();
+        String userEmail = user.getEmail();
+        String message = htmlRender.renderFlow(flow);
+        Mailer mailer = new Mailer();
+        mailer.send(userEmail, "Етапи відкриття бізнесу", message);
     }
 }

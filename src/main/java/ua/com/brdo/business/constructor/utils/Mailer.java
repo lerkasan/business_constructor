@@ -1,10 +1,8 @@
 package ua.com.brdo.business.constructor.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -13,7 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class Mail {
+public class Mailer {
     private final static String MAIL_PROPERTIES_FILE = "config/mail.properties";
 
     public void send(String recipient, String subject, String text) {
@@ -37,7 +35,7 @@ public class Mail {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
             message.setSubject(subject);
-            message.setText(text);
+            message.setContent(text, "text/html; charset=UTF-8");
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);

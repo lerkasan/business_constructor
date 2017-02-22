@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Етапи відкриття бізнесу</title>
+</head>
+<body>
+<div class="row second_row">
+  <div class="col-md-4 main_steps">
+    <ol class="steps">
+    <li th:each="stage : ${stages}">
+      <p th:text="${stage.procedure.name}">Procedure name</p>
+      <div class="col-md-8 ">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Куди звернутись
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p>Немає відомостей</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Документи, що потрібні
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p>Немає відомостей</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Скільки коштує обовязковий платіж
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p th:text="${stage.procedure.cost}">Cost</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Результат
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p th:text="${stage.procedure.result}">Result</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Результат можна отримати в такі строки
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p th:text="${stage.procedure.term}">Term</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Чому можуть відмовити
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p th:text="${stage.procedure.deny}">Deny</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Як можна оскаржити відмову
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p th:text="${stage.procedure.abuse}">Abuse</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <button type="button" class="btn btn-default btn-block spoiler-trigger"
+                    data-toggle="collapse">Нормативні акти
+            </button>
+          </div>
+          <div class="panel-collapse collapse out">
+            <div class="panel-body">
+              <p>Немає відомостей</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    </ol>
+  </div>
+</div>
+</body>
+</html>

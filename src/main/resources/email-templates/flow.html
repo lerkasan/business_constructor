@@ -54,6 +54,7 @@
     <h3> Етапи відкриття бізнесу за напрямом діяльності:  <div th:text="${business.businessType.title}">Business title</div></h3>
     <ol>
       <table th:each="stage : ${stages}">
+        <span th:if="${stage.procedure != null}">
         <tr>
             <th colspan="2" th:text="${stage.procedure.name}"><il>Procedure name</il></th>
         </tr>
@@ -89,6 +90,7 @@
           <td class="first_column">Нормативні акти</td>
           <td>Немає відомостей</td>
         </tr>
+        </span>
       </table>
     </ol>
   </div>

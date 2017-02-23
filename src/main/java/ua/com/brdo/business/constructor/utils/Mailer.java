@@ -20,7 +20,7 @@ public class Mailer {
         try (InputStream input = classLoader.getResourceAsStream(MAIL_PROPERTIES_FILE)) {
             mailProperties.load(input);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UnsupportedOperationException(e);
         }
         String username = mailProperties.getProperty("mail.username");
         String password = mailProperties.getProperty("mail.password");
@@ -38,7 +38,7 @@ public class Mailer {
             message.setContent(text, "text/html; charset=UTF-8");
             Transport.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new UnsupportedOperationException(e);
         }
     }
 }

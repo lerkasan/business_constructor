@@ -135,7 +135,7 @@ public class AnswerController {
         List<Stage> flow = stageService.findByBusiness(business);
         User user =business.getUser();
         String userEmail = user.getEmail();
-        String message = htmlRender.renderFlow(flow);
+        String message = htmlRender.renderFlow(flow, business);
         Mailer mailer = new Mailer();
         mailer.send(userEmail, "Етапи відкриття бізнесу", message);
     }

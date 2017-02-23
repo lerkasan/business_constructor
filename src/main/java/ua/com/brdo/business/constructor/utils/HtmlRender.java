@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import ua.com.brdo.business.constructor.model.Business;
 import ua.com.brdo.business.constructor.model.Stage;
 
 @Service
@@ -19,9 +21,10 @@ public class HtmlRender {
         this.templateEngine = templateEngine;
     }
 
-    public String renderFlow(List<Stage> stages) {
+    public String renderFlow(List<Stage> stages, Business business) {
         final Context context = new Context();
         context.setVariable("stages", stages);
+        context.setVariable("business", business);
         return templateEngine.process(TEMPLATE_FILE, context);
     }
 }

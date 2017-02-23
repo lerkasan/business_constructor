@@ -1,113 +1,95 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="utf-8"></meta>
   <title>Етапи відкриття бізнесу</title>
+  <style>
+    table {
+      font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+      font-size: 14px;
+      border-collapse: collapse;
+      text-align: left;
+      width: 95%;
+    }
+
+    th {
+      font-weight: bold;
+      background: #AFCDE7;
+      color: rgb(6, 13, 82);
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    td.first_column {
+      width: 20%;
+      font-weight: bold;
+      background: #AFCDE7;
+      color: rgb(6, 13, 82);
+      padding: 10px 20px;
+    }
+
+    th, td {
+      border-style: solid;
+      border-width: 0 1px 1px 0;
+      border-color: white;
+    }
+
+    td {
+      background: #D8E6F3;
+    }
+
+    td:first-child {
+      text-align: left;
+    }
+
+    h3 {
+      color: rgb(6, 13, 82);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 <div class="row second_row">
   <div class="col-md-4 main_steps">
-    <ol class="steps">
-    <li th:each="stage : ${stages}">
-      <p th:text="${stage.procedure.name}">Procedure name</p>
-      <div class="col-md-8 ">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Куди звернутись
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p>Немає відомостей</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Документи, що потрібні
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p>Немає відомостей</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Скільки коштує обовязковий платіж
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p th:text="${stage.procedure.cost}">Cost</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Результат
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p th:text="${stage.procedure.result}">Result</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Результат можна отримати в такі строки
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p th:text="${stage.procedure.term}">Term</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Чому можуть відмовити
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p th:text="${stage.procedure.deny}">Deny</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Як можна оскаржити відмову
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p th:text="${stage.procedure.abuse}">Abuse</p>
-            </div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <button type="button" class="btn btn-default btn-block spoiler-trigger"
-                    data-toggle="collapse">Нормативні акти
-            </button>
-          </div>
-          <div class="panel-collapse collapse out">
-            <div class="panel-body">
-              <p>Немає відомостей</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
+    <h3> Етапи відкриття бізнесу за напрямом діяльності:  <div th:text="${business.businessType.title}">Business title</div></h3>
+    <ol>
+      <table th:each="stage : ${stages}">
+        <tr>
+            <th colspan="2" th:text="${stage.procedure.name}"><il>Procedure name</il></th>
+        </tr>
+        <tr>
+          <td class="first_column">Куди звернутись</td>
+          <td>Немає відомостей</td>
+        </tr>
+        <tr>
+          <td class="first_column">Документи, що потрібні</td>
+          <td>Немає відомостей</td>
+        </tr>
+        <tr>
+          <td class="first_column">Скільки коштує обов'язковий платіж</td>
+          <td th:text="${stage.procedure.cost}">Cost</td>
+        </tr>
+        <tr>
+          <td class="first_column">Результат</td>
+          <td th:text="${stage.procedure.result}">Result</td>
+        </tr>
+        <tr>
+          <td class="first_column">Результат можна отримати в такі строки</td>
+          <td th:text="${stage.procedure.term}">Term</td>
+        </tr>
+        <tr>
+          <td class="first_column">Чому можуть відмовити</td>
+          <td th:text="${stage.procedure.deny}">Deny</td>
+        </tr>
+        <tr>
+          <td class="first_column">Як можна оскаржити відмову</td>
+          <td th:text="${stage.procedure.abuse}">Abuse</td>
+        </tr>
+        <tr>
+          <td class="first_column">Нормативні акти</td>
+          <td>Немає відомостей</td>
+        </tr>
+      </table>
     </ol>
   </div>
 </div>

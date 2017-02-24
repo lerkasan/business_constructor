@@ -52,7 +52,6 @@ public class Option {
     @PrimaryKeyJoinColumn(name="procedure_id", referencedColumnName="id")
     @JsonIgnoreProperties(value = {"decision", "reason", "result", "cost", "term", "method",
             "deny", "abuse", "procedureType", "permit", "procedureDocuments"})
-//    @NotNull(message = "Procedure field must not be null.") TODO: Change QuestionControllerTest and uncomment this annotation
     private Procedure procedure;
 
     public void setProcedure(Procedure procedure) {

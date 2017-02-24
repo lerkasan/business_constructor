@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS legal_document;
 DROP TABLE IF EXISTS procedure_document;
 DROP TABLE IF EXISTS option_;
 DROP TABLE IF EXISTS question;
+DROP TABLE IF EXISTS questionnaire;
+DROP TABLE IF EXISTS business_type;
 DROP TABLE IF EXISTS procedure_;
 DROP TABLE IF EXISTS procedure_type;
 DROP TABLE IF EXISTS permit;

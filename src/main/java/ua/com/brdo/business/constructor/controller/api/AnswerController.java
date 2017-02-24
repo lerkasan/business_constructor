@@ -40,13 +40,15 @@ public class AnswerController {
     private BusinessService businessService;
     private StageService stageService;
     private HtmlRender htmlRender;
+    private Mailer mailer;
 
     @Autowired
-    public AnswerController(AnswerService answerService, BusinessService businessService, StageService stageService, HtmlRender htmlRender) {
+    public AnswerController(AnswerService answerService, BusinessService businessService, StageService stageService, HtmlRender htmlRender, Mailer mailer) {
         this.answerService = answerService;
         this.businessService = businessService;
         this.stageService = stageService;
         this.htmlRender = htmlRender;
+        this.mailer = mailer;
     }
 
     @ApiIgnore
@@ -136,7 +138,6 @@ public class AnswerController {
         User user =business.getUser();
         String userEmail = user.getEmail();
         String message = htmlRender.renderFlow(flow, business);
-        Mailer mailer = new Mailer();
         mailer.send(userEmail, "Етапи відкриття бізнесу", message);
     }
 }

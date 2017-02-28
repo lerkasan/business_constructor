@@ -1,3 +1,4 @@
+import {Stage} from './stage';
 export class Procedure {
   id: number;
   name: string;
@@ -12,6 +13,7 @@ export class Procedure {
   procedureType: any;
   permit: any;
   procedureDocuments: any[];
+  stage: Stage;
 
   constructor() {
   }

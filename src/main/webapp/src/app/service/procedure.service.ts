@@ -27,7 +27,9 @@ export class ProcedureService {
       .map(response => {
         return response;
       })
-      .catch(this.handleError);
+      .catch(response => {
+        return response;
+      });
   }
 
   private handleError(error: Response | any) {

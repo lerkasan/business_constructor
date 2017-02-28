@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {Question} from '../model/question';
 import {Option} from '../model/option';
 import {Questionnaire} from '../model/questionnaire';
+import {Business} from '../model/business';
+import {Answer} from '../model/answer';
 
 @Injectable()
 export class QuestionService {
@@ -74,6 +76,42 @@ export class QuestionService {
         }
       )
       .catch(this.handleError);
+  }
+
+  public saveBusiness (business: Business) {
+    let path = '/api/businesses';
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.post(path, JSON.stringify(business), options)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (response) => {
+          return response;
+        }
+      );
+  }
+
+  public saveAnswer (answer: Answer) {
+    let path = '/api/busineess/' + answer.business.id + '/answers';
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+
+    return this.http.post(path, JSON.stringify(answer), options)
+      .map(
+        (response) => {
+          return response;
+        }
+      )
+      .catch(
+        (response) => {
+          return response;
+        }
+      );
   }
 
   private handleError(error: Response | any) {

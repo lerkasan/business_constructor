@@ -1,8 +1,9 @@
 import {Question} from './question';
+import {BusinessType} from './business.type';
 export class Questionnaire {
   id: number;
   title: string;
-  businessType: any;
+  businessType: BusinessType;
   questions: Question[];
 
 

@@ -1,6 +1,7 @@
 <brdo-header>
 </brdo-header>
-<div class="container">
+
+<div [hidden]="submitAnswers" class="container">
   <div class="row first_row">
     <div class="col-md-4 carousel_list">
       <brdo-carousel>
@@ -43,32 +44,52 @@
           </div>
           <div class="clear"></div>
         </div>
-        <div *ngFor="let question of questions">
-          <p>{{question.text}}</p>
-          <div class="radio checkbox" *ngFor="let option of question.options;">
-            <label>
-              <input type="{{(question.inputType === 'SINGLE_CHOICE') ? 'radio' : 'checkbox'}}"
-                     class="checkAndRadio"
-                     attr.name="{{question.id}}"
-                     (click)="nextQuestion(option, question); nextProcedure(option)">
-              {{option.title}}
-              <a href="#" data-toggle="tooltip" title="Додаткові відомотсі відсутні!"
-                 class="info-tooltip"><img src="/img/info.png"></a>
-            </label>
+        <form name="myform">
+          <div *ngFor="let question of questions">
+            <p>{{question.text}}</p>
+            <div class="radio checkbox" *ngFor="let option of question.options;">
+              <label>
+                <input type="{{(question.inputType === 'SINGLE_CHOICE') ? 'radio' : 'checkbox'}}"
+                       class="checkAndRadio"
+                       required
+                       attr.name="{{question.id}}"
+                       (click)="nextQuestion(option, question)">
+                {{option.title}}
+                <a href="#" data-toggle="tooltip" title="Додаткові відомотсі відсутні!"
+                   class="info-tooltip"><img src="/img/info.png"></a>
+              </label>
+            </div>
           </div>
-        </div>
-        <div *ngIf="question != undefined">
-          <p *ngFor="let question of questions">{{question.text}}</p>
+        </form>
+        <div *ngIf="canSaveAnswers" class="save-btn">
+          <button class="btn btn-success" (click)="saveAnswers()">
+            Зберегти відповіді і перейти до процедур
+          </button>
         </div>
       </div>
-
     </div>
   </div>
+</div>
+
+<div [hidden]="!submitAnswers" class="container">
   <div class="row second_row">
+    <div>
+      <span>Відповіді:</span>
+      <span *ngFor="let answer of answers">&nbsp;{{answer.option.title}}.</span>
+      <!--<span>-->
+      <!--<button class="btn btn-primary btn-xs">Повернутися до редагування</button>-->
+      <!--</span>-->
+    </div>
+    <br>
     <div class="col-md-4 main_steps">
       <ol class="steps">
-        <li *ngFor="let procedure of procedures"
-            (click)="onSelectProcedure(procedure)">{{procedure.name}}</li>
+        <li *ngFor="let prcdr of procedures"
+            [class.not-complited]="!prcdr.stage.finished"
+            [class.selected-not-complited]="prcdr === procedure && !prcdr.stage.finished"
+            [class.complited]="prcdr.stage.finished"
+            [class.selected-complited]="prcdr === procedure && prcdr.stage.finished"
+            (click)="onSelectProcedure(prcdr)">{{prcdr.name}}
+        </li>
       </ol>
     </div>
     <div class="col-md-8 ">
@@ -174,14 +195,27 @@
         <input type="checkbox" name="fancy-checkbox-primary" id="fancy-checkbox-primary"
                autocomplete="off"/>
         <div class="[ btn-group ]">
-          <label for="fancy-checkbox-primary" class="[ btn btn-primary ]">
-            <span class="[ glyphicon glyphicon-ok ]"></span>
+          <label for="fancy-checkbox-primary" class="btn btn-primary">
+            <span *ngIf="procedure.stage !== undefined && procedure.stage.finished"
+                  class="glyphicon glyphicon-ok" style="color:#afffb5"></span>
+            <span *ngIf="procedure.stage !== undefined && !procedure.stage.finished"
+                  class="glyphicon glyphicon-minus" style="color:#ffb6b9"></span>
             <span> </span>
           </label>
-          <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
-            Завершити етап
+          <label for="fancy-checkbox-primary" class="[ btn btn-default active ]"
+                 (click)="changeStage()">
+            <strong *ngIf="procedure.stage !== undefined && !procedure.stage.finished">
+              Завершити етап
+            </strong>
+            <strong *ngIf="procedure.stage !== undefined && procedure.stage.finished">
+              Позначити як незавершенний
+            </strong>
+            <strong *ngIf="procedure.stage === undefined">
+              Виберіть процедуру
+            </strong>
           </label>
         </div>
       </div>
     </div>
   </div>
+</div>

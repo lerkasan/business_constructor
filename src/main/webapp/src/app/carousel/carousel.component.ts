@@ -12,6 +12,5 @@ export class CarouselComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Hello header');
   }
 }

@@ -433,7 +433,7 @@ export class ConstructorComponent implements OnInit {
       this.wrongQuestionnaire = true;
       return;
     }
-    this.questionnaire.businessType = new Id(this.businessType.id);
+    this.questionnaire.businessType = this.businessType;
     this.questionService.createQuestionare(this.questionnaire)
       .subscribe(
         (response: Response) => {

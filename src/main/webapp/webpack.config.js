@@ -264,6 +264,11 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/webpack-dev-server.html
    */
   config.devServer = {
+    proxy: [{
+      context: ['/login', '/register', '/api/'],
+      target: "http://localhost:8080",
+      secure: false
+    }],
     contentBase: './src/public',
     historyApiFallback: true,
     quiet: true,
